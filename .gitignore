@@ -6,6 +6,7 @@ composer.lock
 .env.php
 .DS_Store
 Thumbs.db
+public.old
 
 # Windows image file caches
 Thumbs.db
