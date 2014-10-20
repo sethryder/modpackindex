@@ -16,6 +16,14 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
-Route::controller('test', 'TestController');
+//version lists
+Route::get('mods/{version}/', 'ModController@getModVersion');
 
+//api calls for json for the tables
+Route::get('api/table/{type}_{version}.json', 'JSONController@getTableDataFile');
+Route::get('api/table/mods/{version}.json', 'JSONController@getTableMods');
+Route::get('api/table/modpacks/{version}.json', 'JSONController@getTableModpacks');
+
+
+Route::controller('test', 'TestController');
 Route::controller('mods', 'ModController');

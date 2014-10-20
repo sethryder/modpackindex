@@ -61,5 +61,11 @@
       <script src="/static/js/demos/flot/area.js"></script>
       <script src="/static/js/demos/flot/stacked-vertical.js"></script>
       <!-- endbuild -->
+
+      @if ($table_javascript)
+      <script src="/static/js/plugins/dataTables/jquery.dataTables.js"></script>
+      <script src="/static/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+      <script src="{{ $table_javascript }}"></script>
+      @endif
   </body>
 </html>

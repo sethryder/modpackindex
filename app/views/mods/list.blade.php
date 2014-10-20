@@ -17,9 +17,10 @@
                 <thead>
                   <tr>
                     <th style="width: 20%">Name</th>
-                    <th style="width: 42%">Deck</th>
-                    <th style="width: 18%">MC Version(s)</th>
-                    <th style="width: 20%">Author(s)</th>
+                    <th style="width: 12%">MC Version(s)</th>
+                    <th style="width: 35%">Deck</th>
+                    <th style="width: 15%">Author(s)</th>
+                    <th style="width: 18%">Link(s)</th>
                   </tr>
                 </thead>
                 <tfoot>
@@ -28,6 +29,8 @@
                     <th>Deck</th>
                     <th>MC Version(s)</th>
                     <th>Author(s)</th>
+                    <th>Links(s)</th>
+
                   </tr>
                 </tfoot>
               </table>

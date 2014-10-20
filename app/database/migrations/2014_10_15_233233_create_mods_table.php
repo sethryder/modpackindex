@@ -14,6 +14,7 @@ class CreateModsTable extends Migration {
     {
         Schema::create('mods', function ($table) {
             $table->increments('id');
+            $table->integer('dependency_id')->default(0);
             $table->string('name');
             $table->string('deck')->nullable();
             $table->string('website')->nullable();

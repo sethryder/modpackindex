@@ -11,7 +11,7 @@
         </button>
 
         <a href="./" class="navbar-brand">
-          MineCraftMods
+          MinecraftMods
         </a>
       </div> <!-- /.navbar-header -->
 
@@ -21,7 +21,7 @@
           <ul class="nav navbar-nav navbar-right">
 
           <li>
-            <a href="javsacript:;">About</a>
+            <a href="/about">About</a>
           </li>
 
           </ul>
@@ -57,75 +57,197 @@
 
         <ul class="mainnav-menu">
 
-          <li class="dropdown active">
-          	<a href="./index.html" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
-          	Mods
-          	<i class="mainnav-caret"></i>
-          	</a>
-
-          	<ul class="dropdown-menu" role="menu">
-              <li>
-                <a href="./index.html">
-                <i class="fa fa-dashboard"></i>
-                &nbsp;&nbsp;1.7.10 Mods
+          <li class="dropdown">
+                <a href="./index.html" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                Modpacks
+                <i class="mainnav-caret"></i>
                 </a>
-              </li>
 
-              <li>
-                <a href="./dashboard-2.html">
-                <i class="fa fa-dashboard"></i>
-                &nbsp;&nbsp;1.6.4 Mods
-                </a>
-              </li>
+                <ul class="dropdown-menu" role="menu">
+                <li>
+                  <a href="/mods/1-7-10/">
+                  <img class="fa" src="/static/img/icons/enderman.png" />
+                  &nbsp;&nbsp;1.7.10 Packs
+                  </a>
+                </li>
 
-              <li>
-                <a href="./dashboard-3.html">
-                <i class="fa fa-dashboard"></i>
-                &nbsp;&nbsp;All Mods
-                </a>
-              </li>
-          	</ul>
-          </li>
+                <li>
+                  <a href="/mods/1-6-4/">
+                  <img class="fa" src="/static/img/icons/creeper.png" />
+                  &nbsp;&nbsp;1.6.4 Packs
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/mods/">
+                  <img class="fa" src="/static/img/icons/custom.png" />
+                  &nbsp;&nbsp;All Packs
+                  </a>
+                </li>
+                </ul>
+            </li>
 
 
           <li class="dropdown ">
 
             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
-            Mod Packs
+            Launchers
             <i class="mainnav-caret"></i>
             </a>
 
             <ul class="dropdown-menu" role="menu">
 
-              <li>
-                <a href="./components-tabs.html">
-                <i class="fa fa-bars"></i>
+              <li class="dropdown-submenu">
+                <a href="/launchers/feed-the-beast">
+                <img class="fa" src="/static/img/icons/ftb.png" />
                 &nbsp;&nbsp;Feed The Beast
                 </a>
+
+                 <ul class="dropdown-menu">
+                      <li>
+                        <a href="/mods/1-7-10/">
+                        <img class="fa" src="/static/img/icons/enderman.png" />
+                        &nbsp;&nbsp;1.7.10 Packs
+                        </a>
+                      </li>
+
+                      <li>
+                        <a href="/mods/1-6-4/">
+                        <img class="fa" src="/static/img/icons/creeper.png" />
+                        &nbsp;&nbsp;1.6.4 Packs
+                        </a>
+                      </li>
+
+                      <li>
+                        <a href="/mods/">
+                        <img class="fa" src="/static/img/icons/custom.png" />
+                        &nbsp;&nbsp;All Packs
+                        </a>
+                      </li>
+                  </ul>
               </li>
 
-              <li>
-                <a href="./components-popups.html">
-                <i class="fa fa-calendar-o"></i>
+              <li class="dropdown-submenu">
+                <a href="/launchers/atlauncher">
+                <img class="fa" src="/static/img/icons/atlauncher.png" />
                 &nbsp;&nbsp;ATLaucher
                 </a>
+
+                <ul class="dropdown-menu">
+                      <li>
+                        <a href="/mods/1-7-10/">
+                        <img class="fa" src="/static/img/icons/enderman.png" />
+                        &nbsp;&nbsp;1.7.10 Packs
+                        </a>
+                      </li>
+
+                      <li>
+                        <a href="/mods/1-6-4/">
+                        <img class="fa" src="/static/img/icons/creeper.png" />
+                        &nbsp;&nbsp;1.6.4 Packs
+                        </a>
+                      </li>
+
+                      <li>
+                        <a href="/mods/">
+                        <img class="fa" src="/static/img/icons/custom.png" />
+                        &nbsp;&nbsp;All Packs
+                        </a>
+                      </li>
+                  </ul>
               </li>
 
-              <li>
-                <a href="./components-validation.html">
-                <i class="fa fa-check"></i>
+              <li class="dropdown-submenu">
+                <a href="/launchers/technic-launcher">
+                <img class="fa" src="/static/img/icons/technic.png" />
                 &nbsp;&nbsp;Technic Launcher
                 </a>
+
+                <ul class="dropdown-menu">
+                      <li>
+                        <a href="/mods/1-7-10/">
+                        <img class="fa" src="/static/img/icons/enderman.png" />
+                        &nbsp;&nbsp;1.7.10 Packs
+                        </a>
+                      </li>
+
+                      <li>
+                        <a href="/mods/1-6-4/">
+                        <img class="fa" src="/static/img/icons/creeper.png" />
+                        &nbsp;&nbsp;1.6.4 Packs
+                        </a>
+                      </li>
+
+                      <li>
+                        <a href="/mods/">
+                        <img class="fa" src="/static/img/icons/custom.png" />
+                        &nbsp;&nbsp;All Packs
+                        </a>
+                      </li>
+                  </ul>
               </li>
 
-              <li>
-                <a href="./components-datatables.html">
-                <i class="fa fa-table"></i>
-                &nbsp;&nbsp;Others
+              <li class="dropdown-submenu">
+                <a href="./launchers/custom">
+                <img class="fa" src="/static/img/icons/custom.png" />
+                &nbsp;&nbsp;Custom
                 </a>
+
+                <ul class="dropdown-menu">
+                      <li>
+                        <a href="/mods/1-7-10/">
+                        <img class="fa" src="/static/img/icons/enderman.png" />
+                        &nbsp;&nbsp;1.7.10 Packs
+                        </a>
+                      </li>
+
+                      <li>
+                        <a href="/mods/1-6-4/">
+                        <img class="fa" src="/static/img/icons/creeper.png" />
+                        &nbsp;&nbsp;1.6.4 Packs
+                        </a>
+                      </li>
+
+                      <li>
+                        <a href="/mods/">
+                        <img class="fa" src="/static/img/icons/custom.png" />
+                        &nbsp;&nbsp;All Packs
+                        </a>
+                      </li>
+                  </ul>
               </li>
             </ul>
           </li>
+
+            <li class="dropdown">
+                <a href="./index.html" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                Mods
+                <i class="mainnav-caret"></i>
+                </a>
+
+                <ul class="dropdown-menu" role="menu">
+                <li>
+                  <a href="/mods/1-7-10/">
+                  <img class="fa" src="/static/img/icons/enderman.png" />
+                  &nbsp;&nbsp;1.7.10 Mods
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/mods/1-6-4/">
+                  <img class="fa" src="/static/img/icons/creeper.png" />
+                  &nbsp;&nbsp;1.6.4 Mods
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/mods/">
+                  <img class="fa" src="/static/img/icons/custom.png" />
+                  &nbsp;&nbsp;All Mods
+                  </a>
+                </li>
+                </ul>
+            </li>
 
             </ul>
 

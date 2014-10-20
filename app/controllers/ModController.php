@@ -7,14 +7,12 @@ class ModController extends BaseController
         return Mod::all();
     }
 
-    public function getAllModsTableJson()
+    public function getModVersion($version)
     {
+        $table_javascript = '/api/table/mods_'. $version .'.json';
+        $version = preg_replace('/-/', '.', $version);
 
-    }
-
-    public function getVersionMods($version)
-    {
-
+        return View::make('mods.list', array('table_javascript' => $table_javascript, 'version' => $version));
     }
 
     public function getMod($id)
