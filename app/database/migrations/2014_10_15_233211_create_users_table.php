@@ -12,7 +12,22 @@ class CreateUsersTable extends Migration {
 	 */
 	public function up()
 	{
-
+        Schema::create('users', function($table)
+        {
+            $table->increments('id');
+            $table->string('username', 16)->unique();
+            $table->string('password', 128);
+            $table->string('email')->index()->unique();
+            $table->string('confirmation');
+            $table->boolean('is_confirmed');
+            $table->boolean('is_active');
+            $table->boolean('is_admin');
+            $table->boolean('is_moderator');
+            $table->boolean('is_deleted');
+            $table->string('register_ip', 40);
+            $table->string('last_ip', 40);
+            $table->timestamps();
+        });
 	}
 
 	/**
@@ -22,6 +37,7 @@ class CreateUsersTable extends Migration {
 	 */
 	public function down()
 	{
+        Schema::drop('users');
 	}
 
 }

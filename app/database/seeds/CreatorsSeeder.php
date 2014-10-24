@@ -1,23 +1,19 @@
 <?php
 
-class ModsSeeder extends Seeder {
+class CreatorsSeeder extends Seeder {
 
     public function run()
     {
         $faker = Faker\Factory::create();
 
-        foreach(range(1, 200) as $index)
+        foreach(range(1, 12) as $index)
         {
-            $name = $faker->bs;
-            Mod::create([
-                'name' => $name,
+            Creator::create([
+                'name' => $faker->userName,
                 'deck' => $faker->sentence(12),
                 'website' => $faker->url,
-                'download_link' => $faker->url,
                 'donate_link' => $faker->url,
-                'wiki_link' => $faker->url,
-                'description' => $faker->paragraph(5),
-                'slug'  => Str::slug($name),
+                'bio' => $faker->paragraph(5),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ]);

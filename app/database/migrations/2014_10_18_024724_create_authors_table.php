@@ -21,6 +21,7 @@ class CreateAuthorsTable extends Migration {
             $table->string('donate_link')->nullable();
             $table->longText('bio')->nullable();
             $table->string('last_ip', 40)->nullable();
+            $table->string('slug')->index();
             $table->timestamps();
         });
 	}

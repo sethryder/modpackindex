@@ -10,7 +10,7 @@
           <i class="fa fa-cog"></i>
         </button>
 
-        <a href="./" class="navbar-brand">
+        <a href="/" class="navbar-brand">
           MinecraftMods
         </a>
       </div> <!-- /.navbar-header -->
@@ -50,36 +50,36 @@
 
       <nav class="collapse mainnav-collapse" role="navigation">
 
-        <form class="mainnav-form pull-right" role="search">
+        <!--<form class="mainnav-form pull-right" role="search">
           <input type="text" class="form-control input-md mainnav-search-query" placeholder="Search">
           <button class="btn btn-sm mainnav-form-btn"><i class="fa fa-search"></i></button>
-        </form>
+        </form>-->
 
         <ul class="mainnav-menu">
 
           <li class="dropdown">
-                <a href="./index.html" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
                 Modpacks
                 <i class="mainnav-caret"></i>
                 </a>
 
                 <ul class="dropdown-menu" role="menu">
                 <li>
-                  <a href="/mods/1-7-10/">
+                  <a href="/modpacks/1-7-10/">
                   <img class="fa" src="/static/img/icons/enderman.png" />
                   &nbsp;&nbsp;1.7.10 Packs
                   </a>
                 </li>
 
                 <li>
-                  <a href="/mods/1-6-4/">
+                  <a href="/modpacks/1-6-4/">
                   <img class="fa" src="/static/img/icons/creeper.png" />
                   &nbsp;&nbsp;1.6.4 Packs
                   </a>
                 </li>
 
                 <li>
-                  <a href="/mods/">
+                  <a href="/modpacks/">
                   <img class="fa" src="/static/img/icons/custom.png" />
                   &nbsp;&nbsp;All Packs
                   </a>
@@ -98,28 +98,28 @@
             <ul class="dropdown-menu" role="menu">
 
               <li class="dropdown-submenu">
-                <a href="/launchers/feed-the-beast">
+                <a href="/launcher/feed-the-beast">
                 <img class="fa" src="/static/img/icons/ftb.png" />
                 &nbsp;&nbsp;Feed The Beast
                 </a>
 
                  <ul class="dropdown-menu">
                       <li>
-                        <a href="/mods/1-7-10/">
+                        <a href="/launcher/feed-the-beast/1-7-10">
                         <img class="fa" src="/static/img/icons/enderman.png" />
                         &nbsp;&nbsp;1.7.10 Packs
                         </a>
                       </li>
 
                       <li>
-                        <a href="/mods/1-6-4/">
+                        <a href="/launcher/feed-the-beast/1-6-4">
                         <img class="fa" src="/static/img/icons/creeper.png" />
                         &nbsp;&nbsp;1.6.4 Packs
                         </a>
                       </li>
 
                       <li>
-                        <a href="/mods/">
+                        <a href="/launcher/feed-the-beast">
                         <img class="fa" src="/static/img/icons/custom.png" />
                         &nbsp;&nbsp;All Packs
                         </a>
@@ -128,28 +128,28 @@
               </li>
 
               <li class="dropdown-submenu">
-                <a href="/launchers/atlauncher">
+                <a href="/launcher/atlauncher">
                 <img class="fa" src="/static/img/icons/atlauncher.png" />
                 &nbsp;&nbsp;ATLaucher
                 </a>
 
                 <ul class="dropdown-menu">
                       <li>
-                        <a href="/mods/1-7-10/">
+                        <a href="/launcher/atlauncher/1-7-10">
                         <img class="fa" src="/static/img/icons/enderman.png" />
                         &nbsp;&nbsp;1.7.10 Packs
                         </a>
                       </li>
 
                       <li>
-                        <a href="/mods/1-6-4/">
+                        <a href="/launcher/atlauncher/1-6-4">
                         <img class="fa" src="/static/img/icons/creeper.png" />
                         &nbsp;&nbsp;1.6.4 Packs
                         </a>
                       </li>
 
                       <li>
-                        <a href="/mods/">
+                        <a href="/launcher/atlauncher">
                         <img class="fa" src="/static/img/icons/custom.png" />
                         &nbsp;&nbsp;All Packs
                         </a>
@@ -158,28 +158,28 @@
               </li>
 
               <li class="dropdown-submenu">
-                <a href="/launchers/technic-launcher">
+                <a href="/launcher/technic-platform">
                 <img class="fa" src="/static/img/icons/technic.png" />
-                &nbsp;&nbsp;Technic Launcher
+                &nbsp;&nbsp;Technic Platform
                 </a>
 
                 <ul class="dropdown-menu">
                       <li>
-                        <a href="/mods/1-7-10/">
+                        <a href="/launcher/technic-platform/1-7-10">
                         <img class="fa" src="/static/img/icons/enderman.png" />
                         &nbsp;&nbsp;1.7.10 Packs
                         </a>
                       </li>
 
                       <li>
-                        <a href="/mods/1-6-4/">
+                        <a href="/launcher/technic-platform/1-6-4">
                         <img class="fa" src="/static/img/icons/creeper.png" />
                         &nbsp;&nbsp;1.6.4 Packs
                         </a>
                       </li>
 
                       <li>
-                        <a href="/mods/">
+                        <a href="/launcher/technic-platform">
                         <img class="fa" src="/static/img/icons/custom.png" />
                         &nbsp;&nbsp;All Packs
                         </a>
@@ -188,28 +188,28 @@
               </li>
 
               <li class="dropdown-submenu">
-                <a href="./launchers/custom">
+                <a href="/launcher/custom">
                 <img class="fa" src="/static/img/icons/custom.png" />
                 &nbsp;&nbsp;Custom
                 </a>
 
                 <ul class="dropdown-menu">
                       <li>
-                        <a href="/mods/1-7-10/">
+                        <a href="/launcher/custom/1-7-10">
                         <img class="fa" src="/static/img/icons/enderman.png" />
                         &nbsp;&nbsp;1.7.10 Packs
                         </a>
                       </li>
 
                       <li>
-                        <a href="/mods/1-6-4/">
+                        <a href="/launcher/custom/1-6-4">
                         <img class="fa" src="/static/img/icons/creeper.png" />
                         &nbsp;&nbsp;1.6.4 Packs
                         </a>
                       </li>
 
                       <li>
-                        <a href="/mods/">
+                        <a href="/launcher/custom">
                         <img class="fa" src="/static/img/icons/custom.png" />
                         &nbsp;&nbsp;All Packs
                         </a>
@@ -220,7 +220,7 @@
           </li>
 
             <li class="dropdown">
-                <a href="./index.html" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                <a href="/mods" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
                 Mods
                 <i class="mainnav-caret"></i>
                 </a>

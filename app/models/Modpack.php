@@ -11,4 +11,14 @@ class Modpack extends Eloquent
     {
         return $this->belongsTo('Launcher');
     }
+
+    public function version()
+    {
+        return $this->belongsTo('MinecraftVersion', 'minecraft_version_id');
+    }
+
+    public function creators()
+    {
+        return $this->belongsToMany('Creator');
+    }
 }

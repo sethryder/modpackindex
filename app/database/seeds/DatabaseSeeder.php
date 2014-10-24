@@ -10,7 +10,9 @@ class DatabaseSeeder extends Seeder {
         'author_mod',
         'launchers',
         'modpacks',
-        'mod_modpack'
+        'mod_modpack',
+        'creators',
+        'creator_modpack',
     ];
 
 	/**
@@ -32,6 +34,8 @@ class DatabaseSeeder extends Seeder {
         $this->call('LaunchersSeeder');
         $this->call('ModpackSeeder');
         $this->call('ModModpackSeeder');
+        $this->call('CreatorsSeeder');
+        $this->call('CreatorsModpackSeeder');
 		// $this->call('UserTableSeeder');
 	}
 

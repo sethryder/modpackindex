@@ -2810,7 +2810,7 @@ body {
 .content-title {
   position: relative;
   display: block;
-  margin-bottom: 1.35em;
+  /*margin-bottom: 1.35em;*/
   border-bottom: 1px solid #e3e3e3;
 }
 .portlet-title u,

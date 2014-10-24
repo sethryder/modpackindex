@@ -23,6 +23,7 @@ class CreateModsTable extends Migration {
             $table->string('wiki_link')->nullable();
             $table->longText('description')->nullable();
             $table->string('last_ip', 40)->nullable();
+            $table->string('slug')->index();
             $table->timestamps();
         });
     }

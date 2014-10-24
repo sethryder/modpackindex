@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>MineMods</title>
+    <title>{{ $title or "MineMods" }}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="/static/css/bootstrap.css">
     <link rel="stylesheet" href="/static/css/mvpready-admin.css">
     <link rel="stylesheet" href="/static/css/mvpready-flat.css">
-    <link rel="stylesheet" href="/static/wysiwyg_figures.css"/>
+    <link rel="stylesheet" href="/static/css/chosen.min.css">
     <!-- endbuild -->
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js"></script>
@@ -49,8 +49,6 @@
       <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
       <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
-      <!-- build:js /static/javascript/minified.js -->
-      <script src="/static/javascript/main.js"></script>
       <script src="/static/js/plugins/flot/jquery.flot.js"></script>
       <script src="/static/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
       <script src="/static/js/plugins/flot/jquery.flot.pie.js"></script>
@@ -60,12 +58,22 @@
       <script src="/static/js/mvpready-admin.js"></script>
       <script src="/static/js/demos/flot/area.js"></script>
       <script src="/static/js/demos/flot/stacked-vertical.js"></script>
-      <!-- endbuild -->
 
-      @if ($table_javascript)
+      <?php if (isset($table_javascript)) { ?>
       <script src="/static/js/plugins/dataTables/jquery.dataTables.js"></script>
       <script src="/static/js/plugins/dataTables/dataTables.bootstrap.js"></script>
       <script src="{{ $table_javascript }}"></script>
-      @endif
+      <?php } ?>
+
+      <?php if(isset($chosen)) { ?>
+      <script src="/static/js/plugins/chosen/chosen.jquery.min.js"></script>
+
+      <script type="text/javascript">
+          var chosen_config = {
+            'placeholder_text_multiple':' '
+          }
+          $(".chosen-select").chosen(chosen_config)
+      </script>
+      <?php } ?>
   </body>
 </html>

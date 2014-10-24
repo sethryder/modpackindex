@@ -8,7 +8,7 @@
           <div class="portlet">
 
             <h3 class="portlet-title">
-              <u>{{ $version }} Mods</u>
+              <u>{{ $version }} Modpacks</u>
             </h3>
 
             <div class="portlet-body">
@@ -17,18 +17,20 @@
                 <thead>
                   <tr>
                     <th style="width: 20%">Name</th>
-                    <th style="width: 12%">MC Version(s)</th>
-                    <th style="width: 35%">Deck</th>
-                    <th style="width: 15%">Author(s)</th>
+                    <th style="width: 10%">MC Version</th>
+                    <th style="width: 36%">Deck</th>
+                    <th style="width: 15%">Creators(s)</th>
+                    <th style="width: 1%"></th>
                     <th style="width: 18%">Link(s)</th>
                   </tr>
                 </thead>
                 <tfoot>
                   <tr>
                     <th>Name</th>
-                    <th>MC Version(s)</th>
+                    <th>MC Version</th>
                     <th>Deck</th>
-                    <th>Author(s)</th>
+                    <th>Creators(s)</th>
+                    <th></th>
                     <th>Link(s)</th>
 
                   </tr>

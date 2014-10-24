@@ -11,18 +11,40 @@
 |
 */
 
-Route::get('/', function()
-{
-	return View::make('hello');
-});
+Route::get('/', 'ModpackController@getModpackVersion');
 
-//version lists
-Route::get('mods/{version}/', 'ModController@getModVersion');
+//mods
+Route::get('mods/{version?}', 'ModController@getModVersion');
+Route::get('mod/add', 'ModController@getAdd');
+Route::post('mod/add', 'ModController@postAdd');
+Route::get('mod/{slug}', 'ModController@getMod');
+
+//modpacks
+Route::get('modpacks/{version?}', 'ModpackController@getModpackVersion');
+Route::get('modpack/{version}/{slug}', 'ModpackController@getModpack');
+
+//launchers
+Route::get('launcher/{name}/{version?}', 'LauncherController@getLauncherVersion');
+
+//authors
+Route::get('author/add', 'AuthorController@getAdd');
+Route::post('author/add', 'AuthorController@postAdd');
 
 //api calls for json for the tables
 Route::get('api/table/{type}_{version}.json', 'JSONController@getTableDataFile');
+Route::get('api/table/{type}_{version}/{name}.json', 'JSONController@getTableDataFile');
+
 Route::get('api/table/mods/{version}.json', 'JSONController@getTableMods');
+Route::get('api/table/mod/modpacks/{name}.json', 'JSONController@getModModpacks');
+
 Route::get('api/table/modpacks/{version}.json', 'JSONController@getTableModpacks');
+Route::get('api/table/modpack/mods/{name}.json', 'JSONController@getTableModpackMods');
+
+
+Route::get('api/table/launchers/{name}/{version}.json', 'JSONController@getTableLaunchers');
+
+//user
+Route::get('login', 'UserController@getLogin');
 
 
 Route::controller('test', 'TestController');

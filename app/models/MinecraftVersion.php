@@ -8,4 +8,9 @@ class MinecraftVersion extends Eloquent
     {
         return $this->belongsToMany('Mod');
     }
+
+    public function modpacks()
+    {
+        return $this->hasMany('Modpack');
+    }
 }
