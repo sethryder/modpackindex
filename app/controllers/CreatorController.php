@@ -1,35 +1,35 @@
 <?php
 
-class AuthorController extends BaseController
+class CreatorController extends BaseController
 {
     public function getAdd()
     {
-        $title = 'Add An Author - ' . $this->site_name;
-        return View::make('authors.add', ['title' => $title]);
+        $title = 'Add A Modpack Creator - ' . $this->site_name;
+        return View::make('creators.add', ['title' => $title]);
     }
 
     public function postAdd()
     {
-        $title = 'Add An Author - ' . $this->site_name;
+        $title = 'Add An Modpack Creator - ' . $this->site_name;
 
         $input = Input::only('name', 'deck', 'website', 'donate_link', 'bio', 'slug');
 
         $messages = [
-            'unique' => 'The author already exists in the database.',
+            'unique' => 'The modpack creator already exists in the database.',
             'url' => 'The :attribute field is not a valid URL.'
         ];
 
         $validator = Validator::make($input,
             [
-                'name' => 'required|unique:authors,name',
+                'name' => 'required|unique:creators,name',
                 'website' => 'url',
                 'donate_link' => 'url',
             ],
-        $messages);
+            $messages);
 
         if ($validator->fails())
         {
-            return Redirect::to('/author/add/')->withErrors($validator)->withInput();
+            return Redirect::to('/creator/add/')->withErrors($validator)->withInput();
         }
         else
         {
@@ -57,27 +57,13 @@ class AuthorController extends BaseController
 
             if ($success)
             {
-                return View::make('authors.add', ['title' => $title, 'success' => true]);
+                return View::make('creators.add', ['title' => $title, 'success' => true]);
             }
             else
             {
-                return Redirect::to('/author/add/')->withErrors(['message' => 'Unable to add author.'])->withInput();
+                return Redirect::to('/creator/add/')->withErrors(['message' => 'Unable to add modpack creator.'])->withInput();
             }
 
         }
-    }
-
-    public function getEdit($id)
-    {
-        $title = 'Edit An Author - ' . $this->site_name;
-
-        $author = Author::find($id);
-
-        return View::make('authors.edit', ['title' => $title, 'author' => $author]);
-    }
-
-    public function postEdit($id)
-    {
-        $current_author = Author::find($id);
     }
 }

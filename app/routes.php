@@ -30,6 +30,13 @@ Route::get('launcher/{name}/{version?}', 'LauncherController@getLauncherVersion'
 Route::get('author/add', 'AuthorController@getAdd');
 Route::post('author/add', 'AuthorController@postAdd');
 
+Route::get('author/edit/{id}', 'AuthorController@getEdit');
+Route::post('author/edit/{id}', 'AuthorController@postEdit');
+
+//creators
+Route::get('creator/add', 'CreatorController@getAdd');
+Route::post('creator/add', 'CreatorController@postAdd');
+
 //api calls for json for the tables
 Route::get('api/table/{type}_{version}.json', 'JSONController@getTableDataFile');
 Route::get('api/table/{type}_{version}/{name}.json', 'JSONController@getTableDataFile');

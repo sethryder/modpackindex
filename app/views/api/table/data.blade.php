@@ -1,5 +1,7 @@
 $(function() {
   var table_1 = $('#table-1').dataTable ({
+    "bLengthChange": true,
+    "iDisplayLength": 25,
     "sAjaxSource": "{{ $ajax_source }}",
     "aoColumns": [
     @foreach ($columns as $index => $column)
