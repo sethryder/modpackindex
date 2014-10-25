@@ -21,6 +21,7 @@ class ModpackController extends BaseController
 
         $modpack = Modpack::where('slug', '=', $slug)->first();
         $launcher = $modpack->launcher;
+        $creators = $modpack->creators;
 
         $raw_links = [
             'website'       => $modpack->website,
@@ -42,6 +43,6 @@ class ModpackController extends BaseController
         }
 
         return View::make('modpacks.detail', array('table_javascript' => $table_javascript, 'modpack' => $modpack,
-            'links' => $links, 'launcher' => $launcher, 'title' => $title));
+            'links' => $links, 'launcher' => $launcher, 'creators' => $creators, 'title' => $title));
     }
 }

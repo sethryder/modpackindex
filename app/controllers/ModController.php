@@ -24,6 +24,7 @@ class ModController extends BaseController
         $table_javascript = '/api/table/modmodpacks_0/'. $slug .'.json';
 
         $mod = Mod::where('slug', '=', $slug)->first();
+        $authors = $mod->authors;
 
         $raw_links = [
             'website'       => $mod->website,
@@ -44,7 +45,8 @@ class ModController extends BaseController
 
         $title = $mod->name . ' - Mod - '. $this->site_name;
 
-        return View::make('mods.detail', array('table_javascript' => $table_javascript, 'mod' => $mod, 'links' => $links, 'title' => $title));
+        return View::make('mods.detail', array('table_javascript' => $table_javascript, 'mod' => $mod, 'links' => $links,
+            'authors' => $authors, 'title' => $title));
     }
 
     public function getAdd()

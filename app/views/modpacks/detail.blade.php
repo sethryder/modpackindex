@@ -12,7 +12,13 @@
 
             </h3>
 
-            <div style="position: relative; bottom: 15px;"><h5>by <a href="#creator">DudeMan001</a></h5>
+            <div style="position: relative; bottom: 15px;"><h5>by
+                <?php $i=0 ?>
+                @foreach($creators as $index => $creator)
+                    {{$creator->name}}@if ($i+1 != count($creators)), @endif
+                    <?php $i++; ?>
+                @endforeach
+            </h5>
             <p>
             <?php $i=0 ?>
             @foreach ($links as $index => $link)
