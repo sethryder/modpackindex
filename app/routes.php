@@ -23,8 +23,14 @@ Route::get('mod/edit/{id}', 'ModController@getEdit');
 Route::post('mod/edit/{id}', 'ModController@postEdit');
 
 //modpacks
+Route::get('modpack/{version}/add', 'ModpackController@getAdd');
+Route::post('modpack/{version}/add', 'ModpackController@postAdd');
+
 Route::get('modpacks/{version?}', 'ModpackController@getModpackVersion');
 Route::get('modpack/{version}/{slug}', 'ModpackController@getModpack');
+
+Route::get('modpack/edit/{id}', 'ModpackController@getEdit');
+Route::post('modpack/edit/{id}', 'ModpackController@postEdit');
 
 //launchers
 Route::get('launcher/{name}/{version?}', 'LauncherController@getLauncherVersion');
@@ -54,9 +60,9 @@ Route::get('api/table/mod/modpacks/{name}.json', 'JSONController@getModModpacks'
 Route::get('api/table/modpacks/{version}.json', 'JSONController@getTableModpacks');
 Route::get('api/table/modpack/mods/{name}.json', 'JSONController@getTableModpackMods');
 
-
 Route::get('api/table/launchers/{name}/{version}.json', 'JSONController@getTableLaunchers');
 
+//Route::get('api/jquery/mods/select.js', 'ModpackController@getModsJquery');
 //user
 Route::get('login', 'UserController@getLogin');
 

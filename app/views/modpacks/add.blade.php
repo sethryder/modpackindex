@@ -12,92 +12,90 @@
           <div class="portlet">
 
             <h2 class="portlet-title">
-              <u>Form Validation</u>
+              <u>Add A {{ $version  }} Modpack</u>
             </h2>
 
             <div class="portlet-body">
 
-              <form id="demo-validation" action="./components-validation.html" data-validate="parsley" class="form parsley-form">
+            @if ( $errors->count() > 0 )
+                <div class="alert alert-danger">
+                <p>The following errors have occurred:</p>
+
+                <ul>
+                    @foreach( $errors->all() as $message )
+                    <li>{{ $message }}</li>
+                    @endforeach
+                </ul>
+                </div> <!-- /.alert -->
+            @endif
+
+            @if (isset($success))
+                <div class="alert alert-success">
+                    <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+                    <strong>Added!</strong> You may add another modpack below or leave this page.
+                </div> <!-- /.alert -->
+            @endif
+
+             {{ Form::open(array('url' => '/modpack/' . $url_version . '/add', 'class' => 'form parsley-form')) }}
 
                 <div class="form-group">
-                  <label for="name">Name</label>
-                  <input type="text" id="name" name="name" class="form-control parsley-validated" data-required="true">
+                    {{ Form::label('name','Name') }}:
+                    {{ Form::text('name', null, array('class' => 'form-control', 'data-required' => 'true'))}}
                 </div> <!-- /.form-group -->
 
                 <div class="form-group">
-                  <label for="textarea-input">Textarea</label>
-                  <textarea data-required="true" data-minlength="5" name="textarea-input" id="textarea-input" cols="10" rows="2" class="form-control parsley-validated"></textarea>
+                    {{ Form::label('launcher','Launcher') }}:
+                    {{ Form::select('launcher', Launcher::lists('name', 'id'), null, array('class' => 'form-control')) }}
+                </div>
+
+                <div class="form-group">
+                    {{ Form::label('mods','Mods') }}:
+                    {{ Form::select('mods[]', $mods, null, array('multiple', 'class' => 'chosen-select form-control')) }}
+                </div>
+
+                <div class="form-group">
+                    {{ Form::label('creator','Creator(s)') }}:
+                    {{ Form::select('creators[]', Creator::lists('name', 'id'), null, array('multiple', 'class' => 'chosen-select form-control')) }}
+                </div>
+
+                <div class="form-group">
+                    {{ Form::label('deck','Deck') }}:
+                    {{ Form::text('deck', null, array('class' => 'form-control'))}}
                 </div> <!-- /.form-group -->
 
                 <div class="form-group">
-                  <label for="validateSelect">Select</label>
-                  <select id="validateSelect" name="validateSelect" class="form-control parsley-validated" data-required="true">
-                    <option value="">Please Select</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                  </select>
+                    {{ Form::label('website','Website') }}:
+                    {{ Form::text('website', null, array('class' => 'form-control'))}}
                 </div> <!-- /.form-group -->
 
                 <div class="form-group">
-                  <label for="select-multi-input">Select (multiple)</label>
-                  <select data-required="true" multiple="" id="select-multi-input" class="form-control parsley-validated">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                  </select>
+                    {{ Form::label('download_link','Download Link') }}:
+                    {{ Form::text('download_link', null, array('class' => 'form-control'))}}
                 </div> <!-- /.form-group -->
 
                 <div class="form-group">
-                  <label>Checkbox (stacked)</label>
-
-                  <div class="checkbox">
-                    <label>
-                    <input type="checkbox" name="checkbox-1" class="parsley-validated" data-mincheck="2">
-                    Option 1
-                    </label>
-                  </div> <!-- /.checkbox -->
-
-                  <div class="checkbox">
-                    <label>
-                    <input type="checkbox" name="checkbox-1" class="parsley-validated" data-mincheck="2">
-                    Option 2
-                    </label>
-                  </div> <!-- /.checkbox -->
-
-                </div> <!-- /.form-group -->
-
-
-                <div class="form-group">
-                  <label>Radio (stacked)</label>
-
-                  <div class="radio">
-                    <label>
-                    <input type="radio" name="radio-1" class="parsley-validated" data-required="true">
-                    Option 1
-                    </label>
-                  </div> <!-- /.radio -->
-
-                  <div class="radio">
-                    <label>
-                    <input type="radio" name="radio-1" class="parsley-validated" data-required="true">
-                    Option 2
-                    </label>
-                  </div> <!-- /.radio -->
-
+                    {{ Form::label('donate_link','Donate Link') }}:
+                    {{ Form::text('donate_link', null, array('class' => 'form-control'))}}
                 </div> <!-- /.form-group -->
 
                 <div class="form-group">
-                  <button type="submit" class="btn btn-danger">Validate</button>
+                    {{ Form::label('wiki_link','Wiki Link') }}:
+                    {{ Form::text('wiki_link', null, array('class' => 'form-control'))}}
                 </div> <!-- /.form-group -->
 
-              </form>
+                <div class="form-group">
+                    {{ Form::label('description','Description') }}:
+                    {{ Form::textarea('description', null, array('class' => 'form-control'))}}
+                </div> <!-- /.form-group -->
+
+                <div class="form-group">
+                    {{ Form::label('slug','Slug') }}:
+                    {{ Form::text('slug', null, array('class' => 'form-control'))}}
+                </div> <!-- /.form-group -->
+
+                {{ Form::submit('Add', ['class' => 'btn btn-danger']) }}
+
+            {{ Form::close() }}
 
             </div> <!-- /.portlet-body -->
 

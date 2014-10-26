@@ -45,4 +45,158 @@ class ModpackController extends BaseController
         return View::make('modpacks.detail', array('table_javascript' => $table_javascript, 'modpack' => $modpack,
             'links' => $links, 'launcher' => $launcher, 'creators' => $creators, 'title' => $title));
     }
+
+    public function getAdd($version)
+    {
+        $mod_select_array = [];
+        $url_version = $version;
+        $version = preg_replace('/-/', '.', $version);
+        $title = 'Add A '. $version .' Modpack - '. $this->site_name;
+        $minecraft_version = MinecraftVersion::where('name', '=', $version)->first();
+
+        $mods = $minecraft_version->mods;
+
+        foreach ($mods as $mod)
+        {
+            $id = $mod->id;
+            $mod_select_array[$id] = $mod->name;
+        }
+
+        return View::make('modpacks.add', ['chosen' => true, 'mods' => $mod_select_array, 'title' => $title,
+            'version' => $version, 'url_version' => $url_version]);
+    }
+
+    public function postAdd($version)
+    {
+        $url_version = $version;
+        $version = preg_replace('/-/', '.', $version);
+        $title = 'Add A Modpack - ' . $this->site_name;
+        $minecraft_version = MinecraftVersion::where('name', '=', $version)->first();
+
+        $input = Input::only('name', 'launcher', 'mods', 'creators', 'deck', 'website', 'download_link', 'donate_link', 'wiki_link', 'description', 'slug');
+
+        $messages = [
+            'unique' => 'This mod already exists in the database. If it requires an update let us know!',
+            'url' => 'The :attribute field is not a valid URL.'
+        ];
+
+        $validator = Validator::make($input,
+            [
+                'name' => 'required|unique:modpacks,name',
+                'launcher' => 'required',
+                'mods' => 'required',
+                'creators' => 'required',
+                'deck'  => 'required',
+                'website' => 'url',
+                'download_url' => 'url',
+                'wiki_url' => 'url',
+                'donate_link' => 'url',
+            ],
+            $messages);
+
+        if ($validator->fails())
+        {
+            return Redirect::to('/modpack/' . $url_version . '/add')->withErrors($validator)->withInput();
+        }
+        else
+        {
+            $modpack = new Modpack;
+
+            $modpack->name = $input['name'];
+            $modpack->launcher_id = $input['launcher'];
+            $modpack->minecraft_version_id = $minecraft_version->id;
+            $modpack->deck = $input['deck'];
+            $modpack->website = $input['website'];
+            $modpack->download_link = $input['download_link'];
+            $modpack->donate_link = $input['donate_link'];
+            $modpack->wiki_link = $input['wiki_link'];
+            $modpack->description = $input['description'];
+
+            if ($input['slug'] == '')
+            {
+                $slug = Str::slug($input['name']);
+            }
+            else
+            {
+                $slug = $input['slug'];
+            }
+
+            $modpack->slug = $slug;
+            $modpack->last_ip = Request::getClientIp();
+
+            $success = $modpack->save();
+
+            if ($success)
+            {
+                foreach ($input['creators'] as $creator)
+                {
+                    $modpack->creators()->attach($creator);
+                }
+
+                foreach ($input['mods'] as $mod)
+                {
+                    $modpack->mods()->attach($mod);
+                }
+
+                $mods = $minecraft_version->mods;
+
+                foreach ($mods as $mod)
+                {
+                    $id = $mod->id;
+                    $mod_select_array[$id] = $mod->name;
+                }
+
+                return View::make('modpacks.add', ['title' => $title, 'chosen' => true, 'success' => true, 'version' => $version,
+                    'url_version' => $url_version, 'mods' => $mod_select_array]);
+            }
+            else
+            {
+                return Redirect::to('/modpack/' . $url_version . '/add')->withErrors(['message' => 'Unable to add modpack.'])->withInput();
+            }
+
+        }
+    }
+
+    public function getEdit($id)
+    {
+
+    }
+
+    public function postEdit($id)
+    {
+
+    }
+
+   /* public function getModsJquery()
+    {
+        $mods_array = [];
+        $mods = Mod::all();
+
+        foreach ($mods as $mod)
+        {
+            $versions = $mod->versions;
+
+            foreach($versions as $version)
+            {
+                $name = $version->name;
+                $friendly_name = preg_replace('/\./', '-', $name);
+                if (array_key_exists($friendly_name, $mods_array))
+                {
+                    if (!in_array($mod->name, $mods_array["$friendly_name"]))
+                    {
+                        $id = $mod->id;
+                        $mods_array["$friendly_name"]["$id"] = $mod->name;
+                    }
+                }
+                else
+                {
+                    $id = $mod->id;
+                    $mods_array["$friendly_name"]["$id"] = $mod->name;
+                }
+
+            }
+        }
+
+        return View::make('modpacks.mod_select_options', ['mods' => $mods_array]);
+    }*/
 }
