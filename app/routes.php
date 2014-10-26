@@ -19,6 +19,9 @@ Route::get('mod/add', 'ModController@getAdd');
 Route::post('mod/add', 'ModController@postAdd');
 Route::get('mod/{slug}', 'ModController@getMod');
 
+Route::get('mod/edit/{id}', 'ModController@getEdit');
+Route::post('mod/edit/{id}', 'ModController@postEdit');
+
 //modpacks
 Route::get('modpacks/{version?}', 'ModpackController@getModpackVersion');
 Route::get('modpack/{version}/{slug}', 'ModpackController@getModpack');
@@ -37,6 +40,10 @@ Route::post('author/edit/{id}', 'AuthorController@postEdit');
 Route::get('creator/add', 'CreatorController@getAdd');
 Route::post('creator/add', 'CreatorController@postAdd');
 
+Route::get('creator/edit/{id}', 'CreatorController@getEdit');
+Route::post('creator/edit/{id}', 'CreatorController@postEdit');
+
+
 //api calls for json for the tables
 Route::get('api/table/{type}_{version}.json', 'JSONController@getTableDataFile');
 Route::get('api/table/{type}_{version}/{name}.json', 'JSONController@getTableDataFile');
@@ -53,6 +60,9 @@ Route::get('api/table/launchers/{name}/{version}.json', 'JSONController@getTable
 //user
 Route::get('login', 'UserController@getLogin');
 
+
+//about
+Route::get('about', 'StaticPagesController@getAbout');
 
 Route::controller('test', 'TestController');
 Route::controller('mods', 'ModController');

@@ -10,7 +10,7 @@ class CreatorController extends BaseController
 
     public function postAdd()
     {
-        $title = 'Add An Modpack Creator - ' . $this->site_name;
+        $title = 'Add A Modpack Creator - ' . $this->site_name;
 
         $input = Input::only('name', 'deck', 'website', 'donate_link', 'bio', 'slug');
 
@@ -33,13 +33,13 @@ class CreatorController extends BaseController
         }
         else
         {
-            $author = new Author;
+            $creator = new Creator;
 
-            $author->name = $input['name'];
-            $author->deck = $input['deck'];
-            $author->website = $input['website'];
-            $author->donate_link = $input['donate_link'];
-            $author->bio = $input['bio'];
+            $creator->name = $input['name'];
+            $creator->deck = $input['deck'];
+            $creator->website = $input['website'];
+            $creator->donate_link = $input['donate_link'];
+            $creator->bio = $input['bio'];
 
             if ($input['slug'] == '')
             {
@@ -50,10 +50,10 @@ class CreatorController extends BaseController
                 $slug = $input['slug'];
             }
 
-            $author->slug = $slug;
-            $author->last_ip = Request::getClientIp();
+            $creator->slug = $slug;
+            $creator->last_ip = Request::getClientIp();
 
-            $success = $author->save();
+            $success = $creator->save();
 
             if ($success)
             {
@@ -65,5 +65,73 @@ class CreatorController extends BaseController
             }
 
         }
+    }
+
+    public function getEdit($id)
+    {
+        $title = 'Edit A Modpack Creator - ' . $this->site_name;
+
+        $creator = Creator::find($id);
+
+        return View::make('creators.edit', ['title' => $title, 'creator' => $creator]);
+    }
+
+    public function postEdit($id)
+    {
+        $title = 'Edit A Modpack Creator - ' . $this->site_name;
+        $creator = Creator::find($id);
+
+        $input = Input::only('name', 'deck', 'website', 'donate_link', 'bio', 'slug');
+
+        $messages = [
+            'unique' => 'The modpack creator already exists in the database.',
+            'url' => 'The :attribute field is not a valid URL.'
+        ];
+
+        $validator = Validator::make($input,
+            [
+                'name' => 'required|unique:creators,name,'.$creator->id,
+                'website' => 'url',
+                'donate_link' => 'url',
+            ],
+            $messages);
+
+        if ($validator->fails())
+        {
+            return Redirect::to('/creator/add/')->withErrors($validator)->withInput();
+        }
+        else
+        {
+            $creator->name = $input['name'];
+            $creator->deck = $input['deck'];
+            $creator->website = $input['website'];
+            $creator->donate_link = $input['donate_link'];
+            $creator->bio = $input['bio'];
+
+            if ($input['slug'] == '' || $input['slug'] == $creator->slug)
+            {
+                $slug = Str::slug($input['name']);
+            }
+            else
+            {
+                $slug = $input['slug'];
+            }
+
+            $creator->slug = $slug;
+            $creator->last_ip = Request::getClientIp();
+
+            $success = $creator->save();
+
+            if ($success)
+            {
+                return View::make('creators.edit', ['title' => $title, 'creator' => $creator, 'success' => true]);
+            }
+            else
+            {
+                return Redirect::to('/creator/edit/'. $id)->withErrors(['message' => 'Unable to edit modpack creator.'])->withInput();
+            }
+
+        }
+
     }
 }

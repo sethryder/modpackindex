@@ -20,6 +20,7 @@ class CreateCreatorsTable extends Migration {
             $table->string('website')->nullable();
             $table->string('donate_link')->nullable();
             $table->longText('bio')->nullable();
+            $table->string('slug')->index();
             $table->string('last_ip', 40)->nullable();
             $table->timestamps();
         });

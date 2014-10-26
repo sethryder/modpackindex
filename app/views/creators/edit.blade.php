@@ -12,7 +12,7 @@
           <div class="portlet">
 
             <h2 class="portlet-title">
-              <u>Edit An Author</u>
+              <u>Edit A Modpack Creator</u>
             </h2>
 
             <div class="portlet-body">
@@ -32,11 +32,11 @@
             @if (isset($success))
             <div class="alert alert-success">
                 <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
-                <strong>Added!</strong> You may add another author below or leave this page.
+                <strong>Edited!</strong> You may perform more edits or leave this page.
             </div> <!-- /.alert -->
             @endif
 
-                {{ Form::model($author, array('url' => '/author/edit/'.$author->id, 'class' => 'form parsley-form')) }}
+                {{ Form::model($creator, array('url' => '/creator/edit/'.$creator->id, 'class' => 'form parsley-form')) }}
 
                     <div class="form-group">
                         {{ Form::label('name','Name') }}:

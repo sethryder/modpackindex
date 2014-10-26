@@ -127,13 +127,132 @@ class ModController extends BaseController
             }
             else
             {
-                return Redirect::to('/author/add/')->withErrors(['message' => 'Unable to add mod.'])->withInput();
+                return Redirect::to('/mod/add/')->withErrors(['message' => 'Unable to add mod.'])->withInput();
             }
 
         }
     }
 
-    public function getTable($version)
+    public function getEdit($id)
+    {
+        $title = 'Edit A Mod - ' . $this->site_name;
+        $versions = MinecraftVersion::all();
+        $selected_versions = [];
+        $selected_authors = [];
+
+        $mod = Mod::find($id);
+
+        foreach ($mod->versions as $v)
+        {
+                $selected_versions[] = $v->name;
+        }
+
+        foreach ($mod->authors as $a)
+        {
+                $selected_authors[] = $a->id;
+        }
+
+        return View::make('mods.edit', ['title' => $title, 'mod' => $mod, 'versions' => $versions,
+            'selected_versions' => $selected_versions, 'selected_authors' => $selected_authors, 'chosen' => true]);
+    }
+
+    public function postEdit($id)
+    {
+        $selected_versions = [];
+        $selected_authors = [];
+        $minecraft_versions = MinecraftVersion::all();
+        $title = 'Edit A Mod - ' . $this->site_name;
+
+        $mod = Mod::find($id);
+        $authors = $mod->authors;
+        $versions = $mod->versions;
+
+        $input = Input::only('name', 'selected_versions', 'selected_authors', 'deck', 'website', 'download_link', 'donate_link', 'wiki_link', 'description', 'slug');
+
+        $messages = [
+            'unique' => 'This mod already exists in the database. If it requires an update let us know!',
+            'url' => 'The :attribute field is not a valid URL.'
+        ];
+
+        $validator = Validator::make($input,
+            [
+                'name' => 'required|unique:mods,name,'. $mod->id,
+                'selected_authors' => 'required',
+                'selected_versions' => 'required',
+                'deck'  => 'required',
+                'website' => 'url',
+                'download_url' => 'url',
+                'wiki_url' => 'url',
+                'donate_link' => 'url',
+            ],
+            $messages);
+
+        if ($validator->fails())
+        {
+            return Redirect::to('/mod/edit/'.$mod->id)->withErrors($validator)->withInput();
+        }
+        else
+        {
+            $mod->name = $input['name'];
+            $mod->deck = $input['deck'];
+            $mod->website = $input['website'];
+            $mod->download_link = $input['download_link'];
+            $mod->donate_link = $input['donate_link'];
+            $mod->wiki_link = $input['wiki_link'];
+            $mod->description = $input['description'];
+
+            if ($input['slug'] == '' || $input['slug'] == $mod->slug)
+            {
+                $slug = Str::slug($input['name']);
+            }
+            else
+            {
+                $slug = $input['slug'];
+            }
+
+            $mod->slug = $slug;
+            $mod->last_ip = Request::getClientIp();
+
+            $success = $mod->save();
+
+            if ($success)
+            {
+                foreach($authors as $a)
+                {
+                    $mod->authors()->detach($a->id);
+                }
+                $mod->authors()->attach($input['selected_authors']);
+
+                foreach ($versions as $v)
+                {
+                    $mod->versions()->detach($v->id);
+                }
+                $mod->versions()->attach($input['selected_versions']);
+
+                $updated_mod = Mod::find($mod->id);
+
+                foreach ($updated_mod->versions as $v)
+                {
+                    $selected_versions[] = $v->name;
+                }
+
+                foreach ($updated_mod->authors as $a)
+                {
+                    $selected_authors[] = $a->id;
+                }
+
+                return View::make('mods.edit', ['title' => $title, 'mod' => $mod, 'chosen' => true, 'success' => true,
+                    'selected_versions' => $selected_versions, 'selected_authors' => $selected_authors, 'versions' => $minecraft_versions]);
+            }
+            else
+            {
+                return Redirect::to('/mod/edit/'.$mod->id)->withErrors(['message' => 'Unable to edit mod.'])->withInput();
+            }
+
+        }
+    }
+
+  /*  public function getTable($version)
     {
         $mods = Mod::all();
         $table_mods = array();
@@ -147,5 +266,5 @@ class ModController extends BaseController
         }
 
         print_r($mods[0]);
-    }
+    }*/
 }

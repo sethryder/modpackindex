@@ -78,7 +78,8 @@ class AuthorController extends BaseController
 
     public function postEdit($id)
     {
-        $current_author = Author::find($id);
+        $title = 'Edit An Author - ' . $this->site_name;
+        $author = Author::find($id);
 
         $input = Input::only('name', 'deck', 'website', 'donate_link', 'bio', 'slug');
 
@@ -89,7 +90,7 @@ class AuthorController extends BaseController
 
         $validator = Validator::make($input,
             [
-                'name' => 'required|unique:authors,name',
+                'name' => 'required|unique:authors,name,'.$author->id,
                 'website' => 'url',
                 'donate_link' => 'url',
             ],
@@ -97,11 +98,10 @@ class AuthorController extends BaseController
 
         if ($validator->fails())
         {
-            return Redirect::to('/author/add/')->withErrors($validator)->withInput();
+            return Redirect::to('/author/edit/'. $id)->withErrors($validator)->withInput();
         }
         else
         {
-            $author = new Author;
 
             $author->name = $input['name'];
             $author->deck = $input['deck'];
@@ -109,7 +109,7 @@ class AuthorController extends BaseController
             $author->donate_link = $input['donate_link'];
             $author->bio = $input['bio'];
 
-            if ($input['slug'] == '')
+            if ($input['slug'] == '' || $input['slug'] == $author->slug)
             {
                 $slug = Str::slug($input['name']);
             }
@@ -125,11 +125,11 @@ class AuthorController extends BaseController
 
             if ($success)
             {
-                return View::make('authors.add', ['title' => $title, 'success' => true]);
+                return View::make('authors.edit', ['title' => $title, 'success' => true, 'author' => $author]);
             }
             else
             {
-                return Redirect::to('/author/add/')->withErrors(['message' => 'Unable to add author.'])->withInput();
+                return Redirect::to('/author/edit/'.$id)->withErrors(['message' => 'Unable to add author.'])->withInput();
             }
 
         }
