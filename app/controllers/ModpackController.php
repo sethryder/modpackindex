@@ -159,12 +159,148 @@ class ModpackController extends BaseController
 
     public function getEdit($id)
     {
+        $title = 'Edit A Modpack - ' . $this->site_name;
+        $selected_mods = [];
+        $selected_creators = [];
+        $mod_select_array = [];
 
+        $modpack = Modpack::find($id);
+
+        $minecraft_version = MinecraftVersion::where('id', '=', $modpack->minecraft_version_id)->first();
+
+        $version_mods = $minecraft_version->mods;
+
+        foreach ($version_mods as $mod)
+        {
+            $id = $mod->id;
+            $mod_select_array[$id] = $mod->name;
+        }
+
+        foreach ($modpack->mods as $m)
+        {
+            $selected_mods[] = $m->id;
+        }
+
+        foreach ($modpack->creators as $c)
+        {
+            $selected_creators[] = $c->id;
+        }
+
+        return View::make('modpacks.edit', ['title' => $title, 'modpack' => $modpack, 'mods' => $mod_select_array,
+            'selected_mods' => $selected_mods, 'selected_creators' => $selected_creators, 'chosen' => true]);
     }
 
     public function postEdit($id)
     {
+        $mod_select_array = [];
+        $selected_mods = [];
+        $selected_creators = [];
 
+        $title = 'Add A Modpack - ' . $this->site_name;
+        $modpack = Modpack::find($id);
+        $minecraft_version = MinecraftVersion::where('id', '=', $modpack->minecraft_version_id)->first();
+        $creators = $modpack->creators;
+        $mods = $modpack->mods;
+
+        $input = Input::only('name', 'launcher', 'selected_mods', 'selected_creators', 'deck', 'website', 'download_link', 'donate_link', 'wiki_link', 'description', 'slug');
+
+        $messages = [
+            'unique' => 'This modpack already exists in the database. If it requires an update let us know!',
+            'url' => 'The :attribute field is not a valid URL.'
+        ];
+
+        $validator = Validator::make($input,
+            [
+                'name' => 'required|unique:modpacks,name,' . $modpack->id,
+                'launcher' => 'required',
+                'selected_mods' => 'required',
+                'selected_creators' => 'required',
+                'deck'  => 'required',
+                'website' => 'url',
+                'download_url' => 'url',
+                'wiki_url' => 'url',
+                'donate_link' => 'url',
+            ],
+            $messages);
+
+        if ($validator->fails())
+        {
+            return Redirect::to('/modpack/edit/'.$modpack->id)->withErrors($validator)->withInput();
+        }
+        else
+        {
+            $modpack->name = $input['name'];
+            $modpack->launcher_id = $input['launcher'];
+            $modpack->deck = $input['deck'];
+            $modpack->website = $input['website'];
+            $modpack->download_link = $input['download_link'];
+            $modpack->donate_link = $input['donate_link'];
+            $modpack->wiki_link = $input['wiki_link'];
+            $modpack->description = $input['description'];
+
+            if ($input['slug'] == '' || $input['slug'] == $modpack->slug)
+            {
+                $slug = Str::slug($input['name']);
+            }
+            else
+            {
+                $slug = $input['slug'];
+            }
+
+            $modpack->slug = $slug;
+            $modpack->last_ip = Request::getClientIp();
+
+            $success = $modpack->save();
+
+            if ($success)
+            {
+                foreach($creators as $c)
+                {
+                    $modpack->creators()->detach($c->id);
+                }
+                $modpack->creators()->attach($input['selected_creators']);
+
+                foreach ($mods as $m)
+                {
+                    $modpack->mods()->detach($m->id);
+                }
+                $modpack->mods()->attach($input['selected_mods']);
+
+                $version_mods = $minecraft_version->mods;
+                $updated_modpack = Modpack::find($modpack->id);
+
+                foreach ($updated_modpack->mods as $m)
+                {
+                    $selected_mods[] = $m->id;
+                }
+
+                foreach ($updated_modpack->creators as $c)
+                {
+                    $selected_creators[] = $c->id;
+                }
+
+                foreach ($version_mods as $mod)
+                {
+                    $id = $mod->id;
+                    $mod_select_array[$id] = $mod->name;
+                }
+
+                foreach ($mods as $mod)
+                {
+                    $id = $mod->id;
+                    $mod_select_array[$id] = $mod->name;
+                }
+
+                return View::make('modpacks.edit', ['title' => $title, 'chosen' => true, 'success' => true,
+                    'modpack'=> $updated_modpack, 'version' => $minecraft_version->name, 'mods' => $mod_select_array,
+                    'selected_mods' => $selected_mods, 'selected_creators' => $selected_creators]);
+            }
+            else
+            {
+                return Redirect::to('/modpack/edit/'.$modpack->id)->withErrors(['message' => 'Unable to edit modpack.'])->withInput();
+            }
+
+        }
     }
 
    /* public function getModsJquery()

@@ -20,4 +20,14 @@ class HomeController extends BaseController {
 		return View::make('hello');
 	}
 
+    public function getHome()
+    {
+        $datetime = new DateTime;
+        $now = $datetime->format('m-d-y H:i:s');
+
+        $news = News::where('published_at', '>', $now);
+
+        return View::make('home', ['news', $news]);
+    }
+
 }

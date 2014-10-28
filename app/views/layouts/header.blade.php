@@ -11,7 +11,7 @@
         </button>
 
         <a href="/" class="navbar-brand">
-          MinecraftMods
+          Modpack Index
         </a>
       </div> <!-- /.navbar-header -->
 
