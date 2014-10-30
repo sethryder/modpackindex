@@ -16,4 +16,16 @@ class TestController extends BaseController
     {
         return Mod::all();
     }
+
+    public function getCheckAuth()
+    {
+        if (Auth::check())
+        {
+            echo 'You are login!';
+        }
+        else
+        {
+            echo 'You are not login!';
+        }
+    }
 }

@@ -6,7 +6,8 @@
 	"require": {
 		"laravel/framework": "4.2.*",
         "guzzlehttp/guzzle": "~4.0",
-        "greggilbert/recaptcha": "1.0.*@dev"
+        "greggilbert/recaptcha": "1.0.*@dev",
+        "zizaco/entrust": "1.2.*@dev"
 	},
 	"autoload": {
 		"classmap": [

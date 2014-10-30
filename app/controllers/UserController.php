@@ -9,6 +9,11 @@ class UserController extends BaseController
 
     public function getLogin()
     {
+        if (Auth::check())
+        {
+            return Redirect::intended('/');
+        }
+
         return View::Make('user.login');
     }
 
@@ -19,15 +24,26 @@ class UserController extends BaseController
 
     public function postLogin()
     {
-        $input = Input::only('email', 'password');
-
-        if (Auth::attempt(array('email' => $input['email'], 'password' => $input['password'], 'is_active' => 1)))
+        if (Auth::check())
         {
-            echo 'You are logged in!';
+            return Redirect::intended('/');
+        }
+
+        $input = Input::only('email', 'password', 'remember_me');
+        $remember_me = false;
+
+        if ($input['remember_me'])
+        {
+            $remember_me = true;
+        }
+
+        if (Auth::attempt(array('email' => $input['email'], 'password' => $input['password'], 'is_active' => 1), $remember_me))
+        {
+            return Redirect::intended('/');
         }
         else
         {
-            echo 'Unable to login!';
+            return Redirect::to('/login')->withErrors(['Error' => 'Unable to login with provided information.'])->withInput();
         }
     }
 
@@ -77,5 +93,27 @@ class UserController extends BaseController
                 return Redirect::to('/register')->withErrors(['Error' => 'Unable to create account'])->withInput();
             }
         }
+    }
+
+    public function getVerify($confirmation)
+    {
+        if ($user = User::where('confirmation', '=', $confirmation)->first())
+        {
+            $user->is_confirmed = 1;
+            $user->is_active = 1;
+            $user->save();
+
+            $confirm = true;
+        }
+        else
+        {
+            $confirm = false;
+        }
+        return View::make('user.confirm', ['confirmed' => $confirm]);
+    }
+
+    public function getUserPermissions($id)
+    {
+        echo 'Hello!';
     }
 }

@@ -422,6 +422,93 @@ class JSONController extends BaseController
         return View::make('api.table.launchers.json', ['modpacks' => $modpacks_array, 'version' => $version]);
     }
 
+    public function getModpackSearch($version)
+    {
+        $modpack_id_array = [];
+        $input = Input::only('mods');
+
+        $input_mod_array = explode(',', $input['mods']);
+
+        $version = preg_replace('/-/', '.', $version);
+        $minecraft_version = MinecraftVersion::where('name', '=', $version)->first();
+
+        $modpack = Modpack::where('minecraft_version_id', '=', $minecraft_version->id);
+
+        $modpack->whereHas('mods', function($q) use ($input_mod_array)
+        {
+            foreach ($input_mod_array as $mod)
+            {
+                $q->where('mods.id', '=', $mod);
+            }
+        });
+
+        $modpacks = $modpack->get();
+
+        foreach ($modpacks as $modpack)
+        {
+            $creators = '';
+            $links = '';
+
+            if (in_array($modpack->id, $modpack_id_array)) {
+                continue;
+            }
+
+            $name = '<a href=/modpack/'. preg_replace('/\./', '-', $modpack->version->name) .'/' . $modpack->slug . '>' . $modpack->name . '</a>';
+
+            switch ($modpack->launcher->short_name) {
+                case 'ftb':
+                    $icon = '/static/img/icons/ftb.png';
+                    break;
+                case 'atlauncher':
+                    $icon = '/static/img/icons/atlauncher.png';
+                    break;
+                case 'technic':
+                    $icon = '/static/img/icons/technic.png';
+                    break;
+                default:
+                    $icon = '/static/img/icons/custom.png';
+            }
+
+            $icon_html = '<a href="/launcher/'. $modpack->launcher->slug .'"><img src="' . $icon . '"/></a>';
+
+            foreach ($modpack->creators as $v) {
+                $creators .= $v->name;
+                $creators .= ', ';
+            }
+
+            if (!$creators) $creators = 'N/A';
+
+            $version = $modpack->version->name;
+
+            if ($modpack->website) {
+                $links .= '<a href="' . $modpack->website . '">Website</a>';
+                $links .= ' / ';
+            }
+
+            if ($modpack->donate_link) {
+                $links .= '<a href="' . $modpack->donate_link . '">Donate</a>';
+                $links .= ' / ';
+            }
+
+            if ($modpack->wiki_link) {
+                $links .= '<a href="' . $modpack->wiki_link . '">Wiki</a>';
+                $links .= ' / ';
+            }
+
+            $modpacks_array[] = [
+                'icon_html' => json_encode($icon_html),
+                'name' => $name,
+                'icon' => $icon,
+                'deck' => $modpack->deck,
+                'links' => json_encode(rtrim($links, ' / ')),
+                'version' => $version,
+                'creators' => rtrim($creators, ', '),
+            ];
+        }
+
+        return View::make('api.table.modpacks.json', ['modpacks' => $modpacks_array, 'version' => $version]);
+    }
+
     public function getTableDataFile($type, $version, $name=null)
     {
         switch ($type) {
@@ -462,7 +549,6 @@ class JSONController extends BaseController
                 $ajax_source = '/api/table/launchers/' . $name . '/' . $version . '.json';
                 break;
             case 'modpackmods':
-
                 $columns_array = [
                     'name',
                     'versions',
@@ -474,7 +560,6 @@ class JSONController extends BaseController
                 $ajax_source = '/api/table/modpack/mods/' . $name . '.json';
                 break;
             case 'modmodpacks':
-
                 $columns_array = [
                     'name',
                     'version',
@@ -486,10 +571,21 @@ class JSONController extends BaseController
 
                 $ajax_source = '/api/table/mod/modpacks/' . $name . '.json';
                 break;
+
+            case 'modpackfinder':
+                $input = Input::only('mods');
+                $columns_array = [
+                    'name',
+                    'version',
+                    'deck',
+                    'creators',
+                    'icon_html',
+                    'links',
+                ];
+                $ajax_source = '/api/table/modpackfinder/' . $version . '.json?mods=' . $input['mods'];
+                break;
+
         }
-
-
         return View::make('api.table.data', ['ajax_source' => $ajax_source, 'columns' => $columns_array]);
-
     }
 }

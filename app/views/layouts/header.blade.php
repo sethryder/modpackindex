@@ -57,6 +57,29 @@
 
         <ul class="mainnav-menu">
 
+            <li class="dropdown">
+                <a href="/mods" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                Finder
+                <i class="mainnav-caret"></i>
+                </a>
+
+                <ul class="dropdown-menu" role="menu">
+                <li>
+                  <a href="/modpack/finder/1-7-10/">
+                  <img class="fa" src="/static/img/icons/enderman.png" />
+                  &nbsp;&nbsp;1.7.10 Packs
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/modpack/finder/1-6-4/">
+                  <img class="fa" src="/static/img/icons/creeper.png" />
+                  &nbsp;&nbsp;1.6.4 Packs
+                  </a>
+                </li>
+                </ul>
+            </li>
+
           <li class="dropdown">
                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
                 Modpacks
@@ -98,28 +121,28 @@
             <ul class="dropdown-menu" role="menu">
 
               <li class="dropdown-submenu">
-                <a href="/launcher/feed-the-beast">
+                <a href="/launchers/feed-the-beast">
                 <img class="fa" src="/static/img/icons/ftb.png" />
                 &nbsp;&nbsp;Feed The Beast
                 </a>
 
                  <ul class="dropdown-menu">
                       <li>
-                        <a href="/launcher/feed-the-beast/1-7-10">
+                        <a href="/launchers/feed-the-beast/1-7-10">
                         <img class="fa" src="/static/img/icons/enderman.png" />
                         &nbsp;&nbsp;1.7.10 Packs
                         </a>
                       </li>
 
                       <li>
-                        <a href="/launcher/feed-the-beast/1-6-4">
+                        <a href="/launchers/feed-the-beast/1-6-4">
                         <img class="fa" src="/static/img/icons/creeper.png" />
                         &nbsp;&nbsp;1.6.4 Packs
                         </a>
                       </li>
 
                       <li>
-                        <a href="/launcher/feed-the-beast">
+                        <a href="/launchers/feed-the-beast">
                         <img class="fa" src="/static/img/icons/custom.png" />
                         &nbsp;&nbsp;All Packs
                         </a>
@@ -128,28 +151,28 @@
               </li>
 
               <li class="dropdown-submenu">
-                <a href="/launcher/atlauncher">
+                <a href="/launchers/atlauncher">
                 <img class="fa" src="/static/img/icons/atlauncher.png" />
                 &nbsp;&nbsp;ATLaucher
                 </a>
 
                 <ul class="dropdown-menu">
                       <li>
-                        <a href="/launcher/atlauncher/1-7-10">
+                        <a href="/launchers/atlauncher/1-7-10">
                         <img class="fa" src="/static/img/icons/enderman.png" />
                         &nbsp;&nbsp;1.7.10 Packs
                         </a>
                       </li>
 
                       <li>
-                        <a href="/launcher/atlauncher/1-6-4">
+                        <a href="/launchers/atlauncher/1-6-4">
                         <img class="fa" src="/static/img/icons/creeper.png" />
                         &nbsp;&nbsp;1.6.4 Packs
                         </a>
                       </li>
 
                       <li>
-                        <a href="/launcher/atlauncher">
+                        <a href="/launchers/atlauncher">
                         <img class="fa" src="/static/img/icons/custom.png" />
                         &nbsp;&nbsp;All Packs
                         </a>
@@ -158,28 +181,28 @@
               </li>
 
               <li class="dropdown-submenu">
-                <a href="/launcher/technic-platform">
+                <a href="/launchers/technic-launcher">
                 <img class="fa" src="/static/img/icons/technic.png" />
-                &nbsp;&nbsp;Technic Platform
+                &nbsp;&nbsp;Technic Launcher
                 </a>
 
                 <ul class="dropdown-menu">
                       <li>
-                        <a href="/launcher/technic-platform/1-7-10">
+                        <a href="/launchers/technic-launcher/1-7-10">
                         <img class="fa" src="/static/img/icons/enderman.png" />
                         &nbsp;&nbsp;1.7.10 Packs
                         </a>
                       </li>
 
                       <li>
-                        <a href="/launcher/technic-platform/1-6-4">
+                        <a href="/launchers/technic-launcher/1-6-4">
                         <img class="fa" src="/static/img/icons/creeper.png" />
                         &nbsp;&nbsp;1.6.4 Packs
                         </a>
                       </li>
 
                       <li>
-                        <a href="/launcher/technic-platform">
+                        <a href="/launchers/technic-launcher">
                         <img class="fa" src="/static/img/icons/custom.png" />
                         &nbsp;&nbsp;All Packs
                         </a>
@@ -188,28 +211,28 @@
               </li>
 
               <li class="dropdown-submenu">
-                <a href="/launcher/custom">
+                <a href="/launchers/custom">
                 <img class="fa" src="/static/img/icons/custom.png" />
                 &nbsp;&nbsp;Custom
                 </a>
 
                 <ul class="dropdown-menu">
                       <li>
-                        <a href="/launcher/custom/1-7-10">
+                        <a href="/launchers/custom/1-7-10">
                         <img class="fa" src="/static/img/icons/enderman.png" />
                         &nbsp;&nbsp;1.7.10 Packs
                         </a>
                       </li>
 
                       <li>
-                        <a href="/launcher/custom/1-6-4">
+                        <a href="/launchers/custom/1-6-4">
                         <img class="fa" src="/static/img/icons/creeper.png" />
                         &nbsp;&nbsp;1.6.4 Packs
                         </a>
                       </li>
 
                       <li>
-                        <a href="/launcher/custom">
+                        <a href="/launchers/custom">
                         <img class="fa" src="/static/img/icons/custom.png" />
                         &nbsp;&nbsp;All Packs
                         </a>

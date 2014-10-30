@@ -13,6 +13,10 @@
 
 Route::get('/', 'ModpackController@getModpackVersion');
 
+//search
+Route::get('modpack/finder/{version}','SearchController@getModpackSearch');
+Route::post('modpack/finder/{version}', 'SearchController@postModpackSearch');
+
 //mods
 Route::get('mods/{version?}', 'ModController@getModVersion');
 Route::get('mod/add', 'ModController@getAdd');
@@ -50,6 +54,16 @@ Route::get('creator/edit/{id}', 'CreatorController@getEdit');
 Route::post('creator/edit/{id}', 'CreatorController@postEdit');
 
 
+//user
+Route::get('login', 'UserController@getLogin');
+Route::post('login', 'UserController@postLogin');
+
+Route::get('register', 'UserController@getRegister');
+Route::post('register', 'UserController@postRegister');
+
+Route::get('user/verify/{confirmation}', 'UserController@getVerify');
+
+
 //api calls for json for the tables
 Route::get('api/table/{type}_{version}.json', 'JSONController@getTableDataFile');
 Route::get('api/table/{type}_{version}/{name}.json', 'JSONController@getTableDataFile');
@@ -62,15 +76,19 @@ Route::get('api/table/modpack/mods/{name}.json', 'JSONController@getTableModpack
 
 Route::get('api/table/launchers/{name}/{version}.json', 'JSONController@getTableLaunchers');
 
-//Route::get('api/jquery/mods/select.js', 'ModpackController@getModsJquery');
-//user
-Route::get('login', 'UserController@getLogin');
-Route::get('register', 'UserController@getRegister');
-Route::post('register', 'UserController@postRegister');
+Route::get('api/table/modpackfinder/{version}.json', 'JSONController@getModpackSearch');
 
+//Route::get('api/jquery/mods/select.js', 'ModpackController@getModsJquery');
+
+
+//admin stuff
+
+Route::get('user/permissions/{id}', 'getUserPermissions');
 
 //about
 Route::get('about', 'StaticPagesController@getAbout');
 
+Route::get('checkauth', 'TestController@getCheckAuth');
 Route::controller('test', 'TestController');
 Route::controller('mods', 'ModController');
+
