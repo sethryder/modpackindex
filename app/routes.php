@@ -97,6 +97,8 @@ Route::get('api/table/modpackfinder/{version}.json', 'JSONController@getModpackS
 
 //about
 Route::get('about', 'StaticPagesController@getAbout');
+Route::get('contact', 'StaticPagesController@getContact');
+Route::post('contact', 'StaticPagesController@postContact');
 
 Route::get('checkauth', 'TestController@getCheckAuth');
 Route::controller('test', 'TestController');
