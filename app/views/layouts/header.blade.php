@@ -59,7 +59,7 @@
 
             <li class="dropdown">
                 <a href="/mods" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
-                Finder
+                Pack Finder
                 <i class="mainnav-caret"></i>
                 </a>
 

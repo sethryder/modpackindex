@@ -38,6 +38,6 @@
 
     "require-dev": {
         "way/generators": "~2.0",
-	    "fzaninotto/faker": "dev-master"
+        "fzaninotto/faker": "dev-master"
     }
 }
