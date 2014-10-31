@@ -114,6 +114,50 @@ class UserController extends BaseController
 
     public function getUserPermissions($id)
     {
-        echo 'Hello!';
+        if (!$this->checkRoute()) return Redirect::to('/');
+
+        $user = User::find($id);
+        $permissions = $user->permissions;
+        $available_permissions = Permission::all();
+        $selected_permissions = [];
+
+        foreach ($permissions as $p)
+        {
+            $selected_permissions[] = $p->id;
+        }
+
+        return View::make('user.edit_permissions', ['user' => $user, 'selected_permissions' => $selected_permissions,
+                'available_permissions' => $available_permissions]);
+    }
+
+    public function postUserPermissions($id)
+    {
+        if (!$this->checkRoute()) return Redirect::to('/');
+
+        $input = Input::only('selected_permissions');
+
+        $user = User::find($id);
+        $permissions = $user->permissions;
+
+        foreach ($permissions as $p)
+        {
+            $user->permissions()->detach($p->id);
+        }
+
+        $user->permissions()->attach($input['selected_permissions']);
+
+        //update done, refresh information
+        $user = User::find($id);
+        $permissions = $user->permissions;
+        $available_permissions = Permission::all();
+
+        foreach ($permissions as $p)
+        {
+            $selected_permissions[] = $p->id;
+        }
+
+
+        return View::make('user.edit_permissions', ['user' => $user, 'selected_permissions' => $selected_permissions,
+            'available_permissions' => $available_permissions, 'success' => true]);
     }
 }

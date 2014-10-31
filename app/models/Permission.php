@@ -4,6 +4,6 @@ class Permission extends Eloquent
 {
     public function Users()
     {
-        $this->belongsToMany('User');
+        return $this->belongsToMany('User');
     }
 }

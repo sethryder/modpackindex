@@ -25,7 +25,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
     public function Permissions()
     {
-        $this->belongsToMany('Permission');
+        return $this->belongsToMany('Permission');
     }
 
 }

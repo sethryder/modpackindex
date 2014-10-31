@@ -48,6 +48,8 @@ class ModpackController extends BaseController
 
     public function getAdd($version)
     {
+        if (!$this->checkRoute()) return Redirect::to('/');
+
         $mod_select_array = [];
         $url_version = $version;
         $version = preg_replace('/-/', '.', $version);
@@ -68,6 +70,8 @@ class ModpackController extends BaseController
 
     public function postAdd($version)
     {
+        if (!$this->checkRoute()) return Redirect::to('/');
+
         $url_version = $version;
         $version = preg_replace('/-/', '.', $version);
         $title = 'Add A Modpack - ' . $this->site_name;
@@ -159,6 +163,8 @@ class ModpackController extends BaseController
 
     public function getEdit($id)
     {
+        if (!$this->checkRoute()) return Redirect::to('/');
+
         $title = 'Edit A Modpack - ' . $this->site_name;
         $selected_mods = [];
         $selected_creators = [];
@@ -192,6 +198,8 @@ class ModpackController extends BaseController
 
     public function postEdit($id)
     {
+        if (!$this->checkRoute()) return Redirect::to('/');
+
         $mod_select_array = [];
         $selected_mods = [];
         $selected_creators = [];

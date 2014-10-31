@@ -13,45 +13,60 @@
 
 Route::get('/', 'ModpackController@getModpackVersion');
 
+Route::get('/test/route', ['as' => 'route_test', 'uses' => 'TestController@getRoute']);
+
+/*
+ * Administration Routes
+ */
+
+//Mods
+Route::get('mod/add', ['as' => 'mod_add', 'uses' => 'ModController@getAdd']);
+Route::post('mod/add', ['as' => 'mod_add', 'uses' => 'ModController@postAdd']);
+Route::get('mod/edit/{id}', ['as' => 'mod_edit', 'uses' => 'ModController@getEdit']);
+Route::post('mod/edit/{id}', ['as' => 'mod_edit', 'uses' => 'ModController@postEdit']);
+
+//Modpacks
+Route::get('modpack/{version}/add', ['as' => 'modpack_add', 'uses' => 'ModpackController@getAdd']);
+Route::post('modpack/{version}/add', ['as' => 'modpack_add', 'uses' => 'ModpackController@postAdd']);
+Route::get('modpack/edit/{id}', ['as' => 'modpack_edit', 'uses' => 'ModpackController@getEdit']);
+Route::post('modpack/edit/{id}', ['as' => 'modpack_edit', 'uses' => 'ModpackController@postEdit']);
+
+//Authors
+Route::get('author/add', ['as' => 'author_add', 'uses' => 'AuthorController@getAdd']);
+Route::post('author/add', ['as' => 'author_add', 'uses' => 'AuthorController@postAdd']);
+Route::get('author/edit/{id}', ['as' => 'author_edit', 'uses' => 'AuthorController@getEdit']);
+Route::post('author/edit/{id}', ['as' => 'author_edit', 'uses' => 'AuthorController@postEdit']);
+
+//Creators
+Route::get('creator/add', ['as' => 'creator_add', 'uses' => 'CreatorController@getAdd']);
+Route::post('creator/add', ['as' => 'creator_add', 'uses' => 'CreatorController@postAdd']);
+Route::get('creator/edit/{id}', ['as' => 'creator_edit', 'uses' => 'CreatorController@getEdit']);
+Route::post('creator/edit/{id}', ['as' => 'creator_edit', 'uses' => 'CreatorController@postEdit']);
+
+//Users
+Route::get('user/permissions/{id}', ['as' => 'permissions_edit', 'uses' => 'UserController@getUserPermissions']);
+Route::Post('user/permissions/{id}', ['as' => 'permissions_edit', 'uses' => 'UserController@postUserPermissions']);
+
+
+/*
+ * General Site Routes
+ */
+
 //search
 Route::get('modpack/finder/{version}','SearchController@getModpackSearch');
 Route::post('modpack/finder/{version}', 'SearchController@postModpackSearch');
 
 //mods
 Route::get('mods/{version?}', 'ModController@getModVersion');
-Route::get('mod/add', 'ModController@getAdd');
-Route::post('mod/add', 'ModController@postAdd');
 Route::get('mod/{slug}', 'ModController@getMod');
 
-Route::get('mod/edit/{id}', 'ModController@getEdit');
-Route::post('mod/edit/{id}', 'ModController@postEdit');
 
 //modpacks
-Route::get('modpack/edit/{id}', 'ModpackController@getEdit');
-Route::post('modpack/edit/{id}', 'ModpackController@postEdit');
-
-Route::get('modpack/{version}/add', 'ModpackController@getAdd');
-Route::post('modpack/{version}/add', 'ModpackController@postAdd');
-
 Route::get('modpacks/{version?}', 'ModpackController@getModpackVersion');
 Route::get('modpack/{version}/{slug}', 'ModpackController@getModpack');
 
 //launchers
 Route::get('launcher/{name}/{version?}', 'LauncherController@getLauncherVersion');
-
-//authors
-Route::get('author/add', 'AuthorController@getAdd');
-Route::post('author/add', 'AuthorController@postAdd');
-
-Route::get('author/edit/{id}', 'AuthorController@getEdit');
-Route::post('author/edit/{id}', 'AuthorController@postEdit');
-
-//creators
-Route::get('creator/add', 'CreatorController@getAdd');
-Route::post('creator/add', 'CreatorController@postAdd');
-
-Route::get('creator/edit/{id}', 'CreatorController@getEdit');
-Route::post('creator/edit/{id}', 'CreatorController@postEdit');
 
 
 //user
@@ -80,15 +95,10 @@ Route::get('api/table/modpackfinder/{version}.json', 'JSONController@getModpackS
 
 //Route::get('api/jquery/mods/select.js', 'ModpackController@getModsJquery');
 
-
-//admin stuff
-
-Route::get('user/permissions/{id}', 'getUserPermissions');
-
 //about
 Route::get('about', 'StaticPagesController@getAbout');
 
 Route::get('checkauth', 'TestController@getCheckAuth');
-Route::controller('test', 'TestController');
+//Route::controller('test', 'TestController');
 Route::controller('mods', 'ModController');
 

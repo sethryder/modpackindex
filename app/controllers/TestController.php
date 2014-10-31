@@ -28,4 +28,11 @@ class TestController extends BaseController
             echo 'You are not login!';
         }
     }
+
+    public function getRoute()
+    {
+        $route = Route::currentRouteName();
+
+        print_r($route);
+    }
 }

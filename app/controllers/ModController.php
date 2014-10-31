@@ -51,6 +51,8 @@ class ModController extends BaseController
 
     public function getAdd()
     {
+        if (!$this->checkRoute()) return Redirect::to('/');
+
         $versions = MinecraftVersion::all();
 
         return View::make('mods.add', ['chosen' => true, 'versions' => $versions]);
@@ -58,6 +60,8 @@ class ModController extends BaseController
 
     public function postAdd()
     {
+        if (!$this->checkRoute()) return Redirect::to('/');
+
         $versions = MinecraftVersion::all();
         $title = 'Add A Mod - ' . $this->site_name;
 
@@ -135,6 +139,8 @@ class ModController extends BaseController
 
     public function getEdit($id)
     {
+        if (!$this->checkRoute()) return Redirect::to('/');
+
         $title = 'Edit A Mod - ' . $this->site_name;
         $versions = MinecraftVersion::all();
         $selected_versions = [];
@@ -158,6 +164,8 @@ class ModController extends BaseController
 
     public function postEdit($id)
     {
+        if (!$this->checkRoute()) return Redirect::to('/');
+
         $selected_versions = [];
         $selected_authors = [];
         $minecraft_versions = MinecraftVersion::all();

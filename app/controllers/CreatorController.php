@@ -4,12 +4,16 @@ class CreatorController extends BaseController
 {
     public function getAdd()
     {
+        if (!$this->checkRoute()) return Redirect::to('/');
+
         $title = 'Add A Modpack Creator - ' . $this->site_name;
         return View::make('creators.add', ['title' => $title]);
     }
 
     public function postAdd()
     {
+        if (!$this->checkRoute()) return Redirect::to('/');
+
         $title = 'Add A Modpack Creator - ' . $this->site_name;
 
         $input = Input::only('name', 'deck', 'website', 'donate_link', 'bio', 'slug');
@@ -69,6 +73,8 @@ class CreatorController extends BaseController
 
     public function getEdit($id)
     {
+        if (!$this->checkRoute()) return Redirect::to('/');
+
         $title = 'Edit A Modpack Creator - ' . $this->site_name;
 
         $creator = Creator::find($id);
@@ -78,6 +84,8 @@ class CreatorController extends BaseController
 
     public function postEdit($id)
     {
+        if (!$this->checkRoute()) return Redirect::to('/');
+
         $title = 'Edit A Modpack Creator - ' . $this->site_name;
         $creator = Creator::find($id);
 
