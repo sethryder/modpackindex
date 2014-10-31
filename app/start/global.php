@@ -49,6 +49,10 @@ Log::useFiles(storage_path().'/logs/laravel.log');
 App::error(function(Exception $exception, $code)
 {
 	Log::error($exception);
+    if (App::environment('production'))
+    {
+        return Response::view('errors.500', array(), 500);
+    }
 });
 
 /*
@@ -65,6 +69,17 @@ App::error(function(Exception $exception, $code)
 App::down(function()
 {
 	return Response::make("Be right back!", 503);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Page Not Found Handler
+|--------------------------------------------------------------------------
+*/
+
+App::missing(function()
+{
+    return Response::view('errors.404', array(), 404);
 });
 
 /*

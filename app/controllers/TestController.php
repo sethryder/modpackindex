@@ -35,4 +35,9 @@ class TestController extends BaseController
 
         print_r($route);
     }
+
+    public function getEnv()
+    {
+        print_r(App::environment());
+    }
 }
