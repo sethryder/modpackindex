@@ -12,7 +12,7 @@
             </h3>
 
             <div class="portlet-body">
-            <p>Modpack was built as utility to help keep track of the amazing growing community of modpacks. The site true aim is to help you find the right modpack for yourself, that is why we built the ‘<a href="/modpack/finder/1-7-10/">Pack Finder</a>’ feature to help you do so. The site is currently in early beta so it may have some rough edges, but we are continuing to add features and fix bugs.</p>
+            <p><b>Modpack Index</b> was built as utility to help keep track of the amazing growing community of modpacks. The sites true aim is to help you find the right modpack for yourself, that is why we built the ‘<a href="/modpack/finder/1-7-10/">Pack Finder</a>’ feature to help you do so. The site is currently in early beta so it may have some rough edges, but we are continuing to add features and fix bugs.</p>
             <p>If you would like to hang out or chat visit our IRC channel <a href="irc://irc.esper.net:6667/ModpackIndex">#ModPackIndex</a> on <a href="https://www.esper.net/" target="_blank">EsperNet</a>.</p>
             </div>
             <p>&nbsp;</p>
