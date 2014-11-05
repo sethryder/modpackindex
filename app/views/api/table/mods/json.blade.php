@@ -8,7 +8,7 @@
   {
     "DT_RowId": "row_{{ $i }}",
     "name": "{{ $mod['name'] }}",
-    "deck": "{{ $mod['deck'] }}",
+    "deck": {{ $mod['deck'] }},
     "links": {{ $mod['links'] }},
     "authors": "{{ $mod['authors'] or "N/A" }}",
     "versions": "{{ $mod['versions'] }}"

@@ -9,7 +9,7 @@
     "DT_RowId": "row_{{ $i }}",
     "name": "{{ $modpack['name'] }}",
     "icon_html":  {{ $modpack['icon_html'] }},
-    "deck": "{{ $modpack['deck'] }}",
+    "deck": {{ $modpack['deck'] }},
     "links": {{ $modpack['links'] }},
     "creators": "{{ $modpack['creators'] or "N/A" }}",
     "version": "{{ $modpack['version'] }}"

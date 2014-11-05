@@ -74,7 +74,7 @@ class JSONController extends BaseController
 
             $mods_array[] = [
                 'name' => $name,
-                'deck' => $mod->deck,
+                'deck' => json_encode($mod->deck),
                 'links' => json_encode(rtrim($links, ' / ')),
                 'versions' => rtrim($supported_versions, ', '),
                 'authors' => rtrim($authors, ', '),
@@ -171,7 +171,7 @@ class JSONController extends BaseController
                 'icon_html' => json_encode($icon_html),
                 'name' => $name,
                 'icon' => $icon,
-                'deck' => $modpack->deck,
+                'deck' => json_encode($modpack->deck),
                 'links' => json_encode(rtrim($links, ' / ')),
                 'version' => $version,
                 'creators' => rtrim($creators, ', '),
