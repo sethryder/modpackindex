@@ -48,4 +48,9 @@ class StaticPagesController extends BaseController
             return View::make('pages.contact', ['success' => true, 'title' => $title]);
         }
     }
+
+    public function getNotLaunched()
+    {
+        return View::make('hello');
+    }
 }

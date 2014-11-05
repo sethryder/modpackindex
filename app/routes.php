@@ -11,7 +11,9 @@
 |
 */
 
-Route::get('/', 'ModpackController@getModpackVersion');
+//Route::get('/', 'ModpackController@getModpackVersion');
+Route::get('/', 'StaticPagesController@getNotLaunched');
+
 
 Route::get('/test/route', ['as' => 'route_test', 'uses' => 'TestController@getRoute']);
 
@@ -73,8 +75,8 @@ Route::get('launcher/{name}/{version?}', 'LauncherController@getLauncherVersion'
 Route::get('login', 'UserController@getLogin');
 Route::post('login', 'UserController@postLogin');
 
-Route::get('register', 'UserController@getRegister');
-Route::post('register', 'UserController@postRegister');
+//Route::get('register', 'UserController@getRegister');
+//Route::post('register', 'UserController@postRegister');
 
 Route::get('user/verify/{confirmation}', 'UserController@getVerify');
 
