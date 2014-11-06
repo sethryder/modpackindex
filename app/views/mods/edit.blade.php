@@ -101,6 +101,15 @@
                     {{ Form::text('slug', null, array('class' => 'form-control'))}}
                 </div> <!-- /.form-group -->
 
+                <div class="form-group">
+                  <div class="checkbox">
+                  <label>
+                    {{ Form::checkbox('mod_list_hide', 1);  }}
+                    Hide From Mod Lists
+                    </label>
+                    </div> <!-- /.checkbox -->
+                </div> <!-- /.form-group -->
+
                 {{ Form::submit('Edit', ['class' => 'btn btn-danger']) }}
 
             {{ Form::close() }}

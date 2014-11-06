@@ -26,6 +26,11 @@ class JSONController extends BaseController
             $version_array = [];
             $i = 0;
 
+            if ($mod->mod_list_hide == 1)
+            {
+                continue;
+            }
+
             if (in_array($mod->id, $mod_id_array))
             {
                 continue;

@@ -65,7 +65,7 @@ class ModController extends BaseController
         $versions = MinecraftVersion::all();
         $title = 'Add A Mod - ' . $this->site_name;
 
-        $input = Input::only('name', 'versions', 'author', 'deck', 'website', 'download_link', 'donate_link', 'wiki_link', 'description', 'slug');
+        $input = Input::only('name', 'versions', 'author', 'deck', 'website', 'download_link', 'donate_link', 'wiki_link', 'description', 'slug', 'mod_list_hide');
 
         $messages = [
             'unique' => 'This mod already exists in the database. If it requires an update let us know!',
@@ -108,6 +108,11 @@ class ModController extends BaseController
             else
             {
                 $slug = $input['slug'];
+            }
+
+            if ($input['mod_list_hide'] == 1)
+            {
+                $mod->mod_list_hide = 1;
             }
 
             $mod->slug = $slug;
@@ -175,7 +180,7 @@ class ModController extends BaseController
         $authors = $mod->authors;
         $versions = $mod->versions;
 
-        $input = Input::only('name', 'selected_versions', 'selected_authors', 'deck', 'website', 'download_link', 'donate_link', 'wiki_link', 'description', 'slug');
+        $input = Input::only('name', 'selected_versions', 'selected_authors', 'deck', 'website', 'download_link', 'donate_link', 'wiki_link', 'description', 'slug', 'mod_list_hide');
 
         $messages = [
             'unique' => 'This mod already exists in the database. If it requires an update let us know!',
@@ -216,6 +221,15 @@ class ModController extends BaseController
             else
             {
                 $slug = $input['slug'];
+            }
+
+            if ($input['mod_list_hide'] == 1)
+            {
+                $mod->mod_list_hide = 1;
+            }
+            else
+            {
+                $mod->mod_list_hide = 0;
             }
 
             $mod->slug = $slug;
