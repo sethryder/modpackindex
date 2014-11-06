@@ -338,7 +338,7 @@ class JSONController extends BaseController
 
             $mods_array[] = [
                 'name' => $name,
-                'deck' => $mod->deck,
+                'deck' => json_encode($mod->deck),
                 'links' => json_encode(rtrim($links, ' / ')),
                 'versions' => rtrim($supported_versions, ', '),
                 'authors' => rtrim($authors, ', '),
