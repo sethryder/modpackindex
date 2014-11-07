@@ -430,6 +430,7 @@ class JSONController extends BaseController
     public function getModpackSearch($version)
     {
         $modpack_id_array = [];
+        $modpacks_array = [];
         $input = Input::only('mods');
 
         $input_mod_array = explode(',', $input['mods']);
