@@ -440,13 +440,21 @@ class JSONController extends BaseController
 
         $modpack = Modpack::where('minecraft_version_id', '=', $minecraft_version->id);
 
-        $modpack->whereHas('mods', function($q) use ($input_mod_array)
+        foreach ($input_mod_array as $mod)
+        {
+            $modpack->whereHas('mods', function($q) use ($mod)
+            {
+                    $q->where('mods.id', '=', $mod);
+            });            
+        }
+
+        /*$modpack->whereHas('mods', function($q) use ($input_mod_array)
         {
             foreach ($input_mod_array as $mod)
             {
                 $q->where('mods.id', '=', $mod);
             }
-        });
+        });*/
 
         $modpacks = $modpack->get();
 
