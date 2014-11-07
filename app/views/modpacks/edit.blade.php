@@ -45,7 +45,7 @@
 
                 <div class="form-group">
                     {{ Form::label('launcher','Launcher') }}:
-                    {{ Form::select('launcher', Launcher::lists('name', 'id'), null, array('class' => 'form-control')) }}
+                    {{ Form::select('launcher', Launcher::lists('name', 'id'), $modpack->launcher_id, array('class' => 'form-control')) }}
                 </div>
 
                 <div class="form-group">
