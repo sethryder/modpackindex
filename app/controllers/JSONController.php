@@ -445,7 +445,7 @@ class JSONController extends BaseController
             $modpack->whereHas('mods', function($q) use ($mod)
             {
                     $q->where('mods.id', '=', $mod);
-            });            
+            });
         }
 
         /*$modpack->whereHas('mods', function($q) use ($input_mod_array)
