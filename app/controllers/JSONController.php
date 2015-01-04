@@ -4,88 +4,95 @@ class JSONController extends BaseController
 {
     public function getTableMods($version='all')
     {
-        $mods_array = [];
-        $mod_id_array = [];
-        $version = preg_replace('/-/', '.', $version);
+        $cache_key = 'table-mods-'.$version;
 
-        if ($version == 'all')
+        if (Cache::has($cache_key))
         {
-            $raw_mods = Mod::all();
+            $mods_array = Cache::get($cache_key);
         }
         else
         {
-            $raw_version = MinecraftVersion::where('name', '=', $version)->first();
-            $raw_mods = $raw_version->mods;
-        }
+            $mods_array = [];
+            $mod_id_array = [];
+            $version = preg_replace('/-/', '.', $version);
 
-        foreach ($raw_mods as $mod)
-        {
-            $supported_versions = '';
-            $authors = '';
-            $links = '';
-            $version_array = [];
-            $i = 0;
-
-            if ($mod->mod_list_hide == 1)
-            {
-                continue;
+            if ($version == 'all') {
+                $raw_mods = Mod::all();
+            } else {
+                $raw_version = MinecraftVersion::where('name', '=', $version)->first();
+                $raw_mods = $raw_version->mods;
             }
 
-            if (in_array($mod->id, $mod_id_array))
+            foreach ($raw_mods as $mod)
             {
-                continue;
-            }
+                $supported_versions = '';
+                $authors = '';
+                $links = '';
+                $version_array = [];
+                $i = 0;
 
-            $name = '<a href=/mod/'. $mod->slug .'>' . $mod->name . '</a>';
-
-            foreach ($mod->versions as $v)
-            {
-                if (!in_array($v->name, $version_array))
+                if ($mod->mod_list_hide == 1)
                 {
-                    $version_array[] = $v->name;
-                    $supported_versions .= $v->name;
-                    $supported_versions .= ', ';
+                    continue;
                 }
-                $i++;
+
+                if (in_array($mod->id, $mod_id_array))
+                {
+                    continue;
+                }
+
+                $name = '<a href=/mod/' . $mod->slug . '>' . $mod->name . '</a>';
+
+                foreach ($mod->versions as $v) {
+                    if (!in_array($v->name, $version_array))
+                    {
+                        $version_array[] = $v->name;
+                        $supported_versions .= $v->name;
+                        $supported_versions .= ', ';
+                    }
+                    $i++;
+                }
+
+                if (!$supported_versions) $supported_versions = 'Unknown';
+
+                foreach ($mod->authors as $v)
+                {
+                    $authors .= $v->name;
+                    $authors .= ', ';
+                }
+
+                if (!$authors) $authors = 'N/A';
+
+                if ($mod->website)
+                {
+                    $links .= '<a href="' . $mod->website . '">Website</a>';
+                    $links .= ' / ';
+                }
+
+                if ($mod->donate_link)
+                {
+                    $links .= '<a href="' . $mod->donate_link . '">Donate</a>';
+                    $links .= ' / ';
+                }
+
+                if ($mod->wiki_link)
+                {
+                    $links .= '<a href="' . $mod->wiki_link . '">Wiki</a>';
+                    $links .= ' / ';
+                }
+
+                $mods_array[] = [
+                    'name' => $name,
+                    'deck' => json_encode($mod->deck),
+                    'links' => json_encode(rtrim($links, ' / ')),
+                    'versions' => rtrim($supported_versions, ', '),
+                    'authors' => rtrim($authors, ', '),
+                ];
+
+                $mod_id_array[] = $mod->id;
             }
 
-            if (!$supported_versions) $supported_versions = 'Unknown';
-
-            foreach ($mod->authors as $v)
-            {
-                $authors .= $v->name;
-                $authors .= ', ';
-            }
-
-            if (!$authors) $authors = 'N/A';
-
-            if ($mod->website)
-            {
-                $links .= '<a href="' . $mod->website . '">Website</a>';
-                $links .= ' / ';
-            }
-
-            if ($mod->donate_link)
-            {
-                $links .= '<a href="' . $mod->donate_link . '">Donate</a>';
-                $links .= ' / ';
-            }
-
-            if ($mod->wiki_link)
-            {
-                $links .= '<a href="' . $mod->wiki_link . '">Wiki</a>';
-                $links .= ' / ';
-            }
-
-            $mods_array[] = [
-                'name' => $name,
-                'deck' => json_encode($mod->deck),
-                'links' => json_encode(rtrim($links, ' / ')),
-                'versions' => rtrim($supported_versions, ', '),
-                'authors' => rtrim($authors, ', '),
-            ];
-
-            $mod_id_array[] = $mod->id;
+            Cache::forever($cache_key, $mods_array);
         }
 
         return View::make('api.table.mods.json', ['mods' => $mods_array, 'version' => $version]);
