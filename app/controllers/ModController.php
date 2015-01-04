@@ -132,6 +132,8 @@ class ModController extends BaseController
                     $mod->versions()->attach($version);
                 }
 
+                Cache::tags('mods')->flush();
+
                 return View::make('mods.add', ['title' => $title, 'chosen' => true, 'success' => true, 'versions' => $versions]);
             }
             else
@@ -262,6 +264,8 @@ class ModController extends BaseController
                 {
                     $selected_authors[] = $a->id;
                 }
+
+                Cache::tags('mods')->flush();
 
                 return View::make('mods.edit', ['title' => $title, 'mod' => $mod, 'chosen' => true, 'success' => true,
                     'selected_versions' => $selected_versions, 'selected_authors' => $selected_authors, 'versions' => $minecraft_versions]);

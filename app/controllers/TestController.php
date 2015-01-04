@@ -40,4 +40,9 @@ class TestController extends BaseController
     {
         print_r(App::environment());
     }
+
+    public function getCache()
+    {
+        print_r(Cache::getMemory());
+    }
 }

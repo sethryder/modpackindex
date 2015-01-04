@@ -150,6 +150,10 @@ class ModpackController extends BaseController
                     $mod_select_array[$id] = $mod->name;
                 }
 
+                Cache::tags('modpacks')->flush();
+                Cache::tags('modpackmods')->flush();
+                Cache::tags('modmodpacks')->flush();
+
                 return View::make('modpacks.add', ['title' => $title, 'chosen' => true, 'success' => true, 'version' => $version,
                     'url_version' => $url_version, 'mods' => $mod_select_array]);
             }
@@ -298,6 +302,10 @@ class ModpackController extends BaseController
                     $id = $mod->id;
                     $mod_select_array[$id] = $mod->name;
                 }
+
+                Cache::tags('modpacks')->flush();
+                Cache::tags('modpackmods')->flush();
+                Cache::tags('modmodpacks')->flush();
 
                 return View::make('modpacks.edit', ['title' => $title, 'chosen' => true, 'success' => true,
                     'modpack'=> $updated_modpack, 'version' => $minecraft_version->name, 'mods' => $mod_select_array,
