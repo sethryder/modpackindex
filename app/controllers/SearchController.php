@@ -27,6 +27,11 @@ class SearchController extends BaseController
         $version = preg_replace('/-/', '.', $version);
         $input = Input::only('mods');
 
+        if (!$input['mods'])
+        {
+            return Redirect::to('/modpack/finder/'.$url_version);
+        }
+
         $minecraft_version = MinecraftVersion::where('name', '=', $version)->first();
         $mods = $minecraft_version->mods;
         foreach ($mods as $mod)
