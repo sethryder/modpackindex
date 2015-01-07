@@ -45,4 +45,15 @@ class TestController extends BaseController
     {
         print_r(Cache::getMemory());
     }
+
+    public function getClear()
+    {
+        Cache::tags('launchers')->flush();
+        Cache::tags('modpacks')->flush();
+        Cache::tags('modpackmods')->flush();
+        Cache::tags('modmodpacks')->flush();
+        Cache::tags('mods')->flush();
+
+        echo 'Cache cleared.';
+    }
 }

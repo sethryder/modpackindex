@@ -210,7 +210,7 @@ class JSONController extends BaseController
 
     public function getTableLaunchers($name, $get_version = 'all')
     {
-        $cache_key = 'table-launchers-' . $get_version;
+        $cache_key = 'table-launchers-' . $name .'-' . $get_version;
 
         if (Cache::tags('launchers')->has($cache_key))
         {
