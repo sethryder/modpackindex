@@ -53,6 +53,7 @@ class TestController extends BaseController
         Cache::tags('modpackmods')->flush();
         Cache::tags('modmodpacks')->flush();
         Cache::tags('mods')->flush();
+        Cache::tags('user-permissions')->flush();
 
         echo 'Cache cleared.';
     }
