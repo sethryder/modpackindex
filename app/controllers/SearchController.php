@@ -17,6 +17,8 @@ class SearchController extends BaseController
             $mod_select_array[$id] = $mod->name;
         }
 
+        asort($mod_select_array);
+
         return View::make('search.modpack', ['chosen' => true, 'mods' => $mod_select_array, 'version' => $version,
             'url_version' => $url_version]);
     }
