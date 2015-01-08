@@ -37,6 +37,9 @@
                 @if ($i+1 != count($links))| @endif
                 <?php $i++; ?>
             @endforeach
+                @if (isset($user_permissions['mod_edit']))
+                    | <a href="/mod/edit/{{ $mod->id }}"><i class="fa fa-edit"></i> Edit</a>
+                @endif
             </p>
             <div class="portlet-body"></div>
 

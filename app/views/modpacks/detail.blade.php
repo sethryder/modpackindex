@@ -37,6 +37,9 @@
                 @if ($i+1 != count($links))| @endif
                 <?php $i++; ?>
             @endforeach
+                @if (isset($user_permissions['modpack_edit']))
+                    | <a href="/modpack/edit/{{ $modpack->id }}"><i class="fa fa-edit"></i> Edit</a>
+                @endif
             </p>
 
             <p>Launcher: <a href="/launcher/{{ $launcher->slug }}">{{ $launcher->name }}</a> </p>
