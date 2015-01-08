@@ -7,6 +7,11 @@ class BaseController extends Controller {
     public function __construct()
     {
         $this->site_name = Config::get('app.site_name');
+
+        if (Auth::check())
+        {
+            View::share('user_permissions', $this->getUserPermissions());
+        }
     }
 
     public function checkRoute()
@@ -28,6 +33,50 @@ class BaseController extends Controller {
         {
             return false;
         }
+    }
+
+    public function getUserPermissions()
+    {
+        if (Auth::check())
+        {
+            $user_id = Auth::id();
+            $cache_key = "user-". $user_id . "-permissions";
+
+            if (Cache::tags('user-permissions')->has($cache_key))
+            {
+                $permission_array = Cache::tags('user-permissions')->get($cache_key);
+            }
+            else
+            {
+                $raw_permission_array = [];
+                $permission_array = [];
+                $permission_objects = Permission::all();
+                $user_permissions = DB::table('permission_user')->where('user_id', '=', $user_id)->get();
+
+                foreach ($user_permissions as $user_permission)
+                {
+                    $permission_id = $user_permission->permission_id;
+                    $raw_permission_array[$permission_id] = 1;
+                }
+
+                foreach ($permission_objects as $permission)
+                {
+                    $route_name = $permission->route;
+                    $permission_id = $permission->id;
+
+                    if (isset($raw_permission_array[$permission_id]))
+                    {
+                        $permission_array[$route_name] = $raw_permission_array[$permission_id];
+                    }
+                    else
+                    {
+                        $permission_array[$route_name] = 0;
+                    }
+                }
+                Cache::tags('user-permissions')->put($cache_key, $permission_array, 60);
+            }
+        }
+        return $permission_array;
     }
 
 	/**
