@@ -274,12 +274,60 @@
                 </li>
                 </ul>
             </li>
+            @if (isset($user_permissions))
+            <li class="dropdown">
+                <a href="/mods" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                    Site Admin
+                    <i class="mainnav-caret"></i>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                @if ($user_permissions['author_add'] == 1)
+                        <li>
+                            <a href="/author/add">
+                                &nbsp;&nbsp;Add Author
+                            </a>
+                        </li>
+                @endif
+                @if ($user_permissions['creator_add'] == 1)
+                        <li>
+                            <a href="/creator/add">
+                                &nbsp;&nbsp;Add Modpack Creator
+                            </a>
+                        </li>
+                @endif
+                @if ($user_permissions['mod_add'] == 1)
+                    <li>
+                        <a href="/mod/add">
+                            &nbsp;&nbsp;Add Mod
+                        </a>
+                    </li>
+                @endif
+                @if ($user_permissions['modpack_add'] == 1)
+                        <li class="dropdown-submenu">
+                            <a href="#">
+                                &nbsp;&nbsp;Add Modpack
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="/modpack/1-7-10/add">
+                                        &nbsp;&nbsp;1.7.10 Pack
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="/modpack/1-6-4/add">
+                                        &nbsp;&nbsp;1.6.4 Pack
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                @endif
+                </ul>
+            </li>
+            @endif
 
             </ul>
-
-          </li>
-
-        </ul>
 
       </nav>
 

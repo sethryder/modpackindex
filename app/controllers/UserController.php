@@ -156,6 +156,7 @@ class UserController extends BaseController
             $selected_permissions[] = $p->id;
         }
 
+        Cache::tags('user-permissions')->flush();
 
         return View::make('user.edit_permissions', ['user' => $user, 'selected_permissions' => $selected_permissions,
             'available_permissions' => $available_permissions, 'success' => true]);

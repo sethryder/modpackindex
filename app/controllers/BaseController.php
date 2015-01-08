@@ -10,7 +10,12 @@ class BaseController extends Controller {
 
         if (Auth::check())
         {
-            View::share('user_permissions', $this->getUserPermissions());
+            $user_permissions = $this->UserPermissions();
+
+            if ($user_permissions)
+            {
+                View::share('user_permissions', $this->UserPermissions());
+            }
         }
     }
 
@@ -35,7 +40,7 @@ class BaseController extends Controller {
         }
     }
 
-    public function getUserPermissions()
+    public function UserPermissions()
     {
         if (Auth::check())
         {
@@ -48,30 +53,37 @@ class BaseController extends Controller {
             }
             else
             {
-                $raw_permission_array = [];
-                $permission_array = [];
-                $permission_objects = Permission::all();
-                $user_permissions = DB::table('permission_user')->where('user_id', '=', $user_id)->get();
-
-                foreach ($user_permissions as $user_permission)
+                if (Auth::user()->is_admin)
                 {
-                    $permission_id = $user_permission->permission_id;
-                    $raw_permission_array[$permission_id] = 1;
+                    $raw_permission_array = [];
+                    $permission_array = [];
+                    $permission_objects = Permission::all();
+                    $user_permissions = DB::table('permission_user')->where('user_id', '=', $user_id)->get();
+
+                    foreach ($user_permissions as $user_permission)
+                    {
+                        $permission_id = $user_permission->permission_id;
+                        $raw_permission_array[$permission_id] = 1;
+                    }
+
+                    foreach ($permission_objects as $permission)
+                    {
+                        $route_name = $permission->route;
+                        $permission_id = $permission->id;
+
+                        if (isset($raw_permission_array[$permission_id]))
+                        {
+                            $permission_array[$route_name] = $raw_permission_array[$permission_id];
+                        }
+                        else
+                        {
+                            $permission_array[$route_name] = 0;
+                        }
+                    }
                 }
-
-                foreach ($permission_objects as $permission)
+                else
                 {
-                    $route_name = $permission->route;
-                    $permission_id = $permission->id;
-
-                    if (isset($raw_permission_array[$permission_id]))
-                    {
-                        $permission_array[$route_name] = $raw_permission_array[$permission_id];
-                    }
-                    else
-                    {
-                        $permission_array[$route_name] = 0;
-                    }
+                    $permission_array = false;
                 }
                 Cache::tags('user-permissions')->put($cache_key, $permission_array, 60);
             }
