@@ -42,6 +42,8 @@ class SearchController extends BaseController
             $mod_select_array[$id] = $mod->name;
         }
 
+        asort($mod_select_array);
+
         $mods_string = '';
         foreach ($input['mods'] as $mod)
         {
