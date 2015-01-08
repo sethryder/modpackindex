@@ -305,7 +305,7 @@ class JSONController extends BaseController
                     'icon_html' => json_encode($icon_html),
                     'name' => $name,
                     'icon' => $icon,
-                    'deck' => $modpack->deck,
+                    'deck' => json_encode($modpack->deck),
                     'links' => json_encode(rtrim($links, ' / ')),
                     'version' => $version,
                     'creators' => rtrim($creators, ', '),
