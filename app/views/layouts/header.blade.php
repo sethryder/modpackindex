@@ -184,28 +184,28 @@
               </li>
 
               <li class="dropdown-submenu">
-                <a href="/launcher/technic-launcher">
+                <a href="/launcher/technic-platform">
                 <img class="fa" src="/static/img/icons/technic.png" />
-                &nbsp;&nbsp;Technic Launcher
+                &nbsp;&nbsp;Technic Platform
                 </a>
 
                 <ul class="dropdown-menu">
                       <li>
-                        <a href="/launcher/technic-launcher/1-7-10">
+                        <a href="/launcher/technic-platform/1-7-10">
                         <img class="fa" src="/static/img/icons/enderman.png" />
                         &nbsp;&nbsp;1.7.10 Packs
                         </a>
                       </li>
 
                       <li>
-                        <a href="/launcher/technic-launcher/1-6-4">
+                        <a href="/launcher/technic-platform/1-6-4">
                         <img class="fa" src="/static/img/icons/creeper.png" />
                         &nbsp;&nbsp;1.6.4 Packs
                         </a>
                       </li>
 
                       <li>
-                        <a href="/launcher/technic-launcher">
+                        <a href="/launcher/technic-platform">
                         <img class="fa" src="/static/img/icons/custom.png" />
                         &nbsp;&nbsp;All Packs
                         </a>
