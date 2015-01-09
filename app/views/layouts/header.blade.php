@@ -323,6 +323,46 @@
                             </ul>
                         </li>
                 @endif
+                @if ($user_permissions['cache_clear'] == 1)
+                    <li class="dropdown-submenu">
+                        <a href="/cache/clear">
+                            &nbsp;&nbsp;Clear Cache
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/cache/clear/mods">
+                                    &nbsp;&nbsp;Clear Mod Cache
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/cache/clear/modpacks">
+                                    &nbsp;&nbsp;Clear Modpack Cache
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/cache/clear/launchers">
+                                    &nbsp;&nbsp;Clear Launcher Cache
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/cache/clear/modpackmods">
+                                    &nbsp;&nbsp;Clear Modpack's Mods Cache
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/cache/clear/modmodpacks">
+                                    &nbsp;&nbsp;Clear Mod's Modpacks Cache
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/cache/clear/user-permissions">
+                                    &nbsp;&nbsp;Clear User Permission Cache
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
                 </ul>
             </li>
             @endif

@@ -49,6 +49,10 @@ Route::post('creator/edit/{id}', ['as' => 'creator_edit', 'uses' => 'CreatorCont
 Route::get('user/permissions/{id}', ['as' => 'permissions_edit', 'uses' => 'UserController@getUserPermissions']);
 Route::Post('user/permissions/{id}', ['as' => 'permissions_edit', 'uses' => 'UserController@postUserPermissions']);
 
+//Cache
+Route::get('/cache/clear/{tag?}', ['as' => 'cache_clear', 'uses' => 'AdminController@getClearCache']);
+
+
 
 /*
  * General Site Routes
