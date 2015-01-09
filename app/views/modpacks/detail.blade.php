@@ -46,10 +46,10 @@
 
             <div class="portlet-body"></div>
 
-                @if ($mod->description == '')
-                    <p>{{ $mod->deck }}</p>
+                @if ($modpack->description == '')
+                    <p>{{ $modpack->deck }}</p>
                 @else
-                    <p>{{ $mod->description }}</p>
+                    <p>{{ $modpack->description }}</p>
                 @endif
 
             <p>&nbsp;</p>
