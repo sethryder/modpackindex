@@ -9,12 +9,14 @@ class AdminController extends BaseController
         if ($tag == 'all')
         {
             Cache::flush();
-            echo "Cleared all cache.";
+            echo "<p>Cleared all cache.</p>";
+            echo "<p><a href=\"/\">Go Home</a></p>";
         }
         else
         {
             Cache::tags($tag)->flush();
-            echo "Cleared cache with tag: $tag.";
+            echo "<p>Cleared cache with tag: $tag.</p>";
+            echo "<p><a href=\"/\">Go Home</a></p>";
         }
     }
 }
