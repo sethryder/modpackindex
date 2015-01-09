@@ -42,9 +42,11 @@
                 @endif
             </p>
             <div class="portlet-body"></div>
-
-            <p>{{ $mod->description }}</p>
-
+                @if ($mod->description == '')
+                    <p>{{ $mod->deck }}</p>
+                @else
+                    <p>{{ $mod->description }}</p>
+                @endif
             <p>&nbsp;</p>
 
             <h4 class="portlet-title">
