@@ -11,6 +11,11 @@ class LauncherController extends BaseController
 
         $launcher = Launcher::where('slug', '=', $name)->first();
 
+        if (!$launcher)
+        {
+            App::abort(404);
+        }
+
         $raw_links = [
             'website'       => $launcher->website,
             'download_link' => $launcher->download_link,

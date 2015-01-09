@@ -20,6 +20,12 @@ class ModpackController extends BaseController
         $table_javascript = '/api/table/modpackmods_'.$version.'/'. $slug .'.json';
 
         $modpack = Modpack::where('slug', '=', $slug)->first();
+
+        if (!$modpack)
+        {
+            App::abort(404);
+        }
+
         $launcher = $modpack->launcher;
         $creators = $modpack->creators;
 

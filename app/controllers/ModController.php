@@ -24,6 +24,12 @@ class ModController extends BaseController
         $table_javascript = '/api/table/modmodpacks_0/'. $slug .'.json';
 
         $mod = Mod::where('slug', '=', $slug)->first();
+
+        if (!$mod)
+        {
+            App::abort(404);
+        }
+
         $authors = $mod->authors;
 
         $raw_links = [
