@@ -68,7 +68,8 @@
 
       <script type="text/javascript">
           var chosen_config = {
-            'placeholder_text_multiple':' '
+            'placeholder_text_multiple':' ',
+            'search_contains': true
           }
           $(".chosen-select").chosen(chosen_config)
       </script>
