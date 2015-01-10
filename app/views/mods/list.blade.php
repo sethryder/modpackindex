@@ -18,7 +18,7 @@
                   <tr>
                     <th style="width: 20%">Name</th>
                     <th style="width: 12%">MC Version(s)</th>
-                    <th style="width: 35%">Deck</th>
+                    <th style="width: 35%">Description</th>
                     <th style="width: 15%">Author(s)</th>
                     <th style="width: 18%">Link(s)</th>
                   </tr>
@@ -27,7 +27,7 @@
                   <tr>
                     <th>Name</th>
                     <th>MC Version(s)</th>
-                    <th>Deck</th>
+                    <th>Description</th>
                     <th>Author(s)</th>
                     <th>Link(s)</th>
 
