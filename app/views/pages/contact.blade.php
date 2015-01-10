@@ -17,7 +17,7 @@
 
             <div class="portlet-body">
 
-            <p>You can reach us on our <a href="irc://irc.esper.net:6667/ModpackIndex">IRC Channel</a> or by using the form below.</p>
+            <p>You can reach us on our <a href="https://webchat.esper.net/?channels=ModpackIndex" target="_blank">IRC Channel</a> or by using the form below.</p>
 
             @if ( $errors->count() > 0 )
             <div class="alert alert-danger">
