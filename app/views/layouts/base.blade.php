@@ -14,8 +14,6 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,800,800italic">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300,700">
 
-
-    <link rel="shortcut icon" href="/static/images/favicon.ico">
     <link rel="apple-touch-icon icon-precomposed" href="/static/images/apple-touch-icon.png"/>
 
     <!-- build:css /static/css/minified.css -->
