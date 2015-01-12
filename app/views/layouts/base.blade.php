@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>{{ $title or "Modpack Index - An Index of Minecraft Modpacks" }}</title>
-    <meta name="description" content="">
+    <meta name="description" content="{{{ $meta_description or "Discover the perfect Minecraft modpack. Including modpacks from Feed the Beast, ATLauncher, and Technic Platform." }}}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
       <!-- Google Font: Open Sans -->

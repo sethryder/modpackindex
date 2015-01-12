@@ -39,6 +39,7 @@ class ModpackController extends BaseController
         $links = [];
 
         $title = $modpack->name . ' - Modpack - '. $this->site_name;
+        $meta_description = $modpack->deck;
 
         foreach ($raw_links as $index => $link)
         {
@@ -49,7 +50,8 @@ class ModpackController extends BaseController
         }
 
         return View::make('modpacks.detail', array('table_javascript' => $table_javascript, 'modpack' => $modpack,
-            'links' => $links, 'launcher' => $launcher, 'creators' => $creators, 'title' => $title));
+            'links' => $links, 'launcher' => $launcher, 'creators' => $creators, 'title' => $title,
+            'meta_description' => $meta_description));
     }
 
     public function getAdd($version)
