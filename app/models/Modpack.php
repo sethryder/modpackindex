@@ -21,4 +21,9 @@ class Modpack extends Eloquent
     {
         return $this->belongsToMany('Creator');
     }
+
+    public function code()
+    {
+        return $this->hasOne('ModpackCode');
+    }
 }

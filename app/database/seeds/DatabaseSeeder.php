@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder {
         'mod_modpack',
         'creators',
         'creator_modpack',
+        'modpack_codes',
     ];
 
 	/**
@@ -36,6 +37,7 @@ class DatabaseSeeder extends Seeder {
         $this->call('ModModpackSeeder');
         $this->call('CreatorsSeeder');
         $this->call('CreatorsModpackSeeder');
+        $this->call('ModpackCodesSeeder');
 		// $this->call('UserTableSeeder');
 	}
 

@@ -49,6 +49,13 @@ class StaticPagesController extends BaseController
         }
     }
 
+    public function getPackCodes()
+    {
+        $title = 'What are Modpack Codes? - '. $this->site_name;
+
+        return View::make('pages.packcodes', ['title' => $title]);
+    }
+
     public function getNotLaunched()
     {
         return View::make('hello');

@@ -28,6 +28,7 @@ class ModpackController extends BaseController
 
         $launcher = $modpack->launcher;
         $creators = $modpack->creators;
+        $pack_code = $modpack->code;
 
         $raw_links = [
             'website'       => $modpack->website,
@@ -51,7 +52,7 @@ class ModpackController extends BaseController
 
         return View::make('modpacks.detail', array('table_javascript' => $table_javascript, 'modpack' => $modpack,
             'links' => $links, 'launcher' => $launcher, 'creators' => $creators, 'title' => $title,
-            'meta_description' => $meta_description));
+            'meta_description' => $meta_description, 'pack_code' => $pack_code));
     }
 
     public function getAdd($version)

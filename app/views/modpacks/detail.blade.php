@@ -44,6 +44,18 @@
 
             <p>Launcher: <a href="/launcher/{{ $launcher->slug }}">{{ $launcher->name }}</a> </p>
 
+            @if (isset($pack_code))
+                @if ($launcher->slug == 'feed-the-beast')
+                    <p>Pack Code: <b>{{ $pack_code->code }}</b> (<a href="/about/modpack-codes">What's this?</a>)</p>
+                @endif
+                @if ($launcher->slug == 'atlauncher')
+                    <p>Pack Code: <b>{{ $pack_code->code }}</b> (<a href="/about/modpack-codes">What's this?</a>)</p>
+                @endif
+                @if ($launcher->slug == 'technic-platform')
+                    <p>Pack URL: <input type="text" name="url" value="{{ $pack_code->code }}"> (<a href="/about/modpack-codes">What's this?</a>)</p>
+                @endif
+            @endif
+
             <div class="portlet-body"></div>
 
                 @if ($modpack->description == '')

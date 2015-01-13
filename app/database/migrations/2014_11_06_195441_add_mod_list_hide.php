@@ -25,7 +25,7 @@ class AddModListHide extends Migration {
 	 */
 	public function down()
 	{
-        Schema::table('users', function($table)
+        Schema::table('mods', function($table)
         {
             $table->dropColumn('mod_list_hide');
         });

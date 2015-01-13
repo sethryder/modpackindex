@@ -45,6 +45,12 @@ Route::post('creator/add', ['as' => 'creator_add', 'uses' => 'CreatorController@
 Route::get('creator/edit/{id}', ['as' => 'creator_edit', 'uses' => 'CreatorController@getEdit']);
 Route::post('creator/edit/{id}', ['as' => 'creator_edit', 'uses' => 'CreatorController@postEdit']);
 
+//Modpack Codes
+Route::get('modpack-code/add', ['as' => 'modpack_code_add', 'uses' => 'ModpackCodeController@getAdd']);
+Route::post('modpack-code/add', ['as' => 'modpack_code_add', 'uses' => 'ModpackCodeController@postAdd']);
+Route::get('modpack-code/edit/{id}', ['as' => 'modpack_code_edit', 'uses' => 'ModpackCodeController@getEdit']);
+Route::post('modpack-code/edit/{id}', ['as' => 'modpack_code_edit', 'uses' => 'ModpackCodeController@postEdit']);
+
 //Users
 Route::get('user/permissions/{id}', ['as' => 'permissions_edit', 'uses' => 'UserController@getUserPermissions']);
 Route::Post('user/permissions/{id}', ['as' => 'permissions_edit', 'uses' => 'UserController@postUserPermissions']);
@@ -103,10 +109,14 @@ Route::get('api/table/modpackfinder/{version}.json', 'JSONController@getModpackS
 
 //about
 Route::get('about', 'StaticPagesController@getAbout');
+Route::get('about/modpack-codes', 'StaticPagesController@getPackCodes');
 Route::get('contact', 'StaticPagesController@getContact');
 Route::post('contact', 'StaticPagesController@postContact');
 
-Route::get('checkauth', 'TestController@getCheckAuth');
+//sitemap
+Route::get('sitemap.xml', 'SitemapController@getFullSitemap');
+
+Route::get('checkauth', 'TestController@getPackCodes');
 Route::controller('test', 'TestController');
 Route::controller('mods', 'ModController');
 
