@@ -288,19 +288,19 @@
                             </a>
                         </li>
                 @endif
-                @if ($user_permissions['creator_add'] == 1)
-                        <li>
-                            <a href="/creator/add">
-                                &nbsp;&nbsp;Add Modpack Creator
-                            </a>
-                        </li>
-                @endif
                 @if ($user_permissions['mod_add'] == 1)
                     <li>
                         <a href="/mod/add">
                             &nbsp;&nbsp;Add Mod
                         </a>
                     </li>
+                @endif
+                @if ($user_permissions['creator_add'] == 1)
+                        <li>
+                            <a href="/creator/add">
+                                &nbsp;&nbsp;Add Modpack Creator
+                            </a>
+                        </li>
                 @endif
                 @if ($user_permissions['modpack_add'] == 1)
                         <li class="dropdown-submenu">
@@ -322,6 +322,13 @@
                                 </li>
                             </ul>
                         </li>
+                @endif
+                @if ($user_permissions['modpack_code_add'] == 1)
+                    <li>
+                        <a href="/modpack-code/add">
+                            &nbsp;&nbsp;Add Modpack Code
+                        </a>
+                    </li>
                 @endif
                 @if ($user_permissions['cache_clear'] == 1)
                     <li class="dropdown-submenu">

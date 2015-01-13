@@ -54,6 +54,9 @@
                 @if ($launcher->slug == 'technic-platform')
                     <p>Pack URL: <input type="text" name="url" value="{{ $pack_code->code }}"> (<a href="/about/modpack-codes">What's this?</a>)</p>
                 @endif
+                @if (isset($user_permissions['modpack_code_edit']))
+                    | <a href="/modpack/edit/{{ $pack_code->id }}"><i class="fa fa-edit"></i> Edit</a>
+                @endif
             @endif
 
             <div class="portlet-body"></div>
