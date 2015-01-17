@@ -114,8 +114,13 @@ Route::get('contact', 'StaticPagesController@getContact');
 Route::post('contact', 'StaticPagesController@postContact');
 
 //sitemap
-Route::get('sitemap.xml', 'SitemapController@getFullSitemap');
+Route::get('/sitemap/index.xml', 'SitemapController@getSitemapIndex');
+Route::get('/sitemap/main.xml', 'SitemapController@getSitemapMain');
+Route::get('/sitemap/launchers.xml', 'SitemapController@getSitemapLaunchers');
+Route::get('/sitemap/modpacks.xml', 'SitemapController@getSitemapModpacks');
+Route::get('/sitemap/mods.xml', 'SitemapController@getSitemapMods');
 
+//misc
 Route::get('checkauth', 'TestController@getPackCodes');
 Route::controller('test', 'TestController');
 Route::controller('mods', 'ModController');

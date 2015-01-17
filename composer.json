@@ -7,7 +7,8 @@
 		"laravel/framework": "4.2.*",
         	"guzzlehttp/guzzle": "~4.0",
         	"greggilbert/recaptcha": "1.0.*@dev",
-            "way/generators": "~2.0"
+            "way/generators": "~2.0",
+	  		"roumen/sitemap": "~2.4"
 	},
 	"autoload": {
 		"classmap": [
