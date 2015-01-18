@@ -36,6 +36,10 @@ class SitemapController extends BaseController
         $this->sitemap->add(URL::to('about'));
         $this->sitemap->add(URL::to('contact'));
 
+        //pack finders
+        $this->sitemap->add(URL::to('modpack/finder/1-7-10/'));
+        $this->sitemap->add(URL::to('modpack/finder/1-6-4/'));
+
         return $this->sitemap->render('xml');
     }
 
