@@ -7,6 +7,8 @@ class SearchController extends BaseController
         $url_version = $version;
         $version = preg_replace('/-/', '.', $version);
 
+        $title = $version . ' Modpack Finder - '. $this->site_name;
+
         $mod_select_array = [];
 
         $minecraft_version = MinecraftVersion::where('name', '=', $version)->first();
@@ -20,7 +22,7 @@ class SearchController extends BaseController
         asort($mod_select_array);
 
         return View::make('search.modpack', ['chosen' => true, 'mods' => $mod_select_array, 'version' => $version,
-            'url_version' => $url_version]);
+            'url_version' => $url_version, 'title' => $title]);
     }
 
     public function postModpackSearch($version)
