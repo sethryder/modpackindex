@@ -84,4 +84,5 @@
         </div> <!-- /.container -->
 
       </div> <!-- .content -->
+    </div>
 @stop
