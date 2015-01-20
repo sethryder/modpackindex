@@ -55,6 +55,15 @@ Route::post('modpack-code/edit/{id}', ['as' => 'modpack_code_edit', 'uses' => 'M
 Route::get('user/permissions/{id}', ['as' => 'permissions_edit', 'uses' => 'UserController@getUserPermissions']);
 Route::Post('user/permissions/{id}', ['as' => 'permissions_edit', 'uses' => 'UserController@postUserPermissions']);
 
+//Imports
+Route::get('mod/import', ['as' => 'mod_import', 'uses' => 'ImportController@getStartImport']);
+Route::post('mod/import', ['as' => 'mod_import', 'uses' => 'ImportController@postStartImport']);
+Route::get('mod/import/{id}', ['as' => 'mod_import', 'uses' => 'ImportController@getImportMod']);
+Route::post('mod/import/{id}', ['as' => 'mod_import', 'uses' => 'ImportController@postImportMod']);
+Route::get('mod/import/{id}/author/{author_id?}', ['as' => 'mod_import', 'uses' => 'ImportController@getImportAuthor']);
+Route::post('mod/import/{id}/author/{author_id}', ['as' => 'mod_import', 'uses' => 'ImportController@postImportAuthor']);
+
+
 //Cache
 Route::get('/cache/clear/{tag?}', ['as' => 'cache_clear', 'uses' => 'AdminController@getClearCache']);
 

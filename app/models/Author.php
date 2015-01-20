@@ -6,4 +6,9 @@ class Author extends Eloquent
     {
         $this->belongsToMany('Mod');
     }
+
+    public function aliases()
+    {
+        $this->hasMany('AuthorAlias');
+    }
 }
