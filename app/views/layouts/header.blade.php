@@ -295,6 +295,13 @@
                         </a>
                     </li>
                 @endif
+                @if ($user_permissions['mod_import'] == 1)
+                    <li>
+                        <a href="/mod/import">
+                            &nbsp;&nbsp;Import Mod
+                        </a>
+                    </li>
+                @endif
                 @if ($user_permissions['creator_add'] == 1)
                         <li>
                             <a href="/creator/add">
