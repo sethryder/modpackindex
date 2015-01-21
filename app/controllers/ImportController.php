@@ -70,9 +70,9 @@ class ImportController extends BaseController
             $import_index->raw_authors = serialize($mod_info_array['authors']);
             $import_index->type = 1;
 
-            $sucess = $import_index->save();
+            $success = $import_index->save();
 
-            if (!$sucess)
+            if (!$success)
             {
                 return Redirect::to('/mod/import')->withErrors(['message' => 'Unable to save to database.'])->withInput();
             }
