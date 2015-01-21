@@ -21,6 +21,11 @@ class BaseController extends Controller {
 
     public function checkRoute()
     {
+        if (App::environment() == 'dev')
+        {
+            return true;
+        }
+
         $route = Route::currentRouteName();
         $user_id = Auth::id();
 
