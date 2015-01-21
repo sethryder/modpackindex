@@ -388,6 +388,7 @@ class ImportController extends BaseController
     private function processUpload($import_file)
     {
         $mod_info = false;
+        $mod_info_array = [];
 
         $valid_mime_types = [
             'application/java-archive',
@@ -436,6 +437,16 @@ class ImportController extends BaseController
                 return false;
             }
         }
-        return $mod_info;
+
+        if (isset($mod_info->modList))
+        {
+            $mod_info_array[0] = $mod_info->modList[0];
+        }
+        else
+        {
+            $mod_info_array = $mod_info;
+        }
+
+        return $mod_info_array;
     }
 }
