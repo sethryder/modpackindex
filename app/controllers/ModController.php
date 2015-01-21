@@ -284,20 +284,4 @@ class ModController extends BaseController
 
         }
     }
-
-  /*  public function getTable($version)
-    {
-        $mods = Mod::all();
-        $table_mods = array();
-
-        foreach ($mods as $mod)
-        {
-            $table_mods[] = array(
-                'name' => $mod->name,
-                ''
-            );
-        }
-
-        print_r($mods[0]);
-    }*/
 }

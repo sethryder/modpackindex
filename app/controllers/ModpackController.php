@@ -327,37 +327,4 @@ class ModpackController extends BaseController
 
         }
     }
-
-   /* public function getModsJquery()
-    {
-        $mods_array = [];
-        $mods = Mod::all();
-
-        foreach ($mods as $mod)
-        {
-            $versions = $mod->versions;
-
-            foreach($versions as $version)
-            {
-                $name = $version->name;
-                $friendly_name = preg_replace('/\./', '-', $name);
-                if (array_key_exists($friendly_name, $mods_array))
-                {
-                    if (!in_array($mod->name, $mods_array["$friendly_name"]))
-                    {
-                        $id = $mod->id;
-                        $mods_array["$friendly_name"]["$id"] = $mod->name;
-                    }
-                }
-                else
-                {
-                    $id = $mod->id;
-                    $mods_array["$friendly_name"]["$id"] = $mod->name;
-                }
-
-            }
-        }
-
-        return View::make('modpacks.mod_select_options', ['mods' => $mods_array]);
-    }*/
 }
