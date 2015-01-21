@@ -16,4 +16,3 @@ The site is built using some of the following technologies.
 * [Laravel](http://www.laravel.com)
 * [MySQL](http://www.mysql.com/)
 * [Memcached](http://memcached.org/)
-* [Redis](http://redis.io/)

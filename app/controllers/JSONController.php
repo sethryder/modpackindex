@@ -520,14 +520,6 @@ class JSONController extends BaseController
             });
         }
 
-        /*$modpack->whereHas('mods', function($q) use ($input_mod_array)
-        {
-            foreach ($input_mod_array as $mod)
-            {
-                $q->where('mods.id', '=', $mod);
-            }
-        });*/
-
         $modpacks = $modpack->get();
 
         foreach ($modpacks as $modpack)
