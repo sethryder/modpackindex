@@ -21,6 +21,11 @@ class ImportController extends BaseController
         {
             $import_file = Input::file('import_file');
             $mod_info = $this->processUpload($import_file);
+
+            if (!$mod_info)
+            {
+                return Redirect::to('/mod/import')->withErrors(['message' => 'Cannot parse mcmod.info file.'])->withInput();
+            }
         }
         else
         {
@@ -391,6 +396,7 @@ class ImportController extends BaseController
 
         $mime_type = $import_file->getMimeType();
 
+
         if (!in_array($mime_type, $valid_mime_types))
         {
             return Redirect::to('/mod/import')->withErrors(['message' => 'Not a valid file type.']);
@@ -409,14 +415,14 @@ class ImportController extends BaseController
 
             if (!$raw_file_contents)
             {
-                return Redirect::to('/mod/import')->withErrors(['message' => 'JAR files does not contain a mcmod.info file.']);
+                return false;
             }
 
             $mod_info = json_decode($raw_file_contents);
 
             if (!$mod_info)
             {
-                return Redirect::to('/mod/import')->withErrors(['message' => 'mcmod.info does not contain valid JSON.']);
+                return false;
             }
         }
 
@@ -427,7 +433,7 @@ class ImportController extends BaseController
 
             if (!$mod_info)
             {
-                return Redirect::to('/mod/import')->withErrors(['message' => 'File does not contain valid JSON.']);
+                return false;
             }
         }
         return $mod_info;
