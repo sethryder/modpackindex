@@ -54,8 +54,6 @@
       <script src="/static/js/plugins/flot/jquery.flot.orderBars.js"></script>
       <script src="/static/js/mvpready-core.js"></script>
       <script src="/static/js/mvpready-admin.js"></script>
-      <script src="/static/js/demos/flot/area.js"></script>
-      <script src="/static/js/demos/flot/stacked-vertical.js"></script>
 
       <?php if (isset($table_javascript)) { ?>
       <script src="/static/js/plugins/dataTables/jquery.dataTables.js"></script>
