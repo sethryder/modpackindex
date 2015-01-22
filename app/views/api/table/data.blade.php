@@ -2,6 +2,7 @@ $(function() {
   var table_1 = $('#table-1').dataTable ({
     "bLengthChange": true,
     "iDisplayLength": 15,
+    "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
     "sAjaxSource": "{{ $ajax_source }}",
     "aoColumns": [
     @foreach ($columns as $index => $column)

@@ -2,6 +2,11 @@
 
 class AuthorController extends BaseController
 {
+    public function getAuthor($slug)
+    {
+
+    }
+
     public function getAdd()
     {
         if (!$this->checkRoute()) return Redirect::to('/');

@@ -593,6 +593,11 @@ class JSONController extends BaseController
         return View::make('api.table.modpacks.json', ['modpacks' => $modpacks_array, 'version' => $version]);
     }
 
+    public function getAuthorMods($slug)
+    {
+
+    }
+
     public function getTableDataFile($type, $version, $name = null)
     {
         switch ($type)
