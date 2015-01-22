@@ -53,11 +53,11 @@ class ImportController extends BaseController
         }
 
         $mod_info_array['name'] = $mod_info[0]->name;
-        $mod_info_array['description'] = $mod_info[0]->description;
-        $mod_info_array['minecraft_version'] = $mod_info[0]->mcversion;
+        $mod_info_array['description'] = (isset($mod_info[0]->description) ? $mod_info[0]->description : '');
+        $mod_info_array['minecraft_version'] = (isset($mod_info[0]->mcversion) ? $mod_info[0]->mcversion : '');
+        $mod_info_array['url'] = (isset($mod_info[0]->url) ? $mod_info[0]->url : '');
         if (isset($mod_info[0]->authorList)) $mod_info_array['authors'] = $mod_info[0]->authorList;
         if (isset($mod_info[0]->authors)) $mod_info_array['authors'] = $mod_info[0]->authors;
-        $mod_info_array['url'] = $mod_info[0]->url;
 
         if ($mod_info)
         {
@@ -264,7 +264,7 @@ class ImportController extends BaseController
 
         $import_mod = Import::find($import_id);
         $versions = MinecraftVersion::all();
-        $title = 'Add A Mod - ' . $this->site_name;
+        $title = 'Import A Mod - ' . $this->site_name;
 
         $input = Input::only('name', 'selected_versions', 'selected_authors', 'deck', 'website', 'download_link', 'donate_link', 'wiki_link', 'description', 'slug', 'mod_list_hide');
 
