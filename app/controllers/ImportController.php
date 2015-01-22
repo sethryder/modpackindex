@@ -24,7 +24,7 @@ class ImportController extends BaseController
 
             if (!$mod_info)
             {
-                return Redirect::to('/mod/import')->withErrors(['message' => 'Cannot parse mcmod.info file.'])->withInput();
+                return Redirect::to('/mod/import')->withErrors(['message' => 'Unable to process uploaded file.'])->withInput();
             }
         }
         else
@@ -393,17 +393,17 @@ class ImportController extends BaseController
         $valid_mime_types = [
             'application/java-archive',
             'text/plain',
+            'application/zip',
         ];
 
         $mime_type = $import_file->getMimeType();
 
-
         if (!in_array($mime_type, $valid_mime_types))
         {
-            return Redirect::to('/mod/import')->withErrors(['message' => 'Not a valid file type.']);
+            return false;
         }
 
-        if ($mime_type == 'application/java-archive')
+        if ($mime_type == 'application/java-archive' || $mime_type == 'application/zip')
         {
             $temp_file_path = '/tmp/mcmodinfo_' . time();
             mkdir($temp_file_path);
