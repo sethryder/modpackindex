@@ -18,6 +18,7 @@ class ModpackController extends BaseController
     public function getModpack($version, $slug)
     {
         $table_javascript = '/api/table/modpackmods_'.$version.'/'. $slug .'.json';
+        $friendly_version = preg_replace('/-/', '.', $version);
 
         $modpack = Modpack::where('slug', '=', $slug)->first();
 
@@ -39,7 +40,7 @@ class ModpackController extends BaseController
 
         $links = [];
 
-        $title = $modpack->name . ' - Modpack - '. $this->site_name;
+        $title = $modpack->name . ' - ' . $friendly_version . ' Modpack - '. $this->site_name;
         $meta_description = $modpack->deck;
 
         foreach ($raw_links as $index => $link)
