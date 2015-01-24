@@ -49,7 +49,7 @@
                                 @foreach ($versions as $version)
                                     <div class="checkbox">
                                         <label>
-                                            @if ($form_mod['minecraft_version'] == $version->name)
+                                            @if (in_array($version->name, $selected_versions))
                                                 {{ Form::checkbox('selected_versions[]', $version->id, true);  }}
                                             @else
                                                 {{ Form::checkbox('selected_versions[]', $version->id);  }}

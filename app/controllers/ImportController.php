@@ -6,9 +6,20 @@ class ImportController extends BaseController
     {
         if (!$this->checkRoute()) return Redirect::to('/');
 
+        $mcf_mods_array = [];
         $title = 'Import Mod - ' . $this->site_name;
 
-        return View::make('imports.import', ['title' => $title]);
+        $raw_mcf_mods = ImportMCFModlist::all();
+
+        $mcf_mods_array[0] = 'None';
+
+        foreach ($raw_mcf_mods as $mcf_mod)
+        {
+            $mcf_mod_id = $mcf_mod->id;
+            $mcf_mods_array[$mcf_mod_id] = $mcf_mod->name;
+        }
+
+        return View::make('imports.import', ['title' => $title, 'mcf_mods_array' => $mcf_mods_array]);
     }
 
     public function postStartImport()
@@ -16,9 +27,18 @@ class ImportController extends BaseController
         if (!$this->checkRoute()) return Redirect::to('/');
 
         $mod_info_array = [];
+        $input = Input::only('import_mcf', 'url', 'json');
 
-        if (Input::hasFile('import_file'))
+        if ($input['import_mcf'])
         {
+            $import_type = 'mcf';
+            $mcf_mod = ImportMCFModlist::find($input['import_mcf']);
+            $mod_info = true;
+        }
+        elseif (Input::hasFile('import_file'))
+        {
+            $import_type = 'mcmodinfo';
+
             $import_file = Input::file('import_file');
             $mod_info = $this->processUpload($import_file);
 
@@ -29,7 +49,7 @@ class ImportController extends BaseController
         }
         else
         {
-            $input = Input::only('url', 'json');
+            $import_type = 'mcmodinfo';
 
             if ($input['url'])
             {
@@ -52,12 +72,31 @@ class ImportController extends BaseController
             }
         }
 
-        $mod_info_array['name'] = $mod_info[0]->name;
-        $mod_info_array['description'] = (isset($mod_info[0]->description) ? $mod_info[0]->description : '');
-        $mod_info_array['minecraft_version'] = (isset($mod_info[0]->mcversion) ? $mod_info[0]->mcversion : '');
-        $mod_info_array['url'] = (isset($mod_info[0]->url) ? $mod_info[0]->url : '');
-        if (isset($mod_info[0]->authorList)) $mod_info_array['authors'] = $mod_info[0]->authorList;
-        if (isset($mod_info[0]->authors)) $mod_info_array['authors'] = $mod_info[0]->authors;
+        if ($import_type == 'mcmodinfo')
+        {
+            $mod_info_array['name'] = $mod_info[0]->name;
+            $mod_info_array['description'] = (isset($mod_info[0]->description) ? $mod_info[0]->description : '');
+            $mod_info_array['minecraft_version'] = (isset($mod_info[0]->mcversion) ? serialize([$mod_info[0]->mcversion]) : serialize(['']));
+            $mod_info_array['url'] = (isset($mod_info[0]->url) ? $mod_info[0]->url : '');
+            if (isset($mod_info[0]->authorList)) $mod_info_array['authors'] = serialize($mod_info[0]->authorList);
+            if (isset($mod_info[0]->authors)) $mod_info_array['authors'] = serialize($mod_info[0]->authors);
+        }
+        elseif ($import_type == 'mcf')
+        {
+            $mod_info_array['name'] = $mcf_mod->name;
+            $mod_info_array['description'] = $mcf_mod->description;
+            $mod_info_array['minecraft_version'] = $mcf_mod->raw_minecraft_versions;
+            $mod_info_array['authors'] = $mcf_mod->raw_authors;
+
+            if (preg_match('/j\.mp/', $mcf_mod->url))
+            {
+                $mod_info_array['url'] = $this->getBitlyFullURL($mcf_mod->url);
+            }
+            else
+            {
+                $mod_info_array['url'] = $mcf_mod->url;
+            }
+        }
 
         if ($mod_info)
         {
@@ -67,7 +106,7 @@ class ImportController extends BaseController
             $import_index->description = $mod_info_array['description'];
             $import_index->minecraft_version = $mod_info_array['minecraft_version'];
             $import_index->url = $mod_info_array['url'];
-            $import_index->raw_authors = serialize($mod_info_array['authors']);
+            $import_index->raw_authors = $mod_info_array['authors'];
             $import_index->type = 1;
 
             $success = $import_index->save();
@@ -79,7 +118,7 @@ class ImportController extends BaseController
 
             $import_id = $import_index->id;
 
-            $authors_to_process = $this->processAuthors($import_id, $mod_info_array['authors']);
+            $authors_to_process = $this->processAuthors($import_id, unserialize($mod_info_array['authors']));
 
             if ($authors_to_process > 0)
             {
@@ -221,6 +260,7 @@ class ImportController extends BaseController
 
         $import_mod = Import::find($import_id);
         $selected_authors = [];
+        $selected_versions = [];
         $form_mod = [];
         $to_process_authors = ImportAuthor::where('import_id', '=', $import_id)->where('status', '=', 0)->first();
         $versions = MinecraftVersion::all();
@@ -246,16 +286,21 @@ class ImportController extends BaseController
             }
         }
 
+        foreach (unserialize($import_mod['minecraft_version']) as $mod_version)
+        {
+            $selected_versions[] = $mod_version;
+        }
+
         $form_mod['name'] = $import_mod->name;
         $form_mod['deck'] = $import_mod->description;
-        $form_mod['description'] = $import_mod->description;
         $form_mod['minecraft_version'] = $import_mod->minecraft_version;
         $form_mod['website'] = $import_mod->url;
 
         $title = 'Import Mod ' . $import_mod->name . ' - ' . $this->site_name;
 
         return View::make('imports.mod', ['title' => $title, 'form_mod' => $form_mod, 'import_mod' => $import_mod,
-                'selected_authors' => $selected_authors, 'versions' => $versions, 'chosen' => true]);
+                'selected_authors' => $selected_authors, 'selected_versions' => $selected_versions,
+                'versions' => $versions, 'chosen' => true]);
     }
 
     public function postImportMod($import_id)
@@ -338,7 +383,18 @@ class ImportController extends BaseController
                 $import_mod->status = 1;
                 $import_mod->save();
 
-                return View::make('imports.import', ['title' => $title, 'chosen' => true, 'success' => true, 'versions' => $versions]);
+                $raw_mcf_mods = ImportMCFModlist::all();
+
+                $mcf_mods_array[0] = 'None';
+
+                foreach ($raw_mcf_mods as $mcf_mod)
+                {
+                    $mcf_mod_id = $mcf_mod->id;
+                    $mcf_mods_array[$mcf_mod_id] = $mcf_mod->name;
+                }
+
+                return View::make('imports.import', ['title' => $title, 'chosen' => true, 'success' => true,
+                        'mcf_mods_array' => $mcf_mods_array, 'versions' => $versions]);
             }
             else
             {
@@ -448,5 +504,35 @@ class ImportController extends BaseController
         }
 
         return $mod_info_array;
+    }
+
+    private function getBitlyFullURL($short_url)
+    {
+        $api_url =  Config::get('services.bitly.url');
+        $oath_token =  Config::get('services.bitly.token');
+
+        $query_url = $api_url . 'v3/expand?access_token=' . $oath_token . '&shortUrl=' . $short_url;
+
+        $client = new \GuzzleHttp\Client();
+        $response = $client->get($query_url);
+
+        if ($response->getStatusCode() != 200)
+        {
+            return false;
+        }
+
+        $raw_body = $response->getBody();
+        $decoded_body = json_decode($raw_body);
+
+
+        if (!$decoded_body)
+        {
+            return false;
+        }
+        else
+        {
+            $long_url = $decoded_body->data->expand[0]->long_url;
+            return $long_url;
+        }
     }
 }

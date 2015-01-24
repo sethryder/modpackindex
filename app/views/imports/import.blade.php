@@ -15,7 +15,7 @@
                             <u>Import a Mod</u>
                         </h2>
 
-                        <p>You can import most information for a mod from the <a href-="https://github.com/MinecraftForge/FML/wiki/FML-mod-information-file">mcmod.info</a> file that is included with most
+                        <p>You can import most information for a mod from the <a href-="http://modlist.mcf.li/">MCF Modlist</a> or from the <a href-="https://github.com/MinecraftForge/FML/wiki/FML-mod-information-file">mcmod.info</a> file that is included with most
                         mods.</p>
 
                         <div class="portlet-body">
@@ -40,6 +40,11 @@
                             @endif
 
                             {{ Form::open(array('url' => '/mod/import', 'class' => 'form parsley-form', 'files' => true)) }}
+
+                            <div class="form-group">
+                                {{ Form::label('import_mcf','MCF Modlist') }}:
+                                {{ Form::select('import_mcf', $mcf_mods_array, null, array('class' => 'form-control')) }}
+                            </div> <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('import_file','File') }}:
