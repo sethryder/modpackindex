@@ -9,7 +9,7 @@ class ImportController extends BaseController
         $mcf_mods_array = [];
         $title = 'Import Mod - ' . $this->site_name;
 
-        $raw_mcf_mods = ImportMCFModlist::all();
+        $raw_mcf_mods = ImportMCFModlist::orderBy('name', 'asc')->get();
 
         $mcf_mods_array[0] = 'None';
 
@@ -383,7 +383,7 @@ class ImportController extends BaseController
                 $import_mod->status = 1;
                 $import_mod->save();
 
-                $raw_mcf_mods = ImportMCFModlist::all();
+                $raw_mcf_mods = ImportMCFModlist::orderBy('name', 'asc')->get();
 
                 $mcf_mods_array[0] = 'None';
 
