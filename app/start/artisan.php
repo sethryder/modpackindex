@@ -11,5 +11,6 @@
 |
 */
 
+Artisan::add(new BuildCacheCommand);
 Artisan::add(new ImportMCFModlistCommand);
 Artisan::add(new ImportNEMCommand);

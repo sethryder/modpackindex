@@ -27,7 +27,7 @@ class BuildCache
 
         $client = new \GuzzleHttp\Client();
         $response = $client->get($url);
-        
+
         return $response->getStatusCode();
     }
 }
