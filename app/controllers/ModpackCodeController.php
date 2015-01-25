@@ -49,6 +49,7 @@ class ModpackCodeController extends BaseController
             if ($success)
             {
                 Cache::tags('modpacks')->flush();
+                Queue::push('BuildCache');
                 return View::make('modpackcodes.add', ['title' => $title, 'success' => true]);
             }
             else
@@ -108,6 +109,7 @@ class ModpackCodeController extends BaseController
             if ($success)
             {
                 Cache::tags('modpacks')->flush();
+                Queue::push('BuildCache');
                 return View::make('modpackcodes.edit', ['title' => $title, 'success' => true, 'modpackcode' => $modpackcode]);
             }
             else

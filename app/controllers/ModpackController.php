@@ -163,6 +163,7 @@ class ModpackController extends BaseController
                 Cache::tags('modpacks')->flush();
                 Cache::tags('modpackmods')->flush();
                 Cache::tags('modmodpacks')->flush();
+                Queue::push('BuildCache');
 
                 return View::make('modpacks.add', ['title' => $title, 'chosen' => true, 'success' => true, 'version' => $version,
                     'url_version' => $url_version, 'mods' => $mod_select_array]);
@@ -316,6 +317,7 @@ class ModpackController extends BaseController
                 Cache::tags('modpacks')->flush();
                 Cache::tags('modpackmods')->flush();
                 Cache::tags('modmodpacks')->flush();
+                Queue::push('BuildCache');
 
                 return View::make('modpacks.edit', ['title' => $title, 'chosen' => true, 'success' => true,
                     'modpack'=> $updated_modpack, 'version' => $minecraft_version->name, 'mods' => $mod_select_array,

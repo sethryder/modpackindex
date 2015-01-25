@@ -8,7 +8,8 @@
         	"guzzlehttp/guzzle": "~4.0",
         	"greggilbert/recaptcha": "1.0.*@dev",
             "way/generators": "~2.0",
-	  		"roumen/sitemap": "~2.4"
+	  		"roumen/sitemap": "~2.4",
+	  		"pda/pheanstalk": "~2.0"
 	},
 	"autoload": {
 		"classmap": [
@@ -17,6 +18,7 @@
 			"app/models",
 			"app/database/migrations",
 			"app/database/seeds",
+		  	"app/queues",
 			"app/tests/TestCase.php"
 		]
 	},

@@ -140,6 +140,7 @@ class ModController extends BaseController
                 }
 
                 Cache::tags('mods')->flush();
+                Queue::push('BuildCache');
 
                 return View::make('mods.add', ['title' => $title, 'chosen' => true, 'success' => true, 'versions' => $versions]);
             }
@@ -273,6 +274,7 @@ class ModController extends BaseController
                 }
 
                 Cache::tags('mods')->flush();
+                Queue::push('BuildCache');
 
                 return View::make('mods.edit', ['title' => $title, 'mod' => $mod, 'chosen' => true, 'success' => true,
                     'selected_versions' => $selected_versions, 'selected_authors' => $selected_authors, 'versions' => $minecraft_versions]);

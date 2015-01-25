@@ -426,6 +426,7 @@ class ImportController extends BaseController
                 }
 
                 Cache::tags('mods')->flush();
+                Queue::push('BuildCache');
 
                 $import_mod->status = 1;
                 $import_mod->save();
