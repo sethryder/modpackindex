@@ -7,11 +7,15 @@ class ImportController extends BaseController
         if (!$this->checkRoute()) return Redirect::to('/');
 
         $mcf_mods_array = [];
+        $nem_mods_array = [];
+
         $title = 'Import Mod - ' . $this->site_name;
 
         $raw_mcf_mods = ImportMCFModlist::orderBy('name', 'asc')->get();
+        $raw_nem_mods = ImportNEM::orderBy('name', 'asc')->get();
 
         $mcf_mods_array[0] = 'None';
+        $nem_mods_array[0] = 'None';
 
         foreach ($raw_mcf_mods as $mcf_mod)
         {
@@ -19,7 +23,14 @@ class ImportController extends BaseController
             $mcf_mods_array[$mcf_mod_id] = $mcf_mod->name;
         }
 
-        return View::make('imports.import', ['title' => $title, 'mcf_mods_array' => $mcf_mods_array]);
+        foreach ($raw_nem_mods as $nem_mod)
+        {
+            $nem_mod_id = $nem_mod->id;
+            $nem_mods_array[$nem_mod_id] = $nem_mod->name;
+        }
+
+        return View::make('imports.import', ['title' => $title, 'mcf_mods_array' => $mcf_mods_array,
+            'nem_mods_array' => $nem_mods_array]);
     }
 
     public function postStartImport()
@@ -27,9 +38,15 @@ class ImportController extends BaseController
         if (!$this->checkRoute()) return Redirect::to('/');
 
         $mod_info_array = [];
-        $input = Input::only('import_mcf', 'url', 'json');
+        $input = Input::only('import_nem', 'import_mcf', 'url', 'json');
 
-        if ($input['import_mcf'])
+        if ($input['import_nem'])
+        {
+            $import_type = 'nem';
+            $nem_mod = ImportNEM::find($input['import_nem']);
+            $mod_info = true;
+        }
+        elseif ($input['import_mcf'])
         {
             $import_type = 'mcf';
             $mcf_mod = ImportMCFModlist::find($input['import_mcf']);
@@ -80,6 +97,36 @@ class ImportController extends BaseController
             $mod_info_array['url'] = (isset($mod_info[0]->url) ? $mod_info[0]->url : '');
             if (isset($mod_info[0]->authorList)) $mod_info_array['authors'] = serialize($mod_info[0]->authorList);
             if (isset($mod_info[0]->authors)) $mod_info_array['authors'] = serialize($mod_info[0]->authors);
+        }
+        elseif ($import_type == 'nem')
+        {
+            $mod_info_array['description'] = '';
+
+            //NEM doesn't include any spaces in the name. So we are going to check MFC to see if they list it with a space.
+            $name_with_spaces = preg_replace('/(?<!\ )[A-Z0-9]/', ' $0', $nem_mod->name);
+            $mcf_result = ImportMCFModlist::where('name', ltrim($name_with_spaces))->first();
+
+            if (isset($mcf_result->name))
+            {
+                $mod_info_array['name'] = $mcf_result->name;
+                $mod_info_array['description'] = $mcf_result->description;
+            }
+            else
+            {
+                $mod_info_array['name'] = $nem_mod->name;
+                $mcf_result = ImportMCFModlist::where('name', $nem_mod->name)->first();
+
+                if (isset($mcf_result->description))
+                {
+                    $mod_info_array['description'] = $mcf_result->description;
+                }
+            }
+
+
+
+            $mod_info_array['minecraft_version'] = $nem_mod->raw_minecraft_versions;
+            $mod_info_array['authors'] = $nem_mod->raw_authors;
+            $mod_info_array['url'] = $nem_mod->url;
         }
         elseif ($import_type == 'mcf')
         {
@@ -384,8 +431,10 @@ class ImportController extends BaseController
                 $import_mod->save();
 
                 $raw_mcf_mods = ImportMCFModlist::orderBy('name', 'asc')->get();
+                $raw_nem_mods = ImportNEM::orderBy('name', 'asc')->get();
 
                 $mcf_mods_array[0] = 'None';
+                $nem_mods_array[0] = 'None';
 
                 foreach ($raw_mcf_mods as $mcf_mod)
                 {
@@ -393,8 +442,15 @@ class ImportController extends BaseController
                     $mcf_mods_array[$mcf_mod_id] = $mcf_mod->name;
                 }
 
+                foreach ($raw_nem_mods as $nem_mod)
+                {
+                    $nem_mod_id = $nem_mod->id;
+                    $nem_mods_array[$nem_mod_id] = $nem_mod->name;
+                }
+
                 return View::make('imports.import', ['title' => $title, 'chosen' => true, 'success' => true,
-                        'mcf_mods_array' => $mcf_mods_array, 'versions' => $versions]);
+                        'mcf_mods_array' => $mcf_mods_array, 'nem_mods_array' => $nem_mods_array,
+                        'versions' => $versions]);
             }
             else
             {

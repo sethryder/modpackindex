@@ -12,3 +12,4 @@
 */
 
 Artisan::add(new ImportMCFModlistCommand);
+Artisan::add(new ImportNEMCommand);
