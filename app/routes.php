@@ -116,11 +116,14 @@ Route::get('api/table/modpackfinder/{version}.json', 'JSONController@getModpackS
 
 //Route::get('api/jquery/mods/select.js', 'ModpackController@getModsJquery');
 
-//about
+//static
 Route::get('about', 'StaticPagesController@getAbout');
 Route::get('about/modpack-codes', 'StaticPagesController@getPackCodes');
 Route::get('contact', 'StaticPagesController@getContact');
 Route::post('contact', 'StaticPagesController@postContact');
+Route::get('submit-modpack', 'StaticPagesController@getSubmitModpack');
+Route::post('submit-modpack', 'StaticPagesController@postSubmitModpack');
+
 
 //sitemap
 Route::get('/sitemap/index.xml', 'SitemapController@getSitemapIndex');

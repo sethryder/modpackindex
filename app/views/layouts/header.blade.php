@@ -26,6 +26,9 @@
           <li>
             <a href="/contact">Contact</a>
           </li>
+          <li>
+              <a href="/submit-modpack">Submit Modpack</a>
+          </li>
 
           </ul>
 
