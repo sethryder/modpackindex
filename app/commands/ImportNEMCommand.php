@@ -78,7 +78,7 @@ class ImportNEMCommand extends Command {
 
 				foreach ($exploded_authors as $author)
 				{
-					$authors_array[] = $author;
+					$authors_array[] = ltrim($author);
 				}
 
 				$database_mod->name = $mod->name;
