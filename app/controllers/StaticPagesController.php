@@ -89,6 +89,11 @@ class StaticPagesController extends BaseController
             $validator_error_messages
         );
 
+        if (!$input['email'])
+        {
+            $input['email'] = 'noreply@modpackindex.com';
+        }
+
         if ($validator->fails())
         {
             return Redirect::to('/submit-modpack')->withErrors($validator)->withInput();
