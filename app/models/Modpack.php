@@ -26,4 +26,9 @@ class Modpack extends Eloquent
     {
         return $this->hasOne('ModpackCode');
     }
+
+    public function tags()
+    {
+        return $this->belongsToMany('ModpackTag');
+    }
 }

@@ -30,6 +30,7 @@ class ModpackController extends BaseController
         $launcher = $modpack->launcher;
         $creators = $modpack->creators;
         $pack_code = $modpack->code;
+        $tags = $modpack->tags;
 
         $raw_links = [
             'website'       => $modpack->website,
@@ -52,7 +53,7 @@ class ModpackController extends BaseController
         }
 
         return View::make('modpacks.detail', array('table_javascript' => $table_javascript, 'modpack' => $modpack,
-            'links' => $links, 'launcher' => $launcher, 'creators' => $creators, 'title' => $title,
+            'links' => $links, 'launcher' => $launcher, 'creators' => $creators, 'tags' => $tags, 'title' => $title,
             'meta_description' => $meta_description, 'pack_code' => $pack_code));
     }
 
@@ -87,7 +88,8 @@ class ModpackController extends BaseController
         $title = 'Add A Modpack - ' . $this->site_name;
         $minecraft_version = MinecraftVersion::where('name', '=', $version)->first();
 
-        $input = Input::only('name', 'launcher', 'mods', 'creators', 'deck', 'website', 'download_link', 'donate_link', 'wiki_link', 'description', 'slug');
+        $input = Input::only('name', 'launcher', 'mods', 'tags', 'creators', 'deck', 'website', 'download_link',
+            'donate_link', 'wiki_link', 'description', 'slug');
 
         $messages = [
             'unique' => 'This mod already exists in the database. If it requires an update let us know!',
@@ -152,6 +154,11 @@ class ModpackController extends BaseController
                     $modpack->mods()->attach($mod);
                 }
 
+                foreach ($input['tags'] as $tag)
+                {
+                    $modpack->tags()->attach($tag);
+                }
+
                 $mods = $minecraft_version->mods;
 
                 foreach ($mods as $mod)
@@ -182,6 +189,7 @@ class ModpackController extends BaseController
 
         $title = 'Edit A Modpack - ' . $this->site_name;
         $selected_mods = [];
+        $selected_tags = [];
         $selected_creators = [];
         $mod_select_array = [];
 
@@ -202,13 +210,19 @@ class ModpackController extends BaseController
             $selected_mods[] = $m->id;
         }
 
+        foreach ($modpack->tags as $t)
+        {
+            $selected_tags[] = $t->id;
+        }
+
         foreach ($modpack->creators as $c)
         {
             $selected_creators[] = $c->id;
         }
 
         return View::make('modpacks.edit', ['title' => $title, 'modpack' => $modpack, 'mods' => $mod_select_array,
-            'selected_mods' => $selected_mods, 'selected_creators' => $selected_creators, 'chosen' => true]);
+            'selected_mods' => $selected_mods, 'selected_creators' => $selected_creators, 'selected_tags' => $selected_tags,
+            'chosen' => true]);
     }
 
     public function postEdit($id)
@@ -217,6 +231,7 @@ class ModpackController extends BaseController
 
         $mod_select_array = [];
         $selected_mods = [];
+        $selected_tags = [];
         $selected_creators = [];
 
         $title = 'Add A Modpack - ' . $this->site_name;
@@ -224,8 +239,10 @@ class ModpackController extends BaseController
         $minecraft_version = MinecraftVersion::where('id', '=', $modpack->minecraft_version_id)->first();
         $creators = $modpack->creators;
         $mods = $modpack->mods;
+        $tags = $modpack->tags;
 
-        $input = Input::only('name', 'launcher', 'selected_mods', 'selected_creators', 'deck', 'website', 'download_link', 'donate_link', 'wiki_link', 'description', 'slug');
+        $input = Input::only('name', 'launcher', 'selected_mods', 'selected_creators', 'selected_tags', 'deck', 'website',
+            'download_link', 'donate_link', 'wiki_link', 'description', 'slug');
 
         $messages = [
             'unique' => 'This modpack already exists in the database. If it requires an update let us know!',
@@ -289,12 +306,23 @@ class ModpackController extends BaseController
                 }
                 $modpack->mods()->attach($input['selected_mods']);
 
+                foreach ($tags as $t)
+                {
+                    $modpack->tags()->detach($t->id);
+                }
+                if ($input['selected_tags']) $modpack->tags()->attach($input['selected_tags']);
+
                 $version_mods = $minecraft_version->mods;
                 $updated_modpack = Modpack::find($modpack->id);
 
                 foreach ($updated_modpack->mods as $m)
                 {
                     $selected_mods[] = $m->id;
+                }
+
+                foreach ($updated_modpack->tags as $t)
+                {
+                    $selected_tags[] = $t->id;
                 }
 
                 foreach ($updated_modpack->creators as $c)
@@ -321,7 +349,8 @@ class ModpackController extends BaseController
 
                 return View::make('modpacks.edit', ['title' => $title, 'chosen' => true, 'success' => true,
                     'modpack'=> $updated_modpack, 'version' => $minecraft_version->name, 'mods' => $mod_select_array,
-                    'selected_mods' => $selected_mods, 'selected_creators' => $selected_creators]);
+                    'selected_mods' => $selected_mods, 'selected_creators' => $selected_creators,
+                    'selected_tags' => $selected_tags]);
             }
             else
             {

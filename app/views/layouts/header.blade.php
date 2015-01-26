@@ -333,6 +333,13 @@
                             </ul>
                         </li>
                 @endif
+                @if ($user_permissions['modpack_tags'] == 1)
+                    <li>
+                        <a href="/tag/modpack/add">
+                            &nbsp;&nbsp;Add Modpack Tag
+                        </a>
+                    </li>
+                @endif
                 @if ($user_permissions['modpack_code_add'] == 1)
                     <li>
                         <a href="/modpack-code/add">

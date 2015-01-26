@@ -20,6 +20,7 @@
                 @endforeach
             </h5>
             <p>
+                <a href="/launcher/{{ $launcher->slug }}"><i class="fa fa-rocket"></i> {{ $launcher->name }}</a> |
             <?php $i=0 ?>
             @foreach ($links as $index => $link)
                 @if ($index == 'website')
@@ -42,7 +43,15 @@
                 @endif
             </p>
 
-            <p>Launcher: <a href="/launcher/{{ $launcher->slug }}">{{ $launcher->name }}</a> </p>
+            @if (count($tags) > 0)
+                <p><?php $i=0 ?>
+                <i class="fa fa-tags"></i> Tags:
+                @foreach ($tags as $tag)
+                    <a href="#">{{ $tag->name }}</a>@if ($i+1 != count($tags)),@endif
+                    <?php $i++; ?>
+                @endforeach</p>
+            @endif
+
 
             @if (isset($pack_code))
                 @if ($launcher->slug == 'feed-the-beast')

@@ -51,6 +51,12 @@ Route::post('modpack-code/add', ['as' => 'modpack_code_add', 'uses' => 'ModpackC
 Route::get('modpack-code/edit/{id}', ['as' => 'modpack_code_edit', 'uses' => 'ModpackCodeController@getEdit']);
 Route::post('modpack-code/edit/{id}', ['as' => 'modpack_code_edit', 'uses' => 'ModpackCodeController@postEdit']);
 
+//Tags
+Route::get('tag/modpack/add', ['as' => 'modpack_tag', 'uses' => 'ModpackTagController@getAdd']);
+Route::post('tag/modpack/add', ['as' => 'modpack_tag', 'uses' => 'ModpackTagController@postAdd']);
+Route::get('tag/modpack/edit/{id}', ['as' => 'modpack_tag', 'uses' => 'ModpackTagController@getEdit']);
+Route::post('tag/modpack/edit/{id}', ['as' => 'modpack_tag', 'uses' => 'ModpackTagController@postEdit']);
+
 //Users
 Route::get('user/permissions/{id}', ['as' => 'permissions_edit', 'uses' => 'UserController@getUserPermissions']);
 Route::Post('user/permissions/{id}', ['as' => 'permissions_edit', 'uses' => 'UserController@postUserPermissions']);

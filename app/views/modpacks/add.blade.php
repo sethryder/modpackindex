@@ -54,6 +54,11 @@
                 </div>
 
                 <div class="form-group">
+                    {{ Form::label('tags','Tags') }}:
+                    {{ Form::select('tags[]', ModpackTag::lists('name', 'id'), null, array('multiple', 'class' => 'chosen-select form-control')) }}
+                </div>
+
+                <div class="form-group">
                     {{ Form::label('creator','Creator(s)') }}:
                     {{ Form::select('creators[]', Creator::lists('name', 'id'), null, array('multiple', 'class' => 'chosen-select form-control')) }}
                 </div>
