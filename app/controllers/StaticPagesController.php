@@ -68,6 +68,7 @@ class StaticPagesController extends BaseController
             'name.required' => 'The Modpack name is required.',
             'creators_name.required' => 'The name of the Modpack Creator(s) is required.',
             'website.required' => 'The website/forum post is required.',
+            'website.url' => 'Please provide a valid link to the website/forum post.',
             'modlist.required' => 'A link to the mod list is required.',
             'modlist.url' => 'Please provide a valid link to the mod list.',
             'deck.required' => 'A short description for the Modpack is required.'
