@@ -54,7 +54,7 @@ class ModpackController extends BaseController
 
         return View::make('modpacks.detail', array('table_javascript' => $table_javascript, 'modpack' => $modpack,
             'links' => $links, 'launcher' => $launcher, 'creators' => $creators, 'tags' => $tags, 'title' => $title,
-            'meta_description' => $meta_description, 'pack_code' => $pack_code));
+            'meta_description' => $meta_description, 'pack_code' => $pack_code, 'version' => $version));
     }
 
     public function getAdd($version)

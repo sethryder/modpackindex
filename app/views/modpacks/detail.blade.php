@@ -47,7 +47,7 @@
                 <p><?php $i=0 ?>
                 <i class="fa fa-tags"></i> Tags:
                 @foreach ($tags as $tag)
-                    <a href="#">{{ $tag->name }}</a>@if ($i+1 != count($tags)),@endif
+                    <a href="/modpack/finder/{{ $version }}/?tag={{ $tag->slug }}">{{ $tag->name }}</a>@if ($i+1 != count($tags)),@endif
                     <?php $i++; ?>
                 @endforeach</p>
             @endif

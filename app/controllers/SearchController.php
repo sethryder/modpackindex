@@ -7,6 +7,8 @@ class SearchController extends BaseController
         $url_version = $version;
         $version = preg_replace('/-/', '.', $version);
 
+        $input = Input::only('tag');
+
         $title = $version . ' Modpack Finder - '. $this->site_name;
 
         $tag_select_array = [];
@@ -30,8 +32,32 @@ class SearchController extends BaseController
         asort($mod_select_array);
         asort($tag_select_array);
 
-        return View::make('search.modpack', ['chosen' => true, 'mods' => $mod_select_array, 'tags' => $tag_select_array,
-            'version' => $version, 'url_version' => $url_version, 'title' => $title]);
+        if ($input['tag'])
+        {
+            $tag = ModpackTag::where('slug', $input['tag'])->first();
+
+            if (!$tag)
+            {
+                return Redirect::to('/modpack/finder/'.$url_version);
+            }
+
+            $tag_id = $tag->id;
+
+            $selected_tags = ["$tag_id"];
+            $selected_mods = [];
+
+            $table_javascript = '/api/table/modpackfinder_'. $url_version .'.json?tags='. $tag->id;
+
+            return View::make('search.modpack', ['chosen' => true, 'mods' => $mod_select_array, 'tags' => $tag_select_array,
+                'version' => $version, 'url_version' => $url_version, 'title' => $title, 'results' => true,
+                'table_javascript' => $table_javascript, 'selected_tags' => $selected_tags, 'selected_mods' => $selected_mods]);
+
+        }
+        else
+        {
+            return View::make('search.modpack', ['chosen' => true, 'mods' => $mod_select_array, 'tags' => $tag_select_array,
+                'version' => $version, 'url_version' => $url_version, 'title' => $title]);
+        }
     }
 
     public function postModpackSearch($version)
