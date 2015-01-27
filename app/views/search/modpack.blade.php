@@ -13,29 +13,38 @@
             </h3>
 
             <div class="portlet-body">
-                <p>Modpack Finder is here to help you find the right modpack for you! Just feed it a list of Mods you
-                want to play and we will do our best to find you the Modpacks that provide them.</p>
+                <p>Find the right Modpack for you. You can search by Tags/Type, Mods, or both!</p>
             </div>
 
             <p>&nbsp;</p>
 
-            <h4 class="portlet-title">
-                <u>Select Your Mods</u>
-            </h4>
+          <h4 class="portlet-title">
+              <u>What are you looking for?</u>
+          </h4>
 
-            <div class="portlet-body">
-            {{ Form::open(array('url' => '/modpack/finder/'. $url_version, 'class' => 'form parsley-form')) }}
+          <div class="portlet-body" style="width: 50%">
+              <div class="form-group">
+                  {{ Form::open(array('url' => '/modpack/finder/'. $url_version, 'class' => 'form parsley-form')) }}
+                  {{ Form::label('tags','Tags / Type') }}:
+                  @if (isset($results))
+                      {{ Form::select('tags[]', $tags, $selected_tags, array('multiple', 'placeholder' => 'Start typing!', 'class' => 'chosen-select form-control')) }}
+                  @else
+                      {{ Form::select('tags[]', $tags, null, array('multiple', 'placeholder' => 'Start typing!', 'class' => 'chosen-select form-control')) }}
+                  @endif
+              </div>
+
+              <div class="form-group">
                 {{ Form::label('mods','Mods') }}:
                 @if (isset($results))
                     {{ Form::select('mods[]', $mods, $selected_mods, array('multiple', 'placeholder' => 'Start typing!', 'class' => 'chosen-select form-control')) }}
                 @else
                     {{ Form::select('mods[]', $mods, null, array('multiple', 'placeholder' => 'Start typing!', 'class' => 'chosen-select form-control')) }}
                 @endif
-                <p>&nbsp;</p>
+              </div>
                 {{ Form::submit('Search', ['class' => 'btn btn-danger']) }}
 
             {{ Form::close() }}
-            </div>
+          </div>
 
 
 
