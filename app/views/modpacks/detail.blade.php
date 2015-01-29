@@ -54,18 +54,20 @@
 
 
             @if (isset($pack_code))
+                <p>
                 @if ($launcher->slug == 'feed-the-beast')
-                    <p>Pack Code: <b>{{ $pack_code->code }}</b> (<a href="/about/modpack-codes">What's this?</a>)</p>
+                    Pack Code: <b>{{ $pack_code->code }}</b> (<a href="/about/modpack-codes">What's this?</a>)
                 @endif
                 @if ($launcher->slug == 'atlauncher')
-                    <p>Pack Code: <b>{{ $pack_code->code }}</b> (<a href="/about/modpack-codes">What's this?</a>)</p>
+                    Pack Code: <b>{{ $pack_code->code }}</b> (<a href="/about/modpack-codes">What's this?</a>)
                 @endif
                 @if ($launcher->slug == 'technic-platform')
-                    <p>Pack URL: <input type="text" name="url" value="{{ $pack_code->code }}"> (<a href="/about/modpack-codes">What's this?</a>)</p>
+                    Pack URL: <input type="text" name="url" value="{{ $pack_code->code }}"> (<a href="/about/modpack-codes">What's this?</a>)
                 @endif
                 @if (isset($user_permissions['modpack_code_edit']))
                     | <a href="/modpack/edit/{{ $pack_code->id }}"><i class="fa fa-edit"></i> Edit</a>
                 @endif
+                </p>
             @endif
 
             <div class="portlet-body"></div>
