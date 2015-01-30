@@ -628,6 +628,8 @@ class JSONController extends BaseController
             $mods_array[] = ['name' => $mod->name, 'value' => $mod->id];
         }
 
+        asort($mods_array);
+
         return json_encode($mods_array);
     }
 
