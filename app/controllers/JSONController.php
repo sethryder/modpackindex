@@ -618,6 +618,7 @@ class JSONController extends BaseController
     public function getModsSelect($version)
     {
         $version = preg_replace('/-/', '.', $version);
+        $sort_array = [];
         $mods_array = [];
 
         $raw_version = MinecraftVersion::where('name', '=', $version)->first();
@@ -625,10 +626,16 @@ class JSONController extends BaseController
 
         foreach ($raw_mods as $mod)
         {
-            $mods_array[] = ['name' => $mod->name, 'value' => $mod->id];
+            $mod_id = $mod->id;
+            $sort_array[$mod_id] = $mod->name;
         }
 
-        asort($mods_array);
+        natcasesort($sort_array);
+
+        foreach($sort_array as $k => $mod)
+        {
+            $mods_array[] = ['name' => $mod, 'value' => $k];
+        }
 
         return json_encode($mods_array);
     }
