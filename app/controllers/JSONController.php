@@ -505,10 +505,16 @@ class JSONController extends BaseController
         $modpacks_array = [];
         $input = Input::only('mods', 'tags');
 
-        $version = preg_replace('/-/', '.', $version);
-        $minecraft_version = MinecraftVersion::where('name', '=', $version)->first();
-
-        $modpack = Modpack::where('minecraft_version_id', '=', $minecraft_version->id);
+        if ($version == 'all')
+        {
+            $modpack = Modpack::where('id', '!=', '0'); //there has to be a better way
+        }
+        else
+        {
+            $version_name = preg_replace('/-/', '.', $version);
+            $minecraft_version = MinecraftVersion::where('name', $version_name)->first();
+            $modpack = Modpack::where('minecraft_version_id', $minecraft_version->id);
+        }
 
         if ($input['mods'])
         {
@@ -606,7 +612,23 @@ class JSONController extends BaseController
             ];
         }
 
-        return View::make('api.table.modpacks.json', ['modpacks' => $modpacks_array, 'version' => $version]);
+        return View::make('api.table.modpacks.json', ['modpacks' => $modpacks_array]);
+    }
+
+    public function getModsSelect($version)
+    {
+        $version = preg_replace('/-/', '.', $version);
+        $mods_array = [];
+
+        $raw_version = MinecraftVersion::where('name', '=', $version)->first();
+        $raw_mods = $raw_version->mods;
+
+        foreach ($raw_mods as $mod)
+        {
+            $mods_array[] = ['name' => $mod->name, 'value' => $mod->id];
+        }
+
+        return json_encode($mods_array);
     }
 
     public function getTableDataFile($type, $version, $name = null)
@@ -686,16 +708,20 @@ class JSONController extends BaseController
 
                 if ($input['tags'] && $input['mods'])
                 {
-                    $ajax_source = '/api/table/modpackfinder/' . $version . '.json?mods=' . $input['mods'] . '&tags=' . $input['tags'];
+                    $ajax_source = '/api/table/modpack_finder/' . $version .'.json?mods=' . $input['mods'] . '&tags=' . $input['tags'];
 
                 }
                 elseif ($input['mods'])
                 {
-                    $ajax_source = '/api/table/modpackfinder/' . $version . '.json?mods=' . $input['mods'];
+                    $ajax_source = '/api/table/modpack_finder/' . $version . '.json?mods=' . $input['mods'];
                 }
                 elseif ($input['tags'])
                 {
-                    $ajax_source = '/api/table/modpackfinder/' . $version . '.json?tags=' . $input['tags'];
+                    $ajax_source = '/api/table/modpack_finder/' . $version . '.json?tags=' . $input['tags'];
+                }
+                else
+                {
+                    $ajax_source = '/api/table/modpack_finder/' . $version . '.json';
                 }
                 break;
 

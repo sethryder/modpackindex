@@ -2,35 +2,11 @@
 
 class SearchController extends BaseController
 {
-    public function getModpackSearch($version)
+    public function getModpackSearch()
     {
-        $url_version = $version;
-        $version = preg_replace('/-/', '.', $version);
-
         $input = Input::only('tag');
 
-        $title = $version . ' Modpack Finder - '. $this->site_name;
-
-        $tag_select_array = [];
-        $mod_select_array = [];
-
-        $minecraft_version = MinecraftVersion::where('name', '=', $version)->first();
-        $mods = $minecraft_version->mods;
-        foreach ($mods as $mod)
-        {
-            $id = $mod->id;
-            $mod_select_array[$id] = $mod->name;
-        }
-
-        $tags = ModpackTag::all();
-        foreach ($tags as $tag)
-        {
-            $id = $tag->id;
-            $tag_select_array[$id] = $tag->name;
-        }
-
-        asort($mod_select_array);
-        asort($tag_select_array);
+        $title = ' Modpack Finder - '. $this->site_name;
 
         if ($input['tag'])
         {
@@ -38,7 +14,7 @@ class SearchController extends BaseController
 
             if (!$tag)
             {
-                return Redirect::to('/modpack/finder/'.$url_version);
+                return Redirect::to('/modpack/finder/');
             }
 
             $tag_id = $tag->id;
@@ -46,60 +22,55 @@ class SearchController extends BaseController
             $selected_tags = ["$tag_id"];
             $selected_mods = [];
 
-            $table_javascript = '/api/table/modpackfinder_'. $url_version .'.json?tags='. $tag->id;
+            $table_javascript = '/api/table/modpackfinder_all.json?tags='. $tag->id;
 
-            return View::make('search.modpack', ['chosen' => true, 'mods' => $mod_select_array, 'tags' => $tag_select_array,
-                'version' => $version, 'url_version' => $url_version, 'title' => $title, 'results' => true,
-                'table_javascript' => $table_javascript, 'selected_tags' => $selected_tags, 'selected_mods' => $selected_mods]);
+            return View::make('search.modpack', ['chosen' => true, 'mods' => [], 'title' => $title, 'results' => true,
+                'table_javascript' => $table_javascript, 'selected_tags' => $selected_tags, 'selected_mods' => $selected_mods,
+                'mc_version' => '0', 'url_version' => 'all', 'search_javascript' => true]);
 
         }
         else
         {
-            return View::make('search.modpack', ['chosen' => true, 'mods' => $mod_select_array, 'tags' => $tag_select_array,
-                'version' => $version, 'url_version' => $url_version, 'title' => $title]);
+            return View::make('search.modpack', ['chosen' => true, 'title' => $title, 'search_javascript' => true]);
         }
     }
 
-    public function postModpackSearch($version)
+    public function postModpackSearch()
     {
-        $url_version = $version;
-        $version = preg_replace('/-/', '.', $version);
-        $input = Input::only('mods', 'tags');
+        $input = Input::only('mods', 'tags', 'mc_version');
+        $version = $input['mc_version'];
 
-        if (!$input['mods'] && !$input['tags'])
+        if (!$version)
         {
-            return Redirect::to('/modpack/finder/'.$url_version);
+            $url_version = 'all';
         }
-
-        $minecraft_version = MinecraftVersion::where('name', '=', $version)->first();
-        $mods = $minecraft_version->mods;
-        foreach ($mods as $mod)
-        {
-            $id = $mod->id;
-            $mod_select_array[$id] = $mod->name;
-        }
-
-        $tags = ModpackTag::all();
-        foreach ($tags as $tag)
-        {
-            $id = $tag->id;
-            $tag_select_array[$id] = $tag->name;
-        }
-
-        asort($mod_select_array);
-        asort($tag_select_array);
 
         $mods_string = '';
         $tags_string = '';
+        $mod_select_array[] = [];
 
-        if ($input['mods'])
+        if ($version)
         {
-            foreach ($input['mods'] as $mod)
+            $minecraft_version = MinecraftVersion::find($version);
+            $mods = $minecraft_version->mods;
+
+            $url_version = preg_replace('/\./', '-', $minecraft_version->name);
+
+            foreach ($mods as $mod)
             {
-                $mods_string .= $mod . ',';
+                $id = $mod->id;
+                $mod_select_array[$id] = $mod->name;
             }
 
-            $mods_string = rtrim($mods_string, ',');
+            if ($input['mods'])
+            {
+                foreach ($input['mods'] as $mod)
+                {
+                    $mods_string .= $mod . ',';
+                }
+
+                $mods_string = rtrim($mods_string, ',');
+            }
         }
 
         if ($input['tags'])
@@ -111,7 +82,6 @@ class SearchController extends BaseController
 
             $tags_string = rtrim($tags_string, ',');
         }
-
 
         if ($input['mods'] && $input['tags'])
         {
@@ -125,9 +95,13 @@ class SearchController extends BaseController
         {
             $table_javascript = '/api/table/modpackfinder_'. $url_version .'.json?tags='. $tags_string;
         }
+        else
+        {
+            $table_javascript = '/api/table/modpackfinder_'. $url_version .'.json';
+        }
 
-        return View::make('search.modpack', ['chosen' => true, 'version' => $version, 'url_version' => $url_version,
-            'results' => true, 'table_javascript' => $table_javascript, 'mods' => $mod_select_array, 'tags' => $tag_select_array,
-            'selected_mods' => $input['mods'], 'selected_tags' => $input['tags']]);
+        return View::make('search.modpack', ['chosen' => true, 'mc_version' => $version, 'url_version' => $url_version,
+            'results' => true, 'table_javascript' => $table_javascript, 'selected_mods' => $input['mods'], 'mods' => $mod_select_array,
+            'selected_tags' => $input['tags'], 'search_javascript' => true]);
     }
 }

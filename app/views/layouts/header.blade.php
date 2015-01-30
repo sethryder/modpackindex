@@ -63,27 +63,10 @@
 
         <ul class="mainnav-menu">
 
-            <li class="dropdown">
-                <a href="/mods" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
-                Pack Finder
-                <i class="mainnav-caret"></i>
+            <li>
+                <a href="/modpack/finder">
+                    Pack Finder
                 </a>
-
-                <ul class="dropdown-menu" role="menu">
-                <li>
-                  <a href="/modpack/finder/1-7-10/">
-                  <img class="fa" src="/static/img/icons/enderman.png" />
-                  &nbsp;&nbsp;1.7.10 Packs
-                  </a>
-                </li>
-
-                <li>
-                  <a href="/modpack/finder/1-6-4/">
-                  <img class="fa" src="/static/img/icons/creeper.png" />
-                  &nbsp;&nbsp;1.6.4 Packs
-                  </a>
-                </li>
-                </ul>
             </li>
 
           <li class="dropdown">

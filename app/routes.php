@@ -80,8 +80,15 @@ Route::get('/cache/clear/{tag?}', ['as' => 'cache_clear', 'uses' => 'AdminContro
  */
 
 //search
-Route::get('modpack/finder/{version}','SearchController@getModpackSearch');
-Route::post('modpack/finder/{version}', 'SearchController@postModpackSearch');
+Route::get('modpack/finder','SearchController@getModpackSearch');
+Route::post('modpack/finder','SearchController@postModpackSearch');
+
+//redirect old routes
+Route::get('modpack/finder/{version}', function(){
+    return Redirect::to('/modpack/finder', 301);
+});
+//Route::get('modpack/finder/{version}','SearchController@getModpackSearch');
+//Route::post('modpack/finder/{version}', 'SearchController@postModpackSearch');
 
 //mods
 Route::get('mods/{version?}', 'ModController@getModVersion');
@@ -107,6 +114,8 @@ Route::get('user/verify/{confirmation}', 'UserController@getVerify');
 
 
 //api calls for json for the tables
+Route::get('api/table/modpack_finder/{version}.json', 'JSONController@getModpackSearch');
+
 Route::get('api/table/{type}_{version}.json', 'JSONController@getTableDataFile');
 Route::get('api/table/{type}_{version}/{name}.json', 'JSONController@getTableDataFile');
 
@@ -118,7 +127,8 @@ Route::get('api/table/modpack/mods/{name}.json', 'JSONController@getTableModpack
 
 Route::get('api/table/launchers/{name}/{version}.json', 'JSONController@getTableLaunchers');
 
-Route::get('api/table/modpackfinder/{version}.json', 'JSONController@getModpackSearch');
+//mod select for pack finder
+Route::get('api/select/mods/{version}.json', 'JSONController@getModsSelect');
 
 //Route::get('api/jquery/mods/select.js', 'ModpackController@getModsJquery');
 
