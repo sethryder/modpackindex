@@ -14,8 +14,6 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,800,800italic">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300,700">
 
-    <link rel="apple-touch-icon icon-precomposed" href="/static/images/apple-touch-icon.png"/>
-
     <!-- build:css /static/css/minified.css -->
     <link rel="stylesheet" href="/static/css/font-awesome.min.css">
     <link rel="stylesheet" href="/static/css/bootstrap.css">
@@ -59,6 +57,10 @@
       <script src="/static/js/plugins/dataTables/jquery.dataTables.js"></script>
       <script src="/static/js/plugins/dataTables/dataTables.bootstrap.js"></script>
       <script src="{{ $table_javascript }}"></script>
+      <?php } ?>
+
+      <?php if (isset($search_javascript)) { ?>
+      <script src="/static/js/pack-finder-select.js"></script>
       <?php } ?>
 
       <?php if(isset($chosen)) { ?>
