@@ -14,7 +14,7 @@ class CreateUrlRedirectsTable extends Migration {
 	{
 		Schema::create('url_redirects', function ($table) {
 			$table->increments('id');
-			$table->string('source');
+			$table->string('source')->index();
 			$table->string('target');
 			$table->timestamps();
 		});
