@@ -27,6 +27,14 @@ class ModController extends BaseController
 
         if (!$mod)
         {
+            $redirect = new URLRedirect;
+            $do_redirect = $redirect->getRedirect(Request::path());
+
+            if ($do_redirect)
+            {
+                return Redirect::to($do_redirect->target, 301);
+            }
+
             App::abort(404);
         }
 
