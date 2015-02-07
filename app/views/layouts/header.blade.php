@@ -282,6 +282,12 @@
                 </li>
                 </ul>
             </li>
+
+            <li>
+                <a href="/streams">
+                    Streams
+                </a>
+            </li>
             @if (isset($user_permissions))
             <li class="dropdown">
                 <a href="/mods" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
