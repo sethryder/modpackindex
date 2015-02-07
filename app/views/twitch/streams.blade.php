@@ -10,9 +10,9 @@
                     <h3 class="portlet-title">
                         <u>{{ $modpack_name }}</u>
                     </h3>
-
+                    <div class="row">
                     @foreach($modpack_streams as $stream)
-                        <div class="row">
+
                                 <div class="col-md-3 col-sm-6">
 
                                     <div class="thumbnail">
@@ -34,8 +34,9 @@
                                     </div>
 
                                 </div> <!-- /.col -->
-                            </div>
+
                     @endforeach
+                    </div>
                 @endif
             @endforeach
 
