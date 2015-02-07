@@ -39,7 +39,7 @@ class ModpackController extends BaseController
         $creators = $modpack->creators;
         $pack_code = $modpack->code;
         $tags = $modpack->tags;
-        $twitch_streams = $modpack->twitchStreams()->orderBy('viewers')->get();
+        $twitch_streams = $modpack->twitchStreams()->orderBy('viewers', 'desc')->get();
         $youtube_videos = $modpack->youtubeVideos;
 
         $raw_links = [
