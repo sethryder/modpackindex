@@ -34,6 +34,7 @@
                                     </div>
 
                                 </div> <!-- /.col -->
+                            </div>
                     @endforeach
                 @endif
             @endforeach
