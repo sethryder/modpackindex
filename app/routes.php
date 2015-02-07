@@ -121,6 +121,7 @@ Route::get('login', 'UserController@getLogin');
 Route::post('login', 'UserController@postLogin');
 
 //twitch
+Route::get('streams', 'TwitchController@getStreams');
 Route::get('stream/{channel}', 'TwitchController@getChannel');
 
 //Route::get('register', 'UserController@getRegister');

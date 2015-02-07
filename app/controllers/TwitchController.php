@@ -26,13 +26,22 @@ class TwitchController extends BaseController
 
     public function getStreams()
     {
-        $channels = TwitchStream::where('online', 1)->get();
-        $modpack = $channel->modpack;
+        $streams_array = [];
+        $modpacks= Modpack::orderBy('name')->get();
 
-        foreach ($channels as $chan)
+        foreach ($modpacks as $modpack)
+        {
+            $modpack_streams = $modpack->twitchStreams()->orderBy('viewers', 'desc')->get();;
 
-        $title = $channel->display_name . ' Streaming ' . $modpack_name . ' - ' . $this->site_name;
+            if ($modpack_streams)
+            {
+                $streams_array[$modpack->name] = $modpack_streams;
+            }
+        }
 
-        return View::make('twitch.channel', ['title' => $title, 'channel' => $channel, 'modpack_name' => $modpack_name]);
+        $title = 'Modpack Streams - ' . $this->site_name;
+
+
+        return View::make('twitch.streams', ['title' => $title, 'streams' => $streams_array]);
     }
 }
