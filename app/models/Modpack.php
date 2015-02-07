@@ -31,4 +31,19 @@ class Modpack extends Eloquent
     {
         return $this->belongsToMany('ModpackTag');
     }
+
+    public function aliases()
+    {
+        return $this->hasMany('ModpackAlias');
+    }
+
+    public function twitchStreams()
+    {
+        return $this->hasMany('TwitchStream');
+    }
+
+    public function youtubeVideos()
+    {
+        return $this->hasMany('Youtube');
+    }
 }

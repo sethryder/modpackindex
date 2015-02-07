@@ -45,15 +45,15 @@
       <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
       <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
-      <script src="/static/js/plugins/flot/jquery.flot.js"></script>
-      <script src="/static/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
-      <script src="/static/js/plugins/flot/jquery.flot.pie.js"></script>
-      <script src="/static/js/plugins/flot/jquery.flot.resize.js"></script>
-      <script src="/static/js/plugins/flot/jquery.flot.orderBars.js"></script>
       <script src="/static/js/mvpready-core.js"></script>
       <script src="/static/js/mvpready-admin.js"></script>
 
+      <?php if(isset($sticky_tabs)) { ?>
+      <script src="/static/js/tab-control.js"></script>
+      <?php } ?>
+
       <?php if (isset($table_javascript)) { ?>
+
       <script src="/static/js/plugins/dataTables/jquery.dataTables.js"></script>
       <script src="/static/js/plugins/dataTables/dataTables.bootstrap.js"></script>
       <script src="{{ $table_javascript }}"></script>
@@ -74,6 +74,7 @@
           $(".chosen-select").chosen(chosen_config)
       </script>
       <?php } ?>
+
       <script>
           (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
               (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -82,7 +83,6 @@
 
           ga('create', 'UA-7061726-16', 'auto');
           ga('send', 'pageview');
-
       </script>
   </body>
 </html>

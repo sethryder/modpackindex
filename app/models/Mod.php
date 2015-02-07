@@ -17,6 +17,11 @@ class Mod extends Eloquent
         return $this->belongsToMany('Modpack');
     }
 
+    public function youtube()
+    {
+        return $this->hasMany('Youtube');
+    }
+
     public function requiredMods()
     {
         return $this->belongsToMany('Mod', 'mod_requirements', 'mod_id', 'required_mod_id');

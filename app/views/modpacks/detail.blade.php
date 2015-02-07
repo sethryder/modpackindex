@@ -79,33 +79,112 @@
                 @endif
 
             <p>&nbsp;</p>
-            <h4 class="portlet-title">
-                <u>Mod List</u>
-            </h4>
 
-            <div class="portlet-body">
-              <table class="table table-striped table-bordered" id="table-1">
-                <thead>
-                  <tr>
-                    <th style="width: 20%">Name</th>
-                    <th style="width: 12%">MC Version(s)</th>
-                    <th style="width: 35%">Description</th>
-                    <th style="width: 15%">Author(s)</th>
-                    <th style="width: 18%">Link(s)</th>
-                  </tr>
-                </thead>
-                <tfoot>
-                  <tr>
-                    <th>Name</th>
-                    <th>MC Version(s)</th>
-                    <th>Description</th>
-                    <th>Author(s)</th>
-                    <th>Link(s)</th>
-                  </tr>
-                </tfoot>
-              </table>
+                <ul id="modpack_page" class="nav nav-tabs nav-tabs-sticky">
+                    <li class="active">
+                        <a href="#mod_list" data-toggle="tab">Mod List</a>
+                    </li>
 
-            </div> <!-- /.portlet-body -->
+                    @if (isset($twitch_streams[0]))
+                        <li class="">
+                            <a href="#twitch_streams" data-toggle="tab">Twitch Streams</a>
+                        </li>
+                    @endif
+
+                    @if (isset($youtube_videos[0]))
+                    <li class="">
+                        <a href="#youtube" data-toggle="tab">Let's Plays</a>
+                    </li>
+                    @endif
+                </ul>
+
+                <div id="modpack_page" class="tab-content">
+
+                <div class="tab-pane fade active in" id="mod_list">
+                    <div class="portlet-body">
+                      <table class="table table-striped table-bordered" id="table-1">
+                        <thead>
+                          <tr>
+                            <th style="width: 20%">Name</th>
+                            <th style="width: 12%">MC Version(s)</th>
+                            <th style="width: 35%">Description</th>
+                            <th style="width: 15%">Author(s)</th>
+                            <th style="width: 18%">Link(s)</th>
+                          </tr>
+                        </thead>
+                        <tfoot>
+                          <tr>
+                            <th>Name</th>
+                            <th>MC Version(s)</th>
+                            <th>Description</th>
+                            <th>Author(s)</th>
+                            <th>Link(s)</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+
+                    </div> <!-- /.portlet-body -->
+                </div>
+
+
+                @if (isset($twitch_streams[0]))
+                    <div class="tab-pane fade" id="twitch_streams">
+                        <div class="row">
+                            @foreach($twitch_streams as $stream)
+                                <div class="col-md-3 col-sm-6">
+
+                                    <div class="thumbnail">
+                                        <div class="thumbnail-view">
+                                            <a href="/stream/{{ $stream->display_name }}">
+                                            <img src="{{ $stream->preview }}" style="width: 100%" /></a>
+                                        </div>
+                                        <div class="thumbnail-footer">
+                                            <div class="pull-left">
+                                                <a href="http://twitch.tv/{{ $stream->display_name }}">{{ $stream->display_name }}</a>
+                                            </div>
+
+                                            <div class="pull-right">
+                                                <a href="/stream/{{ $stream->display_name }}"><i class="fa fa-bullhorn"></i> {{ $stream->language }}</a>
+                                                <a href="/stream/{{ $stream->display_name }}"><i class="fa fa-eye"></i> {{ $stream->viewers }}</a>
+                                                <!-- <a href="javascript:;"><i class="fa fa-heart"></i> {{ $stream->followers }}</a> -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div> <!-- /.col -->
+                            @endforeach
+                        </div>
+                    </div> <!-- /.tab-pane -->
+                @endif
+
+                @if (isset($youtube_videos[0]))
+                    <div class="tab-pane fade" id="youtube">
+                        <div class="row">
+                            @foreach($youtube_videos as $youtube)
+                                <div class="col-md-3 col-sm-6">
+
+                                    <div class="thumbnail">
+                                        <div class="thumbnail-view">
+                                            <a href="/modpack/{{ $version }}/{{ $modpack->slug }}/video/{{ $youtube->id }}">
+                                                <img src="{{ $youtube->thumbnail }}" style="width: 100%" /></a>
+                                        </div>
+                                        <div class="thumbnail-footer">
+                                            <div class="pull-left">
+                                                <a href="http://twitch.tv/{{ $youtube->channel_title }}">{{ $youtube->channel_title }}</a>
+                                            </div>
+
+                                            <div class="pull-right">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div> <!-- /.col -->
+                            @endforeach
+                        </div>
+                    </div> <!-- /.tab-pane -->
+                @endif
+
+            </div>
 
           </div> <!-- /.portlet -->
 

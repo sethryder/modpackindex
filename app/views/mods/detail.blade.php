@@ -49,35 +49,50 @@
                 @endif
             <p>&nbsp;</p>
 
-            <h4 class="portlet-title">
-                <u>Modpack List</u>
-            </h4>
+            <ul id="modpack_page" class="nav nav-tabs nav-tabs-sticky">
+                <li class="active">
+                    <a href="#modpack_list" data-toggle="tab">Modpack List</a>
+                </li>
 
-            <div class="portlet-body">
-              <table class="table table-striped table-bordered" id="table-1">
-                <thead>
-                  <tr>
-                    <th style="width: 20%">Name</th>
-                    <th style="width: 10%">MC Version</th>
-                    <th style="width: 36%">Description</th>
-                    <th style="width: 15%">Creators(s)</th>
-                    <th style="width: 1%"></th>
-                    <th style="width: 18%">Link(s)</th>
-                  </tr>
-                </thead>
-                <tfoot>
-                  <tr>
-                    <th>Name</th>
-                    <th>MC Version</th>
-                    <th>Description</th>
-                    <th>Creators(s)</th>
-                    <th></th>
-                    <th>Link(s)</th>
-                  </tr>
-                </tfoot>
-              </table>
+                @if (isset($youtube_videos[0]))
+                    <li class="">
+                        <a href="#youtube" data-toggle="tab">Spotlights</a>
+                    </li>
+                @endif
+            </ul>
 
-            </div> <!-- /.portlet-body -->
+            <div id="modpack_page" class="tab-content">
+
+                <div class="tab-pane fade active in" id="modpack_list">
+
+                    <div class="portlet-body">
+                      <table class="table table-striped table-bordered" id="table-1">
+                        <thead>
+                          <tr>
+                            <th style="width: 20%">Name</th>
+                            <th style="width: 10%">MC Version</th>
+                            <th style="width: 36%">Description</th>
+                            <th style="width: 15%">Creators(s)</th>
+                            <th style="width: 1%"></th>
+                            <th style="width: 18%">Link(s)</th>
+                          </tr>
+                        </thead>
+                        <tfoot>
+                          <tr>
+                            <th>Name</th>
+                            <th>MC Version</th>
+                            <th>Description</th>
+                            <th>Creators(s)</th>
+                            <th></th>
+                            <th>Link(s)</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+
+                    </div> <!-- /.portlet-body -->
+
+                </div>
+            </div>
 
           </div> <!-- /.portlet -->
 

@@ -37,7 +37,7 @@
                             @if (isset($success))
                                 <div class="alert alert-success">
                                     <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
-                                    <strong>Submited!</strong> We will get this modpack added ASAP!
+                                    <strong>Submitted!</strong> We will get this modpack added ASAP!
                                 </div> <!-- /.alert -->
                             @endif
 
@@ -103,7 +103,7 @@
                                 {{ Form::captcha(array('style' => 'margin-left: auto; margin-right: auto;'))}}
                             </div>
 
-                            {{ Form::submit('Send Message', ['class' => 'btn btn-danger']) }}
+                            {{ Form::submit('Submit', ['class' => 'btn btn-danger']) }}
 
                             {{ Form::close() }}
 

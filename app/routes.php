@@ -51,6 +51,11 @@ Route::post('modpack-code/add', ['as' => 'modpack_code_add', 'uses' => 'ModpackC
 Route::get('modpack-code/edit/{id}', ['as' => 'modpack_code_edit', 'uses' => 'ModpackCodeController@getEdit']);
 Route::post('modpack-code/edit/{id}', ['as' => 'modpack_code_edit', 'uses' => 'ModpackCodeController@postEdit']);
 
+//Modpack Aliases
+Route::get('modpack-alias/add', ['as' => 'modpack_alias_add', 'uses' => 'ModpackAliasController@getAdd']);
+Route::post('modpack-alias/add', ['as' => 'modpack_alias_add', 'uses' => 'ModpackAliasController@postAdd']);
+Route::get('modpack/{version}/{slug}/aliases', ['as' => 'modpack_alias_add', 'uses' => 'ModpackAliasController@getAliases']);
+
 //Tags
 Route::get('tag/modpack/add', ['as' => 'modpack_tag', 'uses' => 'ModpackTagController@getAdd']);
 Route::post('tag/modpack/add', ['as' => 'modpack_tag', 'uses' => 'ModpackTagController@postAdd']);
@@ -60,6 +65,12 @@ Route::post('tag/modpack/edit/{id}', ['as' => 'modpack_tag', 'uses' => 'ModpackT
 //Users
 Route::get('user/permissions/{id}', ['as' => 'permissions_edit', 'uses' => 'UserController@getUserPermissions']);
 Route::Post('user/permissions/{id}', ['as' => 'permissions_edit', 'uses' => 'UserController@postUserPermissions']);
+
+//Youtube
+Route::get('youtube/add', ['as' => 'youtube_add', 'uses' => 'YoutubeController@getadd']);
+Route::post('youtube/add', ['as' => 'youtube_add', 'uses' => 'YoutubeController@postAdd']);
+
+
 
 //Imports
 Route::get('mod/import', ['as' => 'mod_import', 'uses' => 'ImportController@getStartImport']);
@@ -93,11 +104,13 @@ Route::get('modpack/finder/{version}', function(){
 //mods
 Route::get('mods/{version?}', 'ModController@getModVersion');
 Route::get('mod/{slug}', 'ModController@getMod');
+Route::get('mod/{slug}/video/{id}', 'ModController@getVideo');
 
 
 //modpacks
 Route::get('modpacks/{version?}', 'ModpackController@getModpackVersion');
 Route::get('modpack/{version}/{slug}', 'ModpackController@getModpack');
+Route::get('modpack/{version}/{slug}/video/{id}', 'YoutubeController@getVideo');
 
 //launchers
 Route::get('launcher/{name}/{version?}', 'LauncherController@getLauncherVersion');
@@ -106,6 +119,9 @@ Route::get('launcher/{name}/{version?}', 'LauncherController@getLauncherVersion'
 //user
 Route::get('login', 'UserController@getLogin');
 Route::post('login', 'UserController@postLogin');
+
+//twitch
+Route::get('stream/{channel}', 'TwitchController@getChannel');
 
 //Route::get('register', 'UserController@getRegister');
 //Route::post('register', 'UserController@postRegister');
@@ -139,6 +155,8 @@ Route::get('contact', 'StaticPagesController@getContact');
 Route::post('contact', 'StaticPagesController@postContact');
 Route::get('submit-modpack', 'StaticPagesController@getSubmitModpack');
 Route::post('submit-modpack', 'StaticPagesController@postSubmitModpack');
+Route::get('submit-video', 'StaticPagesController@getSubmitVideo');
+Route::post('submit-video', 'StaticPagesController@postSubmitVideo');
 
 
 //sitemap

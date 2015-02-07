@@ -103,11 +103,87 @@ class StaticPagesController extends BaseController
         {
             Mail::send('emails.submitmodpack', array('input' => $input), function ($message) use ($input) {
                 $message->from('noreply@modpackindex.com', 'Modpack Index');
-                $message->replyTo($input['email'], $input['name']);
+                $message->replyTo($input['email']);
                 $message->to($input['contact_email'], 'Seth')->subject('Modpack Submission: ' . $input['name']);
             });
 
             return View::make('pages.submitmodpack', ['success' => true, 'title' => $title]);
+        }
+    }
+
+    public function getSubmitVideo()
+    {
+        $title = 'Submit Video / Playlist - '. $this->site_name;
+        $types = [
+            'Let\'s Play' => 'Let\'s Play',
+            'Spotlight' => 'Spotlight',
+            'Guide' => 'Guide',
+            'Other' => 'Other (Please specify in comments.)',
+        ];
+
+        return View::make('pages.submitvideo', ['title' => $title, 'types' => $types]);
+    }
+
+    public function postSubmitVideo()
+    {
+        $title = 'Submit Video / Playlist - '. $this->site_name;
+        $types = [
+            'Let\'s Play' => 'Let\'s Play',
+            'Spotlight' => 'Spotlight',
+            'Guide' => 'Guide',
+            'Other' => 'Other (Please specify in comments.)',
+        ];
+
+
+        $input = Input::only('url', 'type', 'mod', 'modpack', 'email', 'comments', 'recaptcha_response_field');
+        $input['contact_email'] = 'ryder.seth@gmail.com';
+        $input['sender_ip'] = Request::getClientIp();
+
+        $validator_error_messages = [
+            'url.url' => 'Please provide a valid link to the Youtube video / playlist.',
+            'url.required' => 'A link to the Youtube video / playlist is required.',
+            'modpack.required_without_all' => 'You must select either a mod or a modpack.',
+        ];
+
+
+        $validator = Validator::make($input,
+            array(
+                'url' => 'required|url',
+                'type' => 'required',
+                'modpack' => 'required_without_all:mod',
+                'email' => 'email',
+                'recaptcha_response_field' => 'required|recaptcha',
+            ),
+            $validator_error_messages
+        );
+
+        if (!$input['email'])
+        {
+            $input['email'] = 'noreply@modpackindex.com';
+        }
+
+        if ($input['modpack'])
+        {
+            $email_subject = 'Video Submission: Modpack ' . $input['type'];
+        }
+        elseif ($input['mod'])
+        {
+            $email_subject = 'Video Submission: Mod ' . $input['type'];
+        }
+
+        if ($validator->fails())
+        {
+            return Redirect::to('/submit-video')->withErrors($validator)->withInput();
+        }
+        else
+        {
+            Mail::send('emails.submitvideo', array('input' => $input), function ($message) use ($input, $email_subject) {
+                $message->from('noreply@modpackindex.com', 'Modpack Index');
+                $message->replyTo($input['email']);
+                $message->to($input['contact_email'], 'Seth')->subject($email_subject);
+            });
+
+            return View::make('pages.submitvideo', ['success' => true, 'title' => $title, 'types' => $types]);
         }
     }
 

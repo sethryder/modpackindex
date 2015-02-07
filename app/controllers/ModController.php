@@ -61,7 +61,7 @@ class ModController extends BaseController
         $meta_description = $mod->deck;
 
         return View::make('mods.detail', array('table_javascript' => $table_javascript, 'mod' => $mod, 'links' => $links,
-            'authors' => $authors, 'title' => $title, 'meta_description' => $meta_description));
+            'authors' => $authors, 'title' => $title, 'meta_description' => $meta_description, 'sticky_tabs' => true));
     }
 
     public function getAdd()

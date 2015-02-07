@@ -26,8 +26,30 @@
           <li>
             <a href="/contact">Contact</a>
           </li>
-          <li>
-              <a href="/submit-modpack">Submit Modpack</a>
+          <li class="dropdown navbar-profile">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+                  Submit &nbsp;
+                  <i class="fa fa-caret-down"></i>
+              </a>
+
+              <ul class="dropdown-menu" role="menu">
+
+                  <li>
+                      <a href="/submit-modpack">
+                          <i class="fa fa-gear"></i>
+                          &nbsp;&nbsp;Modpack
+                      </a>
+                  </li>
+
+                  <li>
+                      <a href="/submit-video">
+                          <i class="fa fa-youtube-play"></i>
+                          &nbsp;&nbsp;Video / Playlist
+                      </a>
+                  </li>
+
+              </ul>
+
           </li>
 
           </ul>
