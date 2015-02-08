@@ -22,9 +22,21 @@
             </h3>
 
             <div class="portlet-body">
-                <h4><u>Hey! This modpack/mod information is incorrect!</u></h4>
-                <p>Sorry about that! The site is currently small and all the data is currently kept up to date manually. We currently exploring the best way to expand the site and allow users to edit mods/modpacks. If you are interested in possibly helping out be sure to <a href="/contact">contact us</a>!</p>
+                <h4><u>How do I add my Modpack or Video(s)?</u></h4>
+                <p>Use the the submit menu on the top right of the site. Once we get your submission we will get it added to the site.</p>
                 <p>&nbsp;</p>
+
+                <h4><u>Why isn't my stream showing up?</u></h4>
+                <p>For your stream to show up on the site it must include the Modpack name in the stream title (or some variation of it). If you think
+                your stream should be showing up and it is not <a href="/contact">let us know</a>.</p>
+                <p>&nbsp;</p>
+
+                <h4><u>Hey! This modpack/mod information is incorrect!</u></h4>
+                <p>Sorry about that! The site is currently small and all the data is currently kept up to date manually. <a href="/contact">Contact</a> us and let us know so we can fix it!
+                <p>We currently exploring the best way to expand the site and allow users to edit mods/modpacks. If you are interested in possibly helping out be sure to <a href="/contact">contact us</a>!</p>
+
+                <p>&nbsp;</p>
+
                 <h4><u>I found a bug or have a great idea for a feature!</u></h4>
                 <p>Be sure to let us know. You can reach us in our <a href="https://webchat.esper.net/?channels=ModpackIndex" target="_blank">IRC channel</a> or contact us <a href="/contact">here</a>!</p>
             </div>
