@@ -170,7 +170,7 @@
                                         </div>
                                         <div class="thumbnail-footer">
                                             <div class="pull-left">
-                                                <a href="http://twitch.tv/{{ $youtube->channel_title }}">{{ $youtube->channel_title }}</a>
+                                                <a href="http://www.youtube.com/{{ $youtube->channel_title }}">{{ $youtube->channel_title }}</a>
                                             </div>
 
                                             <div class="pull-right">
