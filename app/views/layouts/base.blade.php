@@ -9,6 +9,7 @@
     <title>{{ $title or "Modpack Index - An Index of Minecraft Modpacks" }}</title>
     <meta name="description" content="{{{ $meta_description or "Discover the perfect Minecraft modpack. Including modpacks from Feed the Beast, ATLauncher, and Technic Platform." }}}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="UU0yBqhJnqJWN02U6v4-eRlPBGbj0ep8ZRAK_gotswM" />
 
       <!-- Google Font: Open Sans -->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,800,800italic">
