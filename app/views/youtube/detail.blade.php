@@ -22,7 +22,11 @@
 
                     <div class="portlet-body" style="text-align:center;">
                         <div class="video-container">
-                            <iframe width="1920" height="1080" src="https://www.youtube.com/embed/DFBkUc6tAPk?list=PLaiPn4ewcbkEC_hsSjPSqN8Mz3qWVC_MA" frameborder="0" allowfullscreen></iframe>
+                            @if ($video->type == 1)
+                                <iframe width="1920" height="1080" src="https://www.youtube.com/embed/{{ $video->youtube_id }}" frameborder="0" allowfullscreen></iframe>
+                            @elseif ($video->type == 2)
+                                <iframe width="1920" height="1080" src="https://www.youtube.com/embed/?list={{ $video->youtube_id }}" frameborder="0" allowfullscreen></iframe>
+                            @endif
                         </div>
                     </div>
                     <br />
