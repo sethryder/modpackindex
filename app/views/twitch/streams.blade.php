@@ -22,7 +22,7 @@
                                         </div>
                                         <div class="thumbnail-footer">
                                             <div class="pull-left">
-                                                <a href="http://twitch.tv/{{ $stream->display_name }}">{{ $stream->display_name }}</a>
+                                                <a href="http://twitch.tv/{{ $stream->display_name }}">{{ Str::limit($stream->display_name, 15) }}</a>
                                             </div>
 
                                             <div class="pull-right">
