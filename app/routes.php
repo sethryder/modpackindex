@@ -104,13 +104,14 @@ Route::get('modpack/finder/{version}', function(){
 //mods
 Route::get('mods/{version?}', 'ModController@getModVersion');
 Route::get('mod/{slug}', 'ModController@getMod');
-Route::get('mod/{slug}/video/{id}', 'ModController@getVideo');
+Route::get('mod/{slug}/spotlight/{id}-{creator}', 'YoutubeController@getModVideo');
+Route::get('mod/{slug}/tutorial/{id}-{creator}', 'YoutubeController@getModVideo');
 
 
 //modpacks
 Route::get('modpacks/{version?}', 'ModpackController@getModpackVersion');
 Route::get('modpack/{version}/{slug}', 'ModpackController@getModpack');
-Route::get('modpack/{version}/{slug}/video/{id}', 'YoutubeController@getVideo');
+Route::get('modpack/{version}/{slug}/lets-play/{id}-{creator}', 'YoutubeController@getModpackVideo');
 
 //launchers
 Route::get('launcher/{name}/{version?}', 'LauncherController@getLauncherVersion');

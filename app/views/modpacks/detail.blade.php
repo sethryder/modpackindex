@@ -91,9 +91,9 @@
                         </li>
                     @endif
 
-                    @if (isset($youtube_videos[0]))
+                    @if (isset($lets_plays[0]))
                     <li class="">
-                        <a href="#youtube" data-toggle="tab">Let's Plays</a>
+                        <a href="#lets_plays" data-toggle="tab">Let's Plays</a>
                     </li>
                     @endif
                 </ul>
@@ -157,20 +157,20 @@
                     </div> <!-- /.tab-pane -->
                 @endif
 
-                @if (isset($youtube_videos[0]))
-                    <div class="tab-pane fade" id="youtube">
+                @if (isset($lets_plays[0]))
+                    <div class="tab-pane fade" id="lets_plays">
                         <div class="row">
-                            @foreach($youtube_videos as $youtube)
+                            @foreach($lets_plays as $lets_play)
                                 <div class="col-md-3 col-sm-6">
 
                                     <div class="thumbnail">
                                         <div class="thumbnail-view">
-                                            <a href="/modpack/{{ $version }}/{{ $modpack->slug }}/video/{{ $youtube->id }}">
-                                                <img src="{{ $youtube->thumbnail }}" style="width: 100%" /></a>
+                                            <a href="/modpack/{{ $version }}/{{ $modpack->slug }}/lets-play/{{ $lets_play->id }}-{{ $lets_play->channel_title }}">
+                                                <img src="{{ $lets_play->thumbnail }}" style="width: 100%" /></a>
                                         </div>
                                         <div class="thumbnail-footer">
                                             <div class="pull-left">
-                                                <a href="http://www.youtube.com/{{ $youtube->channel_title }}">{{ $youtube->channel_title }}</a>
+                                                <a href="http://www.youtube.com/{{ $lets_play->channel_title }}">{{ $lets_play->channel_title }}</a>
                                             </div>
 
                                             <div class="pull-right">

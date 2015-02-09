@@ -54,9 +54,15 @@
                     <a href="#modpack_list" data-toggle="tab">Modpack List</a>
                 </li>
 
-                @if (isset($youtube_videos[0]))
+                @if (isset($spotlights[0]))
                     <li class="">
-                        <a href="#youtube" data-toggle="tab">Spotlights</a>
+                        <a href="#spotlights" data-toggle="tab">Spotlights</a>
+                    </li>
+                @endif
+
+                @if (isset($tutorials[0]))
+                    <li class="">
+                        <a href="#tutorials" data-toggle="tab">Spotlights</a>
                     </li>
                 @endif
             </ul>
@@ -92,6 +98,60 @@
                     </div> <!-- /.portlet-body -->
 
                 </div>
+
+                @if (isset($spotlights[0]))
+                    <div class="tab-pane fade" id="spotlights">
+                        <div class="row">
+                            @foreach($spotlights as $spotlight)
+                                <div class="col-md-3 col-sm-6">
+
+                                    <div class="thumbnail">
+                                        <div class="thumbnail-view">
+                                            <a href="/mod/{{ $mod->slug }}/spotlight/{{ $spotlight->id }}-{{ $spotlight->channel_title  }}">
+                                                <img src="{{ $spotlight->thumbnail }}" style="width: 100%" /></a>
+                                        </div>
+                                        <div class="thumbnail-footer">
+                                            <div class="pull-left">
+                                                <a href="http://www.youtube.com/{{ $spotlight->channel_title }}">{{ $spotlight->channel_title }}</a>
+                                            </div>
+
+                                            <div class="pull-right">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div> <!-- /.col -->
+                            @endforeach
+                        </div>
+                    </div> <!-- /.tab-pane -->
+                @endif
+
+                @if (isset($tutorials[0]))
+                    <div class="tab-pane fade" id="tutorials">
+                        <div class="row">
+                            @foreach($tutorials as $tutorial)
+                                <div class="col-md-3 col-sm-6">
+
+                                    <div class="thumbnail">
+                                        <div class="thumbnail-view">
+                                            <a href="/modpack/{{ $version }}/{{ $modpack->slug }}/video/{{ $tutorial->id }}">
+                                                <img src="{{ $tutorial->thumbnail }}" style="width: 100%" /></a>
+                                        </div>
+                                        <div class="thumbnail-footer">
+                                            <div class="pull-left">
+                                                <a href="http://www.youtube.com/{{ $tutorial->channel_title }}">{{ $tutorial->channel_title }}</a>
+                                            </div>
+
+                                            <div class="pull-right">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div> <!-- /.col -->
+                            @endforeach
+                        </div>
+                    </div> <!-- /.tab-pane -->
+                @endif
             </div>
 
           </div> <!-- /.portlet -->

@@ -39,6 +39,9 @@ class ModController extends BaseController
         }
 
         $authors = $mod->authors;
+        $spotlights = $mod->youtubeVideos()->where('category_id', 2)->get();
+        $tutorials = $mod->youtubeVideos()->where('category_id', 3)->get();
+
 
         $raw_links = [
             'website'       => $mod->website,
@@ -61,7 +64,8 @@ class ModController extends BaseController
         $meta_description = $mod->deck;
 
         return View::make('mods.detail', array('table_javascript' => $table_javascript, 'mod' => $mod, 'links' => $links,
-            'authors' => $authors, 'title' => $title, 'meta_description' => $meta_description, 'sticky_tabs' => true));
+            'authors' => $authors, 'title' => $title, 'meta_description' => $meta_description, 'sticky_tabs' => true,
+            'spotlights' => $spotlights, 'tutorials' => $tutorials));
     }
 
     public function getAdd()

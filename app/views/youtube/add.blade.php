@@ -44,6 +44,11 @@
                             </div> <!-- /.form-group -->
 
                             <div class="form-group">
+                                {{ Form::label('category','Category') }}:
+                                {{ Form::select('category', $categories, null, array('class' => 'form-control')) }}
+                            </div>
+
+                            <div class="form-group">
                                 {{ Form::label('modpack','Modpack') }}:
                                 {{ Form::select('modpack', [0 => 'Select Modpack'] + Modpack::lists('name', 'id'), null, array('class' => 'form-control')) }}
                             </div>

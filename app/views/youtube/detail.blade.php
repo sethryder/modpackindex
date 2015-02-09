@@ -30,7 +30,15 @@
                         </div>
                     </div>
                     <br />
-                    <h3><a href="{{ URL::previous() }}#tab_youtube">Back</a></h3>
+                    <h3>
+                    @if ($video->category_id == 1)
+                        <a href="{{ URL::previous() }}#lets_plays">Back</a>
+                    @elseif ($video->category_id == 2)
+                        <a href="{{ URL::previous() }}#spotlights">Back</a>
+                    @elseif ($video->category_id == 3)
+                        <a href="{{ URL::previous() }}#tutorials">Back</a>
+                    @endif
+                    </h3>
 
                 </div> <!-- /.portlet -->
 

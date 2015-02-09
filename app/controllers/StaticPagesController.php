@@ -130,7 +130,7 @@ class StaticPagesController extends BaseController
         $types = [
             'Let\'s Play' => 'Let\'s Play',
             'Spotlight' => 'Spotlight',
-            'Guide' => 'Guide',
+            'Tutorial / Guide' => 'Tutorial / Guide',
             'Other' => 'Other (Please specify in comments.)',
         ];
 

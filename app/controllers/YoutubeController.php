@@ -2,7 +2,13 @@
 
 class YoutubeController extends BaseController
 {
-    public function getVideo($version=null, $slug=null, $id)
+    public $categories = [
+        '1' => 'Let\'s Play',
+        '2' => 'Spotlight',
+        '3' => 'Tutorial',
+    ];
+
+    public function getModpackVideo($version=null, $slug=null, $id)
     {
         $video = Youtube::find($id);
 
@@ -11,13 +17,51 @@ class YoutubeController extends BaseController
             App::abort(404);
         }
 
-        if ($video->modpack) $parent_item = $video->modpack;
-        if ($video->mod) $parent_item = $video->mod;
+        if ($video->category_id == 1)
+        {
+            $title_subject = 'Let\'s Play';
+        }
+        else
+        {
+            $title_subject = 'Video';
+        }
 
-        $title = $video->title . ' - ' . $parent_item->name . ' - ' . $this->site_name;
+        $modpack = $video->modpack;
 
-        return View::make('youtube.detail', ['title' => $title, 'video' => $video, 'parent_item' => $parent_item]);
+        $title = $modpack->name . ' ' . $title_subject . ' by ' . $video->channel_title . ' - Modpack - ' . $this->site_name;
 
+        return View::make('youtube.detail', ['title' => $title, 'video' => $video, 'parent_item' => $modpack]);
+
+    }
+
+    public function getModVideo($slug=null, $id)
+    {
+        $video = Youtube::find($id);
+
+        if (!$video)
+        {
+            App::abort(404);
+        }
+
+        if ($video->category_id == 2)
+        {
+            $title_subject = 'Spotlight';
+        }
+        elseif ($video->category_id == 3)
+        {
+            $title_subject = 'Tutorial';
+        }
+        else
+        {
+            $title_subject = 'Video';
+        }
+
+        $mod = $video->mod;
+
+        $title = $mod->name . ' ' . $title_subject . ' by ' . $video->channel_title . ' - Mod - ' . $this->site_name;
+        //$title = $video->channel_title . ' - ' . $mod->name . ' ' .$title_subject . ' - ' . $this->site_name;
+
+        return View::make('youtube.detail', ['title' => $title, 'video' => $video, 'parent_item' => $mod]);
     }
 
     public function getAdd()
@@ -26,7 +70,7 @@ class YoutubeController extends BaseController
 
         $title = 'Add A Youtube Video / Playlist - ' . $this->site_name;
 
-        return View::make('youtube.add', ['chosen' => true, 'title' => $title]);
+        return View::make('youtube.add', ['chosen' => true, 'title' => $title, 'categories' => $this->categories]);
     }
 
     public function postAdd()
@@ -35,7 +79,7 @@ class YoutubeController extends BaseController
 
         $title = 'Add A Youtube Video / Playlist - ' . $this->site_name;
 
-        $input = Input::only('url', 'modpack', 'mod');
+        $input = Input::only('url', 'category', 'modpack', 'mod');
 
         $validator = Validator::make($input,
             [
@@ -72,6 +116,7 @@ class YoutubeController extends BaseController
             $youtube->channel_title = $youtube_information->snippet->channelTitle;
             $youtube->channel_id = $youtube_information->snippet->channelId;
             $youtube->thumbnail = $youtube_information->snippet->thumbnails->medium->url;
+            $youtube->category_id = $input['category'];
 
             if ($input['modpack'])
             {
@@ -79,7 +124,7 @@ class YoutubeController extends BaseController
             }
             elseif ($input['mod'])
             {
-                $youtube->mod = $input['mod'];
+                $youtube->mod_id = $input['mod'];
             }
 
             $youtube->last_ip = Request::getClientIp();
@@ -90,7 +135,7 @@ class YoutubeController extends BaseController
                 Cache::tags('modpacks')->flush();
                 Cache::tags('mods')->flush();
                 Queue::push('BuildCache');
-                return View::make('youtube.add', ['title' => $title, 'success' => true]);
+                return View::make('youtube.add', ['title' => $title, 'success' => true, 'categories' => $this->categories]);
             }
             else
             {

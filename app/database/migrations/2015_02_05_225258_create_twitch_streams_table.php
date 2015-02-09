@@ -13,7 +13,7 @@ class CreateTwitchStreamsTable extends Migration {
 	public function up()
 	{
 		Schema::create('twitch_streams', function ($table) {
-			$table->integer('channel_id')->index()->unique();
+			$table->integer('channel_id')->primary();
 			$table->integer('modpack_id')->index()->nullable();
 			$table->integer('online');
 			$table->string('status');

@@ -40,7 +40,7 @@ class ModpackController extends BaseController
         $pack_code = $modpack->code;
         $tags = $modpack->tags;
         $twitch_streams = $modpack->twitchStreams()->orderBy('viewers', 'desc')->get();
-        $youtube_videos = $modpack->youtubeVideos;
+        $lets_plays = $modpack->youtubeVideos()->where('category_id', 1)->get();
 
         $raw_links = [
             'website'       => $modpack->website,
@@ -65,7 +65,7 @@ class ModpackController extends BaseController
         return View::make('modpacks.detail', array('table_javascript' => $table_javascript, 'modpack' => $modpack,
             'links' => $links, 'launcher' => $launcher, 'creators' => $creators, 'tags' => $tags, 'title' => $title,
             'meta_description' => $meta_description, 'pack_code' => $pack_code, 'version' => $version,
-            'twitch_streams' => $twitch_streams, 'youtube_videos' => $youtube_videos, 'sticky_tabs' => true));
+            'twitch_streams' => $twitch_streams, 'lets_plays' => $lets_plays, 'sticky_tabs' => true));
     }
 
     public function getAdd($version)
