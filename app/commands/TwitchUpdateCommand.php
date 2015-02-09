@@ -18,7 +18,7 @@ class TwitchUpdateCommand extends Command {
 	 *
 	 * @var string
 	 */
-	protected $description = 'Command description.';
+	protected $description = 'Update online Twitch streams and match them to Modpacks.';
 
 	/**
 	 * Create a new command instance.
@@ -41,6 +41,8 @@ class TwitchUpdateCommand extends Command {
 		$this->updateTwitchStreams();
 		$this->info('Matching Twitch Streams to Modpacks...');
 		$this->matchTwitchStreamsToModpacks();
+		$this->info('Finished.');
+
 	}
 
 	private function matchTwitchStreamsToModpacks()
@@ -85,6 +87,9 @@ class TwitchUpdateCommand extends Command {
 				{
 					$stream_database->modpack_id = $mod['id'];
 					$stream_database->save();
+
+					$this->info('Matched \'' . $stream . '\' to '. $mod['name']);
+
 					break;
 				}
 				else
