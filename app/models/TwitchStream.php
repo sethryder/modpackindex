@@ -3,6 +3,7 @@
 class TwitchStream extends Eloquent
 {
     protected $table = 'twitch_streams';
+    protected $primaryKey = 'channel_id';
 
     public function modpack()
     {

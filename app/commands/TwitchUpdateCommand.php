@@ -72,7 +72,7 @@ class TwitchUpdateCommand extends Command {
 
 		foreach ($streams as $stream)
 		{
-			$id = $stream->id;
+			$id = $stream->channel_id;
 			$streams_array[$id] = $stream->status;
 		}
 
@@ -94,8 +94,7 @@ class TwitchUpdateCommand extends Command {
 				}
 				else
 				{
-					$stream_database->modpack_id = null;
-					$stream_database->save();
+					$stream_database->delete();
 				}
 			}
 		}
@@ -133,10 +132,7 @@ class TwitchUpdateCommand extends Command {
 
 			if (!in_array($channel_id, $online_channel_ids))
 			{
-				$stream->online = 0;
-				$stream->viewers = 0;
-				$stream->modpack_id = null;
-				$stream->save();
+				$stream->delete();
 			}
 			else
 			{
