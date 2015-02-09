@@ -169,7 +169,7 @@ class YoutubeController extends BaseController
             $url_array['type'] = 2;
             $url_array['id'] = $playlist_match[0];
         }
-        elseif (isset$video_match[0]))
+        elseif (isset($video_match[0]))
         {
             $url_array['type'] = 1;
             $url_array['id'] = $video_match[0];
