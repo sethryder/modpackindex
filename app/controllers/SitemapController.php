@@ -25,6 +25,7 @@ class SitemapController extends BaseController
         $this->sitemap->addSitemap(URL::to('/sitemap/launchers.xml'));
         $this->sitemap->addSitemap(URL::to('/sitemap/modpacks.xml'));
         $this->sitemap->addSitemap(URL::to('/sitemap/mods.xml'));
+        $this->sitemap->addSitemap(URL::to('/sitemap/videos.xml'));
 
         return $this->sitemap->render('sitemapindex');
     }
@@ -100,6 +101,58 @@ class SitemapController extends BaseController
             $this->sitemap->add(URL::to('mod/' . $mod->slug), $mod->updated_at);
         }
 
+        return $this->sitemap->render('xml');
+    }
+
+    public function getSitemapVideos()
+    {
+        $videos = Youtube::orderBy('created_at', 'desc')->get();
+
+        foreach ($videos as $video)
+        {
+            if ($video->category_id == 1) //lets play
+            {
+                $modpack = $video->modpack;
+                $version = $modpack->version;
+
+                if (!$modpack)
+                {
+                    break;
+                }
+
+                $friendly_name = Str::slug($video->channel_title);
+                $url_version = preg_replace('/\./', '-', $version->name);
+
+                $this->sitemap->add(URL::to('modpack/' . $url_version . '/' . $modpack->slug . '/lets-play/' . $video->id . '-' . $friendly_name));
+            }
+            elseif ($video->category_id == 2) //spotlight
+            {
+                $mod = $video->mod;
+
+                if (!$mod)
+                {
+                    break;
+                }
+
+                $friendly_name = Str::slug($video->channel_title);
+                $this->sitemap->add(URL::to('mod/'. $mod->slug .'/spotlight/' . $video->id . '-' . $friendly_name));
+            }
+            elseif ($video->category_id == 3) //tutorial
+            {
+                $mod = $video->mod;
+
+                if (!$mod)
+                {
+                    break;
+                }
+                $friendly_name = Str::slug($video->channel_title);
+                $this->sitemap->add(URL::to('mod/'. $mod->slug .'/tutorial/' . $video->id . '-' . $friendly_name));
+            }
+            else
+            {
+                break;
+            }
+        }
         return $this->sitemap->render('xml');
     }
 }

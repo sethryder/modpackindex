@@ -167,6 +167,7 @@ Route::get('/sitemap/main.xml', 'SitemapController@getSitemapMain');
 Route::get('/sitemap/launchers.xml', 'SitemapController@getSitemapLaunchers');
 Route::get('/sitemap/modpacks.xml', 'SitemapController@getSitemapModpacks');
 Route::get('/sitemap/mods.xml', 'SitemapController@getSitemapMods');
+Route::get('/sitemap/videos.xml', 'SitemapController@getSitemapVideos');
 
 //misc
 Route::get('checkauth', 'TestController@getPackCodes');
