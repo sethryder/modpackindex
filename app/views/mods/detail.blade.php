@@ -107,7 +107,7 @@
 
                                     <div class="thumbnail">
                                         <div class="thumbnail-view">
-                                            <a href="/mod/{{ $mod->slug }}/spotlight/{{ $spotlight->id }}-{{ $spotlight->channel_title  }}">
+                                            <a href="/mod/{{ $mod->slug }}/spotlight/{{ $spotlight->id }}-{{ Str::slug($spotlight->channel_title)  }}">
                                                 <img src="{{ $spotlight->thumbnail }}" style="width: 100%" /></a>
                                         </div>
                                         <div class="thumbnail-footer">

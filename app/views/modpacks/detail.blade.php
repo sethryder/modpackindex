@@ -165,7 +165,7 @@
 
                                     <div class="thumbnail">
                                         <div class="thumbnail-view">
-                                            <a href="/modpack/{{ $version }}/{{ $modpack->slug }}/lets-play/{{ $lets_play->id }}-{{ $lets_play->channel_title }}">
+                                            <a href="/modpack/{{ $version }}/{{ $modpack->slug }}/lets-play/{{ $lets_play->id }}-{{ Str::slug($lets_play->channel_title) }}">
                                                 <img src="{{ $lets_play->thumbnail }}" style="width: 100%" /></a>
                                         </div>
                                         <div class="thumbnail-footer">
