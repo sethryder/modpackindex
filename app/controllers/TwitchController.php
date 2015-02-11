@@ -5,6 +5,12 @@ class TwitchController extends BaseController
     public function getChannel($channel)
     {
         $channel = TwitchStream::where('display_name', $channel)->first();
+
+        if (!$channel)
+        {
+            return Redirect::to('/streams');
+        }
+
         $modpack = $channel->modpack;
 
         if (!$modpack)
