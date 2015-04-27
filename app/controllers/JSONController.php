@@ -149,6 +149,9 @@ class JSONController extends BaseController
                     case 'technic':
                         $icon = '/static/img/icons/technic.png';
                         break;
+                    case 'curse':
+                        $icon = '/static/img/icons/curse.png';
+                        break;
                     default:
                         $icon = '/static/img/icons/custom.png';
                 }
@@ -259,6 +262,9 @@ class JSONController extends BaseController
                         break;
                     case 'technic':
                         $icon = '/static/img/icons/technic.png';
+                        break;
+                    case 'curse':
+                        $icon = '/static/img/icons/curse.png';
                         break;
                     default:
                         $icon = '/static/img/icons/custom.png';
@@ -446,6 +452,9 @@ class JSONController extends BaseController
                     case 'technic':
                         $icon = '/static/img/icons/technic.png';
                         break;
+                    case 'curse':
+                        $icon = '/static/img/icons/curse.png';
+                        break;
                     default:
                         $icon = '/static/img/icons/custom.png';
                 }
@@ -566,6 +575,9 @@ class JSONController extends BaseController
                     break;
                 case 'technic':
                     $icon = '/static/img/icons/technic.png';
+                    break;
+                case 'curse':
+                    $icon = '/static/img/icons/curse.png';
                     break;
                 default:
                     $icon = '/static/img/icons/custom.png';
