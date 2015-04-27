@@ -51,7 +51,7 @@
 
               </ul>
 
-          </li>
+          {{--</li>
 
               <li class="dropdown navbar-profile">
                   <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
@@ -74,10 +74,10 @@
                               &nbsp;&nbsp;Register
                           </a>
                       </li>
-
+                      
                   </ul>
               </li>
-
+--}}
           </ul>
 
           </li>
