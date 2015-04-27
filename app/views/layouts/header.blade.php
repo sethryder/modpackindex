@@ -26,6 +26,7 @@
           <li>
             <a href="/contact">Contact</a>
           </li>
+
           <li class="dropdown navbar-profile">
               <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
                   Submit &nbsp;
@@ -51,6 +52,31 @@
               </ul>
 
           </li>
+
+              <li class="dropdown navbar-profile">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+                      Login/Register &nbsp;
+                      <i class="fa fa-caret-down"></i>
+                  </a>
+
+                  <ul class="dropdown-menu" role="menu">
+
+                      <li>
+                          <a href="/login">
+                              <i class="fa fa-user"></i>
+                              &nbsp;&nbsp;Login
+                          </a>
+                      </li>
+
+                      <li>
+                          <a href="/register">
+                              <i class="fa fa-plus-square-o"></i>
+                              &nbsp;&nbsp;Register
+                          </a>
+                      </li>
+
+                  </ul>
+              </li>
 
           </ul>
 
@@ -132,34 +158,64 @@
             <ul class="dropdown-menu" role="menu">
 
               <li class="dropdown-submenu">
-                <a href="/launcher/feed-the-beast">
-                <img class="fa" src="/static/img/icons/ftb.png" />
-                &nbsp;&nbsp;Feed The Beast
-                </a>
+                    <a href="/launcher/feed-the-beast">
+                        <img class="fa" src="/static/img/icons/ftb.png" />
+                        &nbsp;&nbsp;Feed The Beast
+                    </a>
 
-                 <ul class="dropdown-menu">
-                      <li>
-                        <a href="/launcher/feed-the-beast/1-7-10">
-                        <img class="fa" src="/static/img/icons/enderman.png" />
-                        &nbsp;&nbsp;1.7.10 Packs
-                        </a>
-                      </li>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="/launcher/feed-the-beast/1-7-10">
+                                <img class="fa" src="/static/img/icons/enderman.png" />
+                                &nbsp;&nbsp;1.7.10 Packs
+                            </a>
+                        </li>
 
-                      <li>
-                        <a href="/launcher/feed-the-beast/1-6-4">
-                        <img class="fa" src="/static/img/icons/creeper.png" />
-                        &nbsp;&nbsp;1.6.4 Packs
-                        </a>
-                      </li>
+                        <li>
+                            <a href="/launcher/feed-the-beast/1-6-4">
+                                <img class="fa" src="/static/img/icons/creeper.png" />
+                                &nbsp;&nbsp;1.6.4 Packs
+                            </a>
+                        </li>
 
-                      <li>
-                        <a href="/launcher/feed-the-beast">
-                        <img class="fa" src="/static/img/icons/custom.png" />
-                        &nbsp;&nbsp;All Packs
-                        </a>
-                      </li>
-                  </ul>
-              </li>
+                        <li>
+                            <a href="/launcher/feed-the-beast">
+                                <img class="fa" src="/static/img/icons/custom.png" />
+                                &nbsp;&nbsp;All Packs
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="dropdown-submenu">
+                    <a href="/launcher/curse-launcher">
+                        <img class="fa" src="/static/img/icons/curse.png" />
+                        &nbsp;&nbsp;Curse Launcher
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="/launcher/curse-launcher/1-7-10">
+                                <img class="fa" src="/static/img/icons/enderman.png" />
+                                &nbsp;&nbsp;1.7.10 Packs
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/launcher/curse-launcher/1-6-4">
+                                <img class="fa" src="/static/img/icons/creeper.png" />
+                                &nbsp;&nbsp;1.6.4 Packs
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/launcher/curse-launcher">
+                                <img class="fa" src="/static/img/icons/custom.png" />
+                                &nbsp;&nbsp;All Packs
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
               <li class="dropdown-submenu">
                 <a href="/launcher/atlauncher">
