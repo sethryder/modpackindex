@@ -19,7 +19,7 @@
                     <th style="width: 20%">Name</th>
                     <th style="width: 10%">MC Version</th>
                     <th style="width: 36%">Description</th>
-                    <th style="width: 15%">Creators(s)</th>
+                    <th style="width: 15%">Creator(s)</th>
                     <th style="width: 1%"></th>
                     <th style="width: 18%">Link(s)</th>
                   </tr>
