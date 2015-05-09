@@ -34,8 +34,9 @@ class LauncherController extends BaseController
         }
 
         $title = $version . ' ' . $launcher->name . ' Modpacks - '. $this->site_name;
+        $meta_description = $version . ' Modpacks for '. $launcher->name;
 
         return View::make('launchers.list', array('table_javascript' => $table_javascript, 'version' => $version,
-            'launcher' => $launcher, 'links' => $links, 'title' => $title));
+            'launcher' => $launcher, 'links' => $links, 'title' => $title, 'meta_description' => $meta_description));
     }
 }
