@@ -5,14 +5,17 @@ class StaticPagesController extends BaseController
     public function getAbout()
     {
         $title = 'About - '. $this->site_name;
-        return View::Make('pages.about', ['title' => $title]);
+        $meta_description = 'About & FAQ for Modpack Index.';
+
+        return View::Make('pages.about', ['title' => $title, 'meta_description' => $meta_description]);
     }
 
     public function getContact()
     {
         $title = 'Contact Us - '. $this->site_name;
+        $meta_description = 'Contact us if something is incorrect, if you have a question, or for anything else.';
 
-        return View::make('pages.contact', ['title' => $title]);
+        return View::make('pages.contact', ['title' => $title, 'meta_description' => $meta_description]);
     }
 
     public function postContact()
@@ -51,8 +54,9 @@ class StaticPagesController extends BaseController
     public function getSubmitModpack()
     {
         $title = 'Submit Modpack - '. $this->site_name;
+        $meta_description = 'Submit a Modpack to be included on the site.';
 
-        return View::make('pages.submitmodpack', ['title' => $title]);
+        return View::make('pages.submitmodpack', ['title' => $title, 'meta_description' => $meta_description]);
     }
 
     public function postSubmitModpack()
@@ -120,8 +124,9 @@ class StaticPagesController extends BaseController
             'Guide' => 'Guide',
             'Other' => 'Other (Please specify in comments.)',
         ];
+        $meta_description = 'Submit a video or playlist to be included on the site.';
 
-        return View::make('pages.submitvideo', ['title' => $title, 'types' => $types]);
+        return View::make('pages.submitvideo', ['title' => $title, 'types' => $types, 'meta_description' => $meta_description]);
     }
 
     public function postSubmitVideo()
@@ -190,8 +195,9 @@ class StaticPagesController extends BaseController
     public function getPackCodes()
     {
         $title = 'What are Modpack Codes? - '. $this->site_name;
+        $meta_description = 'Find out how Modpack codes work for the different launchers we support.';
 
-        return View::make('pages.packcodes', ['title' => $title]);
+        return View::make('pages.packcodes', ['title' => $title, 'meta_description' => $meta_description]);
     }
 
     public function getNotLaunched()
