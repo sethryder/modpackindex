@@ -3,7 +3,7 @@ $(function() {
     "bLengthChange": true,
     "iDisplayLength": 15,
     "sAjaxSource": "{{ $ajax_source }}",
-    "sDom": '<"top"fp>t<"bottom"ip><"clear">',
+    "sDom": '<"top"fp><"clear">t<"bottom"ip><"clear">',
     "aoColumns": [
     @foreach ($columns as $index => $column)
       { "mData": "{{ $column }}" }@if ($index+1 != count($columns)), @endif
