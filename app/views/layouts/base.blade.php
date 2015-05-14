@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>{{ $title or "Modpack Index - An Index of Minecraft Modpacks" }}</title>
-    <meta name="description" content="{{{ $meta_description or "Discover the perfect Minecraft modpack. Including modpacks from Feed the Beast, ATLauncher, and Technic Platform." }}}">
+    <meta name="description" content="{{ $meta_description or "Discover the perfect Minecraft modpack. Including modpacks from Feed the Beast, ATLauncher, and Technic Platform." }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="UU0yBqhJnqJWN02U6v4-eRlPBGbj0ep8ZRAK_gotswM" />
     <meta name="msvalidate.01" content="B61C8791210048221466BFB3DA2C9294" />
