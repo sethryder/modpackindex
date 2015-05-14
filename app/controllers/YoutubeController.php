@@ -29,7 +29,7 @@ class YoutubeController extends BaseController
         $modpack = $video->modpack;
 
         $title = $modpack->name . ' - ' . $title_subject . ' by ' . $video->channel_title . ' - ' . $this->site_name;
-        $meta_description = 'Watch ' .  HTML::decode($title_subject). ' by ' . $video->channel_title . 'for' . $modpack->name;;
+        $meta_description = 'Watch ' . $title_subject. ' by ' . $video->channel_title . 'for' . $modpack->name;;
 
         return View::make('youtube.detail', ['title' => $title, 'video' => $video, 'parent_item' => $modpack,
             'meta_description' => $meta_description]);
@@ -61,7 +61,7 @@ class YoutubeController extends BaseController
         $mod = $video->mod;
 
         $title = $mod->name . ' - ' . $title_subject . ' by ' . $video->channel_title . ' - ' . $this->site_name;
-        $meta_description = 'Watch ' .  HTML::decode($title_subject). ' by ' . $video->channel_title . 'for' $mod->name;
+        $meta_description = 'Watch ' . $title_subject. ' by ' . $video->channel_title . 'for' . $mod->name;
         //$title = $video->channel_title . ' - ' . $mod->name . ' ' .$title_subject . ' - ' . $this->site_name;
 
         return View::make('youtube.detail', ['title' => $title, 'video' => $video, 'parent_item' => $mod,
