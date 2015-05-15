@@ -19,7 +19,8 @@ class SearchController extends BaseController
 
             $tag_id = $tag->id;
 
-            $title = $tag->name . 'Modpacks - Pack Finder - ' . $this->site_name;
+            $title = $tag->name . ' Modpacks - Pack Finder - ' . $this->site_name;
+            $meta_description = 'Find and discover' . $tag->name . 'Modpacks. Refine your search for packs that include specific mods.';
 
             $selected_tags = ["$tag_id"];
             $selected_mods = [];
@@ -28,7 +29,7 @@ class SearchController extends BaseController
 
             return View::make('search.modpack', ['chosen' => true, 'mods' => [], 'title' => $title, 'results' => true,
                 'table_javascript' => $table_javascript, 'selected_tags' => $selected_tags, 'selected_mods' => $selected_mods,
-                'mc_version' => '0', 'url_version' => 'all', 'search_javascript' => true]);
+                'mc_version' => '0', 'url_version' => 'all', 'search_javascript' => true, 'meta_description' => $meta_description]);
 
         }
         else
