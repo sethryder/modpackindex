@@ -19,6 +19,8 @@ class SearchController extends BaseController
 
             $tag_id = $tag->id;
 
+            $title = $tag->name . 'Modpacks - Pack Finder - ' . $this->site_name;
+
             $selected_tags = ["$tag_id"];
             $selected_mods = [];
 
