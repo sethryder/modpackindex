@@ -20,7 +20,7 @@ class SearchController extends BaseController
             $tag_id = $tag->id;
 
             $title = $tag->name . ' Modpacks - Pack Finder - ' . $this->site_name;
-            $meta_description = 'Find and discover' . $tag->name . 'Modpacks. Refine your search for packs that include specific mods.';
+            $meta_description = 'Find and discover ' . $tag->name . ' Modpacks. Refine your search for packs that include specific mods.';
 
             $selected_tags = ["$tag_id"];
             $selected_mods = [];
