@@ -28,7 +28,8 @@
         <div class="form-group clearfix">
           <div class="pull-left">
             <label class="checkbox-inline">
-            <input type="checkbox" class="" value="" tabindex="3" id="remember_me"> <small>Remember me</small>
+            {{ Form::checkbox('remember_me', 'true', false, array('tabindex' => 3)); }}
+            <small>Remember me</small>
             </label>
           </div>
 
