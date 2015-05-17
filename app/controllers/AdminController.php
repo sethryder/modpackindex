@@ -19,4 +19,12 @@ class AdminController extends BaseController
             echo "<p><a href=\"/\">Go Home</a></p>";
         }
     }
+
+    public function getMemcacheStats()
+    {
+        $m = new Memcached();
+        $m->addServer('localhost', 11211);
+
+        print_r($m->getStats());
+    }
 }

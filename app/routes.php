@@ -84,6 +84,11 @@ Route::post('mod/import/{id}/author/{author_id}', ['as' => 'mod_import', 'uses' 
 //Cache
 Route::get('/cache/clear/{tag?}', ['as' => 'cache_clear', 'uses' => 'AdminController@getClearCache']);
 
+//Misc
+Route::get('memcache/stats','AdminController@getMemcacheStats');
+
+
+
 
 
 /*
@@ -106,7 +111,7 @@ Route::get('mods/{version?}', 'ModController@getModVersion');
 Route::get('mod/{slug}', 'ModController@getMod');
 Route::get('mod/{slug}/spotlight/{id}-{creator}', 'YoutubeController@getModVideo');
 Route::get('mod/{slug}/tutorial/{id}-{creator}', 'YoutubeController@getModVideo');
-
+//Route::get('mod/{slug}/correction', 'ModController@getCorrection');
 
 //modpacks
 Route::get('modpacks/{version?}', 'ModpackController@getModpackVersion');
