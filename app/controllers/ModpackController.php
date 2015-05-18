@@ -76,28 +76,19 @@ class ModpackController extends BaseController
         $input = Input::only('modpacks');
         $modpacks_input = $input['modpacks'];
 
+        $table_javascript = '/api/table/compare_all.json?modpacks=' . $modpacks_input;
+
         $modpack_ids = explode(',', $modpacks_input);
 
         foreach ($modpack_ids as $id)
         {
             $modpack = Modpack::find($id);
-            $modpack_mods = $modpack->mods;
-
             $modpacks[$id] = $modpack->name;
-
-            foreach ($modpack_mods as $m)
-            {
-                $m_id = $m->id;
-                $mods[$m_id]['asort'] = strtolower($m->name);
-                $mods[$m_id]['name'] = $m->name;
-                $mods[$m_id]['packs'][] = $modpack->id;
-            }
-
         }
 
         asort($mods);
 
-        return View::make('modpacks.compare', ['modpacks' => $modpacks, 'mods' => $mods]);
+        return View::make('modpacks.compare', ['modpacks' => $modpacks, 'table_javascript' => $table_javascript]);
     }
 
     public function getAdd($version)
