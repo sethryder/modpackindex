@@ -94,7 +94,7 @@ class ModpackController extends BaseController
 
         }
 
-        //print_r($mods);
+        asort($mods);
 
         return View::make('modpacks.compare', ['modpacks' => $modpacks, 'mods' => $mods]);
     }
