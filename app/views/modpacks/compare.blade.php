@@ -16,7 +16,7 @@
                     <table class="table table-striped table-bordered" id="table-1">
                         <thead>
                         <tr>
-                            <th style="width: 20%">Mod</th>
+                            <th style="width: 20%">Mods</th>
                             @foreach($modpacks as $modpack)
                                 <th>{{ $modpack }}</th>
                             @endforeach
