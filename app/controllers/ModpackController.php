@@ -68,6 +68,37 @@ class ModpackController extends BaseController
             'twitch_streams' => $twitch_streams, 'lets_plays' => $lets_plays, 'sticky_tabs' => true));
     }
 
+    public function getCompare()
+    {
+        $mods = [];
+        $modpacks = [];
+
+        $input = Input::only('modpacks');
+        $modpacks_input = $input['modpacks'];
+
+        $modpack_ids = explode(',', $modpacks_input);
+
+        foreach ($modpack_ids as $id)
+        {
+            $modpack = Modpack::find($id);
+            $modpack_mods = $modpack->mods;
+
+            $modpacks[$id] = $modpack->name;
+
+            foreach ($modpack_mods as $m)
+            {
+                $m_id = $m->id;
+                $mods[$m_id]['name'] = $m->name;
+                $mods[$m_id]['packs'][] = $modpack->id;
+            }
+
+        }
+
+        //print_r($mods);
+
+        return View::make('modpacks.compare', ['modpacks' => $modpacks, 'mods' => $mods]);
+    }
+
     public function getAdd($version)
     {
         if (!$this->checkRoute()) return Redirect::to('/');

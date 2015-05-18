@@ -114,6 +114,7 @@ Route::get('mod/{slug}/tutorial/{id}-{creator}', 'YoutubeController@getModVideo'
 //Route::get('mod/{slug}/correction', 'ModController@getCorrection');
 
 //modpacks
+Route::get('modpacks/compare', 'ModpackController@getCompare');
 Route::get('modpacks/{version?}', 'ModpackController@getModpackVersion');
 Route::get('modpack/{version}/{slug}', 'ModpackController@getModpack');
 Route::get('modpack/{version}/{slug}/lets-play/{id}-{creator}', 'YoutubeController@getModpackVideo');
