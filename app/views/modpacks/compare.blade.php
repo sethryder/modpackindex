@@ -22,20 +22,6 @@
                             @endforeach
                         </tr>
                         </thead>
-                        <tbody>
-                            @foreach($mods as $mod)
-                                <tr>
-                                    <th>{{ $mod['name'] }}</th>
-                                    @foreach($modpacks as $modpack_id => $modpack)
-                                        @if (in_array($modpack_id, $mod['packs']))
-                                            <td>X</td>
-                                        @else
-                                            <td></td>
-                                        @endif
-                                    @endforeach
-                                </tr>
-                            @endforeach
-                        </tbody>
                         <tfoot>
                         <tr>
                             <th>Mod</th>

@@ -146,6 +146,7 @@ Route::get('api/table/{type}_{version}/{name}.json', 'JSONController@getTableDat
 Route::get('api/table/mods/{version}.json', 'JSONController@getTableMods');
 Route::get('api/table/mod/modpacks/{name}.json', 'JSONController@getModModpacks');
 
+Route::get('api/table/modpacks/compare.json', 'JSONController@getModpackCompare');
 Route::get('api/table/modpacks/{version}.json', 'JSONController@getTableModpacks');
 Route::get('api/table/modpack/mods/{name}.json', 'JSONController@getTableModpackMods');
 

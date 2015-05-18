@@ -1,7 +1,7 @@
 $(function() {
   var table_1 = $('#table-1').dataTable ({
     "bLengthChange": true,
-    "iDisplayLength": 15,
+    "iDisplayLength": {{ $table_length or "15" }},
     "sAjaxSource": "{{ $ajax_source }}",
     "sDom": '<"top"fp><"clear">t<"bottom"ip><"clear">',
     "aoColumns": [

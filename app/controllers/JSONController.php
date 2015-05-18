@@ -627,6 +627,32 @@ class JSONController extends BaseController
         return View::make('api.table.modpacks.json', ['modpacks' => $modpacks_array]);
     }
 
+    public function getModpackCompare()
+    {
+        $mods = [];
+        $modpacks = [];
+
+        $input = Input::only('modpacks');
+        $modpack_ids = explode(',', $input['modpacks']);
+
+        foreach ($modpack_ids as $id)
+        {
+            $modpack = Modpack::find($id);
+            $modpack_mods = $modpack->mods;
+
+            $modpacks[$id] = $modpack->name;
+
+            foreach ($modpack_mods as $m)
+            {
+                $m_id = $m->id;
+                $mods[$m_id]['name'] = $m->name;
+                $mods[$m_id]['packs'][] = $modpack->id;
+            }
+        }
+
+        return View::make('api.table.modpacks.compare', ['mods' => $mods, 'modpacks' => $modpacks]);
+    }
+
     public function getModsSelect($version)
     {
         $version = preg_replace('/-/', '.', $version);
@@ -654,6 +680,8 @@ class JSONController extends BaseController
 
     public function getTableDataFile($type, $version, $name = null)
     {
+        $table_length = 15;
+
         switch ($type)
         {
             case 'mods':
@@ -716,6 +744,24 @@ class JSONController extends BaseController
                 $ajax_source = '/api/table/mod/modpacks/' . $name . '.json';
                 break;
 
+            case 'compare':
+                $table_length = 500;
+                $input = Input::only('modpacks');
+
+                $modpack_ids = explode(',', $input['modpacks']);
+
+                $columns_array = ['name'];
+
+                foreach($modpack_ids as $id)
+                {
+                    $modpack = Modpack::find($id);
+                    $columns_array[] = $modpack->id;
+                }
+
+                $ajax_source = '/api/table/modpacks/compare.json?modpacks=' . $input['modpacks'];
+                break;
+
+
             case 'modpackfinder':
                 $input = Input::only('mods', 'tags');
                 $columns_array = [
@@ -747,6 +793,7 @@ class JSONController extends BaseController
                 break;
 
         }
-        return View::make('api.table.data', ['ajax_source' => $ajax_source, 'columns' => $columns_array]);
+        return View::make('api.table.data', ['ajax_source' => $ajax_source, 'columns' => $columns_array,
+            'table_length' => $table_length]);
     }
 }
