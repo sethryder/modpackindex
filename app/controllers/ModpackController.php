@@ -88,6 +88,7 @@ class ModpackController extends BaseController
             foreach ($modpack_mods as $m)
             {
                 $m_id = $m->id;
+                $mods[$m_id]['asort'] = strtolower($m->name);
                 $mods[$m_id]['name'] = $m->name;
                 $mods[$m_id]['packs'][] = $modpack->id;
             }
