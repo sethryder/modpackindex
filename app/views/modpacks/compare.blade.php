@@ -13,7 +13,7 @@
 
                 <div class="portlet-body">
 
-                    <p>Compare mods between two ore more modpacks. Select the modpacks you are interested in below and we will generate
+                    <p>Compare mods between two or more modpacks. Select the modpacks you are interested in below and we will generate
                     a table comparing the mods in each pack.</p>
                 </div>
 
