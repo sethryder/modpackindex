@@ -95,8 +95,6 @@ class ModpackController extends BaseController
         {
             $modpack = Modpack::find($id);
             $modpacks[$id] = '<a href=/modpack/' . preg_replace('/\./', '-', $modpack->version->name) . '/' . $modpack->slug . '>' . $modpack->name . '</a>';
-
-            //$modpacks[$id] = $modpack->name;
         }
 
         if (count($modpacks) >= 2)
@@ -110,7 +108,7 @@ class ModpackController extends BaseController
 
         return View::make('modpacks.compare', ['modpacks' => $modpacks, 'table_javascript' => $table_javascript,
             'chosen' => true, 'selected_modpacks' => $modpack_ids, 'results' => $results,
-            'title' => $title, 'meta_description' => $meta_description, 'error' => $error]);
+            'title' => $title, 'meta_description' => $meta_description, 'error' => $error, 'table_fixed_header' => true]);
     }
 
     public function postCompare()

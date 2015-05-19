@@ -2845,3 +2845,8 @@ body {
   width: 100%;
   height: 100%;
 }
+
+div.FixedHeader_Cloned th,
+div.FixedHeader_Cloned td {
+    background-color: white !important;
+}

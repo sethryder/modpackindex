@@ -12,7 +12,6 @@
                 </h3>
 
                 <div class="portlet-body">
-
                     <p>Compare mods between two or more modpacks. Select the modpacks you are interested in below and we will generate
                     a table comparing the mods in each pack.</p>
                 </div>
@@ -60,7 +59,7 @@
                         </thead>
                         <tfoot>
                         <tr>
-                            <th>Mod</th>
+                            <th>Mods</th>
                             @foreach($modpacks as $modpack)
                                 <th>{{ $modpack }}</th>
                             @endforeach

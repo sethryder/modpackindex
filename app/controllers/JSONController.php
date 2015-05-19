@@ -681,6 +681,7 @@ class JSONController extends BaseController
     public function getTableDataFile($type, $version, $name = null)
     {
         $table_length = 15;
+        $table_fixed_header = false;
 
         switch ($type)
         {
@@ -745,7 +746,9 @@ class JSONController extends BaseController
                 break;
 
             case 'compare':
-                $table_length = 500;
+                $table_length = 1000;
+                $table_fixed_header = true;
+
                 $input = Input::only('modpacks');
 
                 $modpack_ids = explode(',', $input['modpacks']);
@@ -794,6 +797,6 @@ class JSONController extends BaseController
 
         }
         return View::make('api.table.data', ['ajax_source' => $ajax_source, 'columns' => $columns_array,
-            'table_length' => $table_length]);
+            'table_length' => $table_length, 'table_fixed_header' => $table_fixed_header]);
     }
 }

@@ -58,6 +58,11 @@
 
       <script src="/static/js/plugins/dataTables/jquery.dataTables.js"></script>
       <script src="/static/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+          <?php if (isset($table_fixed_header)) { ?>
+          <script src="/static/js/plugins/dataTables/extensions/fixedHeader/dataTables.fixedHeader.min.js"></script>
+          <?php } ?>
+
       <script src="{{ $table_javascript }}"></script>
       <?php } ?>
 
