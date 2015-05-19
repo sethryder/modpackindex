@@ -70,11 +70,22 @@ class ModpackController extends BaseController
 
     public function getCompare()
     {
-        $mods = [];
+        $results = false;
+        $error = false;
         $modpacks = [];
 
         $input = Input::only('modpacks');
         $modpacks_input = $input['modpacks'];
+
+        $title = 'Compare Modpacks '. $this->site_name;
+        $meta_description = 'Compare mods between two ore more modpacks. Select the modpacks you are interested in below and we will generate a table comparing the mods in each pack.';
+
+
+        if (!$input['modpacks'])
+        {
+            return View::make('modpacks.compare', ['chosen' => true, 'title' => $title, 'meta_description' => $meta_description,
+                'error' => $error, 'results' => $results, 'selected_modpacks' => false]);
+        }
 
         $table_javascript = '/api/table/compare_all.json?modpacks=' . $modpacks_input;
 
@@ -86,9 +97,32 @@ class ModpackController extends BaseController
             $modpacks[$id] = $modpack->name;
         }
 
-        asort($mods);
+        if (count($modpacks) >= 2)
+        {
+            $results = true;
+        }
+        else
+        {
+            $error = 'You must select two or more modpacks!';
+        }
 
-        return View::make('modpacks.compare', ['modpacks' => $modpacks, 'table_javascript' => $table_javascript]);
+        return View::make('modpacks.compare', ['modpacks' => $modpacks, 'table_javascript' => $table_javascript,
+            'chosen' => true, 'selected_modpacks' => $modpack_ids, 'results' => $results,
+            'title' => $title, 'meta_description' => $meta_description, 'error' => $error]);
+    }
+
+    public function postCompare()
+    {
+        $input = Input::only('modpacks');
+
+        $forward_string = '';
+
+        foreach ($input['modpacks'] as $modpack_id)
+        {
+            $forward_string .= $modpack_id . ',';
+        }
+
+        return Redirect::to('/modpacks/compare?modpacks=' . rtrim($forward_string, ','));
     }
 
     public function getAdd($version)

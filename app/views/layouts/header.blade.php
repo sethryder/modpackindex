@@ -51,9 +51,9 @@
 
               </ul>
 
-          {{--</li>
+          </li>
 
-              <li class="dropdown navbar-profile">
+{{--              <li class="dropdown navbar-profile">
                   <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
                       Login/Register &nbsp;
                       <i class="fa fa-caret-down"></i>
@@ -74,15 +74,10 @@
                               &nbsp;&nbsp;Register
                           </a>
                       </li>
-                      
+
                   </ul>
-              </li>
---}}
+              </li>--}}
           </ul>
-
-          </li>
-
-        </ul>
 
       </nav>
 
@@ -114,6 +109,18 @@
             <li>
                 <a href="/modpack/finder">
                     Pack Finder
+                </a>
+            </li>
+
+            <li>
+                <a href="/modpacks/compare">
+                    Compare Packs
+                </a>
+            </li>
+
+            <li>
+                <a href="/streams">
+                    Streams
                 </a>
             </li>
 
@@ -339,11 +346,6 @@
                 </ul>
             </li>
 
-            <li>
-                <a href="/streams">
-                    Streams
-                </a>
-            </li>
             @if (isset($user_permissions))
             <li class="dropdown">
                 <a href="/mods" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
@@ -399,6 +401,13 @@
                                 </li>
                             </ul>
                         </li>
+                @endif
+                @if ($user_permissions['youtube_add'] == 1)
+                    <li>
+                        <a href="/youtube/add">
+                            &nbsp;&nbsp;Add Youtube Video / Playlist
+                        </a>
+                    </li>
                 @endif
                 @if ($user_permissions['modpack_tag'] == 1)
                     <li>
