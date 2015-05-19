@@ -645,7 +645,7 @@ class JSONController extends BaseController
             foreach ($modpack_mods as $m)
             {
                 $m_id = $m->id;
-                $mods[$m_id]['name'] = $m->name;
+                $mods[$m_id]['name'] = '<a href=/mod/' . $m->slug . '>' . $m->name . '</a>';
                 $mods[$m_id]['packs'][] = $modpack->id;
             }
         }

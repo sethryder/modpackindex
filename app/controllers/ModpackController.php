@@ -94,7 +94,9 @@ class ModpackController extends BaseController
         foreach ($modpack_ids as $id)
         {
             $modpack = Modpack::find($id);
-            $modpacks[$id] = $modpack->name;
+            $modpacks[$id] = '<a href=/modpack/' . preg_replace('/\./', '-', $modpack->version->name) . '/' . $modpack->slug . '>' . $modpack->name . '</a>';
+
+            //$modpacks[$id] = $modpack->name;
         }
 
         if (count($modpacks) >= 2)
