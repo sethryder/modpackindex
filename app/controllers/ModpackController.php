@@ -77,7 +77,7 @@ class ModpackController extends BaseController
         $input = Input::only('modpacks');
         $modpacks_input = $input['modpacks'];
 
-        $title = 'Compare Modpacks '. $this->site_name;
+        $title = 'Compare Modpacks - '. $this->site_name;
         $meta_description = 'Compare mods between two ore more modpacks. Select the modpacks you are interested in below and we will generate a table comparing the mods in each pack.';
 
 
