@@ -17,6 +17,16 @@ class UserController extends BaseController
         return View::Make('user.login');
     }
 
+    public function getLogout()
+    {
+        if (Auth::check())
+        {
+            Auth::logout();
+        }
+
+        return Redirect::intended('/');
+    }
+
     public function getRegister()
     {
         return View::Make('user.register');
@@ -93,6 +103,21 @@ class UserController extends BaseController
                 return Redirect::to('/register')->withErrors(['Error' => 'Unable to create account'])->withInput();
             }
         }
+    }
+
+    public function getProfile($id=null, $page=null)
+    {
+
+    }
+
+    public function getEditProfile()
+    {
+
+    }
+
+    public function postEditProfile()
+    {
+
     }
 
     public function getVerify($confirmation)

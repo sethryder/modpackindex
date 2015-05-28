@@ -130,6 +130,8 @@ Route::get('launcher/{name}/{version?}', 'LauncherController@getLauncherVersion'
 //user
 Route::get('login', 'UserController@getLogin');
 Route::post('login', 'UserController@postLogin');
+Route::get('logout', 'UserController@getLogout');
+
 
 //twitch
 Route::get('streams', 'TwitchController@getStreams');
