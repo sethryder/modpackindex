@@ -142,6 +142,11 @@ Route::get('stream/{channel}', 'TwitchController@getChannel');
 
 Route::get('user/verify/{confirmation}', 'UserController@getVerify');
 
+//api for users
+Route::get('api/v1/modpacks/{version}.json', 'APIController@getModpacks');
+Route::get('api/v1/modpack/{id}.json', 'APIController@getModpack');
+Route::get('api/v1/mods/{version}.json', 'APIController@getMods');
+Route::get('api/v1/mod/{id}.json', 'APIController@getMod');
 
 //api calls for json for the tables
 Route::get('api/table/modpack_finder/{version}.json', 'JSONController@getModpackSearch');
