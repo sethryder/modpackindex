@@ -2,12 +2,22 @@
 
 Class APIController extends BaseController
 {
-    public function getModpacks($version='all', $limit=100, $offset=0)
+    public function getModpacks($version='all')
     {
+        $modpacks = [];
+        $limit = 100;
+        $offset = 0;
+
+        $input = Input::only('limit', 'offset');
+
+        if ($input['limit']) $limit = $input['limit'];
+        if ($input['offset']) $offset = $input['offset'];
+
         if ($version == 'all')
         {
             $raw_modpacks = Modpack::select('name', 'deck', 'website', 'download_link', 'wiki_link', 'description', 'slug',
                 'created_at', 'updated_at')->skip($offset)->take($limit)->get();
+            $modpack_count = Modpack::select('id')->count();
         }
         else
         {
@@ -22,6 +32,7 @@ Class APIController extends BaseController
             $version_id = $raw_version->id;
             $raw_modpacks = Modpack::select('id', 'name', 'deck', 'website', 'download_link', 'donate_link', 'wiki_link', 'description', 'slug',
                 'created_at', 'updated_at')->where('minecraft_version_id', $version_id)->skip($offset)->take($limit)->get();
+            $modpack_count = Modpack::select('id')->where('minecraft_version_id', $version_id)->count();
         }
 
         if (!$raw_modpacks)
@@ -29,7 +40,33 @@ Class APIController extends BaseController
             return json_encode(['error' => 'No results.']);
         }
 
-        return json_encode($raw_modpacks);
+        foreach ($raw_modpacks as $modpack)
+        {
+            $modpacks[] = [
+                'id' => $modpack->id,
+                'name' => $modpack->name,
+                'deck' => $modpack->deck,
+                'website' => $modpack->website,
+                'download_link' => $modpack->download_link,
+                'donate_link' => $modpack->website,
+                'wiki_link' => $modpack->wiki_link,
+                'descriptions' => $modpack->descriptions,
+                'slug' => $modpack->slug,
+                'created_at' => $modpack->created_at,
+                'updated_at' => $modpack->updated_at,
+            ];
+        }
+
+        $modpacks[] = [
+            'meta' => [
+                'total_results' => $modpack_count,
+                'limit' => $limit,
+                'offset' => $offset
+            ],
+        ];
+
+
+        return json_encode($modpacks);
     }
 
     public function getModpack($id)
@@ -80,27 +117,43 @@ Class APIController extends BaseController
         return json_encode($results);
     }
 
-    public function getMods($version='all', $limit=100, $offset=0)
+    public function getMods($version='all')
     {
         $mods = [];
+
+        $limit = 100;
+        $offset = 0;
+
+        $input = Input::only('limit', 'offset');
+
+        if ($input['limit']) $limit = $input['limit'];
+        if ($input['offset']) $offset = $input['offset'];
 
         if ($version == 'all')
         {
             $raw_mods = Mod::select('name', 'deck', 'website', 'download_link', 'wiki_link', 'description', 'slug',
                 'created_at', 'updated_at')->skip($offset)->take($limit)->get();
+            $mod_count = Mod::select('id')->count();
         }
         else
         {
             $version = preg_replace('/-/', '.', $version);
             $raw_version = MinecraftVersion::where('name', '=', $version)->first();
+            $version_id = $raw_version->id;
 
             if (!$raw_version)
             {
                 return json_encode(['error' => 'Not a valid version.']);
             }
 
-            $raw_version = MinecraftVersion::where('name', '=', $version)->first();
-            $raw_mods = $raw_version->mods;
+            $query = Mod::whereHas('versions', function ($q) use ($version_id)
+            {
+                $q->where('minecraft_versions.id', '=', $version_id);
+            });
+
+            $mod_count = $query->count();
+            $query->skip($offset)->take($limit);
+            $raw_mods = $query->get();
         }
 
         if (!$raw_mods)
@@ -124,6 +177,14 @@ Class APIController extends BaseController
                 'updated_at' => $mod->updated_at,
             ];
         }
+
+        $mods[] = [
+            'meta' => [
+                'total_results' => $mod_count,
+                'limit' => $limit,
+                'offset' => $offset
+            ],
+        ];
 
         return json_encode($mods);
     }
