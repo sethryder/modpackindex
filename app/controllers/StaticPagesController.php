@@ -64,7 +64,7 @@ class StaticPagesController extends BaseController
         $title = 'Submit Modpack - '. $this->site_name;
 
         $input = Input::only('name', 'creators_name', 'minecraft_version', 'launcher', 'website', 'modlist', 'packcode',
-            'deck', 'description', 'comments', 'email', 'recaptcha_response_field');
+            'deck', 'description', 'comments', 'email', 'g-recaptcha-response');
         $input['contact_email'] = 'ryder.seth@gmail.com';
         $input['sender_ip'] = Request::getClientIp();
 
@@ -75,7 +75,8 @@ class StaticPagesController extends BaseController
             'website.url' => 'Please provide a valid link to the website/forum post.',
             'modlist.required' => 'A link to the mod list is required.',
             'modlist.url' => 'Please provide a valid link to the mod list.',
-            'deck.required' => 'A short description for the Modpack is required.'
+            'deck.required' => 'A short description for the Modpack is required.',
+            'g-recaptcha-response.required' => 'reCAPTCHA verification is required.',
         ];
 
 
@@ -89,7 +90,7 @@ class StaticPagesController extends BaseController
                 'modlist' => 'required|url',
                 'deck' => 'required',
                 'email' => 'email',
-                'recaptcha_response_field' => 'required|recaptcha',
+                'g-recaptcha-response' => 'required|recaptcha',
             ),
             $validator_error_messages
         );
@@ -140,7 +141,7 @@ class StaticPagesController extends BaseController
         ];
 
 
-        $input = Input::only('url', 'type', 'mod', 'modpack', 'email', 'comments', 'recaptcha_response_field');
+        $input = Input::only('url', 'type', 'mod', 'modpack', 'email', 'comments', 'g-recaptcha-response');
         $input['contact_email'] = 'ryder.seth@gmail.com';
         $input['sender_ip'] = Request::getClientIp();
 
@@ -148,6 +149,7 @@ class StaticPagesController extends BaseController
             'url.url' => 'Please provide a valid link to the Youtube video / playlist.',
             'url.required' => 'A link to the Youtube video / playlist is required.',
             'modpack.required_without_all' => 'You must select either a mod or a modpack.',
+            'g-recaptcha-response.required' => 'reCAPTCHA verification is required.',
         ];
 
 
@@ -157,7 +159,7 @@ class StaticPagesController extends BaseController
                 'type' => 'required',
                 'modpack' => 'required_without_all:mod',
                 'email' => 'email',
-                'recaptcha_response_field' => 'required|recaptcha',
+                'g-recaptcha-response' => 'required|recaptcha',
             ),
             $validator_error_messages
         );

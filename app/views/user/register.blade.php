@@ -1,7 +1,15 @@
 @extends('layouts.base')
 
 @section('content')
+
 <div class="container">
+<style>
+        .g-recaptcha {
+            width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+</style>
 
   <div class="account-wrapper">
 
@@ -41,8 +49,8 @@
               {{ Form::password('confirm_password', array('class' => 'form-control', 'placeholder' => 'Confirm Your Password'))}}
           </div> <!-- /.form-group -->
 
-          <div class="form-group" style="margin-left: auto; margin-right: auto; display: block;">
-            {{ Form::captcha(array('style' => 'margin-left: auto; margin-right: auto;'))}}
+          <div class="form-group">
+            {{ Form::captcha()}}
           </div>
 
        {{ Form::submit('Register!', ['class' => 'btn btn-secondary btn-block btn-lg']) }}
@@ -53,8 +61,8 @@
 
     <div class="account-footer">
       <p>
-      Already have an account? &nbsp;
-      <a href="/login" class="">Login to your Account!</a>
+      Already have an account?
+      <a href="/login" class="">Login in!</a>
       </p>
     </div> <!-- /.account-footer -->
 

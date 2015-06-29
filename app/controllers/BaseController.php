@@ -7,6 +7,7 @@ class BaseController extends Controller {
     public function __construct()
     {
         $this->site_name = Config::get('app.site_name');
+        View::share('static_url', Config::get('app.static_url'));
 
         if (Auth::check())
         {

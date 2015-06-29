@@ -6,10 +6,11 @@
 	"require": {
 		"laravel/framework": "4.2.*",
         	"guzzlehttp/guzzle": "~4.0",
-        	"greggilbert/recaptcha": "1.0.*@dev",
-            "way/generators": "~2.0",
-	  		"roumen/sitemap": "~2.4",
-	  		"pda/pheanstalk": "~2.0"
+        	"greggilbert/recaptcha": "1.1.*",
+        	"way/generators": "~2.0",
+		"roumen/sitemap": "~2.4.15",
+		"pda/pheanstalk": "~2.0",
+        	"xpaw/php-minecraft-query": "dev-master"
 	},
 	"autoload": {
 		"classmap": [

@@ -70,8 +70,6 @@ Route::Post('user/permissions/{id}', ['as' => 'permissions_edit', 'uses' => 'Use
 Route::get('youtube/add', ['as' => 'youtube_add', 'uses' => 'YoutubeController@getadd']);
 Route::post('youtube/add', ['as' => 'youtube_add', 'uses' => 'YoutubeController@postAdd']);
 
-
-
 //Imports
 Route::get('mod/import', ['as' => 'mod_import', 'uses' => 'ImportController@getStartImport']);
 Route::post('mod/import', ['as' => 'mod_import', 'uses' => 'ImportController@postStartImport']);
@@ -128,17 +126,36 @@ Route::get('launcher/{name}/{version?}', 'LauncherController@getLauncherVersion'
 
 
 //user
+Route::get('profile/edit', 'UserController@getEditProfile');
+Route::post('profile/edit', 'UserController@postEditProfile');
+Route::get('profile/edit/password', 'UserController@getEditPassword');
+Route::post('profile/edit/password', 'UserController@postEditPassword');
+Route::get('profile/{username}', 'UserController@getProfile');
+Route::get('profile', 'UserController@getProfile');
+
+
 Route::get('login', 'UserController@getLogin');
 Route::post('login', 'UserController@postLogin');
 Route::get('logout', 'UserController@getLogout');
+
+Route::get('register', 'UserController@getRegister');
+Route::post('register', 'UserController@postRegister');
+
+Route::get('forgot', 'UserController@getForgotPassword');
+Route::post('forgot', 'UserController@postForgotPassword');
+
+Route::get('reset/{token}', 'UserController@getResetPassword');
+Route::post('reset/{token}', 'UserController@postResetPassword');
 
 
 //twitch
 Route::get('streams', 'TwitchController@getStreams');
 Route::get('stream/{channel}', 'TwitchController@getChannel');
 
-//Route::get('register', 'UserController@getRegister');
-//Route::post('register', 'UserController@postRegister');
+//servers
+Route::get('server/query', 'ServerController@getQuery');
+
+
 
 Route::get('user/verify/{confirmation}', 'UserController@getVerify');
 

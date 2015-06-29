@@ -43,7 +43,6 @@
 
       {{ Form::close() }}
 
-
     </div> <!-- /.account-body -->
 
     <div class="account-footer">

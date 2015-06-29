@@ -95,7 +95,7 @@
 
                             <div class="form-group">
                                 {{ Form::label('email','Your Email') }}:
-                                {{ Form::text('email', null, array('class' => 'form-control', 'data-required' => 'true', 'placeholder' => 'If we need to reach your or have questions.'))}}
+                                {{ Form::text('email', null, array('class' => 'form-control', 'data-required' => 'true', 'placeholder' => 'If we need to reach you or have questions.'))}}
                             </div> <!-- /.form-group -->
 
                             <div class="form-group" style="margin-left: auto; margin-right: auto; display: block;">

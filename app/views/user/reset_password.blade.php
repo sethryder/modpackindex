@@ -7,9 +7,21 @@
 
             <div class="account-body">
 
-                @if (isset($confirmed))
+                @if ( $errors->count() > 0 )
+                    <div style="text-align: left" class="alert alert-danger">
+                        <p>The following errors have occurred:</p>
+
+                        <ul>
+                            @foreach( $errors->all() as $message )
+                                <li>{{ $message }}</li>
+                            @endforeach
+                        </ul>
+                    </div> <!-- /.alert -->
+                @endif
+
+                @if (isset($success))
                     <div class="alert alert-success">
-                        <strong>Account confirmed!</strong> You can login now.
+                        <strong>Password Updated!</strong> You can login below.
                     </div> <!-- /.alert -->
 
                     {{ Form::open(array('url' => '/login', 'class' => 'form account-form')) }}
@@ -29,10 +41,6 @@
                                 <small>Remember me</small>
                             </label>
                         </div>
-
-                        <div class="pull-right">
-                            <small><a href="/forgot">Forgot Password?</a></small>
-                        </div>
                     </div> <!-- /.form-group -->
 
 
@@ -40,11 +48,23 @@
 
                     {{ Form::close() }}
                 @else
-                    <div class="alert alert-danger">
-                        <strong>Error!</strong> Unable to confirm your account.
-                    </div> <!-- /.alert -->
 
-                    <a href="/login" role="button" class="btn btn-primary btn-block btn-lg">Home</a>
+                    <h3>Reset Password</h3>
+                        <h3>for {{{ $username }}}</h3>
+
+                    {{ Form::open(array('url' => '/reset/' . $token, 'class' => 'form account-form')) }}
+
+                    <div class="form-group">
+                        {{ Form::password('new_password', array('class' => 'form-control', 'placeholder' => 'New Password'))}}
+                    </div> <!-- /.form-group -->
+
+                    <div class="form-group">
+                        {{ Form::password('confirm_password', array('class' => 'form-control', 'placeholder' => 'Confirm Password'))}}
+                    </div> <!-- /.form-group -->
+
+                    {{ Form::submit('Set New Password', ['class' => 'btn btn-primary btn-block btn-lg']) }}
+                    {{ Form::close() }}
+
                 @endif
 
 
@@ -59,33 +79,4 @@
 
         </div> <!-- /.account-wrapper -->
     </div>
-@stop
-
-
-@extends('layouts.base')
-
-@section('content')
-<div class="content">
-
-    <div class="container">
-
-      <div class="row">
-
-        <div class="col-md-8">
-
-          @if ($confirmed)
-          <h2 class="">Your account has been confirmed. Thank you!</h2>
-          @else
-          <h2 class="">Unable to confirm your account.</h2>
-
-          <h4>If you feel like this is a mistake please contact us.</h4>
-          @endif
-          <br>
-
-      </div> <!-- /.row -->
-
-    </div> <!-- /.container -->
-
-  </div> <!-- .content -->
-</div>
 @stop

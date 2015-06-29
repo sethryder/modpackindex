@@ -13,7 +13,7 @@
 
           <br>
 
-          <h4>Please check your email ({{ $email }}) to confirm you account with us.</h4>
+          <h4>Please check your email ({{ $email }}) to confirm your account with us.</h4>
 
       </div> <!-- /.row -->
 
