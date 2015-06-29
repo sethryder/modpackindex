@@ -141,7 +141,7 @@ class TwitchUpdateCommand extends Command {
 				if (isset($channel->channel->status)) $stream->status = $channel->channel->status;
 				if (isset($channel->viewers)) $stream->viewers = $channel->viewers;
 				if (isset($channel->channel->followers)) $stream->followers = $channel->channel->followers;
-				if (isset($channel->preview->medium)) $stream->preview = $channel->preview->medium;
+				if (isset($channel->preview->medium)) $stream->preview = str_replace('http://', 'https://', $channel->preview->medium);
 				if (isset($channel->channel->url)) $stream->url = $channel->channel->url;
 				if (isset($channel->channel->display_name)) $stream->display_name = $channel->channel->display_name;
 
@@ -175,7 +175,7 @@ class TwitchUpdateCommand extends Command {
 				if (isset($online_stream->channel->status)) $database_channel->status = $online_stream->channel->status;
 				if (isset($online_stream->viewers)) $database_channel->viewers = $online_stream->viewers;
 				if (isset($online_stream->channel->followers)) $database_channel->followers = $online_stream->channel->followers;
-				if (isset($online_stream->preview->medium)) $database_channel->preview = $online_stream->preview->medium;
+				if (isset($online_stream->preview->medium)) $database_channel->preview = str_replace('http://', 'https://', $online_stream->preview->medium);
 
 				if (isset($online_stream->channel->broadcaster_language))
 				{
