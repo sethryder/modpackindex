@@ -206,7 +206,7 @@
                     </li>
 
                     <li class="dropdown-submenu">
-                        <a href="/launchers">
+                        <a href="#">
                             &nbsp;&nbsp;Launchers
                         </a>
 
