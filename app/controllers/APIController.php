@@ -57,12 +57,10 @@ Class APIController extends BaseController
             ];
         }
 
-        $modpacks[] = [
-            'meta' => [
-                'total_results' => $modpack_count,
-                'limit' => $limit,
-                'offset' => $offset
-            ],
+        $modpacks['meta'] = [
+            'total_results' => $modpack_count,
+            'limit' => $limit,
+            'offset' => $offset
         ];
 
 
@@ -178,12 +176,10 @@ Class APIController extends BaseController
             ];
         }
 
-        $mods[] = [
-            'meta' => [
-                'total_results' => $mod_count,
-                'limit' => $limit,
-                'offset' => $offset
-            ],
+        $mods['meta'] = [
+            'total_results' => $mod_count,
+            'limit' => $limit,
+            'offset' => $offset
         ];
 
         return json_encode($mods);
