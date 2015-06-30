@@ -15,7 +15,7 @@ Class APIController extends BaseController
 
         if ($version == 'all')
         {
-            $raw_modpacks = Modpack::select('name', 'deck', 'website', 'download_link', 'wiki_link', 'description', 'slug',
+            $raw_modpacks = Modpack::select('id', 'name', 'deck', 'website', 'download_link', 'wiki_link', 'description', 'slug',
                 'created_at', 'updated_at')->skip($offset)->take($limit)->get();
             $modpack_count = Modpack::select('id')->count();
         }
@@ -42,7 +42,7 @@ Class APIController extends BaseController
 
         foreach ($raw_modpacks as $modpack)
         {
-            $modpacks[] = [
+            $modpacks['results'][] = [
                 'id' => $modpack->id,
                 'name' => $modpack->name,
                 'deck' => $modpack->deck,
@@ -50,7 +50,7 @@ Class APIController extends BaseController
                 'download_link' => $modpack->download_link,
                 'donate_link' => $modpack->website,
                 'wiki_link' => $modpack->wiki_link,
-                'descriptions' => $modpack->descriptions,
+                'description' => $modpack->description,
                 'slug' => $modpack->slug,
                 'created_at' => $modpack->created_at,
                 'updated_at' => $modpack->updated_at,
@@ -90,7 +90,7 @@ Class APIController extends BaseController
                 'download_link' => $mod->download_link,
                 'donate_link' => $mod->website,
                 'wiki_link' => $mod->wiki_link,
-                'descriptions' => $mod->descriptions,
+                'description' => $mod->description,
                 'slug' => $mod->slug,
                 'created_at' => $mod->created_at,
                 'updated_at' => $mod->updated_at,
@@ -105,7 +105,7 @@ Class APIController extends BaseController
             'download_link' => $raw_modpack->download_link,
             'donate_link' => $raw_modpack->website,
             'wiki_link' => $raw_modpack->wiki_link,
-            'descriptions' => $raw_modpack->descriptions,
+            'description' => $raw_modpack->description,
             'mods' => $mods,
             'slug' => $raw_modpack->slug,
             'created_at' => $raw_modpack->created_at,
@@ -129,7 +129,7 @@ Class APIController extends BaseController
 
         if ($version == 'all')
         {
-            $raw_mods = Mod::select('name', 'deck', 'website', 'download_link', 'wiki_link', 'description', 'slug',
+            $raw_mods = Mod::select('id', 'name', 'deck', 'website', 'download_link', 'wiki_link', 'description', 'slug',
                 'created_at', 'updated_at')->skip($offset)->take($limit)->get();
             $mod_count = Mod::select('id')->count();
         }
@@ -161,7 +161,7 @@ Class APIController extends BaseController
 
         foreach ($raw_mods as $mod)
         {
-            $mods[] = [
+            $mods['results'][] = [
                 'id' => $mod->id,
                 'name' => $mod->name,
                 'deck' => $mod->deck,
@@ -169,7 +169,7 @@ Class APIController extends BaseController
                 'download_link' => $mod->download_link,
                 'donate_link' => $mod->website,
                 'wiki_link' => $mod->wiki_link,
-                'descriptions' => $mod->descriptions,
+                'description' => $mod->description,
                 'slug' => $mod->slug,
                 'created_at' => $mod->created_at,
                 'updated_at' => $mod->updated_at,
