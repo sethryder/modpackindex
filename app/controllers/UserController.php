@@ -491,19 +491,29 @@ class UserController extends BaseController
 
     public function getVerify($confirmation)
     {
+        $error = false;
+
         if ($user = User::where('confirmation', '=', $confirmation)->first())
         {
-            $user->is_confirmed = 1;
-            $user->is_active = 1;
-            $user->save();
+            if ($user->is_confirmed)
+            {
+                $confirm = true;
+                $error = 'Your account has already been activated.';
+            }
+            else
+            {
+                $user->is_confirmed = 1;
+                $user->is_active = 1;
+                $user->save();
 
-            $confirm = true;
+                $confirm = true;
+            }
         }
         else
         {
             $confirm = false;
         }
-        return View::make('user.confirm', ['confirmed' => $confirm]);
+        return View::make('user.confirm', ['confirmed' => $confirm, 'error' => $error]);
     }
 
     public function getUserPermissions($id)

@@ -7,10 +7,17 @@
 
             <div class="account-body">
 
-                @if (isset($confirmed))
-                    <div class="alert alert-success">
-                        <strong>Account confirmed!</strong> You can login now.
-                    </div> <!-- /.alert -->
+                @if ($confirmed)
+                    @if (!$error)
+                        <div class="alert alert-success">
+                            <strong>Account confirmed!</strong> You can login below.
+                        </div> <!-- /.alert -->
+                    @else
+                        <div class="alert alert-danger">
+                            <strong>Error!</strong> Your account has already been activated. You can login below.
+                        </div> <!-- /.alert -->
+                    @endif
+
 
                     {{ Form::open(array('url' => '/login', 'class' => 'form account-form')) }}
 
@@ -44,7 +51,7 @@
                         <strong>Error!</strong> Unable to confirm your account.
                     </div> <!-- /.alert -->
 
-                    <a href="/login" role="button" class="btn btn-primary btn-block btn-lg">Home</a>
+                    <p>If you feel this is an error, please <a href="/contact">contact us</a>.</p>
                 @endif
 
 
