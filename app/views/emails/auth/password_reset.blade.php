@@ -7,8 +7,8 @@
 		<h2>Password Reset</h2>
 
 		<div>
-			To reset your password, complete this form: {{ URL::to('reset', array($token)) }}.<br/>
-			This link will expire in 60 minutes.
+			<p>To reset your password, complete this form: <a href="{{ $site_url }}reset/{{ $token }}" rel="nofollow">{{ $site_url }}reset/{{ $token }}</a>.</p>
+			<p>This link will expire in 60 minutes.</p>
 		</div>
 	</body>
 </html>
