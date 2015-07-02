@@ -302,7 +302,7 @@ class ModpackController extends BaseController
         $selected_tags = [];
         $selected_creators = [];
 
-        $title = 'Add A Modpack - ' . $this->site_name;
+        $title = 'Edit A Modpack - ' . $this->site_name;
         $modpack = Modpack::find($id);
         $minecraft_version = MinecraftVersion::where('id', '=', $modpack->minecraft_version_id)->first();
         $creators = $modpack->creators;
