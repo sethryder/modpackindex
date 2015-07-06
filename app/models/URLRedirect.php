@@ -8,12 +8,9 @@ class URLRedirect extends Eloquent
     {
         $target = $this->where('source', '=', $source)->first();
 
-        if ($target)
-        {
+        if ($target) {
             return $target;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }

@@ -6,50 +6,39 @@ class JSONController extends BaseController
     {
         $cache_key = 'table-mods-' . $version;
 
-        if (Cache::tags('mods')->has($cache_key))
-        {
+        if (Cache::tags('mods')->has($cache_key)) {
             $mods_array = Cache::tags('mods')->get($cache_key);
-        }
-        else
-        {
+        } else {
             $mods_array = [];
             $mod_id_array = [];
             $version = preg_replace('/-/', '.', $version);
 
-            if ($version == 'all')
-            {
+            if ($version == 'all') {
                 $raw_mods = Mod::all();
-            }
-            else
-            {
+            } else {
                 $raw_version = MinecraftVersion::where('name', '=', $version)->first();
                 $raw_mods = $raw_version->mods;
             }
 
-            foreach ($raw_mods as $mod)
-            {
+            foreach ($raw_mods as $mod) {
                 $supported_versions = '';
                 $authors = '';
                 $links = '';
                 $version_array = [];
                 $i = 0;
 
-                if ($mod->mod_list_hide == 1)
-                {
+                if ($mod->mod_list_hide == 1) {
                     continue;
                 }
 
-                if (in_array($mod->id, $mod_id_array))
-                {
+                if (in_array($mod->id, $mod_id_array)) {
                     continue;
                 }
 
                 $name = '<a href=/mod/' . $mod->slug . '>' . $mod->name . '</a>';
 
-                foreach ($mod->versions as $v)
-                {
-                    if (!in_array($v->name, $version_array))
-                    {
+                foreach ($mod->versions as $v) {
+                    if (!in_array($v->name, $version_array)) {
                         $version_array[] = $v->name;
                         $supported_versions .= $v->name;
                         $supported_versions .= ', ';
@@ -57,30 +46,30 @@ class JSONController extends BaseController
                     $i++;
                 }
 
-                if (!$supported_versions) $supported_versions = 'Unknown';
+                if (!$supported_versions) {
+                    $supported_versions = 'Unknown';
+                }
 
-                foreach ($mod->authors as $v)
-                {
+                foreach ($mod->authors as $v) {
                     $authors .= $v->name;
                     $authors .= ', ';
                 }
 
-                if (!$authors) $authors = 'N/A';
+                if (!$authors) {
+                    $authors = 'N/A';
+                }
 
-                if ($mod->website)
-                {
+                if ($mod->website) {
                     $links .= '<a href="' . $mod->website . '">Website</a>';
                     $links .= ' / ';
                 }
 
-                if ($mod->donate_link)
-                {
+                if ($mod->donate_link) {
                     $links .= '<a href="' . $mod->donate_link . '">Donate</a>';
                     $links .= ' / ';
                 }
 
-                if ($mod->wiki_link)
-                {
+                if ($mod->wiki_link) {
                     $links .= '<a href="' . $mod->wiki_link . '">Wiki</a>';
                     $links .= ' / ';
                 }
@@ -106,40 +95,32 @@ class JSONController extends BaseController
     {
         $cache_key = 'table-modpacks-' . $get_version;
 
-        if (Cache::tags('modpacks')->has($cache_key))
-        {
+        if (Cache::tags('modpacks')->has($cache_key)) {
             $modpacks_array = Cache::tags('modpacks')->get($cache_key);
-        }
-        else
-        {
+        } else {
             $modpacks_array = [];
             $modpack_id_array = [];
             $get_version = preg_replace('/-/', '.', $get_version);
 
-            if ($get_version == 'all')
-            {
+            if ($get_version == 'all') {
                 $raw_modpacks = Modpack::all();
-            }
-            else
-            {
+            } else {
                 $raw_version = MinecraftVersion::where('name', '=', $get_version)->first();
                 $raw_modpacks = $raw_version->modpacks;
             }
 
-            foreach ($raw_modpacks as $modpack)
-            {
+            foreach ($raw_modpacks as $modpack) {
                 $creators = '';
                 $links = '';
 
-                if (in_array($modpack->id, $modpack_id_array))
-                {
+                if (in_array($modpack->id, $modpack_id_array)) {
                     continue;
                 }
 
-                $name = '<a href=/modpack/' . preg_replace('/\./', '-', $modpack->version->name) . '/' . $modpack->slug . '>' . $modpack->name . '</a>';
+                $name = '<a href=/modpack/' . preg_replace('/\./', '-',
+                        $modpack->version->name) . '/' . $modpack->slug . '>' . $modpack->name . '</a>';
 
-                switch ($modpack->launcher->short_name)
-                {
+                switch ($modpack->launcher->short_name) {
                     case 'ftb':
                         $icon = '/static/img/icons/ftb.png';
                         break;
@@ -158,37 +139,32 @@ class JSONController extends BaseController
 
                 $icon_html = '<a href="/launcher/' . $modpack->launcher->slug . '"><img src="' . $icon . '"/></a>';
 
-                foreach ($modpack->creators as $v)
-                {
+                foreach ($modpack->creators as $v) {
                     $creators .= $v->name;
                     $creators .= ', ';
                 }
 
-                if (!$creators) $creators = 'N/A';
-
-                if ($get_version == 'all')
-                {
-                    $version = $modpack->version->name;
+                if (!$creators) {
+                    $creators = 'N/A';
                 }
-                else
-                {
+
+                if ($get_version == 'all') {
+                    $version = $modpack->version->name;
+                } else {
                     $version = $raw_version->name;
                 }
 
-                if ($modpack->website)
-                {
+                if ($modpack->website) {
                     $links .= '<a href="' . $modpack->website . '">Website</a>';
                     $links .= ' / ';
                 }
 
-                if ($modpack->donate_link)
-                {
+                if ($modpack->donate_link) {
                     $links .= '<a href="' . $modpack->donate_link . '">Donate</a>';
                     $links .= ' / ';
                 }
 
-                if ($modpack->wiki_link)
-                {
+                if ($modpack->wiki_link) {
                     $links .= '<a href="' . $modpack->wiki_link . '">Wiki</a>';
                     $links .= ' / ';
                 }
@@ -208,31 +184,26 @@ class JSONController extends BaseController
 
             Cache::tags('modpacks')->forever($cache_key, $modpacks_array);
         }
+
         return View::make('api.table.modpacks.json', ['modpacks' => $modpacks_array]);
     }
 
     public function getTableLaunchers($name, $get_version = 'all')
     {
-        $cache_key = 'table-launchers-' . $name .'-' . $get_version;
+        $cache_key = 'table-launchers-' . $name . '-' . $get_version;
 
-        if (Cache::tags('launchers')->has($cache_key))
-        {
+        if (Cache::tags('launchers')->has($cache_key)) {
             $modpacks_array = Cache::tags('launchers')->get($cache_key);
-        }
-        else
-        {
+        } else {
             $modpacks_array = [];
             $modpack_id_array = [];
             $get_version = preg_replace('/-/', '.', $get_version);
             $launcher = Launcher::where('slug', '=', $name)->first();
             $launcher_id = $launcher->id;
 
-            if ($get_version == 'all')
-            {
+            if ($get_version == 'all') {
                 $raw_modpacks = Modpack::where('launcher_id', '=', $launcher_id)->get();
-            }
-            else
-            {
+            } else {
                 $version = MinecraftVersion::where('name', '=', $get_version)->first();
                 $version_id = $version->id;
 
@@ -240,20 +211,18 @@ class JSONController extends BaseController
                     ->where('minecraft_version_id', '=', $version_id)->get();
             }
 
-            foreach ($raw_modpacks as $modpack)
-            {
+            foreach ($raw_modpacks as $modpack) {
                 $creators = '';
                 $links = '';
 
-                if (in_array($modpack->id, $modpack_id_array))
-                {
+                if (in_array($modpack->id, $modpack_id_array)) {
                     continue;
                 }
 
-                $name = '<a href=/modpack/' . preg_replace('/\./', '-', $modpack->version->name) . '/' . $modpack->slug . '>' . $modpack->name . '</a>';
+                $name = '<a href=/modpack/' . preg_replace('/\./', '-',
+                        $modpack->version->name) . '/' . $modpack->slug . '>' . $modpack->name . '</a>';
 
-                switch ($modpack->launcher->short_name)
-                {
+                switch ($modpack->launcher->short_name) {
                     case 'ftb':
                         $icon = '/static/img/icons/ftb.png';
                         break;
@@ -272,37 +241,32 @@ class JSONController extends BaseController
 
                 $icon_html = '<a href="/launcher/' . $modpack->launcher->slug . '"><img src="' . $icon . '"/></a>';
 
-                foreach ($modpack->creators as $v)
-                {
+                foreach ($modpack->creators as $v) {
                     $creators .= $v->name;
                     $creators .= ', ';
                 }
 
-                if (!$creators) $creators = 'N/A';
-
-                if ($get_version == 'all')
-                {
-                    $version = $modpack->version->name;
+                if (!$creators) {
+                    $creators = 'N/A';
                 }
-                else
-                {
+
+                if ($get_version == 'all') {
+                    $version = $modpack->version->name;
+                } else {
                     $version = $get_version;
                 }
 
-                if ($modpack->website)
-                {
+                if ($modpack->website) {
                     $links .= '<a href="' . $modpack->website . '">Website</a>';
                     $links .= ' / ';
                 }
 
-                if ($modpack->donate_link)
-                {
+                if ($modpack->donate_link) {
                     $links .= '<a href="' . $modpack->donate_link . '">Donate</a>';
                     $links .= ' / ';
                 }
 
-                if ($modpack->wiki_link)
-                {
+                if ($modpack->wiki_link) {
                     $links .= '<a href="' . $modpack->wiki_link . '">Wiki</a>';
                     $links .= ' / ';
                 }
@@ -330,12 +294,9 @@ class JSONController extends BaseController
     {
         $cache_key = 'table-modpackmods-' . $name;
 
-        if (Cache::tags('modpackmods')->has($cache_key))
-        {
+        if (Cache::tags('modpackmods')->has($cache_key)) {
             $mods_array = Cache::tags('modpackmods')->get($cache_key);
-        }
-        else
-        {
+        } else {
             $mods_array = [];
             $mod_id_array = [];
             $modpack = Modpack::where('slug', '=', $name)->first();
@@ -343,25 +304,21 @@ class JSONController extends BaseController
 
             //print_r($raw_mods);
 
-            foreach ($raw_mods as $mod)
-            {
+            foreach ($raw_mods as $mod) {
                 $supported_versions = '';
                 $authors = '';
                 $links = '';
                 $version_array = [];
                 $i = 0;
 
-                if (in_array($mod->id, $mod_id_array))
-                {
+                if (in_array($mod->id, $mod_id_array)) {
                     continue;
                 }
 
                 $name = '<a href=/mod/' . $mod->slug . '>' . $mod->name . '</a>';
 
-                foreach ($mod->versions as $v)
-                {
-                    if (!in_array($v->name, $version_array))
-                    {
+                foreach ($mod->versions as $v) {
+                    if (!in_array($v->name, $version_array)) {
                         $version_array[] = $v->name;
                         $supported_versions .= $v->name;
                         $supported_versions .= ', ';
@@ -369,30 +326,30 @@ class JSONController extends BaseController
                     $i++;
                 }
 
-                if (!$supported_versions) $supported_versions = 'Unknown';
+                if (!$supported_versions) {
+                    $supported_versions = 'Unknown';
+                }
 
-                foreach ($mod->authors as $v)
-                {
+                foreach ($mod->authors as $v) {
                     $authors .= $v->name;
                     $authors .= ', ';
                 }
 
-                if (!$authors) $authors = 'N/A';
+                if (!$authors) {
+                    $authors = 'N/A';
+                }
 
-                if ($mod->website)
-                {
+                if ($mod->website) {
                     $links .= '<a href="' . $mod->website . '">Website</a>';
                     $links .= ' / ';
                 }
 
-                if ($mod->donate_link)
-                {
+                if ($mod->donate_link) {
                     $links .= '<a href="' . $mod->donate_link . '">Donate</a>';
                     $links .= ' / ';
                 }
 
-                if ($mod->wiki_link)
-                {
+                if ($mod->wiki_link) {
                     $links .= '<a href="' . $mod->wiki_link . '">Wiki</a>';
                     $links .= ' / ';
                 }
@@ -418,31 +375,26 @@ class JSONController extends BaseController
     {
         $cache_key = 'table-modmodpacks-' . $name;
 
-        if (Cache::tags('modmodpacks')->has($cache_key))
-        {
+        if (Cache::tags('modmodpacks')->has($cache_key)) {
             $modpacks_array = Cache::tags('modmodpacks')->get($cache_key);
-        }
-        else
-        {
+        } else {
             $modpack_id_array = [];
             $modpacks_array = [];
             $mod = Mod::where('slug', '=', $name)->first();
             $modpacks = $mod->modpacks;
 
-            foreach ($modpacks as $modpack)
-            {
+            foreach ($modpacks as $modpack) {
                 $creators = '';
                 $links = '';
 
-                if (in_array($modpack->id, $modpack_id_array))
-                {
+                if (in_array($modpack->id, $modpack_id_array)) {
                     continue;
                 }
 
-                $name = '<a href=/modpack/' . preg_replace('/\./', '-', $modpack->version->name) . '/' . $modpack->slug . '>' . $modpack->name . '</a>';
+                $name = '<a href=/modpack/' . preg_replace('/\./', '-',
+                        $modpack->version->name) . '/' . $modpack->slug . '>' . $modpack->name . '</a>';
 
-                switch ($modpack->launcher->short_name)
-                {
+                switch ($modpack->launcher->short_name) {
                     case 'ftb':
                         $icon = '/static/img/icons/ftb.png';
                         break;
@@ -461,30 +413,28 @@ class JSONController extends BaseController
 
                 $icon_html = '<a href="/launcher/' . $modpack->launcher->slug . '"><img src="' . $icon . '"/></a>';
 
-                foreach ($modpack->creators as $v)
-                {
+                foreach ($modpack->creators as $v) {
                     $creators .= $v->name;
                     $creators .= ', ';
                 }
 
-                if (!$creators) $creators = 'N/A';
+                if (!$creators) {
+                    $creators = 'N/A';
+                }
 
                 $version = $modpack->version->name;
 
-                if ($modpack->website)
-                {
+                if ($modpack->website) {
                     $links .= '<a href="' . $modpack->website . '">Website</a>';
                     $links .= ' / ';
                 }
 
-                if ($modpack->donate_link)
-                {
+                if ($modpack->donate_link) {
                     $links .= '<a href="' . $modpack->donate_link . '">Donate</a>';
                     $links .= ' / ';
                 }
 
-                if ($modpack->wiki_link)
-                {
+                if ($modpack->wiki_link) {
                     $links .= '<a href="' . $modpack->wiki_link . '">Wiki</a>';
                     $links .= ' / ';
                 }
@@ -514,38 +464,29 @@ class JSONController extends BaseController
         $modpacks_array = [];
         $input = Input::only('mods', 'tags');
 
-        if ($version == 'all')
-        {
+        if ($version == 'all') {
             $modpack = Modpack::where('id', '!=', '0'); //there has to be a better way
-        }
-        else
-        {
+        } else {
             $version_name = preg_replace('/-/', '.', $version);
             $minecraft_version = MinecraftVersion::where('name', $version_name)->first();
             $modpack = Modpack::where('minecraft_version_id', $minecraft_version->id);
         }
 
-        if ($input['mods'])
-        {
+        if ($input['mods']) {
             $input_mod_array = explode(',', $input['mods']);
 
-            foreach ($input_mod_array as $mod)
-            {
-                $modpack->whereHas('mods', function ($q) use ($mod)
-                {
+            foreach ($input_mod_array as $mod) {
+                $modpack->whereHas('mods', function ($q) use ($mod) {
                     $q->where('mods.id', '=', $mod);
                 });
             }
         }
 
-        if ($input['tags'])
-        {
+        if ($input['tags']) {
             $input_tags_array = explode(',', $input['tags']);
 
-            foreach ($input_tags_array as $tag)
-            {
-                $modpack->whereHas('tags', function ($q) use ($tag)
-                {
+            foreach ($input_tags_array as $tag) {
+                $modpack->whereHas('tags', function ($q) use ($tag) {
                     $q->where('modpack_tags.id', '=', $tag);
                 });
             }
@@ -553,20 +494,18 @@ class JSONController extends BaseController
 
         $modpacks = $modpack->get();
 
-        foreach ($modpacks as $modpack)
-        {
+        foreach ($modpacks as $modpack) {
             $creators = '';
             $links = '';
 
-            if (in_array($modpack->id, $modpack_id_array))
-            {
+            if (in_array($modpack->id, $modpack_id_array)) {
                 continue;
             }
 
-            $name = '<a href=/modpack/' . preg_replace('/\./', '-', $modpack->version->name) . '/' . $modpack->slug . '>' . $modpack->name . '</a>';
+            $name = '<a href=/modpack/' . preg_replace('/\./', '-',
+                    $modpack->version->name) . '/' . $modpack->slug . '>' . $modpack->name . '</a>';
 
-            switch ($modpack->launcher->short_name)
-            {
+            switch ($modpack->launcher->short_name) {
                 case 'ftb':
                     $icon = '/static/img/icons/ftb.png';
                     break;
@@ -585,30 +524,28 @@ class JSONController extends BaseController
 
             $icon_html = '<a href="/launcher/' . $modpack->launcher->slug . '"><img src="' . $icon . '"/></a>';
 
-            foreach ($modpack->creators as $v)
-            {
+            foreach ($modpack->creators as $v) {
                 $creators .= $v->name;
                 $creators .= ', ';
             }
 
-            if (!$creators) $creators = 'N/A';
+            if (!$creators) {
+                $creators = 'N/A';
+            }
 
             $version = $modpack->version->name;
 
-            if ($modpack->website)
-            {
+            if ($modpack->website) {
                 $links .= '<a href="' . $modpack->website . '">Website</a>';
                 $links .= ' / ';
             }
 
-            if ($modpack->donate_link)
-            {
+            if ($modpack->donate_link) {
                 $links .= '<a href="' . $modpack->donate_link . '">Donate</a>';
                 $links .= ' / ';
             }
 
-            if ($modpack->wiki_link)
-            {
+            if ($modpack->wiki_link) {
                 $links .= '<a href="' . $modpack->wiki_link . '">Wiki</a>';
                 $links .= ' / ';
             }
@@ -635,15 +572,13 @@ class JSONController extends BaseController
         $input = Input::only('modpacks');
         $modpack_ids = explode(',', $input['modpacks']);
 
-        foreach ($modpack_ids as $id)
-        {
+        foreach ($modpack_ids as $id) {
             $modpack = Modpack::find($id);
             $modpack_mods = $modpack->mods;
 
             $modpacks[$id] = $modpack->name;
 
-            foreach ($modpack_mods as $m)
-            {
+            foreach ($modpack_mods as $m) {
                 $m_id = $m->id;
                 $mods[$m_id]['name'] = '<a href=/mod/' . $m->slug . '>' . $m->name . '</a>';
                 $mods[$m_id]['packs'][] = $modpack->id;
@@ -662,16 +597,14 @@ class JSONController extends BaseController
         $raw_version = MinecraftVersion::where('name', '=', $version)->first();
         $raw_mods = $raw_version->mods;
 
-        foreach ($raw_mods as $mod)
-        {
+        foreach ($raw_mods as $mod) {
             $mod_id = $mod->id;
             $sort_array[$mod_id] = $mod->name;
         }
 
         natcasesort($sort_array);
 
-        foreach($sort_array as $k => $mod)
-        {
+        foreach ($sort_array as $k => $mod) {
             $mods_array[] = ['name' => $mod, 'value' => $k];
         }
 
@@ -683,8 +616,7 @@ class JSONController extends BaseController
         $table_length = 15;
         $table_fixed_header = false;
 
-        switch ($type)
-        {
+        switch ($type) {
             case 'mods':
 
                 $columns_array = [
@@ -755,8 +687,7 @@ class JSONController extends BaseController
 
                 $columns_array = ['name'];
 
-                foreach($modpack_ids as $id)
-                {
+                foreach ($modpack_ids as $id) {
                     $modpack = Modpack::find($id);
                     $columns_array[] = $modpack->id;
                 }
@@ -776,27 +707,25 @@ class JSONController extends BaseController
                     'links',
                 ];
 
-                if ($input['tags'] && $input['mods'])
-                {
-                    $ajax_source = '/api/table/modpack_finder/' . $version .'.json?mods=' . $input['mods'] . '&tags=' . $input['tags'];
+                if ($input['tags'] && $input['mods']) {
+                    $ajax_source = '/api/table/modpack_finder/' . $version . '.json?mods=' . $input['mods'] . '&tags=' . $input['tags'];
 
-                }
-                elseif ($input['mods'])
-                {
+                } elseif ($input['mods']) {
                     $ajax_source = '/api/table/modpack_finder/' . $version . '.json?mods=' . $input['mods'];
-                }
-                elseif ($input['tags'])
-                {
+                } elseif ($input['tags']) {
                     $ajax_source = '/api/table/modpack_finder/' . $version . '.json?tags=' . $input['tags'];
-                }
-                else
-                {
+                } else {
                     $ajax_source = '/api/table/modpack_finder/' . $version . '.json';
                 }
                 break;
 
         }
-        return View::make('api.table.data', ['ajax_source' => $ajax_source, 'columns' => $columns_array,
-            'table_length' => $table_length, 'table_fixed_header' => $table_fixed_header]);
+
+        return View::make('api.table.data', [
+            'ajax_source' => $ajax_source,
+            'columns' => $columns_array,
+            'table_length' => $table_length,
+            'table_fixed_header' => $table_fixed_header
+        ]);
     }
 }

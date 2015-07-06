@@ -4,15 +4,20 @@ class CreatorController extends BaseController
 {
     public function getAdd()
     {
-        if (!$this->checkRoute()) return Redirect::to('/');
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
         $title = 'Add A Modpack Creator - ' . $this->site_name;
+
         return View::make('creators.add', ['title' => $title]);
     }
 
     public function postAdd()
     {
-        if (!$this->checkRoute()) return Redirect::to('/');
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
         $title = 'Add A Modpack Creator - ' . $this->site_name;
 
@@ -31,12 +36,9 @@ class CreatorController extends BaseController
             ],
             $messages);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return Redirect::to('/creator/add/')->withErrors($validator)->withInput();
-        }
-        else
-        {
+        } else {
             $creator = new Creator;
 
             $creator->name = $input['name'];
@@ -45,12 +47,9 @@ class CreatorController extends BaseController
             $creator->donate_link = $input['donate_link'];
             $creator->bio = $input['bio'];
 
-            if ($input['slug'] == '')
-            {
+            if ($input['slug'] == '') {
                 $slug = Str::slug($input['name']);
-            }
-            else
-            {
+            } else {
                 $slug = $input['slug'];
             }
 
@@ -59,12 +58,9 @@ class CreatorController extends BaseController
 
             $success = $creator->save();
 
-            if ($success)
-            {
+            if ($success) {
                 return View::make('creators.add', ['title' => $title, 'success' => true]);
-            }
-            else
-            {
+            } else {
                 return Redirect::to('/creator/add/')->withErrors(['message' => 'Unable to add modpack creator.'])->withInput();
             }
 
@@ -73,7 +69,9 @@ class CreatorController extends BaseController
 
     public function getEdit($id)
     {
-        if (!$this->checkRoute()) return Redirect::to('/');
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
         $title = 'Edit A Modpack Creator - ' . $this->site_name;
 
@@ -84,7 +82,9 @@ class CreatorController extends BaseController
 
     public function postEdit($id)
     {
-        if (!$this->checkRoute()) return Redirect::to('/');
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
         $title = 'Edit A Modpack Creator - ' . $this->site_name;
         $creator = Creator::find($id);
@@ -98,30 +98,24 @@ class CreatorController extends BaseController
 
         $validator = Validator::make($input,
             [
-                'name' => 'required|unique:creators,name,'.$creator->id,
+                'name' => 'required|unique:creators,name,' . $creator->id,
                 'website' => 'url',
                 'donate_link' => 'url',
             ],
             $messages);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return Redirect::to('/creator/add/')->withErrors($validator)->withInput();
-        }
-        else
-        {
+        } else {
             $creator->name = $input['name'];
             $creator->deck = $input['deck'];
             $creator->website = $input['website'];
             $creator->donate_link = $input['donate_link'];
             $creator->bio = $input['bio'];
 
-            if ($input['slug'] == '' || $input['slug'] == $creator->slug)
-            {
+            if ($input['slug'] == '' || $input['slug'] == $creator->slug) {
                 $slug = Str::slug($input['name']);
-            }
-            else
-            {
+            } else {
                 $slug = $input['slug'];
             }
 
@@ -130,13 +124,10 @@ class CreatorController extends BaseController
 
             $success = $creator->save();
 
-            if ($success)
-            {
+            if ($success) {
                 return View::make('creators.edit', ['title' => $title, 'creator' => $creator, 'success' => true]);
-            }
-            else
-            {
-                return Redirect::to('/creator/edit/'. $id)->withErrors(['message' => 'Unable to edit modpack creator.'])->withInput();
+            } else {
+                return Redirect::to('/creator/edit/' . $id)->withErrors(['message' => 'Unable to edit modpack creator.'])->withInput();
             }
 
         }

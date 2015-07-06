@@ -9,8 +9,7 @@ class UserController extends BaseController
 
     public function getLogin()
     {
-        if (Auth::check())
-        {
+        if (Auth::check()) {
             return Redirect::intended('/');
         }
 
@@ -21,8 +20,7 @@ class UserController extends BaseController
 
     public function getLogout()
     {
-        if (Auth::check())
-        {
+        if (Auth::check()) {
             Auth::logout();
         }
 
@@ -63,35 +61,29 @@ class UserController extends BaseController
             $validator_error_messages
         );
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return Redirect::to('/forgot')->withErrors($validator);
-        }
-        else
-        {
+        } else {
             //check to see if valid user
             $user = User::where('email', $input['email'])->first();
 
-            if (!$user)
-            {
+            if (!$user) {
                 return Redirect::to('/forgot')->withErrors(['Error' => 'Email does not exist in our database.']);
             }
 
             //make sure no password reminder is already out there.
             $existing_reminders = PasswordReminder::where('created_at', '>=', $one_hour_ago)->
-                where('email', $input['email'])->count();
+            where('email', $input['email'])->count();
 
-            if ($existing_reminders > 0)
-            {
+            if ($existing_reminders > 0) {
                 return Redirect::to('/forgot')->withErrors(['Error' => 'A password reminder for this email is already active.']);
             }
 
             //make sure this IP isn't spamming password requests
             $ip_reminder_count = PasswordReminder::where('created_at', '>=', $one_hour_ago)->
-                where('ip', Request::getClientIp())->count();
+            where('ip', Request::getClientIp())->count();
 
-            if ($ip_reminder_count > 0)
-            {
+            if ($ip_reminder_count > 0) {
                 return Redirect::to('/forgot')->withErrors(['Error' => 'A password reminder has already been requested with your IP address.']);
             }
 
@@ -104,40 +96,34 @@ class UserController extends BaseController
 
             $success = $password_reset->save();
 
-            if ($success)
-            {
-                Mail::send('emails.auth.password_reset', array('token' => $token), function ($message) use ($user)
-                {
+            if ($success) {
+                Mail::send('emails.auth.password_reset', array('token' => $token), function ($message) use ($user) {
                     $message->from('noreply@modpackindex.com', 'Modpack Index');
                     $message->to($user->email, $user->username)->subject('Password Reset for ' . $user->username);
                 });
 
                 return View::make('user.forgot_password', ['success' => true]);
-            }
-            else
-            {
+            } else {
                 return Redirect::to('/reset')->withErrors(['Error' => 'Unable to reset password.']);
             }
         }
 
     }
 
-    public function getResetPassword($token=null)
+    public function getResetPassword($token = null)
     {
         $title = 'Reset Password - ' . $this->site_name;
 
         $one_hour_ago = Carbon\Carbon::now()->subHours(1)->toDateTimeString();
 
-        if (!$token)
-        {
+        if (!$token) {
             return Redirect::to('/');
         }
 
         $reset_request = PasswordReminder::where('created_at', '>=', $one_hour_ago)->
         where('token', $token)->first();
 
-        if (!$reset_request)
-        {
+        if (!$reset_request) {
             return Redirect::to('/');
         }
 
@@ -157,8 +143,7 @@ class UserController extends BaseController
         $reset_request = PasswordReminder::where('created_at', '>=', $one_hour_ago)->
         where('token', $token)->first();
 
-        if (!$reset_request)
-        {
+        if (!$reset_request) {
             return Redirect::to('/');
         }
 
@@ -168,12 +153,9 @@ class UserController extends BaseController
                 'confirm_password' => 'required|same:new_password',
             ]);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return Redirect::to('/reset/' . $token)->withErrors($validator);
-        }
-        else
-        {
+        } else {
             $user = User::where('email', $reset_request->email)->first();
 
             $user->password = Hash::make($input['new_password']);
@@ -182,12 +164,9 @@ class UserController extends BaseController
 
             $success = $user->save();
 
-            if ($success)
-            {
+            if ($success) {
                 return View::make('user.reset_password', ['title' => $title, 'success' => true, 'user' => $user]);
-            }
-            else
-            {
+            } else {
                 return Redirect::to('/reset/' . $token)->withErrors(['message' => 'Unable to reset password.']);
             }
         }
@@ -195,25 +174,26 @@ class UserController extends BaseController
 
     public function postLogin()
     {
-        if (Auth::check())
-        {
+        if (Auth::check()) {
             return Redirect::intended('/');
         }
 
         $input = Input::only('email', 'password', 'remember_me');
         $remember_me = false;
 
-        if ($input['remember_me'])
-        {
+        if ($input['remember_me']) {
             $remember_me = true;
         }
 
-        if (Auth::attempt(array('email' => $input['email'], 'password' => $input['password'], 'is_active' => 1, 'is_confirmed' => 1), $remember_me))
-        {
+        if (Auth::attempt(array(
+            'email' => $input['email'],
+            'password' => $input['password'],
+            'is_active' => 1,
+            'is_confirmed' => 1
+        ), $remember_me)
+        ) {
             return Redirect::intended('/');
-        }
-        else
-        {
+        } else {
             return Redirect::to('/login')->withErrors(['Error' => 'Unable to login with provided information.'])->withInput();
         }
     }
@@ -237,12 +217,9 @@ class UserController extends BaseController
             $validator_error_messages
         );
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return Redirect::to('/register')->withErrors($validator)->withInput();
-        }
-        else
-        {
+        } else {
             $user = new User;
             $confirmation = str_random(64);
 
@@ -254,24 +231,22 @@ class UserController extends BaseController
             $user->last_ip = Request::getClientIp();
             $user->confirmation = $confirmation;
 
-            if ($user->save())
-            {
+            if ($user->save()) {
                 $user_info = new UserInfo;
 
                 $user_info->user_id = $user->id;
                 $user->last_ip = Request::getClientIp();
                 $user_info->save();
 
-                Mail::send('emails.auth.confirmation', array('confirmation' => $confirmation), function ($message) use ($input)
-                {
-                    $message->from('noreply@modpackindex.com', 'Modpack Index');
-                    $message->to($input['email'], $input['username'])->subject('Confirmation for ' . $input['username']);
-                });
+                Mail::send('emails.auth.confirmation', array('confirmation' => $confirmation),
+                    function ($message) use ($input) {
+                        $message->from('noreply@modpackindex.com', 'Modpack Index');
+                        $message->to($input['email'],
+                            $input['username'])->subject('Confirmation for ' . $input['username']);
+                    });
 
                 return View::make('user.register_success', ['email' => $user->email]);
-            }
-            else
-            {
+            } else {
                 return Redirect::to('/register')->withErrors(['Error' => 'Unable to create account'])->withInput();
             }
         }
@@ -281,25 +256,19 @@ class UserController extends BaseController
     {
         $my_profile = false;
 
-        if (!$username)
-        {
-            if (!Auth::check())
-            {
+        if (!$username) {
+            if (!Auth::check()) {
                 return Redirect::intended('/');
-            }
-            else
-            {
+            } else {
                 $username = Auth::user()->username;
+
                 return Redirect::intended('/profile/' . $username);
 
             }
-        }
-        else
-        {
+        } else {
             $raw_user = User::where('username', $username)->first();
 
-            if (!$raw_user)
-            {
+            if (!$raw_user) {
                 return Redirect::intended('/');
             }
 
@@ -308,13 +277,11 @@ class UserController extends BaseController
             $user_info = [
                 'username' => $raw_user->username,
                 'email' => $raw_user->email,
-                'hide_email' =>$raw_user->hide_email,
+                'hide_email' => $raw_user->hide_email,
             ];
 
-            if (Auth::check())
-            {
-                if (Auth::user()->email == $user_info['email'])
-                {
+            if (Auth::check()) {
+                if (Auth::user()->email == $user_info['email']) {
                     $my_profile = true;
                 }
             }
@@ -334,8 +301,7 @@ class UserController extends BaseController
 
     public function getEditProfile()
     {
-        if (!Auth::check())
-        {
+        if (!Auth::check()) {
             return Redirect::intended('/');
         }
 
@@ -353,8 +319,7 @@ class UserController extends BaseController
 
     public function postEditProfile()
     {
-        if (!Auth::check())
-        {
+        if (!Auth::check()) {
             return Redirect::intended('/');
         }
 
@@ -380,12 +345,9 @@ class UserController extends BaseController
             ],
             $messages);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return Redirect::to('/profile/edit')->withErrors($validator)->withInput();
-        }
-        else
-        {
+        } else {
             $user->email = $input['email'];
             $user_info->real_name = $input['real_name'];
             $user_info->location = $input['location'];
@@ -393,12 +355,9 @@ class UserController extends BaseController
             $user_info->github = $input['github'];
             $user_info->about_me = $input['about_me'];
 
-            if ($input['hide_email'] == 1)
-            {
+            if ($input['hide_email'] == 1) {
                 $user->hide_email = 1;
-            }
-            else
-            {
+            } else {
                 $user->hide_email = 0;
             }
 
@@ -410,12 +369,10 @@ class UserController extends BaseController
             $user_info->email = $user->email;
             $user_info->hide_email = $user->hide_email;
 
-            if ($success)
-            {
-                return View::make('user.edit', ['title' => $title, 'success' => true, 'user' => $user, 'user_info' => $user_info]);
-            }
-            else
-            {
+            if ($success) {
+                return View::make('user.edit',
+                    ['title' => $title, 'success' => true, 'user' => $user, 'user_info' => $user_info]);
+            } else {
                 return Redirect::to('/profile/edit')->withErrors(['message' => 'Unable to edit profile.'])->withInput();
             }
         }
@@ -423,8 +380,7 @@ class UserController extends BaseController
 
     public function getEditPassword()
     {
-        if (!Auth::check())
-        {
+        if (!Auth::check()) {
             return Redirect::intended('/');
         }
 
@@ -438,13 +394,11 @@ class UserController extends BaseController
 
     public function postEditPassword()
     {
-        Validator::extend('passcheck', function ($attribute, $value, $parameters)
-        {
+        Validator::extend('passcheck', function ($attribute, $value, $parameters) {
             return Hash::check($value, Auth::user()->getAuthPassword());
         });
 
-        if (!Auth::check())
-        {
+        if (!Auth::check()) {
             return Redirect::intended('/');
         }
 
@@ -466,24 +420,18 @@ class UserController extends BaseController
             ],
             $messages);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return Redirect::to('/profile/edit/password')->withErrors($validator);
-        }
-        else
-        {
+        } else {
             $user->password = Hash::make($input['new_password']);
             $user->remember_token = null; //kill the remember_token for security
             $user->last_ip = Request::getClientIp();
 
             $success = $user->save();
 
-            if ($success)
-            {
+            if ($success) {
                 return View::make('user.edit_password', ['title' => $title, 'success' => true, 'user' => $user]);
-            }
-            else
-            {
+            } else {
                 return Redirect::to('/profile/edit/password')->withErrors(['message' => 'Unable to edit password.']);
             }
         }
@@ -493,58 +441,58 @@ class UserController extends BaseController
     {
         $error = false;
 
-        if ($user = User::where('confirmation', '=', $confirmation)->first())
-        {
-            if ($user->is_confirmed)
-            {
+        if ($user = User::where('confirmation', '=', $confirmation)->first()) {
+            if ($user->is_confirmed) {
                 $confirm = true;
                 $error = 'Your account has already been activated.';
-            }
-            else
-            {
+            } else {
                 $user->is_confirmed = 1;
                 $user->is_active = 1;
                 $user->save();
 
                 $confirm = true;
             }
-        }
-        else
-        {
+        } else {
             $confirm = false;
         }
+
         return View::make('user.confirm', ['confirmed' => $confirm, 'error' => $error]);
     }
 
     public function getUserPermissions($id)
     {
-        if (!$this->checkRoute()) return Redirect::to('/');
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
         $user = User::find($id);
         $permissions = $user->permissions;
         $available_permissions = Permission::all();
         $selected_permissions = [];
 
-        foreach ($permissions as $p)
-        {
+        foreach ($permissions as $p) {
             $selected_permissions[] = $p->id;
         }
 
-        return View::make('user.edit_permissions', ['user' => $user, 'selected_permissions' => $selected_permissions,
-                'available_permissions' => $available_permissions]);
+        return View::make('user.edit_permissions', [
+            'user' => $user,
+            'selected_permissions' => $selected_permissions,
+            'available_permissions' => $available_permissions
+        ]);
     }
 
     public function postUserPermissions($id)
     {
-        if (!$this->checkRoute()) return Redirect::to('/');
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
         $input = Input::only('selected_permissions');
 
         $user = User::find($id);
         $permissions = $user->permissions;
 
-        foreach ($permissions as $p)
-        {
+        foreach ($permissions as $p) {
             $user->permissions()->detach($p->id);
         }
 
@@ -555,14 +503,17 @@ class UserController extends BaseController
         $permissions = $user->permissions;
         $available_permissions = Permission::all();
 
-        foreach ($permissions as $p)
-        {
+        foreach ($permissions as $p) {
             $selected_permissions[] = $p->id;
         }
 
         Cache::tags('user-permissions')->flush();
 
-        return View::make('user.edit_permissions', ['user' => $user, 'selected_permissions' => $selected_permissions,
-            'available_permissions' => $available_permissions, 'success' => true]);
+        return View::make('user.edit_permissions', [
+            'user' => $user,
+            'selected_permissions' => $selected_permissions,
+            'available_permissions' => $available_permissions,
+            'success' => true
+        ]);
     }
 }

@@ -4,7 +4,9 @@ class ModpackCodeController extends BaseController
 {
     public function getAdd()
     {
-        if (!$this->checkRoute()) return Redirect::to('/');
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
         $title = 'Add A Modpack Code - ' . $this->site_name;
 
@@ -13,7 +15,9 @@ class ModpackCodeController extends BaseController
 
     public function postAdd()
     {
-        if (!$this->checkRoute()) return Redirect::to('/');
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
         $title = 'Add A Modpack Code - ' . $this->site_name;
 
@@ -31,12 +35,9 @@ class ModpackCodeController extends BaseController
             ],
             $messages);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return Redirect::to('/modpack-code/add')->withErrors($validator)->withInput();
-        }
-        else
-        {
+        } else {
             $modpackcode = new ModpackCode;
 
             $modpackcode->code = $input['code'];
@@ -46,14 +47,12 @@ class ModpackCodeController extends BaseController
 
             $success = $modpackcode->save();
 
-            if ($success)
-            {
+            if ($success) {
                 Cache::tags('modpacks')->flush();
                 Queue::push('BuildCache');
+
                 return View::make('modpackcodes.add', ['title' => $title, 'success' => true]);
-            }
-            else
-            {
+            } else {
                 return Redirect::to('/modpack-codes/add')->withErrors(['message' => 'Unable to add modpack code.'])->withInput();
             }
 
@@ -62,7 +61,9 @@ class ModpackCodeController extends BaseController
 
     public function getEdit($id)
     {
-        if (!$this->checkRoute()) return Redirect::to('/');
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
         $title = 'Edit A Modpack Code - ' . $this->site_name;
 
@@ -73,7 +74,9 @@ class ModpackCodeController extends BaseController
 
     public function postEdit($id)
     {
-        if (!$this->checkRoute()) return Redirect::to('/');
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
         $title = 'Edit A Modpack Code - ' . $this->site_name;
 
@@ -87,18 +90,15 @@ class ModpackCodeController extends BaseController
 
         $validator = Validator::make($input,
             [
-                'code' => 'required|unique:modpack_codes,code,'.$modpackcode->id,
+                'code' => 'required|unique:modpack_codes,code,' . $modpackcode->id,
                 'launcher' => 'required',
                 'modpack' => 'required',
             ],
             $messages);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return Redirect::to('/modpack-code/edit/' . $id)->withErrors($validator)->withInput();
-        }
-        else
-        {
+        } else {
             $modpackcode->code = $input['code'];
             $modpackcode->modpack_id = $input['modpack'];
             $modpackcode->launcher_id = $input['launcher'];
@@ -106,14 +106,13 @@ class ModpackCodeController extends BaseController
 
             $success = $modpackcode->save();
 
-            if ($success)
-            {
+            if ($success) {
                 Cache::tags('modpacks')->flush();
                 Queue::push('BuildCache');
-                return View::make('modpackcodes.edit', ['title' => $title, 'success' => true, 'modpackcode' => $modpackcode]);
-            }
-            else
-            {
+
+                return View::make('modpackcodes.edit',
+                    ['title' => $title, 'success' => true, 'modpackcode' => $modpackcode]);
+            } else {
                 return Redirect::to('/modpack-codes/edit/' . $id)->withErrors(['message' => 'Unable to add modpack code.'])->withInput();
             }
 

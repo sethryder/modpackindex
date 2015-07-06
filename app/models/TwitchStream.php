@@ -23,8 +23,7 @@ class TwitchStream extends Eloquent
 
         $response = $client->get('https://api.twitch.tv/kraken/streams?game=Minecraft&limit=100');
 
-        if ($response->getStatusCode() != 200)
-        {
+        if ($response->getStatusCode() != 200) {
             return false;
         }
 
@@ -33,25 +32,21 @@ class TwitchStream extends Eloquent
 
         $channel_total = $decoded_body->_total;
 
-        foreach ($decoded_body->streams as $stream)
-        {
+        foreach ($decoded_body->streams as $stream) {
             $stream_id = $stream->channel->_id;
             $streams[$stream_id] = $stream;
         }
 
-        if ($channel_total > 100)
-        {
+        if ($channel_total > 100) {
             $i = 100;
 
-            while ($i <= $channel_total)
-            {
+            while ($i <= $channel_total) {
                 $response = $client->get('https://api.twitch.tv/kraken/streams?game=Minecraft&limit=100&offset=' . $i);
 
                 $raw_body = $response->getBody();
                 $decoded_body = json_decode($raw_body);
 
-                foreach ($decoded_body->streams as $stream)
-                {
+                foreach ($decoded_body->streams as $stream) {
                     $stream_id = $stream->channel->_id;
                     $streams[$stream_id] = $stream;
                 }
@@ -60,12 +55,9 @@ class TwitchStream extends Eloquent
             }
         }
 
-        if (!$decoded_body)
-        {
+        if (!$decoded_body) {
             return false;
-        }
-        else
-        {
+        } else {
             return $streams;
         }
     }

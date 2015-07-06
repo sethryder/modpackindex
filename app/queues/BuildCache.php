@@ -6,8 +6,7 @@ class BuildCache
     {
         $versions = MinecraftVersion::all();
 
-        foreach ($versions as $version)
-        {
+        foreach ($versions as $version) {
             $url_version = preg_replace('/\./', '-', $version->name);
 
             $this->getPage('api/table/mods/' . $url_version . '.json');
@@ -22,7 +21,7 @@ class BuildCache
 
     private function getPage($target)
     {
-        $url_base  = Config::get('app.url');
+        $url_base = Config::get('app.url');
         $url = $url_base . $target;
 
         $client = new \GuzzleHttp\Client();

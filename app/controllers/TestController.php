@@ -19,12 +19,9 @@ class TestController extends BaseController
 
     public function getCheckAuth()
     {
-        if (Auth::check())
-        {
+        if (Auth::check()) {
             echo 'You are login!';
-        }
-        else
-        {
+        } else {
             echo 'You are not login!';
         }
     }
@@ -68,7 +65,7 @@ class TestController extends BaseController
     public function getYoutube()
     {
         $string_text = "https://www.youtube.com/watch?v=DFBkUc6tAPk&index=1&list=PLaiPn4ewcbkEC_hsSjPSqN8Mz3qWVC_MA";
-        preg_match("/(?<=list=)(.*?)(?=$|&)/i" , $string_text, $match);
+        preg_match("/(?<=list=)(.*?)(?=$|&)/i", $string_text, $match);
         print_r($match[0]);
     }
 

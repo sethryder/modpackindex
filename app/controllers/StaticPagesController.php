@@ -4,7 +4,7 @@ class StaticPagesController extends BaseController
 {
     public function getAbout()
     {
-        $title = 'About - '. $this->site_name;
+        $title = 'About - ' . $this->site_name;
         $meta_description = 'About & FAQ for Modpack Index.';
 
         return View::Make('pages.about', ['title' => $title, 'meta_description' => $meta_description]);
@@ -12,7 +12,7 @@ class StaticPagesController extends BaseController
 
     public function getContact()
     {
-        $title = 'Contact Us - '. $this->site_name;
+        $title = 'Contact Us - ' . $this->site_name;
         $meta_description = 'Contact us if something is incorrect, if you have a question, or for anything else.';
 
         return View::make('pages.contact', ['title' => $title, 'meta_description' => $meta_description]);
@@ -20,7 +20,7 @@ class StaticPagesController extends BaseController
 
     public function postContact()
     {
-        $title = 'Contact Us - '. $this->site_name;
+        $title = 'Contact Us - ' . $this->site_name;
 
         $input = Input::only('name', 'email', 'message', 'recaptcha_response_field');
         $input['contact_email'] = 'ryder.seth@gmail.com';
@@ -35,12 +35,9 @@ class StaticPagesController extends BaseController
             )
         );
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return Redirect::to('/contact')->withErrors($validator)->withInput();
-        }
-        else
-        {
+        } else {
             Mail::send('emails.contact', array('input' => $input), function ($message) use ($input) {
                 $message->from('noreply@modpackindex.com', 'Modpack Index');
                 $message->replyTo($input['email'], $input['name']);
@@ -53,7 +50,7 @@ class StaticPagesController extends BaseController
 
     public function getSubmitModpack()
     {
-        $title = 'Submit Modpack - '. $this->site_name;
+        $title = 'Submit Modpack - ' . $this->site_name;
         $meta_description = 'Submit a Modpack to be included on the site.';
 
         return View::make('pages.submitmodpack', ['title' => $title, 'meta_description' => $meta_description]);
@@ -61,7 +58,7 @@ class StaticPagesController extends BaseController
 
     public function postSubmitModpack()
     {
-        $title = 'Submit Modpack - '. $this->site_name;
+        $title = 'Submit Modpack - ' . $this->site_name;
 
         $input = Input::only('name', 'creators_name', 'minecraft_version', 'launcher', 'website', 'modlist', 'packcode',
             'deck', 'description', 'comments', 'email', 'g-recaptcha-response');
@@ -95,17 +92,13 @@ class StaticPagesController extends BaseController
             $validator_error_messages
         );
 
-        if (!$input['email'])
-        {
+        if (!$input['email']) {
             $input['email'] = 'noreply@modpackindex.com';
         }
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return Redirect::to('/submit-modpack')->withErrors($validator)->withInput();
-        }
-        else
-        {
+        } else {
             Mail::send('emails.submitmodpack', array('input' => $input), function ($message) use ($input) {
                 $message->from('noreply@modpackindex.com', 'Modpack Index');
                 $message->replyTo($input['email']);
@@ -118,7 +111,7 @@ class StaticPagesController extends BaseController
 
     public function getSubmitVideo()
     {
-        $title = 'Submit Video / Playlist - '. $this->site_name;
+        $title = 'Submit Video / Playlist - ' . $this->site_name;
         $types = [
             'Let\'s Play' => 'Let\'s Play',
             'Spotlight' => 'Spotlight',
@@ -127,12 +120,13 @@ class StaticPagesController extends BaseController
         ];
         $meta_description = 'Submit a video or playlist to be included on the site.';
 
-        return View::make('pages.submitvideo', ['title' => $title, 'types' => $types, 'meta_description' => $meta_description]);
+        return View::make('pages.submitvideo',
+            ['title' => $title, 'types' => $types, 'meta_description' => $meta_description]);
     }
 
     public function postSubmitVideo()
     {
-        $title = 'Submit Video / Playlist - '. $this->site_name;
+        $title = 'Submit Video / Playlist - ' . $this->site_name;
         $types = [
             'Let\'s Play' => 'Let\'s Play',
             'Spotlight' => 'Spotlight',
@@ -164,31 +158,25 @@ class StaticPagesController extends BaseController
             $validator_error_messages
         );
 
-        if (!$input['email'])
-        {
+        if (!$input['email']) {
             $input['email'] = 'noreply@modpackindex.com';
         }
 
-        if ($input['modpack'])
-        {
+        if ($input['modpack']) {
             $email_subject = 'Video Submission: Modpack ' . $input['type'];
-        }
-        elseif ($input['mod'])
-        {
+        } elseif ($input['mod']) {
             $email_subject = 'Video Submission: Mod ' . $input['type'];
         }
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return Redirect::to('/submit-video')->withErrors($validator)->withInput();
-        }
-        else
-        {
-            Mail::send('emails.submitvideo', array('input' => $input), function ($message) use ($input, $email_subject) {
-                $message->from('noreply@modpackindex.com', 'Modpack Index');
-                $message->replyTo($input['email']);
-                $message->to($input['contact_email'], 'Seth')->subject($email_subject);
-            });
+        } else {
+            Mail::send('emails.submitvideo', array('input' => $input),
+                function ($message) use ($input, $email_subject) {
+                    $message->from('noreply@modpackindex.com', 'Modpack Index');
+                    $message->replyTo($input['email']);
+                    $message->to($input['contact_email'], 'Seth')->subject($email_subject);
+                });
 
             return View::make('pages.submitvideo', ['success' => true, 'title' => $title, 'types' => $types]);
         }
@@ -196,7 +184,7 @@ class StaticPagesController extends BaseController
 
     public function getPackCodes()
     {
-        $title = 'What are Modpack Codes? - '. $this->site_name;
+        $title = 'What are Modpack Codes? - ' . $this->site_name;
         $meta_description = 'Find out how Modpack codes work for the different launchers we support.';
 
         return View::make('pages.packcodes', ['title' => $title, 'meta_description' => $meta_description]);

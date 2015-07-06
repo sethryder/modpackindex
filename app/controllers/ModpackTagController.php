@@ -9,7 +9,9 @@ class ModpackTagController extends BaseController
 
     public function getAdd()
     {
-        if (!$this->checkRoute()) return Redirect::to('/');
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
         $title = 'Add A Modpack Tag - ' . $this->site_name;
 
@@ -18,7 +20,9 @@ class ModpackTagController extends BaseController
 
     public function postAdd()
     {
-        if (!$this->checkRoute()) return Redirect::to('/');
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
         $title = 'Add A Modpack Tag - ' . $this->site_name;
 
@@ -35,12 +39,9 @@ class ModpackTagController extends BaseController
             ],
             $messages);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return Redirect::to('/tag/modpack/add')->withErrors($validator)->withInput();
-        }
-        else
-        {
+        } else {
             $modpacktag = new ModpackTag;
 
             $modpacktag->name = $input['name'];
@@ -48,26 +49,21 @@ class ModpackTagController extends BaseController
             $modpacktag->description = $input['description'];
             $modpacktag->last_ip = Request::getClientIp();
 
-            if ($input['slug'] == '')
-            {
+            if ($input['slug'] == '') {
                 $slug = Str::slug($input['name']);
-            }
-            else
-            {
+            } else {
                 $slug = $input['slug'];
             }
 
             $modpacktag->slug = $slug;
             $success = $modpacktag->save();
 
-            if ($success)
-            {
+            if ($success) {
                 Cache::tags('modpacks')->flush();
                 Queue::push('BuildCache');
+
                 return View::make('tags.modpacks.add', ['title' => $title, 'success' => true]);
-            }
-            else
-            {
+            } else {
                 return Redirect::to('/tag/modpack/add')->withErrors(['message' => 'Unable to add modpack tag.'])->withInput();
             }
 
@@ -76,7 +72,9 @@ class ModpackTagController extends BaseController
 
     public function getEdit($id)
     {
-        if (!$this->checkRoute()) return Redirect::to('/');
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
         $title = 'Edit A Modpack Tag - ' . $this->site_name;
 
@@ -88,7 +86,9 @@ class ModpackTagController extends BaseController
 
     public function postEdit($id)
     {
-        if (!$this->checkRoute()) return Redirect::to('/');
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
         $title = 'Edit A Modpack Code - ' . $this->site_name;
 
@@ -102,42 +102,35 @@ class ModpackTagController extends BaseController
 
         $validator = Validator::make($input,
             [
-                'name' => 'required|unique:modpack_tags,name,'.$modpacktag->id,
+                'name' => 'required|unique:modpack_tags,name,' . $modpacktag->id,
                 'deck' => 'required',
             ],
             $messages);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return Redirect::to('/tag/modpack/edit/' . $id)->withErrors($validator)->withInput();
-        }
-        else
-        {
+        } else {
             $modpacktag->name = $input['name'];
             $modpacktag->deck = $input['deck'];
             $modpacktag->description = $input['description'];
             $modpacktag->last_ip = Request::getClientIp();
 
-            if ($input['slug'] == '' || $input['slug'] == $modpacktag->slug)
-            {
+            if ($input['slug'] == '' || $input['slug'] == $modpacktag->slug) {
                 $slug = Str::slug($input['name']);
-            }
-            else
-            {
+            } else {
                 $slug = $input['slug'];
             }
 
             $modpacktag->slug = $slug;
             $success = $modpacktag->save();
 
-            if ($success)
-            {
+            if ($success) {
                 Cache::tags('modpacks')->flush();
                 Queue::push('BuildCache');
-                return View::make('tags.modpacks.edit', ['title' => $title, 'success' => true, 'modpacktag' => $modpacktag]);
-            }
-            else
-            {
+
+                return View::make('tags.modpacks.edit',
+                    ['title' => $title, 'success' => true, 'modpacktag' => $modpacktag]);
+            } else {
                 return Redirect::to('/tag/modpack/' . $id)->withErrors(['message' => 'Unable to edit modpack code.'])->withInput();
             }
 

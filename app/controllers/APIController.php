@@ -2,7 +2,7 @@
 
 Class APIController extends BaseController
 {
-    public function getModpacks($version='all')
+    public function getModpacks($version = 'all')
     {
         $modpacks = [];
         $limit = 100;
@@ -10,38 +10,42 @@ Class APIController extends BaseController
 
         $input = Input::only('limit', 'offset');
 
-        if ($input['limit']) $limit = $input['limit'];
-        if ($input['offset']) $offset = $input['offset'];
-
-        if ($version == 'all')
-        {
-            $raw_modpacks = Modpack::select('id', 'name', 'deck', 'website', 'download_link', 'wiki_link', 'description', 'slug',
-                'created_at', 'updated_at')->skip($offset)->take($limit)->get();
-            $modpack_count = Modpack::select('id')->count();
+        if ($input['limit']) {
+            $limit = $input['limit'];
         }
-        else
-        {
+
+        if ($input['offset']) {
+            $offset = $input['offset'];
+        }
+
+        if ($version == 'all') {
+            $raw_modpacks = Modpack::select('id', 'name', 'deck', 'website', 'download_link', 'wiki_link',
+                'description', 'slug', 'created_at', 'updated_at')
+                ->skip($offset)->take($limit)->get();
+
+            $modpack_count = Modpack::select('id')->count();
+        } else {
             $version = preg_replace('/-/', '.', $version);
             $raw_version = MinecraftVersion::where('name', '=', $version)->first();
 
-            if (!$raw_version)
-            {
+            if (!$raw_version) {
                 return json_encode(['error' => 'Not a valid version.']);
             }
 
             $version_id = $raw_version->id;
-            $raw_modpacks = Modpack::select('id', 'name', 'deck', 'website', 'download_link', 'donate_link', 'wiki_link', 'description', 'slug',
-                'created_at', 'updated_at')->where('minecraft_version_id', $version_id)->skip($offset)->take($limit)->get();
+            $raw_modpacks = Modpack::select('id', 'name', 'deck', 'website', 'download_link', 'donate_link',
+                'wiki_link', 'description', 'slug', 'created_at', 'updated_at')
+                ->where('minecraft_version_id', $version_id)
+                ->skip($offset)->take($limit)->get();
+
             $modpack_count = Modpack::select('id')->where('minecraft_version_id', $version_id)->count();
         }
 
-        if (!$raw_modpacks)
-        {
+        if (!$raw_modpacks) {
             return json_encode(['error' => 'No results.']);
         }
 
-        foreach ($raw_modpacks as $modpack)
-        {
+        foreach ($raw_modpacks as $modpack) {
             $modpacks['results'][] = [
                 'id' => $modpack->id,
                 'name' => $modpack->name,
@@ -73,15 +77,13 @@ Class APIController extends BaseController
 
         $raw_modpack = Modpack::find($id);
 
-        if (!$raw_modpack)
-        {
+        if (!$raw_modpack) {
             return json_encode(['error' => 'No modpack with that ID found.']);
         }
 
         $raw_mods = $raw_modpack->mods;
 
-        foreach ($raw_mods as $mod)
-        {
+        foreach ($raw_mods as $mod) {
             $mods[] = [
                 'id' => $mod->id,
                 'name' => $mod->name,
@@ -115,7 +117,7 @@ Class APIController extends BaseController
         return json_encode($results);
     }
 
-    public function getMods($version='all')
+    public function getMods($version = 'all')
     {
         $mods = [];
 
@@ -124,28 +126,29 @@ Class APIController extends BaseController
 
         $input = Input::only('limit', 'offset');
 
-        if ($input['limit']) $limit = $input['limit'];
-        if ($input['offset']) $offset = $input['offset'];
-
-        if ($version == 'all')
-        {
-            $raw_mods = Mod::select('id', 'name', 'deck', 'website', 'download_link', 'wiki_link', 'description', 'slug',
-                'created_at', 'updated_at')->skip($offset)->take($limit)->get();
-            $mod_count = Mod::select('id')->count();
+        if ($input['limit']) {
+            $limit = $input['limit'];
         }
-        else
-        {
+        if ($input['offset']) {
+            $offset = $input['offset'];
+        }
+
+        if ($version == 'all') {
+            $raw_mods = Mod::select('id', 'name', 'deck', 'website', 'download_link', 'wiki_link', 'description',
+                'slug', 'created_at', 'updated_at')
+                ->skip($offset)->take($limit)->get();
+
+            $mod_count = Mod::select('id')->count();
+        } else {
             $version = preg_replace('/-/', '.', $version);
             $raw_version = MinecraftVersion::where('name', '=', $version)->first();
             $version_id = $raw_version->id;
 
-            if (!$raw_version)
-            {
+            if (!$raw_version) {
                 return json_encode(['error' => 'Not a valid version.']);
             }
 
-            $query = Mod::whereHas('versions', function ($q) use ($version_id)
-            {
+            $query = Mod::whereHas('versions', function ($q) use ($version_id) {
                 $q->where('minecraft_versions.id', '=', $version_id);
             });
 
@@ -154,13 +157,11 @@ Class APIController extends BaseController
             $raw_mods = $query->get();
         }
 
-        if (!$raw_mods)
-        {
+        if (!$raw_mods) {
             return json_encode(['error' => 'No results.']);
         }
 
-        foreach ($raw_mods as $mod)
-        {
+        foreach ($raw_mods as $mod) {
             $mods['results'][] = [
                 'id' => $mod->id,
                 'name' => $mod->name,
@@ -191,15 +192,13 @@ Class APIController extends BaseController
 
         $raw_mod = Mod::find($id);
 
-        if (!$raw_mod)
-        {
+        if (!$raw_mod) {
             return json_encode(['error' => 'No mod with that ID found.']);
         }
 
         $raw_modpacks = $raw_mod->modpacks;
 
-        foreach ($raw_modpacks as $modpack)
-        {
+        foreach ($raw_modpacks as $modpack) {
             $modpacks[] = [
                 'id' => $modpack->id,
                 'name' => $modpack->name,
@@ -233,7 +232,7 @@ Class APIController extends BaseController
         return json_encode($results);
     }
 
-    public function getStreams($limit=100, $offset)
+    public function getStreams($limit = 100, $offset)
     {
 
     }

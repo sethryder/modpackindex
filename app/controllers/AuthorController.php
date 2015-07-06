@@ -9,15 +9,20 @@ class AuthorController extends BaseController
 
     public function getAdd()
     {
-        if (!$this->checkRoute()) return Redirect::to('/');
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
         $title = 'Add An Author - ' . $this->site_name;
+
         return View::make('authors.add', ['title' => $title]);
     }
 
     public function postAdd()
     {
-        if (!$this->checkRoute()) return Redirect::to('/');
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
         $title = 'Add An Author - ' . $this->site_name;
 
@@ -34,14 +39,11 @@ class AuthorController extends BaseController
                 'website' => 'url',
                 'donate_link' => 'url',
             ],
-        $messages);
+            $messages);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return Redirect::to('/author/add/')->withErrors($validator)->withInput();
-        }
-        else
-        {
+        } else {
             $author = new Author;
 
             $author->name = $input['name'];
@@ -50,12 +52,9 @@ class AuthorController extends BaseController
             $author->donate_link = $input['donate_link'];
             $author->bio = $input['bio'];
 
-            if ($input['slug'] == '')
-            {
+            if ($input['slug'] == '') {
                 $slug = Str::slug($input['name']);
-            }
-            else
-            {
+            } else {
                 $slug = $input['slug'];
             }
 
@@ -64,12 +63,9 @@ class AuthorController extends BaseController
 
             $success = $author->save();
 
-            if ($success)
-            {
+            if ($success) {
                 return View::make('authors.add', ['title' => $title, 'success' => true]);
-            }
-            else
-            {
+            } else {
                 return Redirect::to('/author/add/')->withErrors(['message' => 'Unable to add author.'])->withInput();
             }
 
@@ -78,7 +74,9 @@ class AuthorController extends BaseController
 
     public function getEdit($id)
     {
-        if (!$this->checkRoute()) return Redirect::to('/');
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
         $title = 'Edit An Author - ' . $this->site_name;
 
@@ -89,7 +87,9 @@ class AuthorController extends BaseController
 
     public function postEdit($id)
     {
-        if (!$this->checkRoute()) return Redirect::to('/');
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
         $title = 'Edit An Author - ' . $this->site_name;
         $author = Author::find($id);
@@ -103,18 +103,15 @@ class AuthorController extends BaseController
 
         $validator = Validator::make($input,
             [
-                'name' => 'required|unique:authors,name,'.$author->id,
+                'name' => 'required|unique:authors,name,' . $author->id,
                 'website' => 'url',
                 'donate_link' => 'url',
             ],
             $messages);
 
-        if ($validator->fails())
-        {
-            return Redirect::to('/author/edit/'. $id)->withErrors($validator)->withInput();
-        }
-        else
-        {
+        if ($validator->fails()) {
+            return Redirect::to('/author/edit/' . $id)->withErrors($validator)->withInput();
+        } else {
 
             $author->name = $input['name'];
             $author->deck = $input['deck'];
@@ -122,12 +119,9 @@ class AuthorController extends BaseController
             $author->donate_link = $input['donate_link'];
             $author->bio = $input['bio'];
 
-            if ($input['slug'] == '' || $input['slug'] == $author->slug)
-            {
+            if ($input['slug'] == '' || $input['slug'] == $author->slug) {
                 $slug = Str::slug($input['name']);
-            }
-            else
-            {
+            } else {
                 $slug = $input['slug'];
             }
 
@@ -136,13 +130,10 @@ class AuthorController extends BaseController
 
             $success = $author->save();
 
-            if ($success)
-            {
+            if ($success) {
                 return View::make('authors.edit', ['title' => $title, 'success' => true, 'author' => $author]);
-            }
-            else
-            {
-                return Redirect::to('/author/edit/'.$id)->withErrors(['message' => 'Unable to add author.'])->withInput();
+            } else {
+                return Redirect::to('/author/edit/' . $id)->withErrors(['message' => 'Unable to add author.'])->withInput();
             }
 
         }

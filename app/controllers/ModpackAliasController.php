@@ -9,13 +9,19 @@ class ModpackAliasController extends BaseController
 
         $title = 'Add A Modpack Alias - ' . $this->site_name;
 
-        return View::make('modpackaliases.view', ['chosen' => true, 'title' => $title, 'aliases' => $modpack_aliases,
-            'modpack' => $modpack]);
+        return View::make('modpackaliases.view', [
+            'chosen' => true,
+            'title' => $title,
+            'aliases' => $modpack_aliases,
+            'modpack' => $modpack
+        ]);
     }
 
     public function getAdd()
     {
-        if (!$this->checkRoute()) return Redirect::to('/');
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
         $title = 'Add A Modpack Alias - ' . $this->site_name;
 
@@ -24,7 +30,9 @@ class ModpackAliasController extends BaseController
 
     public function postAdd()
     {
-        if (!$this->checkRoute()) return Redirect::to('/');
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
         $title = 'Add A Modpack Alias - ' . $this->site_name;
 
@@ -41,12 +49,9 @@ class ModpackAliasController extends BaseController
             ],
             $messages);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return Redirect::to('/modpack-alias/add')->withErrors($validator)->withInput();
-        }
-        else
-        {
+        } else {
             $modpackalias = new ModpackAlias();
 
             $modpackalias->alias = $input['alias'];
@@ -54,12 +59,9 @@ class ModpackAliasController extends BaseController
 
             $success = $modpackalias->save();
 
-            if ($success)
-            {
+            if ($success) {
                 return View::make('modpackaliases.add', ['title' => $title, 'success' => true]);
-            }
-            else
-            {
+            } else {
                 return Redirect::to('/modpack-alias/add')->withErrors(['message' => 'Unable to add modpack code.'])->withInput();
             }
 
