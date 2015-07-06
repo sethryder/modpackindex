@@ -86,9 +86,6 @@ Route::get('/cache/clear/{tag?}', ['as' => 'cache_clear', 'uses' => 'AdminContro
 Route::get('memcache/stats','AdminController@getMemcacheStats');
 
 
-
-
-
 /*
  * General Site Routes
  */
@@ -147,6 +144,7 @@ Route::post('forgot', 'UserController@postForgotPassword');
 Route::get('reset/{token}', 'UserController@getResetPassword');
 Route::post('reset/{token}', 'UserController@postResetPassword');
 
+Route::get('user/verify/{confirmation}', 'UserController@getVerify');
 
 //twitch
 Route::get('streams', 'TwitchController@getStreams');
@@ -155,9 +153,10 @@ Route::get('stream/{channel}', 'TwitchController@getChannel');
 //servers
 Route::get('server/query', 'ServerController@getQuery');
 
+/*
+ * API Routes
+ */
 
-
-Route::get('user/verify/{confirmation}', 'UserController@getVerify');
 
 //api for users
 Route::get('api/v1/modpacks/{version}.json', 'APIController@getModpacks');
@@ -185,6 +184,10 @@ Route::get('api/select/mods/{version}.json', 'JSONController@getModsSelect');
 
 //Route::get('api/jquery/mods/select.js', 'ModpackController@getModsJquery');
 
+/*
+ * Static Page Routes
+ */
+
 //static
 Route::get('about', 'StaticPagesController@getAbout');
 Route::get('about/modpack-codes', 'StaticPagesController@getPackCodes');
@@ -195,6 +198,9 @@ Route::post('submit-modpack', 'StaticPagesController@postSubmitModpack');
 Route::get('submit-video', 'StaticPagesController@getSubmitVideo');
 Route::post('submit-video', 'StaticPagesController@postSubmitVideo');
 
+/*
+ * Sitemap Routes
+ */
 
 //sitemap
 Route::get('/sitemap/index.xml', 'SitemapController@getSitemapIndex');
@@ -203,6 +209,10 @@ Route::get('/sitemap/launchers.xml', 'SitemapController@getSitemapLaunchers');
 Route::get('/sitemap/modpacks.xml', 'SitemapController@getSitemapModpacks');
 Route::get('/sitemap/mods.xml', 'SitemapController@getSitemapMods');
 Route::get('/sitemap/videos.xml', 'SitemapController@getSitemapVideos');
+
+/*
+ * Misc/Testing Routes
+ */
 
 //misc
 Route::get('checkauth', 'TestController@getPackCodes');
