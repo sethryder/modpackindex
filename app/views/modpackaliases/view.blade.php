@@ -5,27 +5,28 @@
 
         <div class="container">
 
-                <div class="row">
+            <div class="row">
 
-                    <div class="col-md-6 col-md-push-3 col-sm-8 col-sm-push-2 ">
+                <div class="col-md-6 col-md-push-3 col-sm-8 col-sm-push-2 ">
 
                     <h3 class="portlet-title">
                         <u>{{ $modpack->name }} ({{ $modpack->version->name  }}) Aliases</u>
                     </h3>
+
                     <div style="text-align: center;"><h4><a href="/modpack-alias/add">Add</a></h4></div>
 
                     <div class="table-responsive">
 
-                            <table class="table table-striped table-bordered">
-                                <thead>
-                                <tr>
-                                    <th>Alias</th>
-                                    <th class="text-center">Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Alias</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
-                                @foreach($aliases as $alias)
+                            @foreach($aliases as $alias)
                                 <tr>
                                     <td class="valign-middle">{{ $alias->alias }}</td>
                                     <td class="text-center valign-middle">
@@ -34,20 +35,24 @@
                                         <button class="btn btn-xs btn-secondary"><i class="fa fa-times"></i></button>
                                     </td>
                                 </tr>
-                                @endforeach
+                            @endforeach
 
-                                </tbody>
-                            </table>
+                            </tbody>
+                        </table>
 
-                        </div> <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.table-responsive -->
 
 
-                    </div> <!-- /.col -->
+                </div>
+                <!-- /.col -->
 
-                </div> <!-- /.row -->
+            </div>
+            <!-- /.row -->
 
-            </div> <!-- /.container -->
+        </div>
+        <!-- /.container -->
 
-        </div> <!-- .content -->
+    </div> <!-- .content -->
     </div>
 @stop

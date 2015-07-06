@@ -15,8 +15,11 @@
                             <u>Import a Mod</u>
                         </h2>
 
-                        <p>You can import most information for a mod from <a href="http://modlist.mcf.li/">MCF Modlist</a>, <a href="http://bot.notenoughmods.com/">Not Enough Mods</a>, or from the <a href="https://github.com/MinecraftForge/FML/wiki/FML-mod-information-file">mcmod.info</a> file that is included with most
-                        mods.</p>
+                        <p>You can import most information for a mod from <a href="http://modlist.mcf.li/">MCF
+                                Modlist</a>, <a href="http://bot.notenoughmods.com/">Not Enough Mods</a>, or from the <a
+                                    href="https://github.com/MinecraftForge/FML/wiki/FML-mod-information-file">mcmod.info</a>
+                            file that is included with most
+                            mods.</p>
 
                         <div class="portlet-body">
 
@@ -44,42 +47,51 @@
                             <div class="form-group">
                                 {{ Form::label('import_nem','Not Enough Mods') }}:
                                 {{ Form::select('import_nem', $nem_mods_array, null, array('class' => 'form-control')) }}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('import_nem','MCF Modlist') }}:
                                 {{ Form::select('import_mcf', $mcf_mods_array, null, array('class' => 'form-control')) }}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('import_file','File') }}:
                                 {{ Form::file('import_file', null, array('class' => 'form-control', 'data-required' => 'true'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('url','URL') }}:
                                 {{ Form::text('url', null, array('class' => 'form-control', 'data-required' => 'true'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('json','JSON') }}:
                                 {{ Form::textarea('json', null, array('class' => 'form-control', 'data-required' => 'true'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             {{ Form::submit('Import', ['class' => 'btn btn-danger']) }}
 
                             {{ Form::close() }}
 
-                        </div> <!-- /.portlet-body -->
+                        </div>
+                        <!-- /.portlet-body -->
 
-                    </div> <!-- /.portlet -->
+                    </div>
+                    <!-- /.portlet -->
 
-                </div> <!-- /.col -->
+                </div>
+                <!-- /.col -->
 
-            </div> <!-- /.row -->
+            </div>
+            <!-- /.row -->
 
-        </div> <!-- /.container -->
-
+        </div>
+        <!-- /.container -->
 
 
     </div> <!-- .content -->

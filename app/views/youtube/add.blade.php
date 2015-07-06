@@ -41,7 +41,8 @@
                             <div class="form-group">
                                 {{ Form::label('url','URL') }}:
                                 {{ Form::text('url', null, array('class' => 'form-control', 'data-required' => 'true'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('category','Category') }}:
@@ -62,15 +63,20 @@
 
                             {{ Form::close() }}
 
-                        </div> <!-- /.portlet-body -->
+                        </div>
+                        <!-- /.portlet-body -->
 
-                    </div> <!-- /.portlet -->
+                    </div>
+                    <!-- /.portlet -->
 
-                </div> <!-- /.col -->
+                </div>
+                <!-- /.col -->
 
-            </div> <!-- /.row -->
+            </div>
+            <!-- /.row -->
 
-        </div> <!-- /.container -->
+        </div>
+        <!-- /.container -->
 
     </div> <!-- .content -->
 

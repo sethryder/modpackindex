@@ -6,7 +6,7 @@
     <script>
         $(function () {
             window.onPlayerEvent = function (data) {
-                data.forEach(function(event) {
+                data.forEach(function (event) {
                     if (event.event == "playerInit") {
                         var player = $("#twitch_embed_player")[0];
                         player.playVideo();
@@ -16,12 +16,16 @@
             }
 
             swfobject.embedSWF("//www-cdn.jtvnw.net/swflibs/TwitchPlayer.swf", "twitch_embed_player", "1920", "1080", "11", null,
-                    { "eventsCallback":"onPlayerEvent",
-                        "embed":1,
-                        "channel":"{{ $channel->display_name }}",
-                        "auto_play":"true"},
-                    { "allowScriptAccess":"always",
-                        "allowFullScreen":"true"});
+                    {
+                        "eventsCallback": "onPlayerEvent",
+                        "embed": 1,
+                        "channel": "{{ $channel->display_name }}",
+                        "auto_play": "true"
+                    },
+                    {
+                        "allowScriptAccess": "always",
+                        "allowFullScreen": "true"
+                    });
         });
     </script>
 
@@ -41,17 +45,22 @@
 
                     <div class="portlet-body" style="text-align:center;">
                         <h3>{{ $channel->status }}</h3>
+
                         <div class="video-container">
                             <div id="twitch_embed_player"></div>
                         </div>
                     </div>
-                    <br />
+                    <br/>
+
                     <h3><a href="{{ URL::previous() }}#twitch_streams">Back</a></h3>
 
-                </div> <!-- /.portlet -->
+                </div>
+                <!-- /.portlet -->
 
-            </div> <!-- /.container -->
+            </div>
+            <!-- /.container -->
 
-        </div> <!-- .content -->
+        </div>
+        <!-- .content -->
     </div>
 @stop

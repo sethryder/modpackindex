@@ -5,6 +5,7 @@
 </head>
 <body>
 <h2>Modpack Submission:</h2>
+
 <div>
     <p>
         <b>Modpack Name:</b> {{ $input['name'] }}<br/>
@@ -16,11 +17,13 @@
         <b>Pack Code:</b> {{ $input['packcode'] }}<br/>
         <b>Deck:</b> {{ $input['deck'] }}<br/>
         <b>Description:</b>
-            <p>{{ $input['description'] }}</p><br/>
-        <b>Comments:</b>
-            <p>{{ $input['comments'] }}</p><br/>
-        <b>Email:</b> {{ $input['email'] }}<br/>
-        <b>IP:</b> {{ $input['sender_ip'] }}<br/>
+
+    <p>{{ $input['description'] }}</p><br/>
+    <b>Comments:</b>
+
+    <p>{{ $input['comments'] }}</p><br/>
+    <b>Email:</b> {{ $input['email'] }}<br/>
+    <b>IP:</b> {{ $input['sender_ip'] }}<br/>
     </p>
 </div>
 </body>

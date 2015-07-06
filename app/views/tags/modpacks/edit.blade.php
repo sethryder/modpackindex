@@ -41,36 +41,45 @@
                             <div class="form-group">
                                 {{ Form::label('name','Tag') }}:
                                 {{ Form::text('name', $modpacktag->name, array('class' => 'form-control', 'data-required' => 'true'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('deck','Deck') }}:
                                 {{ Form::text('deck', $modpacktag->deck, array('class' => 'form-control', 'data-required' => 'true'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('description','Description') }}:
                                 {{ Form::textarea('description', $modpacktag->description, array('class' => 'form-control', 'data-required' => 'true'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('slug','Slug') }}:
                                 {{ Form::text('slug', $modpacktag->slug, array('class' => 'form-control', 'data-required' => 'true'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             {{ Form::submit('Edit', ['class' => 'btn btn-danger']) }}
 
                             {{ Form::close() }}
 
-                        </div> <!-- /.portlet-body -->
+                        </div>
+                        <!-- /.portlet-body -->
 
-                    </div> <!-- /.portlet -->
+                    </div>
+                    <!-- /.portlet -->
 
-                </div> <!-- /.col -->
+                </div>
+                <!-- /.col -->
 
-            </div> <!-- /.row -->
+            </div>
+            <!-- /.row -->
 
-        </div> <!-- /.container -->
+        </div>
+        <!-- /.container -->
 
     </div> <!-- .content -->
 

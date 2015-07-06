@@ -12,8 +12,9 @@
                 </h3>
 
                 <div class="portlet-body">
-                    <p>Compare mods between two or more modpacks. Select the modpacks you are interested in below and we will generate
-                    a table comparing the mods in each pack.</p>
+                    <p>Compare mods between two or more modpacks. Select the modpacks you are interested in below and we
+                        will generate
+                        a table comparing the mods in each pack.</p>
                 </div>
 
                 <div class="portlet-body" style="width: 50%">
@@ -40,39 +41,41 @@
                 @endif
 
                 @if ($results == true)
-                <p>&nbsp;</p>
+                    <p>&nbsp;</p>
 
-                <h3 class="portlet-title">
-                    <u>Results</u>
-                </h3>
+                    <h3 class="portlet-title">
+                        <u>Results</u>
+                    </h3>
 
 
-                <div class="portlet-body">
-                    <table class="table table-striped table-bordered" id="table-1">
-                        <thead>
-                        <tr>
-                            <th style="width: 20%">Mods</th>
-                            @foreach($modpacks as $modpack)
-                                <th>{{ $modpack }}</th>
-                            @endforeach
-                        </tr>
-                        </thead>
-                        <tfoot>
-                        <tr>
-                            <th>Mods</th>
-                            @foreach($modpacks as $modpack)
-                                <th>{{ $modpack }}</th>
-                            @endforeach
-                        </tr>
-                        </tfoot>
-                    </table>
-                    @endif
+                    <div class="portlet-body">
+                        <table class="table table-striped table-bordered" id="table-1">
+                            <thead>
+                            <tr>
+                                <th style="width: 20%">Mods</th>
+                                @foreach($modpacks as $modpack)
+                                    <th>{{ $modpack }}</th>
+                                @endforeach
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Mods</th>
+                                @foreach($modpacks as $modpack)
+                                    <th>{{ $modpack }}</th>
+                                @endforeach
+                            </tr>
+                            </tfoot>
+                        </table>
+                        @endif
 
-                </div> <!-- /.portlet-body -->
+                    </div> <!-- /.portlet-body -->
 
-            </div> <!-- /.portlet -->
+            </div>
+            <!-- /.portlet -->
 
-        </div> <!-- /.container -->
+        </div>
+        <!-- /.container -->
 
     </div> <!-- .content -->
 @stop

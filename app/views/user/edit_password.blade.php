@@ -28,12 +28,12 @@
 
                             <i class="fa fa-chevron-right list-group-chevron"></i>
                         </a>
-                    </div> <!-- /.list-group -->
+                    </div>
+                    <!-- /.list-group -->
 
 
-
-                </div> <!-- /.col -->
-
+                </div>
+                <!-- /.col -->
 
 
                 <div class="col-md-9 col-sm-7">
@@ -66,17 +66,20 @@
                     <div class="form-group">
                         {{ Form::label('current_password','Current Password') }}:
                         {{ Form::password('current_password', array('class' => 'form-control', 'data-required' => 'true'))}}
-                    </div> <!-- /.form-group -->
+                    </div>
+                    <!-- /.form-group -->
 
                     <div class="form-group">
                         {{ Form::label('new_password','New Password') }}:
                         {{ Form::password('new_password', array('class' => 'form-control', 'data-required' => 'true'))}}
-                    </div> <!-- /.form-group -->
+                    </div>
+                    <!-- /.form-group -->
 
                     <div class="form-group">
                         {{ Form::label('confirm_password','Confirm Password') }}:
                         {{ Form::password('confirm_password', array('class' => 'form-control', 'data-required' => 'true'))}}
-                    </div> <!-- /.form-group -->
+                    </div>
+                    <!-- /.form-group -->
 
 
                     {{ Form::submit('Change', ['class' => 'btn btn-danger']) }}
@@ -88,14 +91,17 @@
                     <br class="visible-xs">
                     <br class="visible-xs">
 
-                </div> <!-- /.col -->
+                </div>
+                <!-- /.col -->
 
 
-            </div> <!-- /.row -->
+            </div>
+            <!-- /.row -->
 
             <br><br>
 
-        </div> <!-- /.container -->
+        </div>
+        <!-- /.container -->
 
     </div> <!-- .content -->
 @stop

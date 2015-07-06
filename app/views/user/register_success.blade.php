@@ -1,24 +1,27 @@
 @extends('layouts.base')
 
 @section('content')
-<div class="content">
+    <div class="content">
 
-    <div class="container">
+        <div class="container">
 
-      <div class="row">
+            <div class="row">
 
-        <div class="col-md-8">
+                <div class="col-md-8">
 
-          <h2 class="">You are registered!</h2>
+                    <h2 class="">You are registered!</h2>
 
-          <br>
+                    <br>
 
-          <h4>Please check your email ({{ $email }}) to confirm your account with us.</h4>
+                    <h4>Please check your email ({{ $email }}) to confirm your account with us.</h4>
 
-      </div> <!-- /.row -->
+                </div>
+                <!-- /.row -->
 
-    </div> <!-- /.container -->
+            </div>
+            <!-- /.container -->
 
-  </div> <!-- .content -->
-</div>
+        </div>
+        <!-- .content -->
+    </div>
 @stop

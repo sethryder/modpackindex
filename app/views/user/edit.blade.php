@@ -28,12 +28,12 @@
 
                             <i class="fa fa-chevron-right list-group-chevron"></i>
                         </a>
-                    </div> <!-- /.list-group -->
+                    </div>
+                    <!-- /.list-group -->
 
 
-
-                </div> <!-- /.col -->
-
+                </div>
+                <!-- /.col -->
 
 
                 <div class="col-md-9 col-sm-7">
@@ -42,7 +42,8 @@
 
                     <hr>
 
-                    <p><b>Note:</b> None of this information is required except for email. Only fill in what you would like to display on your profile.</p>
+                    <p><b>Note:</b> None of this information is required except for email. Only fill in what you would
+                        like to display on your profile.</p>
 
                     <hr>
 
@@ -71,32 +72,38 @@
                     <div class="form-group">
                         {{ Form::label('email','Email') }}:
                         {{ Form::text('email', null, array('class' => 'form-control', 'data-required' => 'true'))}}
-                    </div> <!-- /.form-group -->
+                    </div>
+                    <!-- /.form-group -->
 
                     <div class="form-group">
                         {{ Form::label('real_name','Real Name') }}:
                         {{ Form::text('real_name', null, array('class' => 'form-control', 'data-required' => 'true'))}}
-                    </div> <!-- /.form-group -->
+                    </div>
+                    <!-- /.form-group -->
 
                     <div class="form-group">
                         {{ Form::label('location','Location') }}:
                         {{ Form::text('location', null, array('class' => 'form-control', 'data-required' => 'true'))}}
-                    </div> <!-- /.form-group -->
+                    </div>
+                    <!-- /.form-group -->
 
                     <div class="form-group">
                         {{ Form::label('website','Website') }}:
                         {{ Form::text('website', null, array('class' => 'form-control', 'data-required' => 'true'))}}
-                    </div> <!-- /.form-group -->
+                    </div>
+                    <!-- /.form-group -->
 
                     <div class="form-group">
                         {{ Form::label('github','Github Username') }}:
                         {{ Form::text('github', null, array('class' => 'form-control', 'data-required' => 'true'))}}
-                    </div> <!-- /.form-group -->
+                    </div>
+                    <!-- /.form-group -->
 
                     <div class="form-group">
                         {{ Form::label('about_me','About Me') }}:
                         {{ Form::textarea('about_me', null, array('class' => 'form-control', 'placeholder' => 'We currently only allow plain text in this field. We will be updating that in the future.'))}}
-                    </div> <!-- /.form-group -->
+                    </div>
+                    <!-- /.form-group -->
 
                     <div class="form-group">
                         <div class="checkbox">
@@ -104,8 +111,10 @@
                                 {{ Form::checkbox('hide_email', 1);  }}
                                 Hide Email (recommended at this time)
                             </label>
-                        </div> <!-- /.checkbox -->
-                    </div> <!-- /.form-group -->
+                        </div>
+                        <!-- /.checkbox -->
+                    </div>
+                    <!-- /.form-group -->
 
 
                     {{ Form::submit('Edit', ['class' => 'btn btn-danger']) }}
@@ -117,14 +126,17 @@
                     <br class="visible-xs">
                     <br class="visible-xs">
 
-                </div> <!-- /.col -->
+                </div>
+                <!-- /.col -->
 
 
-            </div> <!-- /.row -->
+            </div>
+            <!-- /.row -->
 
             <br><br>
 
-        </div> <!-- /.container -->
+        </div>
+        <!-- /.container -->
 
     </div> <!-- .content -->
 @stop

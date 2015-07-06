@@ -55,16 +55,19 @@
                 @endif
 
 
-            </div> <!-- /.account-body -->
+            </div>
+            <!-- /.account-body -->
 
             <div class="account-footer">
                 <p>
                     Don't have an account? &nbsp;
                     <a href="/register" class="">Create an Account!</a>
                 </p>
-            </div> <!-- /.account-footer -->
+            </div>
+            <!-- /.account-footer -->
 
-        </div> <!-- /.account-wrapper -->
+        </div>
+        <!-- /.account-wrapper -->
     </div>
 @stop
 
@@ -72,27 +75,30 @@
 @extends('layouts.base')
 
 @section('content')
-<div class="content">
+    <div class="content">
 
-    <div class="container">
+        <div class="container">
 
-      <div class="row">
+            <div class="row">
 
-        <div class="col-md-8">
+                <div class="col-md-8">
 
-          @if ($confirmed)
-          <h2 class="">Your account has been confirmed. Thank you!</h2>
-          @else
-          <h2 class="">Unable to confirm your account.</h2>
+                    @if ($confirmed)
+                        <h2 class="">Your account has been confirmed. Thank you!</h2>
+                    @else
+                        <h2 class="">Unable to confirm your account.</h2>
 
-          <h4>If you feel like this is a mistake please contact us.</h4>
-          @endif
-          <br>
+                        <h4>If you feel like this is a mistake please contact us.</h4>
+                    @endif
+                    <br>
 
-      </div> <!-- /.row -->
+                </div>
+                <!-- /.row -->
 
-    </div> <!-- /.container -->
+            </div>
+            <!-- /.container -->
 
-  </div> <!-- .content -->
-</div>
+        </div>
+        <!-- .content -->
+    </div>
 @stop

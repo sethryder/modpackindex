@@ -18,24 +18,24 @@
                         </a>
 
                         @if ($my_profile)
-                        <a href="/profile/edit" class="list-group-item">
-                            <i class="fa fa-plus text-primary"></i> &nbsp;&nbsp;Edit Profile
+                            <a href="/profile/edit" class="list-group-item">
+                                <i class="fa fa-plus text-primary"></i> &nbsp;&nbsp;Edit Profile
 
-                            <i class="fa fa-chevron-right list-group-chevron"></i>
-                        </a>
+                                <i class="fa fa-chevron-right list-group-chevron"></i>
+                            </a>
 
-                        <a href="/profile/edit/password" class="list-group-item">
-                            <i class="fa fa-edit text-primary"></i> &nbsp;&nbsp;Change Password
+                            <a href="/profile/edit/password" class="list-group-item">
+                                <i class="fa fa-edit text-primary"></i> &nbsp;&nbsp;Change Password
 
-                            <i class="fa fa-chevron-right list-group-chevron"></i>
-                        </a>
+                                <i class="fa fa-chevron-right list-group-chevron"></i>
+                            </a>
                         @endif
-                    </div> <!-- /.list-group -->
+                    </div>
+                    <!-- /.list-group -->
 
 
-
-                </div> <!-- /.col -->
-
+                </div>
+                <!-- /.col -->
 
 
                 <div class="col-md-9 col-sm-7">
@@ -52,10 +52,13 @@
                             <li><i class="icon-li fa fa-envelope"></i> {{{ $user_info['email'] }}}</li>
                         @endif
                         @if ($user_info['website'])
-                            <li><i class="icon-li fa fa-globe"></i> <a href="{{{ $user_info['website'] }}}">{{{ $user_info['website'] }}}</a></li>
+                            <li><i class="icon-li fa fa-globe"></i> <a
+                                        href="{{{ $user_info['website'] }}}">{{{ $user_info['website'] }}}</a></li>
                         @endif
                         @if ($user_info['github'])
-                            <li><i class="icon-li fa fa-github"></i> <a href="http://www.github.com/{{{ $user_info['github'] }}}">{{{ $user_info['github'] }}}</a></li>
+                            <li><i class="icon-li fa fa-github"></i> <a
+                                        href="http://www.github.com/{{{ $user_info['github'] }}}">{{{ $user_info['github'] }}}</a>
+                            </li>
                         @endif
                         @if ($user_info['location'])
                             <li><i class="icon-li fa fa-map-marker"></i> {{{ $user_info['location'] }}}</li>
@@ -70,14 +73,17 @@
                     <br class="visible-xs">
                     <br class="visible-xs">
 
-                </div> <!-- /.col -->
+                </div>
+                <!-- /.col -->
 
 
-            </div> <!-- /.row -->
+            </div>
+            <!-- /.row -->
 
             <br><br>
 
-        </div> <!-- /.container -->
+        </div>
+        <!-- /.container -->
 
     </div> <!-- .content -->
 @stop

@@ -41,7 +41,8 @@
                             <div class="form-group">
                                 {{ Form::label('name','Name') }}:
                                 {{ Form::text('name', null, array('class' => 'form-control', 'data-required' => 'true'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 <label>Version(s) Supported</label>
@@ -58,7 +59,8 @@
                                         </label>
                                     </div> <!-- /.checkbox -->
                                 @endforeach
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('selected_authors','Author(s)') }}:
@@ -68,37 +70,44 @@
                             <div class="form-group">
                                 {{ Form::label('deck','Deck') }}:
                                 {{ Form::text('deck', null, array('class' => 'form-control'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('website','Website') }}:
                                 {{ Form::text('website', null, array('class' => 'form-control'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('download_link','Download Link') }}:
                                 {{ Form::text('download_link', null, array('class' => 'form-control'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('donate_link','Donate Link') }}:
                                 {{ Form::text('donate_link', null, array('class' => 'form-control'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('wiki_link','Wiki Link') }}:
                                 {{ Form::text('wiki_link', null, array('class' => 'form-control'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('description','Description') }}:
                                 {{ Form::textarea('description', null, array('class' => 'form-control'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('slug','Slug') }}:
                                 {{ Form::text('slug', null, array('class' => 'form-control'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 <div class="checkbox">
@@ -106,23 +115,29 @@
                                         {{ Form::checkbox('mod_list_hide', 1);  }}
                                         Hide From Mod Lists
                                     </label>
-                                </div> <!-- /.checkbox -->
-                            </div> <!-- /.form-group -->
+                                </div>
+                                <!-- /.checkbox -->
+                            </div>
+                            <!-- /.form-group -->
 
                             {{ Form::submit('Import', ['class' => 'btn btn-danger']) }}
 
                             {{ Form::close() }}
 
-                        </div> <!-- /.portlet-body -->
+                        </div>
+                        <!-- /.portlet-body -->
 
-                    </div> <!-- /.portlet -->
+                    </div>
+                    <!-- /.portlet -->
 
-                </div> <!-- /.col -->
+                </div>
+                <!-- /.col -->
 
-            </div> <!-- /.row -->
+            </div>
+            <!-- /.row -->
 
-        </div> <!-- /.container -->
-
+        </div>
+        <!-- /.container -->
 
 
     </div> <!-- .content -->

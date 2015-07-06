@@ -17,9 +17,12 @@
 
                         <div class="portlet-body">
 
-                            <p>Have or know of a Video / Playlist that should be included on the site? Let us know about it! Fill
+                            <p>Have or know of a Video / Playlist that should be included on the site? Let us know about
+                                it! Fill
                                 out the form below and we will get it added ASAP.</p>
+
                             <p><b>Note:</b> Currently we only support Youtube.</p>
+
                             <p>&nbsp;</p>
 
                             @if ( $errors->count() > 0 )
@@ -46,7 +49,8 @@
                             <div class="form-group">
                                 {{ Form::label('url','Video / Playlist URL') }}:
                                 {{ Form::text('url', null, array('class' => 'form-control', 'data-required' => 'true'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('Type','Video / Playlist Type') }}:
@@ -66,12 +70,14 @@
                             <div class="form-group">
                                 {{ Form::label('email','Your Email') }}:
                                 {{ Form::text('email', null, array('class' => 'form-control', 'data-required' => 'true', 'placeholder' => 'If we need to reach your or have questions.'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('comments','Comments') }}:
                                 {{ Form::textarea('comments', null, array('class' => 'form-control', 'data-required' => 'true', 'placeholder' => 'Any comments for us or anything we should know?'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group" style="margin-left: auto; margin-right: auto; display: block;">
                                 {{ Form::label('captcha','Are you a human?') }}
@@ -82,16 +88,20 @@
 
                             {{ Form::close() }}
 
-                        </div> <!-- /.portlet-body -->
+                        </div>
+                        <!-- /.portlet-body -->
 
-                    </div> <!-- /.portlet -->
+                    </div>
+                    <!-- /.portlet -->
 
-                </div> <!-- /.col -->
+                </div>
+                <!-- /.col -->
 
-            </div> <!-- /.row -->
+            </div>
+            <!-- /.row -->
 
-        </div> <!-- /.container -->
-
+        </div>
+        <!-- /.container -->
 
 
     </div> <!-- .content -->

@@ -50,7 +50,7 @@
                 @else
 
                     <h3>Reset Password</h3>
-                        <h3>for {{{ $username }}}</h3>
+                    <h3>for {{{ $username }}}</h3>
 
                     {{ Form::open(array('url' => '/reset/' . $token, 'class' => 'form account-form')) }}
 
@@ -68,15 +68,18 @@
                 @endif
 
 
-            </div> <!-- /.account-body -->
+            </div>
+            <!-- /.account-body -->
 
             <div class="account-footer">
                 <p>
                     Don't have an account? &nbsp;
                     <a href="/register" class="">Create an Account!</a>
                 </p>
-            </div> <!-- /.account-footer -->
+            </div>
+            <!-- /.account-footer -->
 
-        </div> <!-- /.account-wrapper -->
+        </div>
+        <!-- /.account-wrapper -->
     </div>
 @stop

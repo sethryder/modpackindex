@@ -46,42 +46,51 @@
                             <div class="form-group">
                                 {{ Form::label('name','Name') }}:
                                 {{ Form::text('name', null, array('class' => 'form-control', 'data-required' => 'true'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('website','Website') }}:
                                 {{ Form::text('website', null, array('class' => 'form-control'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('donate_link','Donate Link') }}:
                                 {{ Form::text('donate_link', null, array('class' => 'form-control'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('bio','Bio') }}:
                                 {{ Form::textarea('bio', null, array('class' => 'form-control', 'data-required' => 'true'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('slug','Slug') }}:
                                 {{ Form::text('slug', null, array('class' => 'form-control'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             {{ Form::submit('Import', ['class' => 'btn btn-danger']) }}
 
                             {{ Form::close() }}
 
-                        </div> <!-- /.portlet-body -->
+                        </div>
+                        <!-- /.portlet-body -->
 
-                    </div> <!-- /.portlet -->
+                    </div>
+                    <!-- /.portlet -->
 
-                </div> <!-- /.col -->
+                </div>
+                <!-- /.col -->
 
-            </div> <!-- /.row -->
+            </div>
+            <!-- /.row -->
 
-        </div> <!-- /.container -->
-
+        </div>
+        <!-- /.container -->
 
 
     </div> <!-- .content -->

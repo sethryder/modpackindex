@@ -18,8 +18,10 @@
                         <div class="portlet-body">
 
                             <p>Have or know of a Modpack that should be included on the site? Let us know about it! Fill
-                            out the form below and we will get it added ASAP.</p>
+                                out the form below and we will get it added ASAP.</p>
+
                             <p><b>Note</b>: Required fields have a (*) next to them.</p>
+
                             <p>&nbsp;</p>
 
                             @if ( $errors->count() > 0 )
@@ -46,12 +48,14 @@
                             <div class="form-group">
                                 {{ Form::label('name','Modpack Name') }}*:
                                 {{ Form::text('name', null, array('class' => 'form-control', 'data-required' => 'true'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('creators_name', 'Creators Name(s)') }}*:
                                 {{ Form::text('creators_name', null, array('class' => 'form-control'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('minecraft_version','Minecraft Version') }}*:
@@ -66,37 +70,44 @@
                             <div class="form-group">
                                 {{ Form::label('website','Website / Forum Post') }}*:
                                 {{ Form::text('website', null, array('class' => 'form-control', 'data-required' => 'true'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('modlist','Link To Mod List') }}*:
                                 {{ Form::text('modlist', null, array('class' => 'form-control', 'data-required' => 'true', 'placeholder' => 'Link to a list of mods in the modpack'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('packcode','Pack Code') }} (if applicable):
                                 {{ Form::text('packcode', null, array('class' => 'form-control', 'data-required' => 'true'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('deck','Short Description') }}*:
                                 {{ Form::text('deck', null, array('class' => 'form-control', 'data-required' => 'true'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('description','Full Description') }}:
                                 {{ Form::textarea('description', null, array('class' => 'form-control', 'data-required' => 'true'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('comments','Comments') }}:
                                 {{ Form::textarea('comments', null, array('class' => 'form-control', 'data-required' => 'true', 'placeholder' => 'Any comments for us or anything we should know?'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('email','Your Email') }}:
                                 {{ Form::text('email', null, array('class' => 'form-control', 'data-required' => 'true', 'placeholder' => 'If we need to reach you or have questions.'))}}
-                            </div> <!-- /.form-group -->
+                            </div>
+                            <!-- /.form-group -->
 
                             <div class="form-group" style="margin-left: auto; margin-right: auto; display: block;">
                                 {{ Form::label('captcha','Are you a human?') }}
@@ -107,16 +118,20 @@
 
                             {{ Form::close() }}
 
-                        </div> <!-- /.portlet-body -->
+                        </div>
+                        <!-- /.portlet-body -->
 
-                    </div> <!-- /.portlet -->
+                    </div>
+                    <!-- /.portlet -->
 
-                </div> <!-- /.col -->
+                </div>
+                <!-- /.col -->
 
-            </div> <!-- /.row -->
+            </div>
+            <!-- /.row -->
 
-        </div> <!-- /.container -->
-
+        </div>
+        <!-- /.container -->
 
 
     </div> <!-- .content -->

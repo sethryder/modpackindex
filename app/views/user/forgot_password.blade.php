@@ -28,7 +28,8 @@
 
                 @if (isset($success))
                     <div class="alert alert-success">
-                        <strong>Success!</strong> We have sent you instructions on how to reset your password to the email you provided.
+                        <strong>Success!</strong> We have sent you instructions on how to reset your password to the
+                        email you provided.
                     </div> <!-- /.alert -->
                 @endif
 
@@ -40,7 +41,8 @@
 
                 <div class="form-group">
                     {{ Form::text('email', null, array('class' => 'form-control', 'data-required' => 'true', 'placeholder' => 'Email'))}}
-                </div> <!-- /.form-group -->
+                </div>
+                <!-- /.form-group -->
 
                 <div class="form-group">
                     {{ Form::captcha()}}
@@ -52,15 +54,18 @@
                 {{ Form::close() }}
 
 
-            </div> <!-- /.account-body -->
+            </div>
+            <!-- /.account-body -->
 
             <div class="account-footer">
                 <p>
                     Don't have an account? &nbsp;
                     <a href="/register" class="">Create an Account!</a>
                 </p>
-            </div> <!-- /.account-footer -->
+            </div>
+            <!-- /.account-footer -->
 
-        </div> <!-- /.account-wrapper -->
+        </div>
+        <!-- /.account-wrapper -->
     </div>
 @stop

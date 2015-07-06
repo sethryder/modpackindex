@@ -1,84 +1,93 @@
 @extends('layouts.base')
 
 @section('content')
- <div class="content">
+    <div class="content">
 
-    <div class="container">
+        <div class="container">
 
-      <div class="row">
+            <div class="row">
 
-        <div class="col-md-6 col-md-push-3 col-sm-8 col-sm-push-2 ">
+                <div class="col-md-6 col-md-push-3 col-sm-8 col-sm-push-2 ">
 
-          <div class="portlet">
+                    <div class="portlet">
 
-            <h2 class="portlet-title">
-              <u>Edit A Modpack Creator</u>
-            </h2>
+                        <h2 class="portlet-title">
+                            <u>Edit A Modpack Creator</u>
+                        </h2>
 
-            <div class="portlet-body">
+                        <div class="portlet-body">
 
-            @if ( $errors->count() > 0 )
-            <div class="alert alert-danger">
-            <p>The following errors have occurred:</p>
+                            @if ( $errors->count() > 0 )
+                                <div class="alert alert-danger">
+                                    <p>The following errors have occurred:</p>
 
-            <ul>
-                @foreach( $errors->all() as $message )
-                <li>{{ $message }}</li>
-                @endforeach
-            </ul>
-            </div> <!-- /.alert -->
-            @endif
+                                    <ul>
+                                        @foreach( $errors->all() as $message )
+                                            <li>{{ $message }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div> <!-- /.alert -->
+                            @endif
 
-            @if (isset($success))
-            <div class="alert alert-success">
-                <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
-                <strong>Edited!</strong> You may perform more edits or leave this page.
-            </div> <!-- /.alert -->
-            @endif
+                            @if (isset($success))
+                                <div class="alert alert-success">
+                                    <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+                                    <strong>Edited!</strong> You may perform more edits or leave this page.
+                                </div> <!-- /.alert -->
+                            @endif
 
-                {{ Form::model($creator, array('url' => '/creator/edit/'.$creator->id, 'class' => 'form parsley-form')) }}
+                            {{ Form::model($creator, array('url' => '/creator/edit/'.$creator->id, 'class' => 'form parsley-form')) }}
 
-                    <div class="form-group">
-                        {{ Form::label('name','Name') }}:
-                        {{ Form::text('name', null, array('class' => 'form-control', 'data-required' => 'true'))}}
-                    </div> <!-- /.form-group -->
+                            <div class="form-group">
+                                {{ Form::label('name','Name') }}:
+                                {{ Form::text('name', null, array('class' => 'form-control', 'data-required' => 'true'))}}
+                            </div>
+                            <!-- /.form-group -->
 
-                    <div class="form-group">
-                        {{ Form::label('website','Website') }}:
-                        {{ Form::text('website', null, array('class' => 'form-control'))}}
-                    </div> <!-- /.form-group -->
+                            <div class="form-group">
+                                {{ Form::label('website','Website') }}:
+                                {{ Form::text('website', null, array('class' => 'form-control'))}}
+                            </div>
+                            <!-- /.form-group -->
 
-                    <div class="form-group">
-                        {{ Form::label('donate_link','Donate Link') }}:
-                        {{ Form::text('donate_link', null, array('class' => 'form-control'))}}
-                    </div> <!-- /.form-group -->
+                            <div class="form-group">
+                                {{ Form::label('donate_link','Donate Link') }}:
+                                {{ Form::text('donate_link', null, array('class' => 'form-control'))}}
+                            </div>
+                            <!-- /.form-group -->
 
-                    <div class="form-group">
-                        {{ Form::label('bio','Bio') }}:
-                        {{ Form::textarea('bio', null, array('class' => 'form-control', 'data-required' => 'true'))}}
-                    </div> <!-- /.form-group -->
+                            <div class="form-group">
+                                {{ Form::label('bio','Bio') }}:
+                                {{ Form::textarea('bio', null, array('class' => 'form-control', 'data-required' => 'true'))}}
+                            </div>
+                            <!-- /.form-group -->
 
-                    <div class="form-group">
-                        {{ Form::label('slug','Slug') }}:
-                        {{ Form::text('slug', null, array('class' => 'form-control'))}}
-                    </div> <!-- /.form-group -->
+                            <div class="form-group">
+                                {{ Form::label('slug','Slug') }}:
+                                {{ Form::text('slug', null, array('class' => 'form-control'))}}
+                            </div>
+                            <!-- /.form-group -->
 
-                    {{ Form::submit('Edit', ['class' => 'btn btn-danger']) }}
+                            {{ Form::submit('Edit', ['class' => 'btn btn-danger']) }}
 
-                {{ Form::close() }}
+                            {{ Form::close() }}
 
-            </div> <!-- /.portlet-body -->
+                        </div>
+                        <!-- /.portlet-body -->
 
-          </div> <!-- /.portlet -->
+                    </div>
+                    <!-- /.portlet -->
 
-        </div> <!-- /.col -->
+                </div>
+                <!-- /.col -->
 
-      </div> <!-- /.row -->
+            </div>
+            <!-- /.row -->
 
-    </div> <!-- /.container -->
+        </div>
+        <!-- /.container -->
 
 
-
-  </div> <!-- .content -->
+    </div> <!-- .content -->
 
 @stop
