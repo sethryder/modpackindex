@@ -183,21 +183,21 @@
 
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="/launcher/feed-the-beast/1-7-10">
+                                <a href="/modpacks/1-7-10">
                                     <img class="fa" src="/static/img/icons/enderman.png" />
                                     &nbsp;&nbsp;1.7.10 Packs
                                 </a>
                             </li>
 
                             <li>
-                                <a href="/launcher/feed-the-beast/1-6-4">
+                                <a href="/modpacks/1-6-4">
                                     <img class="fa" src="/static/img/icons/creeper.png" />
                                     &nbsp;&nbsp;1.6.4 Packs
                                 </a>
                             </li>
 
                             <li>
-                                <a href="/launcher/feed-the-beast">
+                                <a href="/">
                                     <img class="fa" src="/static/img/icons/custom.png" />
                                     &nbsp;&nbsp;All Packs
                                 </a>
