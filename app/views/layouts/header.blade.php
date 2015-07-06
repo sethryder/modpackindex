@@ -16,7 +16,6 @@
             </div>
             <!-- /.navbar-header -->
 
-
             <nav class="collapse navbar-collapse" role="navigation">
 
                 <ul class="nav navbar-nav navbar-right">
