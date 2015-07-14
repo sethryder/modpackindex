@@ -32,7 +32,7 @@
                             @if (isset($success))
                                 <div class="alert alert-success">
                                     <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
-                                    <strong>Added!</strong> You may perform more edits below or leave this page.
+                                    <strong>Edited!</strong> You may perform more edits below or leave this page.
                                 </div> <!-- /.alert -->
                             @endif
 
@@ -63,6 +63,13 @@
                                 {{ Form::label('creator','Creator(s)') }}:
                                 {{ Form::select('selected_creators[]', Creator::lists('name', 'id'), $selected_creators, array('multiple', 'class' => 'chosen-select form-control')) }}
                             </div>
+
+                            @if ($can_edit_maintainers == true)
+                                <div class="form-group">
+                                    {{ Form::label('selected_maintainers','Site Maintainer(s)') }}:
+                                    {{ Form::select('selected_maintainers[]', User::lists('username', 'id'), $selected_maintainers, array('multiple', 'class' => 'chosen-select form-control')) }}
+                                </div>
+                            @endif
 
                             <div class="form-group">
                                 {{ Form::label('deck','Deck') }}:
@@ -100,11 +107,13 @@
                             </div>
                             <!-- /.form-group -->
 
+                            @if ($can_edit_maintainers == true)
                             <div class="form-group">
                                 {{ Form::label('slug','Slug') }}:
                                 {{ Form::text('slug', null, array('class' => 'form-control'))}}
                             </div>
                             <!-- /.form-group -->
+                            @endif
 
                             {{ Form::submit('Edit', ['class' => 'btn btn-danger']) }}
 

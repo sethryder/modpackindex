@@ -38,4 +38,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         return $this->hasOne('PasswordReminder');
     }
+
+    public function mods()
+    {
+        return $this->belongsToMany('Mod');
+    }
+
+    public function modpacks()
+    {
+        return $this->belongsToMany('Modpack');
+    }
 }

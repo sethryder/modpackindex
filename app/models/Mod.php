@@ -31,4 +31,9 @@ class Mod extends Eloquent
     {
         return $this->belongsToMany('Mod', 'mod_requirements', 'required_mod_id', 'mod_id');
     }
+
+    public function maintainers()
+    {
+        return $this->belongsToMany('User');
+    }
 }

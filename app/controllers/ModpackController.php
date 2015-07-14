@@ -38,6 +38,16 @@ class ModpackController extends BaseController
             App::abort(404);
         }
 
+        $can_edit = false;
+
+        if (Auth::check()) {
+            $maintainer = $modpack->maintainers()->where('user_id', Auth::id())->first();
+
+            if ($maintainer) {
+                $can_edit = true;
+            }
+        }
+
         $launcher = $modpack->launcher;
         $creators = $modpack->creators;
         $pack_code = $modpack->code;
@@ -76,6 +86,7 @@ class ModpackController extends BaseController
             'version' => $version,
             'twitch_streams' => $twitch_streams,
             'lets_plays' => $lets_plays,
+            'can_edit' => $can_edit,
             'sticky_tabs' => true
         ));
     }
@@ -275,17 +286,30 @@ class ModpackController extends BaseController
 
     public function getEdit($id)
     {
-        if (!$this->checkRoute()) {
-            return Redirect::to('/');
-        }
-
         $title = 'Edit A Modpack - ' . $this->site_name;
         $selected_mods = [];
         $selected_tags = [];
         $selected_creators = [];
+        $selected_maintainers = [];
         $mod_select_array = [];
+        $can_edit_maintainers = false;
 
         $modpack = Modpack::find($id);
+
+        if (Auth::check())
+        {
+            $maintainer = $modpack->maintainers()->where('user_id', Auth::id())->first();
+
+            if (!$maintainer) {
+                if ($this->checkRoute()) {
+                    $can_edit_maintainers = true;
+                } else {
+                    return Redirect::to('/');
+                }
+            }
+        } else {
+            return Redirect::to('/');
+        }
 
         $minecraft_version = MinecraftVersion::where('id', '=', $modpack->minecraft_version_id)->first();
 
@@ -308,6 +332,10 @@ class ModpackController extends BaseController
             $selected_creators[] = $c->id;
         }
 
+        foreach ($modpack->maintainers as $m) {
+            $selected_maintainers[] = $m->id;
+        }
+
         return View::make('modpacks.edit', [
             'title' => $title,
             'modpack' => $modpack,
@@ -315,31 +343,47 @@ class ModpackController extends BaseController
             'selected_mods' => $selected_mods,
             'selected_creators' => $selected_creators,
             'selected_tags' => $selected_tags,
+            'selected_maintainers' => $selected_maintainers,
+            'can_edit_maintainers' => $can_edit_maintainers,
             'chosen' => true
         ]);
     }
 
     public function postEdit($id)
     {
-        if (!$this->checkRoute()) {
-            return Redirect::to('/');
-        }
-
         $mod_select_array = [];
         $selected_mods = [];
         $selected_tags = [];
         $selected_creators = [];
+        $selected_maintainers = [];
+        $can_edit_maintainers = false;
 
         $title = 'Edit A Modpack - ' . $this->site_name;
         $modpack = Modpack::find($id);
+
+        if (Auth::check())
+        {
+            $maintainer = $modpack->maintainers()->where('user_id', Auth::id())->first();
+
+            if (!$maintainer) {
+                if ($this->checkRoute()) {
+                    $can_edit_maintainers = true;
+                } else {
+                    return Redirect::to('/');
+                }
+            }
+        } else {
+            return Redirect::to('/');
+        }
+
         $minecraft_version = MinecraftVersion::where('id', '=', $modpack->minecraft_version_id)->first();
         $creators = $modpack->creators;
         $mods = $modpack->mods;
         $tags = $modpack->tags;
+        $maintainers = $modpack->maintainers;
 
-        $input = Input::only('name', 'launcher', 'selected_mods', 'selected_creators', 'selected_tags', 'deck',
-            'website',
-            'download_link', 'donate_link', 'wiki_link', 'description', 'slug');
+        $input = Input::only('name', 'launcher', 'selected_mods', 'selected_creators', 'selected_tags', 'selected_maintainers',
+            'deck', 'website', 'download_link', 'donate_link', 'wiki_link', 'description', 'slug');
 
         $messages = [
             'unique' => 'This modpack already exists in the database. If it requires an update let us know!',
@@ -401,6 +445,16 @@ class ModpackController extends BaseController
                     $modpack->tags()->attach($input['selected_tags']);
                 }
 
+                if ($can_edit_maintainers) {
+                    foreach ($maintainers as $m) {
+                        $modpack->maintainers()->detach($m->id);
+                    }
+                    if ($input['selected_maintainers']) {
+                        $modpack->maintainers()->attach($input['selected_maintainers']);
+                    }
+                }
+
+
                 $version_mods = $minecraft_version->mods;
                 $updated_modpack = Modpack::find($modpack->id);
 
@@ -414,6 +468,10 @@ class ModpackController extends BaseController
 
                 foreach ($updated_modpack->creators as $c) {
                     $selected_creators[] = $c->id;
+                }
+
+                foreach ($updated_modpack->maintainers as $m) {
+                    $selected_maintainers[] = $m->id;
                 }
 
                 foreach ($version_mods as $mod) {
@@ -440,7 +498,9 @@ class ModpackController extends BaseController
                     'mods' => $mod_select_array,
                     'selected_mods' => $selected_mods,
                     'selected_creators' => $selected_creators,
-                    'selected_tags' => $selected_tags
+                    'selected_tags' => $selected_tags,
+                    'selected_maintainers' => $selected_maintainers,
+                    'can_edit_maintainers' => $can_edit_maintainers,
                 ]);
             } else {
                 return Redirect::to('/modpack/edit/' . $modpack->id)->withErrors(['message' => 'Unable to edit modpack.'])->withInput();

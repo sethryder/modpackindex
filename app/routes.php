@@ -112,6 +112,7 @@ Route::get('mod/{slug}', 'ModController@getMod');
 Route::get('mod/{slug}/spotlight/{id}-{creator}', 'YoutubeController@getModVideo');
 Route::get('mod/{slug}/tutorial/{id}-{creator}', 'YoutubeController@getModVideo');
 //Route::get('mod/{slug}/correction', 'ModController@getCorrection');
+//Route::post('mod/{slug}/correction', 'ModController@postCorrection');
 
 //modpacks
 Route::get('modpacks/{version?}', 'ModpackController@getModpackVersion');
@@ -127,8 +128,16 @@ Route::get('profile/edit', 'UserController@getEditProfile');
 Route::post('profile/edit', 'UserController@postEditProfile');
 Route::get('profile/edit/password', 'UserController@getEditPassword');
 Route::post('profile/edit/password', 'UserController@postEditPassword');
+
+Route::get('profile/{username}/modpacks', 'UserController@getModpacks');
+Route::get('profile/{username}/mods', 'UserController@getMods');
+Route::get('profile/modpacks', 'UserController@getModpacks');
+Route::get('profile/mods', 'UserController@getMods');
+
 Route::get('profile/{username}', 'UserController@getProfile');
 Route::get('profile', 'UserController@getProfile');
+
+
 
 
 Route::get('login', 'UserController@getLogin');
@@ -150,8 +159,13 @@ Route::get('user/verify/{confirmation}', 'UserController@getVerify');
 Route::get('streams', 'TwitchController@getStreams');
 Route::get('stream/{channel}', 'TwitchController@getChannel');
 
-//servers
-Route::get('server/query', 'ServerController@getQuery');
+/*//servers
+Route::get('servers/{slug?}', 'ServerController@getServers');
+Route::get('server/add', 'ServerController@getAdd');
+Route::post('server/add', 'ServerController@postAdd');
+Route::get('server/edit/{id}', 'ServerController@getEdit');
+Route::post('server/edit/{id}', 'ServerController@postEdit');
+Route::get('server/query', 'ServerController@getQuery');*/
 
 /*
  * API Routes
@@ -178,6 +192,10 @@ Route::get('api/table/modpacks/{version}.json', 'JSONController@getTableModpacks
 Route::get('api/table/modpack/mods/{name}.json', 'JSONController@getTableModpackMods');
 
 Route::get('api/table/launchers/{name}/{version}.json', 'JSONController@getTableLaunchers');
+
+/*Route::get('api/table/servers.json', 'JSONController@getServers');
+Route::get('api/table/server/players/{id}.json', 'JSONController@getServerPlayers');
+Route::get('api/table/server/mods/{id}.json', 'JSONController@getServerMods');*/
 
 //mod select for pack finder
 Route::get('api/select/mods/{version}.json', 'JSONController@getModsSelect');

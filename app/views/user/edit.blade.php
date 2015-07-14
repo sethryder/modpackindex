@@ -7,34 +7,7 @@
 
             <div class="row">
 
-                <div class="col-md-3 col-sm-5">
-
-                    <div class="list-group">
-
-                        <a href="/profile/{{ $user['username'] }}" class="list-group-item">
-                            <i class="fa fa-user text-primary"></i> &nbsp;&nbsp;Profle
-
-                            <i class="fa fa-chevron-right list-group-chevron"></i>
-                        </a>
-
-                        <a href="/profile/edit" class="list-group-item active">
-                            <i class="fa fa-plus"></i> &nbsp;&nbsp;Edit Profile
-
-                            <i class="fa fa-chevron-right list-group-chevron"></i>
-                        </a>
-
-                        <a href="/profile/edit/password" class="list-group-item">
-                            <i class="fa fa-edit text-primary"></i> &nbsp;&nbsp;Change Password
-
-                            <i class="fa fa-chevron-right list-group-chevron"></i>
-                        </a>
-                    </div>
-                    <!-- /.list-group -->
-
-
-                </div>
-                <!-- /.col -->
-
+                @include('user.menu', ['page' => 'edit']);
 
                 <div class="col-md-9 col-sm-7">
 
@@ -46,7 +19,6 @@
                         like to display on your profile.</p>
 
                     <hr>
-
 
                     @if ( $errors->count() > 0 )
                         <div class="alert alert-danger">
@@ -109,7 +81,13 @@
                         <div class="checkbox">
                             <label>
                                 {{ Form::checkbox('hide_email', 1);  }}
-                                Hide Email (recommended at this time)
+                                Hide Email
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                {{ Form::checkbox('hide_mods_modpacks', 1);  }}
+                                Hide my Mods/Modpacks from my profile
                             </label>
                         </div>
                         <!-- /.checkbox -->

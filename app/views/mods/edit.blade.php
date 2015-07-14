@@ -68,6 +68,13 @@
                                 {{ Form::select('selected_authors[]', Author::lists('name', 'id'), $selected_authors, array('multiple', 'class' => 'chosen-select form-control')) }}
                             </div>
 
+                            @if ($can_edit_maintainers == true)
+                            <div class="form-group">
+                                {{ Form::label('selected_maintainers','Site Maintainer(s)') }}:
+                                {{ Form::select('selected_maintainers[]', User::lists('username', 'id'), $selected_maintainers, array('multiple', 'class' => 'chosen-select form-control')) }}
+                            </div>
+                            @endif
+
                             <div class="form-group">
                                 {{ Form::label('deck','Deck') }}:
                                 {{ Form::text('deck', null, array('class' => 'form-control'))}}
@@ -104,11 +111,13 @@
                             </div>
                             <!-- /.form-group -->
 
+                            @if ($can_edit_maintainers == true)
                             <div class="form-group">
                                 {{ Form::label('slug','Slug') }}:
                                 {{ Form::text('slug', null, array('class' => 'form-control'))}}
                             </div>
                             <!-- /.form-group -->
+
 
                             <div class="form-group">
                                 <div class="checkbox">
@@ -120,6 +129,8 @@
                                 <!-- /.checkbox -->
                             </div>
                             <!-- /.form-group -->
+
+                            @endif
 
                             {{ Form::submit('Edit', ['class' => 'btn btn-danger']) }}
 

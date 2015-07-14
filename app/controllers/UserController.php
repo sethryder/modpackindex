@@ -255,15 +255,15 @@ class UserController extends BaseController
     public function getProfile($username = null)
     {
         $my_profile = false;
+        $show_modpacks = false;
+        $show_mods = false;
 
         if (!$username) {
             if (!Auth::check()) {
                 return Redirect::intended('/');
             } else {
                 $username = Auth::user()->username;
-
                 return Redirect::intended('/profile/' . $username);
-
             }
         } else {
             $raw_user = User::where('username', $username)->first();
@@ -280,12 +280,7 @@ class UserController extends BaseController
                 'hide_email' => $raw_user->hide_email,
             ];
 
-            if (Auth::check()) {
-                if (Auth::user()->email == $user_info['email']) {
-                    $my_profile = true;
-                }
-            }
-
+            $this->setProfileOptions($user_info['username']);
         }
 
         $user_info['real_name'] = $raw_user_info->real_name;
@@ -296,7 +291,98 @@ class UserController extends BaseController
 
         $title = $user_info['username'] . '\'s Profile - ' . $this->site_name;
 
-        return View::make('user.profile', ['my_profile' => $my_profile, 'user_info' => $user_info, 'title' => $title]);
+        return View::make('user.profile', [
+            'user' => $user_info,
+            'user_info' => $user_info,
+            'title' => $title,
+        ]);
+    }
+
+    public function getModpacks($username = null)
+    {
+        $modpacks_array = [];
+
+        $this->setProfileOptions($username);
+
+        $user = User::where('username', $username)->first();
+
+        if (!$this->isThisMyUsername($username)) {
+            if ($user->hide_mods_modpacks)
+                return Redirect::intended('/profile/' . $user->username);
+        }
+
+        $title = $user['username'] . '\'s Modpacks - ' . $this->site_name;
+
+        $modpacks = $user->modpacks;
+
+        foreach ($modpacks as $modpack) {
+            $raw_version = MinecraftVersion::find($modpack->minecraft_version_id);
+            $version_slug = preg_replace('/\./', '-', $raw_version->name);
+
+            $modpacks_array[] = [
+                'id' => $modpack->id,
+                'name' => $modpack->name,
+                'slug' => $modpack->slug,
+                'version' => $raw_version->name,
+                'version_slug' => $version_slug,
+            ];
+        }
+
+        return View::make('user.modpacks', [
+            'title' => $title,
+            'modpacks' => $modpacks_array,
+            'user' => $user,
+        ]);
+    }
+
+    public function getMods($username = null)
+    {
+        $mods_array = [];
+        $version_array = [];
+        $supported_versions = '';
+
+        $this->setProfileOptions($username);
+
+        $user = User::where('username', $username)->first();
+
+        if (!$this->isThisMyUsername($username)) {
+            if ($user->hide_mods_modpacks)
+                return Redirect::intended('/profile/' . $user->username);
+        }
+
+        $title = $user['username'] . '\'s Modpacks - ' . $this->site_name;
+
+        $mods = $user->mods;
+
+        foreach ($mods as $mod) {
+            $raw_versions = $mod->versions;
+
+            foreach ($mod->versions as $v) {
+                if (!in_array($v->name, $version_array)) {
+                    $version_array[] = $v->name;
+                    $supported_versions .= $v->name;
+                    $supported_versions .= ', ';
+                }
+            }
+
+            if (!$supported_versions) {
+                $supported_versions = 'Unknown';
+            }
+
+            $mods_array[] = [
+                'id' => $mod->id,
+                'name' => $mod->name,
+                'slug' => $mod->slug,
+                'versions' => rtrim($supported_versions, ', '),
+            ];
+        }
+
+        return View::make('user.mods', [
+            'title' => $title,
+            'mods' => $mods_array,
+            'user' => $user,
+        ]);
+
     }
 
     public function getEditProfile()
@@ -310,6 +396,9 @@ class UserController extends BaseController
 
         $user_info->email = $user->email;
         $user_info->hide_email = $user->hide_email;
+        $user_info->hide_mods_modpacks = $user->hide_mods_modpacks;
+
+        $this->setProfileOptions($user->username);
 
         $title = 'Edit Profile - ' . $this->site_name;
 
@@ -326,9 +415,12 @@ class UserController extends BaseController
         $user = Auth::user();
         $user_info = UserInfo::where('user_id', $user->id)->first();
 
+        $this->setProfileOptions($user->username);
+
         $title = 'Edit Profile - ' . $this->site_name;
 
-        $input = Input::only('email', 'real_name', 'location', 'website', 'github', 'about_me', 'hide_email');
+        $input = Input::only('email', 'real_name', 'location', 'website', 'github', 'about_me', 'hide_email',
+            'hide_mods_modpacks');
 
         $messages = [
             'url' => 'The :attribute field is not a valid URL.',
@@ -361,6 +453,12 @@ class UserController extends BaseController
                 $user->hide_email = 0;
             }
 
+            if ($input['hide_mods_modpacks'] == 1) {
+                $user->hide_mods_modpacks = 1;
+            } else {
+                $user->hide_mods_modpacks = 0;
+            }
+
             $user_info->last_ip = Request::getClientIp();
 
             $user->save();
@@ -386,6 +484,8 @@ class UserController extends BaseController
 
         $user = Auth::user();
 
+        $this->setProfileOptions($user->username);
+
         $title = 'Change Password - ' . $this->site_name;
 
         return View::make('user.edit_password', ['user' => $user, 'title' => $title]);
@@ -403,6 +503,8 @@ class UserController extends BaseController
         }
 
         $user = Auth::user();
+
+        $this->setProfileOptions($user->username);
 
         $title = 'Change Password - ' . $this->site_name;
 
@@ -515,5 +617,61 @@ class UserController extends BaseController
             'available_permissions' => $available_permissions,
             'success' => true
         ]);
+    }
+
+    private function testRedirect()
+    {
+        return Redirect::intended('/');
+    }
+
+    private function isThisMyUsername($username)
+    {
+        if (Auth::check()) {
+            if (Auth::user()->username == $username) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function setProfileOptions($username)
+    {
+        $my_profile = false;
+        $show_modpacks = false;
+        $show_mods = false;
+
+        $raw_user = User::where('username', $username)->first();
+
+        $modpacks = $raw_user->modpacks()->first();
+        $mods = $raw_user->mods()->first();
+
+        if ($modpacks && !$raw_user->hide_mods_modpacks) {
+            $show_modpacks = true;
+        }
+
+        if ($mods && !$raw_user->hide_mods_modpacks) {
+            $show_mods = true;
+        }
+
+        if (Auth::check()) {
+            if (Auth::user()->email == $raw_user['email']) {
+                $my_profile = true;
+
+                if ($modpacks) {
+                    $show_modpacks = true;
+                }
+
+                if ($mods) {
+                    $show_mods = true;
+                }
+            }
+        }
+
+
+        View::share('my_profile', $my_profile);
+        View::share('show_modpacks', $show_modpacks);
+        View::share('show_mods', $show_mods);
+
+        return true;
     }
 }
