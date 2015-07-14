@@ -26,13 +26,18 @@ class StaticPagesController extends BaseController
         $input['contact_email'] = 'contact@modpackindex.com';
         $input['sender_ip'] = Request::getClientIp();
 
+        $messages = [
+            'g-recaptcha-response.required' => 'reCAPTCHA verification is required.',
+        ];
+
         $validator = Validator::make($input,
             array(
                 'name' => 'required',
                 'email' => 'required|email',
                 'message' => 'required',
-                'recaptcha_response_field' => 'required|recaptcha',
-            )
+                'g-recaptcha-response.required' => 'required|recaptcha',
+            ),
+            $messages
         );
 
         if ($validator->fails()) {
