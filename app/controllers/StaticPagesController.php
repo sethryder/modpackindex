@@ -22,7 +22,7 @@ class StaticPagesController extends BaseController
     {
         $title = 'Contact Us - ' . $this->site_name;
 
-        $input = Input::only('name', 'email', 'message', 'recaptcha_response_field');
+        $input = Input::only('name', 'email', 'message', 'g-recaptcha-response');
         $input['contact_email'] = 'contact@modpackindex.com';
         $input['sender_ip'] = Request::getClientIp();
 
@@ -35,7 +35,7 @@ class StaticPagesController extends BaseController
                 'name' => 'required',
                 'email' => 'required|email',
                 'message' => 'required',
-                'g-recaptcha-response.required' => 'required|recaptcha',
+                'g-recaptcha-response' => 'required|recaptcha',
             ),
             $messages
         );
