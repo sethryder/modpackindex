@@ -5,6 +5,11 @@ return array(
     //Site name
     'site_name' => 'Modpack Index',
 
+	//Server Settings
+	'server_failed_attempts' => 3, //number of failed attempts until a failure
+	'server_failed_disable' => 3, //number of failed checks until server is disabled
+	'server_update_interval' => 300, //how often we check servers
+
 	/*
 	|--------------------------------------------------------------------------
 	| Application Debug Mode
@@ -127,7 +132,6 @@ return array(
         'Way\Generators\GeneratorsServiceProvider',
         'Greggilbert\Recaptcha\RecaptchaServiceProvider',
 		'Roumen\Sitemap\SitemapServiceProvider',
-
 	),
 
 	/*
