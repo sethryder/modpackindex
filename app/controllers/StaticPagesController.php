@@ -23,7 +23,7 @@ class StaticPagesController extends BaseController
         $title = 'Contact Us - ' . $this->site_name;
 
         $input = Input::only('name', 'email', 'message', 'recaptcha_response_field');
-        $input['contact_email'] = 'ryder.seth@gmail.com';
+        $input['contact_email'] = 'contact@modpackindex.com';
         $input['sender_ip'] = Request::getClientIp();
 
         $validator = Validator::make($input,
@@ -62,7 +62,7 @@ class StaticPagesController extends BaseController
 
         $input = Input::only('name', 'creators_name', 'minecraft_version', 'launcher', 'website', 'modlist', 'packcode',
             'deck', 'description', 'comments', 'email', 'g-recaptcha-response');
-        $input['contact_email'] = 'ryder.seth@gmail.com';
+        $input['contact_email'] = 'contact@modpackindex.com';
         $input['sender_ip'] = Request::getClientIp();
 
         $validator_error_messages = [
@@ -136,7 +136,7 @@ class StaticPagesController extends BaseController
 
 
         $input = Input::only('url', 'type', 'mod', 'modpack', 'email', 'comments', 'g-recaptcha-response');
-        $input['contact_email'] = 'ryder.seth@gmail.com';
+        $input['contact_email'] = 'contact@modpackindex.com';
         $input['sender_ip'] = Request::getClientIp();
 
         $validator_error_messages = [
