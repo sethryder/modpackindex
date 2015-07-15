@@ -56,7 +56,7 @@ class UserController extends BaseController
         $validator = Validator::make($input,
             array(
                 'email' => 'required|email',
-                //'g-recaptcha-response' => 'required|recaptcha',
+                'g-recaptcha-response' => 'required|recaptcha',
             ),
             $validator_error_messages
         );
