@@ -2,6 +2,13 @@
 
 @section('content')
     <div class="container">
+        <style>
+            .g-recaptcha {
+                width: 300px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        </style>
 
         <div class="account-wrapper">
 
@@ -9,8 +16,13 @@
 
                 @if ( $errors->count() > 0 )
                     <div style="text-align: left" class="alert alert-danger">
-                        <p>Unable to login with the provided credentials.</p>
-                    </div>
+                        <p>The following errors have occurred:</p>
+
+                        <ul>
+                            @foreach( $errors->all() as $message )
+                                <li>{{ $message }}</li>
+                            @endforeach
+                        </ul>                    </div>
                 @endif
 
                 <h3>Welcome back.</h3>
@@ -26,6 +38,12 @@
                     {{ Form::password('password', array('class' => 'form-control', 'placeholder' => 'Your Password'))}}
                 </div>
                 <!-- /.form-group -->
+
+                @if ($use_captcha)
+                <div class="form-group">
+                    {{ Form::captcha()}}
+                </div>
+                @endif
 
                 <div class="form-group clearfix">
                     <div class="pull-left">

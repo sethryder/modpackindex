@@ -13,9 +13,20 @@ class UserController extends BaseController
             return Redirect::intended('/');
         }
 
+        $use_captcha = false;
+        $ip_cache_key = 'login-attempts-' . md5(Request::getClientIp());
+
+        if (Cache::has($ip_cache_key)) {
+            $attempts = Cache::get($ip_cache_key);
+
+            if ($attempts >= 5) {
+                $use_captcha = true;
+            }
+        }
+
         $title = 'Login - ' . $this->site_name;
 
-        return View::Make('user.login', ['title' => $title]);
+        return View::Make('user.login', ['title' => $title, 'use_captcha' => $use_captcha]);
     }
 
     public function getLogout()
@@ -178,7 +189,37 @@ class UserController extends BaseController
             return Redirect::intended('/');
         }
 
-        $input = Input::only('email', 'password', 'remember_me');
+        $attempts = 0;
+        $use_captcha = false;
+
+        $ip_cache_key = 'login-attempts-' . md5(Request::getClientIp());
+
+        if (Cache::has($ip_cache_key)) {
+            $attempts = Cache::get($ip_cache_key);
+
+            if ($attempts >= 5) {
+                $use_captcha = true;
+            }
+        }
+
+        $input = Input::only('email', 'password', 'remember_me', 'g-recaptcha-response');
+
+        if ($use_captcha) {
+            $validator_error_messages = [
+                'g-recaptcha-response.required' => 'reCAPTCHA verification is required.',
+            ];
+            $validator = Validator::make($input,
+                [
+                    'g-recaptcha-response' => 'required|recaptcha',
+                ],
+                $validator_error_messages
+            );
+
+            if ($validator->fails()) {
+                return Redirect::to('/login')->withErrors($validator);
+            }
+        }
+
         $remember_me = false;
 
         if ($input['remember_me']) {
@@ -194,6 +235,7 @@ class UserController extends BaseController
         ) {
             return Redirect::intended('/');
         } else {
+            Cache::put($ip_cache_key, $attempts + 1, 60);
             return Redirect::to('/login')->withErrors(['Error' => 'Unable to login with provided information.'])->withInput();
         }
     }
