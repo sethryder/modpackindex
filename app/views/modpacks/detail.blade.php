@@ -40,7 +40,7 @@
                             @if ($i+1 != count($links))| @endif
                             <?php $i++; ?>
                         @endforeach
-                        @if (isset($user_permissions['modpack_edit']))
+                        @if (isset($user_permissions['modpack_edit']) || $can_edit == true)
                             | <a href="/modpack/edit/{{ $modpack->id }}"><i class="fa fa-edit"></i> Edit</a>
                         @endif
                     </p>
