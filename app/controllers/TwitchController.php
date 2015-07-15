@@ -35,13 +35,16 @@ class TwitchController extends BaseController
     public function getStreams()
     {
         $streams_array = [];
-        $modpacks = Modpack::orderBy('name')->get();
+
+        $modpacks = Modpack::orderBy('name')->with(array(
+            'twitchStreams' => function ($query) {
+                $query->orderBy('viewers', 'desc');
+            }
+        ))->get();
 
         foreach ($modpacks as $modpack) {
-            $modpack_streams = $modpack->twitchStreams()->orderBy('viewers', 'desc')->get();;
-
-            if ($modpack_streams) {
-                $streams_array[$modpack->name] = $modpack_streams;
+            if ($modpack->twitchStreams) {
+                $streams_array[$modpack->name] = $modpack->twitchStreams;
             }
         }
 
