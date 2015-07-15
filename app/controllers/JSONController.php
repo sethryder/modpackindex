@@ -14,10 +14,10 @@ class JSONController extends BaseController
             $version = preg_replace('/-/', '.', $version);
 
             if ($version == 'all') {
-                $raw_mods = Mod::all();
+                $raw_mods = Mod::with('versions')->with('authors')->get();
             } else {
-                $raw_version = MinecraftVersion::where('name', '=', $version)->first();
-                $raw_mods = $raw_version->mods;
+                $raw_version = MinecraftVersion::where('name', '=', $version)->with('mods')->first();
+                $raw_mods = $raw_version->mods()->with('authors')->with('versions')->get();
             }
 
             foreach ($raw_mods as $mod) {
@@ -103,10 +103,10 @@ class JSONController extends BaseController
             $get_version = preg_replace('/-/', '.', $get_version);
 
             if ($get_version == 'all') {
-                $raw_modpacks = Modpack::all();
+                $raw_modpacks = Modpack::with('creators')->with('version')->with('launcher')->get();
             } else {
-                $raw_version = MinecraftVersion::where('name', '=', $get_version)->first();
-                $raw_modpacks = $raw_version->modpacks;
+                $raw_version = MinecraftVersion::where('name', '=', $get_version)->with('modpacks')->first();
+                $raw_modpacks = $raw_version->modpacks()->with('creators')->with('version')->with('launcher')->get();
             }
 
             foreach ($raw_modpacks as $modpack) {
@@ -202,13 +202,15 @@ class JSONController extends BaseController
             $launcher_id = $launcher->id;
 
             if ($get_version == 'all') {
-                $raw_modpacks = Modpack::where('launcher_id', '=', $launcher_id)->get();
+                $raw_modpacks = Modpack::where('launcher_id', '=', $launcher_id)->with('creators')->with('version')
+                    ->with('launcher')->get();
             } else {
                 $version = MinecraftVersion::where('name', '=', $get_version)->first();
                 $version_id = $version->id;
 
                 $raw_modpacks = Modpack::where('launcher_id', '=', $launcher_id)
-                    ->where('minecraft_version_id', '=', $version_id)->get();
+                    ->where('minecraft_version_id', '=', $version_id)->with('creators')->with('launcher')
+                    ->with('version')->get();
             }
 
             foreach ($raw_modpacks as $modpack) {
@@ -300,7 +302,7 @@ class JSONController extends BaseController
             $mods_array = [];
             $mod_id_array = [];
             $modpack = Modpack::where('slug', '=', $name)->first();
-            $raw_mods = $modpack->mods;
+            $raw_mods = $modpack->mods()->with('authors')->with('versions')->get();
 
             //print_r($raw_mods);
 
@@ -381,7 +383,7 @@ class JSONController extends BaseController
             $modpack_id_array = [];
             $modpacks_array = [];
             $mod = Mod::where('slug', '=', $name)->first();
-            $modpacks = $mod->modpacks;
+            $modpacks = $mod->modpacks()->with('creators')->with('launcher')->with('version')->get();
 
             foreach ($modpacks as $modpack) {
                 $creators = '';
@@ -492,7 +494,7 @@ class JSONController extends BaseController
             }
         }
 
-        $modpacks = $modpack->get();
+        $modpacks = $modpack->with('creators')->with('launcher')->with('version')->get();
 
         foreach ($modpacks as $modpack) {
             $creators = '';
@@ -640,8 +642,9 @@ class JSONController extends BaseController
             }
         }
 
+        $servers = $query->with('modpack')->with('status')->get();
+
         $countries = Server::countryList();
-        $servers = $query->get();
 
         foreach ($servers as $server) {
             $server_status = $server->status;
