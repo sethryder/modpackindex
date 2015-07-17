@@ -10,7 +10,7 @@
                 <div class="col-md-6 col-md-push-3 col-sm-8 col-sm-push-2 ">
 
                     <h3 class="portlet-title">
-                        <u>{{ $modpack->name }} ({{ $modpack->version->name  }}) Aliases</u>
+                        <u>{{{ $modpack->name }}} ({{{ $modpack->version->name  }}}) Aliases</u>
                     </h3>
 
                     <div style="text-align: center;"><h4><a href="/modpack-alias/add">Add</a></h4></div>
@@ -28,7 +28,7 @@
 
                             @foreach($aliases as $alias)
                                 <tr>
-                                    <td class="valign-middle">{{ $alias->alias }}</td>
+                                    <td class="valign-middle">{{{ $alias->alias }}}</td>
                                     <td class="text-center valign-middle">
                                         <button class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i></button>
                                         &nbsp;

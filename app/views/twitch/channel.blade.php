@@ -40,11 +40,11 @@
                 </h3>
 
                 <div style="position: relative; bottom: 15px;"><h5>
-                        Modpack: {{ $modpack_name }}
+                        Modpack: {{{ $modpack_name }}}
                     </h5>
 
                     <div class="portlet-body" style="text-align:center;">
-                        <h3>{{ $channel->status }}</h3>
+                        <h3>{{{ $channel->status }}}</h3>
 
                         <div class="video-container">
                             <div id="twitch_embed_player"></div>

@@ -8,14 +8,14 @@
             <div class="portlet">
 
                 <h3 class="portlet-title">
-                    <u>{{ $modpack->name }} ({{ $modpack->version->name  }})</u>
+                    <u>{{{ $modpack->name }}} ({{{ $modpack->version->name  }}})</u>
 
                 </h3>
 
                 <div style="position: relative; bottom: 15px;"><h5>by
                         <?php $i = 0 ?>
                         @foreach($creators as $index => $creator)
-                            {{$creator->name}}@if ($i+1 != count($creators)), @endif
+                            {{{$creator->name}}}@if ($i+1 != count($creators)), @endif
                             <?php $i++; ?>
                         @endforeach
                     </h5>
@@ -26,22 +26,22 @@
                         <?php $i = 0 ?>
                         @foreach ($links as $index => $link)
                             @if ($index == 'website')
-                                <a href="{{ $link }}"><i class="fa fa-external-link"></i> Website</a>
+                                <a href="{{{ $link }}}"><i class="fa fa-external-link"></i> Website</a>
                             @endif
                             @if ($index == 'download_link')
-                                <a href="{{ $link }}"><i class="fa fa-download"></i> Download</a>
+                                <a href="{{{ $link }}}"><i class="fa fa-download"></i> Download</a>
                             @endif
                             @if ($index == 'donate_link')
-                                <a href="{{ $link }}"><i class="fa fa-dollar"></i> Donate</a>
+                                <a href="{{{ $link }}}"><i class="fa fa-dollar"></i> Donate</a>
                             @endif
                             @if ($index == 'wiki_link')
-                                <a href="{{ $link }}"><i class="fa fa-book"></i> Wiki</a>
+                                <a href="{{{ $link }}}"><i class="fa fa-book"></i> Wiki</a>
                             @endif
                             @if ($i+1 != count($links))| @endif
                             <?php $i++; ?>
                         @endforeach
                         @if (isset($user_permissions['modpack_edit']) || $can_edit == true)
-                            | <a href="/modpack/edit/{{ $modpack->id }}"><i class="fa fa-edit"></i> Edit</a>
+                            | <a href="/modpack/edit/{{{ $modpack->id }}}"><i class="fa fa-edit"></i> Edit</a>
                         @endif
                     </p>
 
@@ -49,8 +49,8 @@
                         <p><?php $i = 0 ?>
                             <i class="fa fa-tags"></i> Tags:
                             @foreach ($tags as $tag)
-                                <a href="/modpack/finder/?tag={{ $tag->slug }}"
-                                   title="{{ $tag->deck }}">{{ $tag->name }}</a>@if ($i+1 != count($tags)),@endif
+                                <a href="/modpack/finder/?tag={{{ $tag->slug }}}"
+                                   title="{{{ $tag->deck }}}">{{{ $tag->name }}}</a>@if ($i+1 != count($tags)),@endif
                                 <?php $i++; ?>
                             @endforeach</p>
                     @endif
@@ -59,19 +59,19 @@
                     @if (isset($pack_code))
                         <p>
                             @if ($launcher->slug == 'feed-the-beast')
-                                Pack Code: <b>{{ $pack_code->code }}</b> (<a href="/about/modpack-codes">What's
+                                Pack Code: <b>{{{ $pack_code->code }}}</b> (<a href="/about/modpack-codes">What's
                                     this?</a>)
                             @endif
                             @if ($launcher->slug == 'atlauncher')
-                                Pack Code: <b>{{ $pack_code->code }}</b> (<a href="/about/modpack-codes">What's
+                                Pack Code: <b>{{{ $pack_code->code }}}</b> (<a href="/about/modpack-codes">What's
                                     this?</a>)
                             @endif
                             @if ($launcher->slug == 'technic-platform')
-                                Pack URL: <input type="text" name="url" value="{{ $pack_code->code }}"> (<a
+                                Pack URL: <input type="text" name="url" value="{{{ $pack_code->code }}}"> (<a
                                         href="/about/modpack-codes">What's this?</a>)
                             @endif
                             @if (isset($user_permissions['modpack_code_edit']))
-                                <a href="/modpack-code/edit/{{ $pack_code->id }}"><i class="fa fa-edit"></i> Edit</a>
+                                <a href="/modpack-code/edit/{{{ $pack_code->id }}}"><i class="fa fa-edit"></i> Edit</a>
                             @endif
                         </p>
                     @endif
@@ -79,7 +79,7 @@
                     <div class="portlet-body"></div>
 
                     @if ($modpack->description == '')
-                        <p>{{ $modpack->deck }}</p>
+                        <p>{{{ $modpack->deck }}}</p>
                     @else
                         <div class="modpack-description">
                             {{ $modpack_description }}
@@ -144,21 +144,21 @@
 
                                             <div class="thumbnail">
                                                 <div class="thumbnail-view">
-                                                    <a href="/stream/{{ $stream->display_name }}">
-                                                        <img src="{{ $stream->preview }}" style="width: 100%"/></a>
+                                                    <a href="/stream/{{{ $stream->display_name }}}">
+                                                        <img src="{{{ $stream->preview }}}" style="width: 100%"/></a>
                                                 </div>
                                                 <div class="thumbnail-footer">
                                                     <div class="pull-left">
-                                                        <a href="http://twitch.tv/{{ $stream->display_name }}">{{ $stream->display_name }}</a>
+                                                        <a href="http://twitch.tv/{{{ $stream->display_name }}}">{{{ $stream->display_name }}}</a>
                                                     </div>
 
                                                     <div class="pull-right">
-                                                        <a href="/stream/{{ $stream->display_name }}"><i
-                                                                    class="fa fa-bullhorn"></i> {{ $stream->language }}
+                                                        <a href="/stream/{{{ $stream->display_name }}}"><i
+                                                                    class="fa fa-bullhorn"></i> {{{ $stream->language }}}
                                                         </a>
                                                         <a href="/stream/{{ $stream->display_name }}"><i
-                                                                    class="fa fa-eye"></i> {{ $stream->viewers }}</a>
-                                                        <!-- <a href="javascript:;"><i class="fa fa-heart"></i> {{ $stream->followers }}</a> -->
+                                                                    class="fa fa-eye"></i> {{{ $stream->viewers }}}</a>
+                                                        <!-- <a href="javascript:;"><i class="fa fa-heart"></i> {{{ $stream->followers }}}</a> -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -177,12 +177,12 @@
 
                                             <div class="thumbnail">
                                                 <div class="thumbnail-view">
-                                                    <a href="/modpack/{{ $version }}/{{ $modpack->slug }}/lets-play/{{ $lets_play->id }}-{{ Str::slug($lets_play->channel_title) }}">
-                                                        <img src="{{ $lets_play->thumbnail }}" style="width: 100%"/></a>
+                                                    <a href="/modpack/{{{ $version }}}/{{{ $modpack->slug }}}/lets-play/{{{ $lets_play->id }}}-{{{ Str::slug($lets_play->channel_title) }}}">
+                                                        <img src="{{{ $lets_play->thumbnail }}}" style="width: 100%"/></a>
                                                 </div>
                                                 <div class="thumbnail-footer">
                                                     <div class="pull-left">
-                                                        <a href="http://www.youtube.com/{{ $lets_play->channel_title }}">{{ $lets_play->channel_title }}</a>
+                                                        <a href="http://www.youtube.com/{{{ $lets_play->channel_title }}}">{{{ $lets_play->channel_title }}}</a>
                                                     </div>
 
                                                     <div class="pull-right">

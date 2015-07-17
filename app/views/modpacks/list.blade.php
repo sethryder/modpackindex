@@ -8,7 +8,7 @@
             <div class="portlet">
 
                 <h3 class="portlet-title">
-                    <u>{{ $version }} Modpacks</u>
+                    <u>{{{ $version }}} Modpacks</u>
                 </h3>
 
                 <div class="portlet-body">

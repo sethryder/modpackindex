@@ -8,10 +8,10 @@
             <div class="portlet">
 
                 <h3 class="portlet-title">
-                    <u>{{ $launcher->name }} (@if ($version == 'All')
+                    <u>{{{ $launcher->name }}} (@if ($version == 'All')
                             All Minecraft Versions
                         @else
-                            {{ $version }}
+                            {{{ $version }}}
                         @endif)</u>
                 </h3>
 
@@ -19,16 +19,16 @@
                     <?php $i = 0 ?>
                     @foreach ($links as $index => $link)
                         @if ($index == 'website')
-                            <a href="{{ $link }}"><i class="fa fa-external-link"></i> Website</a>
+                            <a href="{{{ $link }}}"><i class="fa fa-external-link"></i> Website</a>
                         @endif
                         @if ($index == 'download_link')
-                            <a href="{{ $link }}"><i class="fa fa-download"></i> Download</a>
+                            <a href="{{{ $link }}}"><i class="fa fa-download"></i> Download</a>
                         @endif
                         @if ($index == 'donate_link')
-                            <a href="{{ $link }}"><i class="fa fa-dollar"></i> Donate</a>
+                            <a href="{{{ $link }}}"><i class="fa fa-dollar"></i> Donate</a>
                         @endif
                         @if ($index == 'wiki_link')
-                            <a href="{{ $link }}"><i class="fa fa-book"></i> Wiki</a>
+                            <a href="{{{ $link }}}"><i class="fa fa-book"></i> Wiki</a>
                         @endif
                         @if ($i+1 != count($links))| @endif
                         <?php $i++; ?>
@@ -37,7 +37,7 @@
 
                 <div class="portlet-body"></div>
 
-                <p>{{ $launcher->description }}</p>
+                <p>{{{ $launcher->description }}}</p>
 
                 <div class="portlet-body">
 
