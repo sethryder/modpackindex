@@ -61,7 +61,7 @@
 
                             <div class="form-group">
                                 {{ Form::label('author','Author(s)') }}:
-                                {{ Form::select('author[]', Author::lists('name', 'id'), null, array('multiple', 'class' => 'chosen-select form-control')) }}
+                                {{ Form::select('author[]', Author::orderBy('name')->lists('name', 'id'), null, array('multiple', 'class' => 'chosen-select form-control')) }}
                             </div>
 
                             <div class="form-group">

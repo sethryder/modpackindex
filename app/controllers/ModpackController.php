@@ -176,6 +176,8 @@ class ModpackController extends BaseController
             $mod_select_array[$id] = $mod->name;
         }
 
+        natcasesort($mod_select_array);
+
         return View::make('modpacks.add', [
             'chosen' => true,
             'mods' => $mod_select_array,
@@ -335,6 +337,8 @@ class ModpackController extends BaseController
         foreach ($modpack->maintainers as $m) {
             $selected_maintainers[] = $m->id;
         }
+
+        natcasesort($mod_select_array);
 
         return View::make('modpacks.edit', [
             'title' => $title,

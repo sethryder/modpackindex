@@ -36,9 +36,9 @@
                     <div class="form-group">
                         {{ Form::label('tags','Tags / Type') }}:
                         @if (isset($results))
-                            {{ Form::select('tags[]', ModpackTag::lists('name', 'id'), $selected_tags, array('multiple', 'class' => 'chosen-select form-control')) }}
+                            {{ Form::select('tags[]', ModpackTag::orderBy('name')->lists('name', 'id'), $selected_tags, array('multiple', 'class' => 'chosen-select form-control')) }}
                         @else
-                            {{ Form::select('tags[]',  ModpackTag::lists('name', 'id'), null, array('multiple', 'class' => 'chosen-select form-control')) }}
+                            {{ Form::select('tags[]',  ModpackTag::orderBy('name')->lists('name', 'id'), null, array('multiple', 'class' => 'chosen-select form-control')) }}
                         @endif
                     </div>
 

@@ -46,7 +46,7 @@
 
                             <div class="form-group">
                                 {{ Form::label('launcher','Launcher') }}:
-                                {{ Form::select('launcher', Launcher::lists('name', 'id'), $modpack->launcher_id, array('class' => 'form-control')) }}
+                                {{ Form::select('launcher', Launcher::orderBy('name')->lists('name', 'id'), $modpack->launcher_id, array('class' => 'form-control')) }}
                             </div>
 
                             <div class="form-group">
@@ -56,18 +56,18 @@
 
                             <div class="form-group">
                                 {{ Form::label('tags','Tags') }}:
-                                {{ Form::select('selected_tags[]', ModpackTag::lists('name', 'id'), $selected_tags, array('multiple', 'class' => 'chosen-select form-control')) }}
+                                {{ Form::select('selected_tags[]', ModpackTag::orderBy('name')->lists('name', 'id'), $selected_tags, array('multiple', 'class' => 'chosen-select form-control')) }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('creator','Creator(s)') }}:
-                                {{ Form::select('selected_creators[]', Creator::lists('name', 'id'), $selected_creators, array('multiple', 'class' => 'chosen-select form-control')) }}
+                                {{ Form::select('selected_creators[]', Creator::orderBy('name')->lists('name', 'id'), $selected_creators, array('multiple', 'class' => 'chosen-select form-control')) }}
                             </div>
 
                             @if ($can_edit_maintainers == true)
                                 <div class="form-group">
                                     {{ Form::label('selected_maintainers','Site Maintainer(s)') }}:
-                                    {{ Form::select('selected_maintainers[]', User::lists('username', 'id'), $selected_maintainers, array('multiple', 'class' => 'chosen-select form-control')) }}
+                                    {{ Form::select('selected_maintainers[]', User::orderBy('username')->lists('username', 'id'), $selected_maintainers, array('multiple', 'class' => 'chosen-select form-control')) }}
                                 </div>
                             @endif
 

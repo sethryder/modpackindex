@@ -46,7 +46,7 @@
 
                             <div class="form-group">
                                 {{ Form::label('launcher','Launcher') }}:
-                                {{ Form::select('launcher', Launcher::lists('name', 'id'), null, array('class' => 'form-control')) }}
+                                {{ Form::select('launcher', Launcher::orderBy('name')->lists('name', 'id'), null, array('class' => 'form-control')) }}
                             </div>
 
                             <div class="form-group">
@@ -56,12 +56,12 @@
 
                             <div class="form-group">
                                 {{ Form::label('tags','Tags') }}:
-                                {{ Form::select('tags[]', ModpackTag::lists('name', 'id'), null, array('multiple', 'class' => 'chosen-select form-control')) }}
+                                {{ Form::select('tags[]', ModpackTag::orderBy('name')->lists('name', 'id'), null, array('multiple', 'class' => 'chosen-select form-control')) }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('creator','Creator(s)') }}:
-                                {{ Form::select('creators[]', Creator::lists('name', 'id'), null, array('multiple', 'class' => 'chosen-select form-control')) }}
+                                {{ Form::select('creators[]', Creator::orderBy('name')->lists('name', 'id'), null, array('multiple', 'class' => 'chosen-select form-control')) }}
                             </div>
 
                             <div class="form-group">
