@@ -82,7 +82,7 @@
                         <p>{{ $modpack->deck }}</p>
                     @else
                         <div class="modpack-description">
-                            <p>{{ $modpack_description }}</p>
+                            {{ $modpack_description }}
                         </div>
                     @endif
 
