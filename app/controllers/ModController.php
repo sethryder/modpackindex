@@ -68,12 +68,16 @@ class ModController extends BaseController
             }
         }
 
+        $markdown_html = Parsedown::instance()->setBreaksEnabled(true)->text(strip_tags($mod->description));
+        $mod_description = str_replace('<table>', '<table class="table table-striped table-bordered">', $markdown_html);
+
         $title = $mod->name . ' - Mod - ' . $this->site_name;
         $meta_description = $mod->deck;
 
         return View::make('mods.detail', array(
             'table_javascript' => $table_javascript,
             'mod' => $mod,
+            'mod_description' => $mod_description,
             'links' => $links,
             'authors' => $authors,
             'title' => $title,

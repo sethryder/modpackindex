@@ -67,6 +67,7 @@
                             <div class="form-group">
                                 {{ Form::label('deck','Deck') }}:
                                 {{ Form::text('deck', null, array('class' => 'form-control'))}}
+                                <p class="pull-right">We support <a href="https://help.github.com/articles/github-flavored-markdown/" target="_blank">Github Flavored Markdown</a>.</p>
                             </div>
                             <!-- /.form-group -->
 

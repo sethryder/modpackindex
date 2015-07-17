@@ -8,8 +8,9 @@
         	"guzzlehttp/guzzle": "~4.0",
         	"greggilbert/recaptcha": "1.1.*",
         	"way/generators": "~2.0",
-		"roumen/sitemap": "~2.4.15",
-		"pda/pheanstalk": "~2.0",
+	        "roumen/sitemap": "~2.4.15",
+        	"pda/pheanstalk": "~2.0",
+			"erusev/parsedown": "1.5.3",
         	"xpaw/php-minecraft-query": "dev-master"
 	},
 	"autoload": {
@@ -42,6 +43,7 @@
 	"minimum-stability": "stable",
 
     "require-dev": {
-        "fzaninotto/faker": "dev-master"
+        "fzaninotto/faker": "dev-master",
+	"barryvdh/laravel-debugbar": "~1.8"
     }
 }

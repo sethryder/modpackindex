@@ -36,9 +36,11 @@
                         @endif
                     </ul>
 
-                    <br>
+                    <hr>
 
-                    <p>{{{ $user_info['about_me'] }}}</p>
+                    <div class="about-me">
+                    {{ $user_info['about_me'] }}
+                    </div>
                     <hr>
 
                     <br class="visible-xs">

@@ -73,9 +73,11 @@
 
                     <div class="form-group">
                         {{ Form::label('about_me','About Me') }}:
-                        {{ Form::textarea('about_me', null, array('class' => 'form-control', 'placeholder' => 'We currently only allow plain text in this field. We will be updating that in the future.'))}}
+                        {{ Form::textarea('about_me', null, array('class' => 'form-control'))}}
+                        <p class="pull-right">We support <a href="https://help.github.com/articles/github-flavored-markdown/" target="_blank">Github Flavored Markdown</a>.</p>
                     </div>
                     <!-- /.form-group -->
+
 
                     <div class="form-group">
                         <div class="checkbox">

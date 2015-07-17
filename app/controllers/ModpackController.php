@@ -64,18 +64,22 @@ class ModpackController extends BaseController
 
         $links = [];
 
-        $title = $modpack->name . ' - ' . $friendly_version . ' Modpack - ' . $this->site_name;
-        $meta_description = $modpack->deck;
-
         foreach ($raw_links as $index => $link) {
             if ($link != '') {
                 $links["$index"] = $link;
             }
         }
 
+        $markdown_html = Parsedown::instance()->setBreaksEnabled(true)->text(strip_tags($modpack->description));
+        $modpack_description = str_replace('<table>', '<table class="table table-striped table-bordered">', $markdown_html);
+
+        $title = $modpack->name . ' - ' . $friendly_version . ' Modpack - ' . $this->site_name;
+        $meta_description = $modpack->deck;
+
         return View::make('modpacks.detail', array(
             'table_javascript' => $table_javascript,
             'modpack' => $modpack,
+            'modpack_description' => $modpack_description,
             'links' => $links,
             'launcher' => $launcher,
             'creators' => $creators,

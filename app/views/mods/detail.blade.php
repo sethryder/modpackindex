@@ -47,7 +47,9 @@
                     @if ($mod->description == '')
                         <p>{{ $mod->deck }}</p>
                     @else
-                        <p>{{ $mod->description }}</p>
+                        <div class="mod-description">
+                            {{ $mod_description }}
+                        </div>
                     @endif
                     <p>&nbsp;</p>
 

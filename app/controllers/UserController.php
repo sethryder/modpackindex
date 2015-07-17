@@ -296,10 +296,6 @@ class UserController extends BaseController
 
     public function getProfile($username = null)
     {
-        $my_profile = false;
-        $show_modpacks = false;
-        $show_mods = false;
-
         if (!$username) {
             if (!Auth::check()) {
                 return Redirect::intended('/');
@@ -329,7 +325,9 @@ class UserController extends BaseController
         $user_info['location'] = $raw_user_info->location;
         $user_info['website'] = $raw_user_info->website;
         $user_info['github'] = $raw_user_info->github;
-        $user_info['about_me'] = $raw_user_info->about_me;
+
+        $markdown_html = Parsedown::instance()->setBreaksEnabled(true)->text(strip_tags($raw_user_info->about_me));
+        $user_info['about_me'] = str_replace('<table>', '<table class="table table-striped table-bordered">', $markdown_html);
 
         $title = $user_info['username'] . '\'s Profile - ' . $this->site_name;
 

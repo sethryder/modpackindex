@@ -81,7 +81,9 @@
                     @if ($modpack->description == '')
                         <p>{{ $modpack->deck }}</p>
                     @else
-                        <p>{{ $modpack->description }}</p>
+                        <div class="modpack-description">
+                            <p>{{ $modpack_description }}</p>
+                        </div>
                     @endif
 
                     <p>&nbsp;</p>
