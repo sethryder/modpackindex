@@ -26,6 +26,11 @@
                             <li><i class="icon-li fa fa-globe"></i> <a
                                         href="{{{ $user_info['website'] }}}">{{{ $user_info['website'] }}}</a></li>
                         @endif
+                        @if ($user_info['twitter'])
+                            <li><i class="icon-li fa fa-twitter"></i> <a
+                                        href="http://www.twitter.com/{{{ $user_info['twitter'] }}}">@{{{ $user_info['twitter'] }}}</a>
+                            </li>
+                        @endif
                         @if ($user_info['github'])
                             <li><i class="icon-li fa fa-github"></i> <a
                                         href="http://www.github.com/{{{ $user_info['github'] }}}">{{{ $user_info['github'] }}}</a>

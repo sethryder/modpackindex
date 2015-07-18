@@ -66,6 +66,12 @@
                     <!-- /.form-group -->
 
                     <div class="form-group">
+                        {{ Form::label('twitter','Twitter Username') }}:
+                        {{ Form::text('twitter', null, array('class' => 'form-control', 'data-required' => 'true'))}}
+                    </div>
+                    <!-- /.form-group -->
+
+                    <div class="form-group">
                         {{ Form::label('github','Github Username') }}:
                         {{ Form::text('github', null, array('class' => 'form-control', 'data-required' => 'true'))}}
                     </div>

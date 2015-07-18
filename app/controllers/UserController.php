@@ -324,6 +324,7 @@ class UserController extends BaseController
         $user_info['real_name'] = $raw_user_info->real_name;
         $user_info['location'] = $raw_user_info->location;
         $user_info['website'] = $raw_user_info->website;
+        $user_info['twitter'] = $raw_user_info->twitter;
         $user_info['github'] = $raw_user_info->github;
 
         $markdown_html = Parsedown::instance()->setBreaksEnabled(true)->text(strip_tags($raw_user_info->about_me));
@@ -395,8 +396,6 @@ class UserController extends BaseController
         $mods = $user->mods;
 
         foreach ($mods as $mod) {
-            $raw_versions = $mod->versions;
-
             foreach ($mod->versions as $v) {
                 if (!in_array($v->name, $version_array)) {
                     $version_array[] = $v->name;
@@ -459,12 +458,13 @@ class UserController extends BaseController
 
         $title = 'Edit Profile - ' . $this->site_name;
 
-        $input = Input::only('email', 'real_name', 'location', 'website', 'github', 'about_me', 'hide_email',
+        $input = Input::only('email', 'real_name', 'location', 'website', 'twitter', 'github', 'about_me', 'hide_email',
             'hide_mods_modpacks');
 
         $messages = [
             'url' => 'The :attribute field is not a valid URL.',
             'email' => 'You must provide a valid email address.',
+            'twitter.max' => 'Your Twitter username can not be longer then 15 characters.',
         ];
 
         $validator = Validator::make($input,
@@ -473,6 +473,7 @@ class UserController extends BaseController
                 'real_name' => 'max:255',
                 'location' => 'max:255',
                 'website' => 'url',
+                'twitter' => 'max:15',
                 'github' => 'max:39',
             ],
             $messages);
@@ -484,6 +485,7 @@ class UserController extends BaseController
             $user_info->real_name = $input['real_name'];
             $user_info->location = $input['location'];
             $user_info->website = $input['website'];
+            $user_info->twitter = $input['twitter'];
             $user_info->github = $input['github'];
             $user_info->about_me = $input['about_me'];
 
