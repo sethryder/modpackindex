@@ -36,8 +36,13 @@
                             @if (isset($success))
                                 <div class="alert alert-success">
                                     <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+                                    @if ($correction)
+                                    <strong>Sent!</strong> Thank you for your correction. We will look into it as soon
+                                        as we can.
+                                    @else
                                     <strong>Sent!</strong> Thank you for your message. We will get back to you as soon
-                                    as we can.
+                                        as we can.
+                                    @endif
                                 </div> <!-- /.alert -->
                             @endif
 
@@ -55,11 +60,35 @@
                             </div>
                             <!-- /.form-group -->
 
+                            @if ($correction_type)
                             <div class="form-group">
-                                {{ Form::label('message','Your Message:') }}:
+                                {{ Form::label('subject','Subject') }}:
+                                {{ Form::text('subject', $correction_type . ' Correction: ' . $correction_object->name, array('class' => 'form-control'))}}
+                            </div>
+                            <!-- /.form-group -->
+
+                                <div class="form-group">
+                                {{ Form::label('message','Your Message') }}:
+                                {{ Form::textarea('message', null, array('class' => 'form-control', 'data-required' => 'true', 'placeholder' => 'Please let us know what we have wrong!'))}}
+                            </div>
+                            <!-- /.form-group -->
+
+                            {{ Form::hidden('correction', 1) }}
+                            @else
+                            <div class="form-group">
+                                {{ Form::label('subject','Subject') }}:
+                                {{ Form::text('subject', null, array('class' => 'form-control'))}}
+                            </div>
+                            <!-- /.form-group -->
+
+                            <div class="form-group">
+                                {{ Form::label('message','Your Message') }}:
                                 {{ Form::textarea('message', null, array('class' => 'form-control', 'data-required' => 'true'))}}
                             </div>
                             <!-- /.form-group -->
+
+                            {{ Form::hidden('correction', 0) }}
+                            @endif
 
                             <div class="form-group" style="margin-left: auto; margin-right: auto; display: block;">
                                 {{ Form::label('captcha','Are you a human?') }}

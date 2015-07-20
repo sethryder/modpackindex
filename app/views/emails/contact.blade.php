@@ -8,12 +8,13 @@
 
 <div>
     <p>
-        <b>From:</b> {{ $input['name'] }}<br/>
-        <b>Email:</b> {{ $input['email'] }}<br/>
-        <b>IP:</b> {{ $input['sender_ip'] }}<br/>
+        <b>From:</b> {{{ $input['name'] }}}<br/>
+        <b>Email:</b> {{{ $input['email'] }}}<br/>
+        <b>IP:</b> {{{ $input['sender_ip'] }}}<br/>
+        <b>Subject:</b> {{{ $input['subject'] }}}<br/>
         <b>Message:</b></p>
 
-    <p>{{ $input['message'] }}</p>
+    <p>{{{ $input['message'] }}}</p>
 </div>
 </body>
 </html>

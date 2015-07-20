@@ -159,6 +159,8 @@
                         @endif
                     </div>
 
+                    <div class="pull-right"><p><a href="/contact?mod={{{ $mod->id }}}">Something incorrect?</a></p></div>
+
                 </div>
                 <!-- /.portlet -->
 

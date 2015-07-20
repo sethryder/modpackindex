@@ -12,17 +12,37 @@ class StaticPagesController extends BaseController
 
     public function getContact()
     {
+        $correction_type = false;
+        $correction_id = false;
+        $correction_object = false;
+
+        $input = Input::only('modpack', 'mod');
+
+        if ($input['modpack']) {
+            $correction_type = 'Modpack';
+            $correction_id = $input['modpack'];
+            $correction_object = Modpack::find($correction_id);
+        }
+
+        if ($input['mod']) {
+            $correction_type = 'Mod';
+            $correction_id = $input['mod'];
+            $correction_object = Mod::find($correction_id);
+        }
+
         $title = 'Contact Us - ' . $this->site_name;
         $meta_description = 'Contact us if something is incorrect, if you have a question, or for anything else.';
 
-        return View::make('pages.contact', ['title' => $title, 'meta_description' => $meta_description]);
+        return View::make('pages.contact', ['title' => $title, 'meta_description' => $meta_description,
+            'correction_type' => $correction_type, 'correction_id' => $correction_id,
+            'correction_object' => $correction_object]);
     }
 
     public function postContact()
     {
         $title = 'Contact Us - ' . $this->site_name;
 
-        $input = Input::only('name', 'email', 'message', 'g-recaptcha-response');
+        $input = Input::only('name', 'email', 'subject', 'message', 'g-recaptcha-response', 'correction');
         $input['contact_email'] = 'contact@modpackindex.com';
         $input['sender_ip'] = Request::getClientIp();
 
@@ -34,6 +54,7 @@ class StaticPagesController extends BaseController
             array(
                 'name' => 'required',
                 'email' => 'required|email',
+                'subject' => 'required',
                 'message' => 'required',
                 'g-recaptcha-response' => 'required|recaptcha',
             ),
@@ -46,10 +67,12 @@ class StaticPagesController extends BaseController
             Mail::send('emails.contact', array('input' => $input), function ($message) use ($input) {
                 $message->from('noreply@modpackindex.com', 'Modpack Index');
                 $message->replyTo($input['email'], $input['name']);
-                $message->to($input['contact_email'], 'Seth')->subject('Contact Form from ' . $input['name']);
+                $message->to($input['contact_email'], 'Seth')->subject($input['subject']);
             });
 
-            return View::make('pages.contact', ['success' => true, 'title' => $title]);
+            return View::make('pages.contact', ['success' => true, 'title' => $title,
+                'correction' => $input['correction'], 'correction_type' => false,
+                'correction_id' => false, 'correction_object' => false]);
         }
     }
 

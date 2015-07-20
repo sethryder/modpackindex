@@ -198,6 +198,8 @@
 
                     </div>
 
+                    <div class="pull-right"><p><a href="/contact?modpack={{{ $modpack->id }}}">Something incorrect?</a></p></div>
+
                 </div>
                 <!-- /.portlet -->
 
