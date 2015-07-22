@@ -39,6 +39,10 @@
                 </div>
                 <!-- /.form-group -->
 
+                @if ($return)
+                    {{ Form::hidden('return', $return) }}
+                @endif
+
                 @if ($use_captcha)
                 <div class="form-group">
                     {{ Form::captcha()}}

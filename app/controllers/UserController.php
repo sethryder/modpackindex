@@ -9,8 +9,16 @@ class UserController extends BaseController
 
     public function getLogin()
     {
+        $return = false;
+
         if (Auth::check()) {
             return Redirect::intended('/');
+        }
+
+        $input = Input::only('return');
+
+        if ($input['return']) {
+            $return = $input['return'];
         }
 
         $use_captcha = false;
@@ -26,7 +34,7 @@ class UserController extends BaseController
 
         $title = 'Login - ' . $this->site_name;
 
-        return View::Make('user.login', ['title' => $title, 'use_captcha' => $use_captcha]);
+        return View::Make('user.login', ['title' => $title, 'use_captcha' => $use_captcha, 'return' => $return]);
     }
 
     public function getLogout()
@@ -202,7 +210,7 @@ class UserController extends BaseController
             }
         }
 
-        $input = Input::only('email', 'password', 'remember_me', 'g-recaptcha-response');
+        $input = Input::only('email', 'password', 'remember_me', 'g-recaptcha-response', 'return');
 
         if ($use_captcha) {
             $validator_error_messages = [
@@ -233,9 +241,17 @@ class UserController extends BaseController
             'is_confirmed' => 1
         ), $remember_me)
         ) {
+            if ($input['return']) {
+                return Redirect::to('/' . $input['return']);
+            }
             return Redirect::intended('/');
         } else {
             Cache::put($ip_cache_key, $attempts + 1, 60);
+
+            if ($input['return']) {
+                return Redirect::to('/login?return=' . $input['return'])->withErrors(['Error' => 'Unable to login with provided information.'])->withInput();
+            }
+
             return Redirect::to('/login')->withErrors(['Error' => 'Unable to login with provided information.'])->withInput();
         }
     }
