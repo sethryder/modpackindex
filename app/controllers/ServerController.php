@@ -325,7 +325,8 @@ class ServerController extends BaseController
             'name.unique' => 'A server with this name already exists in the database.',
             'server_host.unique' => 'A server with this address already exists in the database.',
             'deck.required' => 'The short description field is required.',
-            'url' => '',
+            'deck.max' => 'The short description may not be greater than 255 characters.',
+            'url' => 'The :attribute field is not a valid URL.'
         ];
 
         $modpack = Modpack::find($input['modpack']);
@@ -348,7 +349,7 @@ class ServerController extends BaseController
             [
                 'name' => 'required|unique:servers,name',
                 'server_host' => 'required|unique:servers,ip_host,NULL,id,port,' . $server_port,
-                'deck' => 'required',
+                'deck' => 'required|max:255',
                 'website' => 'url',
                 'application_url' => 'url',
                 'tags' => 'required',
@@ -525,7 +526,8 @@ class ServerController extends BaseController
             'name.unique' => 'A server with this name already exists in the database.',
             'server_host.unique' => 'A server with this address already exists in the database.',
             'deck.required' => 'The short description field is required.',
-            'url' => '',
+            'deck.max' => 'The short description may not be greater than 255 characters.',
+            'url' => 'The :attribute field is not a valid URL.'
         ];
 
         $modpack = Modpack::find($input['modpack']);
@@ -548,7 +550,7 @@ class ServerController extends BaseController
             [
                 'name' => 'required|unique:servers,name,' . $server->id,
                 'server_host' => 'required|unique:servers,ip_host,' . $server->id . ',id,port,' . $server_port,
-                'deck' => 'required',
+                'deck' => 'required|max:255',
                 'website' => 'url',
                 'application_url' => 'url',
                 'selected_tags' => 'required',
