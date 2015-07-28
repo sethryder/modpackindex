@@ -155,7 +155,7 @@
                                             <th style="width: 15%">Modpack</th>
                                             <th style="width: 15%">Server Address</th>
                                             <th style="width: 1%">Players</th>
-                                            <th style="width: 42%">Deck</th>
+                                            <th style="width: 42%">Description</th>
                                         </tr>
                                         </thead>
                                         <tfoot>
@@ -165,7 +165,7 @@
                                             <th>Modpack</th>
                                             <th>Server Address</th>
                                             <th>Players</th>
-                                            <th>Deck</th>
+                                            <th>Description</th>
                                         </tr>
                                         </tfoot>
                                     </table>
