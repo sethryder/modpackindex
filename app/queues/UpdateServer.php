@@ -54,7 +54,6 @@ class UpdateServer
             $server_status->failed_attempts = 0;
             $server_status->failed_checks = 0;
             $server_status->last_success = $current_timestamp;
-
         } else {
             $server_status->failed_attempts = $server_status->failed_attempts + 1;
             $server_status->last_failure = $current_timestamp;
@@ -87,6 +86,7 @@ class UpdateServer
         }
 
         $server_status->total_checks = $server_status->total_checks + 1;
+        $server_status->last_check = $current_timestamp;
         $server_status->save();
 
         $server->queued = 0;
