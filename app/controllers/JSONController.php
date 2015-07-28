@@ -719,20 +719,23 @@ class JSONController extends BaseController
     {
         $players_array = [];
 
-        $server_status = ServerStatus::select('id', 'server_id', 'players')->where('server_id', $id)->first();
+        $server = Server::find($id);
 
-        $raw_players = json_decode($server_status->players);
+        if (!$server->player_list_hide) {
+            $server_status = ServerStatus::select('id', 'server_id', 'players')->where('server_id', $id)->first();
 
-        if ($raw_players) {
-            foreach ($raw_players as $player) {
-                $players_array[] = [
-                    'name' => preg_replace('/\x{00A7}.{1}/u', '', $player->name)
-                ];
+            $raw_players = json_decode($server_status->players);
+
+            if ($raw_players) {
+                foreach ($raw_players as $player) {
+                    $players_array[] = [
+                        'name' => preg_replace('/\x{00A7}.{1}/u', '', $player->name)
+                    ];
+                }
             }
         }
 
         return View::make('api.table.servers.players', ['players' => $players_array]);
-
     }
 
     public function getServerMods($id)
