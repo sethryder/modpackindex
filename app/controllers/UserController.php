@@ -266,7 +266,7 @@ class UserController extends BaseController
 
         $validator = Validator::make($input,
             array(
-                'username' => 'required|unique:users',
+                'username' => 'required|alpha_dash|unique:users',
                 'email' => 'required|email|unique:users',
                 'password' => 'required|min:8',
                 'confirm_password' => 'required|same:password',
