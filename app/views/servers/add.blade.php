@@ -60,13 +60,13 @@
 
                             <div class="form-group">
                                 {{ Form::label('modpack','Modpack') }}:
-                                {{ Form::select('modpack', Modpack::lists('name', 'id'), null, array('class' => 'form-control')) }}
+                                {{ Form::select('modpack', Modpack::orderBy('name')->lists('name', 'id'), null, array('class' => 'form-control')) }}
                             </div>
                             <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('tags','Tags') }}:
-                                {{ Form::select('tags[]', ServerTag::lists('name', 'id'), null, array('multiple', 'class' => 'chosen-select form-control')) }}
+                                {{ Form::select('tags[]', ServerTag::orderBy('name')->lists('name', 'id'), null, array('multiple', 'class' => 'chosen-select form-control')) }}
                                 <p class="pull-right">Are we missing a tag? <a href="/contact" target="_blank">Let us know</a>.</p>
                             </div>
 
