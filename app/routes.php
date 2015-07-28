@@ -56,11 +56,18 @@ Route::get('modpack-alias/add', ['as' => 'modpack_alias_add', 'uses' => 'Modpack
 Route::post('modpack-alias/add', ['as' => 'modpack_alias_add', 'uses' => 'ModpackAliasController@postAdd']);
 Route::get('modpack/{version}/{slug}/aliases', ['as' => 'modpack_alias_add', 'uses' => 'ModpackAliasController@getAliases']);
 
-//Tags
+//Modpack Tags
 Route::get('tag/modpack/add', ['as' => 'modpack_tag', 'uses' => 'ModpackTagController@getAdd']);
 Route::post('tag/modpack/add', ['as' => 'modpack_tag', 'uses' => 'ModpackTagController@postAdd']);
 Route::get('tag/modpack/edit/{id}', ['as' => 'modpack_tag', 'uses' => 'ModpackTagController@getEdit']);
 Route::post('tag/modpack/edit/{id}', ['as' => 'modpack_tag', 'uses' => 'ModpackTagController@postEdit']);
+
+//Server Tags
+Route::get('tags/server', ['as' => 'server_tag', 'uses' => 'ServerTagController@getTags']);
+Route::get('tag/server/add', ['as' => 'server_tag', 'uses' => 'ServerTagController@getAdd']);
+Route::post('tag/server/add', ['as' => 'server_tag', 'uses' => 'ServerTagController@postAdd']);
+Route::get('tag/server/edit/{id}', ['as' => 'server_tag', 'uses' => 'ServerTagController@getEdit']);
+Route::post('tag/server/edit/{id}', ['as' => 'server_tag', 'uses' => 'ServerTagController@postEdit']);
 
 //Users
 Route::get('user/permissions/{id}', ['as' => 'permissions_edit', 'uses' => 'UserController@getUserPermissions']);
@@ -111,8 +118,6 @@ Route::get('mods/{version?}', 'ModController@getModVersion');
 Route::get('mod/{slug}', 'ModController@getMod');
 Route::get('mod/{slug}/spotlight/{id}-{creator}', 'YoutubeController@getModVideo');
 Route::get('mod/{slug}/tutorial/{id}-{creator}', 'YoutubeController@getModVideo');
-//Route::get('mod/{slug}/correction', 'ModController@getCorrection');
-//Route::post('mod/{slug}/correction', 'ModController@postCorrection');
 
 //modpacks
 Route::get('modpacks/{version?}', 'ModpackController@getModpackVersion');
@@ -131,8 +136,10 @@ Route::post('profile/edit/password', 'UserController@postEditPassword');
 
 Route::get('profile/{username}/modpacks', 'UserController@getModpacks');
 Route::get('profile/{username}/mods', 'UserController@getMods');
+Route::get('profile/{username}/servers', 'UserController@getServers');
 Route::get('profile/modpacks', 'UserController@getModpacks');
 Route::get('profile/mods', 'UserController@getMods');
+Route::get('profile/servers', 'UserController@getServers');
 
 Route::get('profile/{username}', 'UserController@getProfile');
 Route::get('profile', 'UserController@getProfile');
@@ -159,13 +166,16 @@ Route::get('user/verify/{confirmation}', 'UserController@getVerify');
 Route::get('streams', 'TwitchController@getStreams');
 Route::get('stream/{channel}', 'TwitchController@getChannel');
 
-/*//servers
-Route::get('servers/{slug?}', 'ServerController@getServers');
+//servers
 Route::get('server/add', 'ServerController@getAdd');
 Route::post('server/add', 'ServerController@postAdd');
 Route::get('server/edit/{id}', 'ServerController@getEdit');
 Route::post('server/edit/{id}', 'ServerController@postEdit');
-Route::get('server/query', 'ServerController@getQuery');*/
+Route::get('server/query', 'ServerController@getQuery');
+Route::get('servers/{slug?}', 'ServerController@getServers');
+Route::post('servers/{slug?}', 'ServerController@postServers');
+Route::get('server/{id}/{slug}', 'ServerController@getServer');
+
 
 /*
  * API Routes
@@ -193,9 +203,9 @@ Route::get('api/table/modpack/mods/{name}.json', 'JSONController@getTableModpack
 
 Route::get('api/table/launchers/{name}/{version}.json', 'JSONController@getTableLaunchers');
 
-/*Route::get('api/table/servers.json', 'JSONController@getServers');
+Route::get('api/table/servers.json', 'JSONController@getServers');
 Route::get('api/table/server/players/{id}.json', 'JSONController@getServerPlayers');
-Route::get('api/table/server/mods/{id}.json', 'JSONController@getServerMods');*/
+Route::get('api/table/server/mods/{id}.json', 'JSONController@getServerMods');
 
 //mod select for pack finder
 Route::get('api/select/mods/{version}.json', 'JSONController@getModsSelect');
@@ -226,6 +236,7 @@ Route::get('/sitemap/main.xml', 'SitemapController@getSitemapMain');
 Route::get('/sitemap/launchers.xml', 'SitemapController@getSitemapLaunchers');
 Route::get('/sitemap/modpacks.xml', 'SitemapController@getSitemapModpacks');
 Route::get('/sitemap/mods.xml', 'SitemapController@getSitemapMods');
+Route::get('/sitemap/servers.xml', 'SitemapController@getSitemapServers');
 Route::get('/sitemap/videos.xml', 'SitemapController@getSitemapVideos');
 
 /*

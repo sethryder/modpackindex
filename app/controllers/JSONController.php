@@ -304,8 +304,6 @@ class JSONController extends BaseController
             $modpack = Modpack::where('slug', '=', $name)->first();
             $raw_mods = $modpack->mods()->with('authors')->with('versions')->get();
 
-            //print_r($raw_mods);
-
             foreach ($raw_mods as $mod) {
                 $supported_versions = '';
                 $authors = '';
@@ -616,13 +614,14 @@ class JSONController extends BaseController
     public function getServers()
     {
         $servers_array = [];
+        $versions = [];
 
-        $input = Input::only('modpacks', 'tags');
+        $input = Input::only('modpack', 'tags', 'country', 'permission');
 
         $query = Server::where('active', 1);
 
-        if ($input['modpacks']) {
-            $input_modpacks_array = explode(',', $input['modpacks']);
+        if ($input['modpack']) {
+            $input_modpacks_array = explode(',', $input['modpack']);
 
             $query->where(function($query) use ($input_modpacks_array)
             {
@@ -642,9 +641,24 @@ class JSONController extends BaseController
             }
         }
 
+        if ($input['country']) {
+            $query->where('country', $input['country']);
+        }
+
+        if ($input['permission']) {
+            $query->where('permissions', $input['permission']);
+        }
+
         $servers = $query->with('modpack')->with('status')->get();
 
         $countries = Server::countryList();
+
+
+        $raw_versions = MinecraftVersion::all();
+
+        foreach ($raw_versions as $v) {
+            $versions[$v->id] = $v->name;
+        }
 
         foreach ($servers as $server) {
             $server_status = $server->status;
@@ -655,6 +669,8 @@ class JSONController extends BaseController
             } else {
                 $server_address = $server->ip_host . ':' . $server->port;
             }
+
+            $version_slug = preg_replace('/\./', '-', $versions[$modpack->minecraft_version_id]);
 
             $options = '';
 
@@ -677,14 +693,17 @@ class JSONController extends BaseController
             $country_name = $countries[$server->country];
 
             $options .= '<span class="flag-icon flag-icon-'. strtolower($server->country) .'" title="'. $country_name .'"></span> ';
-            $server_name = $server->name;
+
+            $server_name = '<a href="/server/' . $server->id . '/' . $server->slug . '">' . $server->name . '</a>';
+            $modpack = '<a href="/modpack/' . $version_slug . '/' . $modpack->slug . '">' . $modpack->name . '</a>';
 
             $players = $server_status->current_players . ' / ' . $server_status->max_players;
 
             $servers_array[] = [
-                'options' => json_encode($options),
+                'id' => $server->id,
                 'name' => json_encode($server_name),
-                'modpack' => $modpack->name,
+                'modpack' => json_encode($modpack),
+                'options' => json_encode($options),
                 'server_address' => $server_address,
                 'players' => $players,
                 'deck' => $server->deck,
@@ -698,26 +717,22 @@ class JSONController extends BaseController
 
     public function getServerPlayers($id)
     {
-        $players = [];
+        $players_array = [];
 
         $server_status = ServerStatus::select('id', 'server_id', 'players')->where('server_id', $id)->first();
-        $server = $server_status->server;
 
-        if ($server->player_list_hide == 1) {
-            $players[] = 'Private / Hidden';
+        $raw_players = json_decode($server_status->players);
 
-            return json_encode($players);
-        } else {
-            $players = $server_status->players;
-
-            if (!$players) {
-                $players[] = 'No Players Returned';
-
-                return json_encode($players);
-            } else {
-                return $players;
+        if ($raw_players) {
+            foreach ($raw_players as $player) {
+                $players_array[] = [
+                    'name' => preg_replace('/\x{00A7}.{1}/u', '', $player->name)
+                ];
             }
         }
+
+        return View::make('api.table.servers.players', ['players' => $players_array]);
+
     }
 
     public function getServerMods($id)
@@ -726,19 +741,26 @@ class JSONController extends BaseController
 
         $server_status = ServerStatus::select('id', 'server_id', 'mods')->where('server_id', $id)->first();
 
-        $mods = $server_status->mods;
+        $raw_mods = json_decode($server_status->mods);
 
-        if (!$mods) {
-            $mods_array[] = 'No Mods Returned';
+        if ($raw_mods) {
+            foreach ($raw_mods->modList as $mod) {
 
-            return json_encode($mods_array);
-        } else {
-            return $mods;
+                $mods_array[] = [
+                    'name' => $mod->modid,
+                    'version' => $mod->version,
+                ];
+            }
         }
+
+        return View::make('api.table.servers.mods', ['mods' => $mods_array]);
     }
 
     public function getTableDataFile($type, $version, $name = null)
     {
+        $table_id = 'table-1';
+        $table_sdom = '<"top"fp><"clear">t<"bottom"ip><"clear">';
+        $table_empty = 'No data available in table.';
         $table_length = 15;
         $table_fixed_header = false;
         $table_order = true;
@@ -765,6 +787,8 @@ class JSONController extends BaseController
                     'icon_html',
                     'links',
                 ];
+
+                $table_empty = 'No Modpacks found.';
 
                 $ajax_source = '/api/table/modpacks/' . $version . '.json';
                 break;
@@ -834,6 +858,8 @@ class JSONController extends BaseController
                     'links',
                 ];
 
+                $table_empty = 'No Modpacks found.';
+
                 if ($input['tags'] && $input['mods']) {
                     $ajax_source = '/api/table/modpack_finder/' . $version . '.json?mods=' . $input['mods'] . '&tags=' . $input['tags'];
 
@@ -847,9 +873,12 @@ class JSONController extends BaseController
                 break;
 
             case 'servers':
+                $table_id = 'servers-table';
                 $table_order = false;
+                $query_array = [];
+                $query_string = '';
 
-                $input = Input::only('modpacks', 'tags');
+                $input = Input::only('modpack', 'tags', 'country', 'permission');
                 $columns_array = [
                     'options',
                     'name',
@@ -859,29 +888,83 @@ class JSONController extends BaseController
                     'deck',
                 ];
 
-                if (isset($input['tags']) && isset($input['modpacks'])) {
-                    $ajax_source = '/api/table/servers.json?modpacks=' . $input['modpacks'] . '&tags=' . $input['tags'];
-
-                } elseif (isset($input['modpacks'])) {
-                    $ajax_source = '/api/table/servers.json?modpacks=' . $input['modpacks'];
-                } elseif (isset($input['tags'])) {
-                    $ajax_source = '/api/table/servers.json?tags=' . $input['tags'];
-                } else {
-                    $ajax_source = '/api/table/servers.json';
+                if ($input['modpack']) {
+                    $query_array[] = 'modpack=' . $input['modpack'];
                 }
+
+                if ($input['tags']) {
+                    $tag_string = 'tags=';
+                    $exploded_tags = explode(',', strtolower($input['tags']));
+
+                    foreach ($exploded_tags as $t) {
+                        $tag_string .= $t . ',';
+                    }
+                    $query_array[] = rtrim($tag_string, ',');
+                }
+
+                if ($input['country']) {
+                        $query_array[] = 'country=' . $input['country'];
+                }
+
+                if ($input['permission']) {
+                        $query_array[] = 'permission=' . $input['permission'];
+                }
+
+                $query_count = 0;
+
+                foreach($query_array as $q) {
+                    if ($query_count == 0) {
+                        $query_string .= '?';
+                    } else {
+                        $query_string .= '&';
+                    }
+                    $query_string .= $q;
+
+                    $query_count++;
+                }
+
+                $ajax_source = '/api/table/servers.json' . $query_string;
+
                 break;
 
             case 'serverplayers':
+                $columns_array = [
+                    'name',
+                ];
+
+                $table_id = 'server-players';
+                $table_sdom = '<"top"p><"clear">t<"bottom"ip><"clear">';
+                $table_empty = 'Player list is private or no players are present.';
+
+                $input = Input::only('id');
+
+                $ajax_source = '/api/table/server/players/' . $input['id'] . '.json';
+
                 break;
 
             case 'servermods':
-                break;
+                $columns_array = [
+                    'mod',
+                    'version',
+                ];
 
+                $table_id = 'server-mods';
+                $table_sdom = '<"top"p><"clear">t<"bottom"ip><"clear">';
+                $table_empty = 'No mods returned from server.';
+
+                $input = Input::only('id');
+
+                $ajax_source = '/api/table/server/mods/' . $input['id'] . '.json';
+
+                break;
         }
 
         return View::make('api.table.data', [
             'ajax_source' => $ajax_source,
             'columns' => $columns_array,
+            'table_id' => $table_id,
+            'table_sdom' => $table_sdom,
+            'table_empty' => $table_empty,
             'table_length' => $table_length,
             'table_fixed_header' => $table_fixed_header,
             'table_order' => $table_order

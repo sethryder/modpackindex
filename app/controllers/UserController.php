@@ -407,7 +407,7 @@ class UserController extends BaseController
                 return Redirect::intended('/profile/' . $user->username);
         }
 
-        $title = $user['username'] . '\'s Modpacks - ' . $this->site_name;
+        $title = $user['username'] . '\'s Mods - ' . $this->site_name;
 
         $mods = $user->mods;
 
@@ -438,6 +438,25 @@ class UserController extends BaseController
             'user' => $user,
         ]);
 
+    }
+
+    public function getServers($username = null)
+    {
+        $this->setProfileOptions($username);
+
+        $user = User::where('username', $username)->first();
+
+        $title = $user['username'] . '\'s Servers - ' . $this->site_name;
+
+        $active_servers = $user->servers()->where('active', 1)->get();
+        $inactive_servers = $user->servers()->where('active', 0)->get();
+
+        return View::make('user.servers', [
+            'title' => $title,
+            'user' => $user,
+            'active_servers' => $active_servers,
+            'inactive_servers' => $inactive_servers,
+        ]);
     }
 
     public function getEditProfile()
@@ -697,11 +716,13 @@ class UserController extends BaseController
         $my_profile = false;
         $show_modpacks = false;
         $show_mods = false;
+        $show_servers = false;
 
         $raw_user = User::where('username', $username)->first();
 
         $modpacks = $raw_user->modpacks()->first();
         $mods = $raw_user->mods()->first();
+        $server_count = $raw_user->servers()->count();
 
         if ($modpacks && !$raw_user->hide_mods_modpacks) {
             $show_modpacks = true;
@@ -709,6 +730,10 @@ class UserController extends BaseController
 
         if ($mods && !$raw_user->hide_mods_modpacks) {
             $show_mods = true;
+        }
+
+        if ($server_count > 0) {
+            $show_servers = true;
         }
 
         if (Auth::check()) {
@@ -729,6 +754,7 @@ class UserController extends BaseController
         View::share('my_profile', $my_profile);
         View::share('show_modpacks', $show_modpacks);
         View::share('show_mods', $show_mods);
+        View::share('show_servers', $show_servers);
 
         return true;
     }

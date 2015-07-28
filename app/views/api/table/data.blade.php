@@ -1,9 +1,13 @@
 $(function() {
-var table_1 = $('#table-1').dataTable ({
+var table_1 = $('#{{ $table_id }}').dataTable ({
 "bLengthChange": true,
 "iDisplayLength": {{ $table_length or "15" }},
 "sAjaxSource": "{{ $ajax_source }}",
-"sDom": '<"top"fp><"clear">t<"bottom"ip><"clear">',
+@if ($table_order == false)"order": [],@endif
+"sDom": '{{ $table_sdom }}',
+"oLanguage": {
+    "sEmptyTable": "{{{ $table_empty }}}",
+},
 "aoColumns": [
 @foreach ($columns as $index => $column)
     { "mData": "{{ $column }}" }@if ($index+1 != count($columns)), @endif

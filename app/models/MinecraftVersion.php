@@ -13,4 +13,9 @@ class MinecraftVersion extends Eloquent
     {
         return $this->hasMany('Modpack');
     }
+
+    public function servers()
+    {
+        return $this->hasMany('Server');
+    }
 }

@@ -48,4 +48,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         return $this->belongsToMany('Modpack');
     }
+
+    public function servers()
+    {
+        return $this->hasMany('Server');
+    }
 }

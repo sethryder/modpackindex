@@ -2,9 +2,17 @@
 
 class ServerTagController extends BaseController
 {
-    public function getModpackTag($slug)
+    public function getTags()
     {
+        if (!$this->checkRoute()) {
+            return Redirect::to('/');
+        }
 
+        $tags = ServerTag::all();
+
+        $title = 'List Server Tags - ' . $this->site_name;
+
+        return View::make('tags.server.list', ['tags' => $tags]);
     }
 
     public function getAdd()

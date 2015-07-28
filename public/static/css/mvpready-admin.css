@@ -2862,3 +2862,25 @@ div.mod-description img {
 div.modpack-description img {
   max-width: 100%;
 }
+
+div.alert-success a {
+  color: #000099;
+}
+
+.server-filter {
+  width: auto;
+}
+
+.server-filter-tags {
+  width: 30%;
+}
+
+a.filter-toggle {
+  cursor: text;
+  color: #444444;
+  text-decoration:none;
+}
+
+.chosen-container {
+  width:100%!important;
+}

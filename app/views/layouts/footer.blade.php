@@ -7,6 +7,6 @@
             <a href="https://github.com/sethryder/modpackindex">Source</a> |
             <a href="https://webchat.esper.net/?channels=ModpackIndex">IRC</a></p>
 
-        <p class="pull-right">Not affiliated with any Mod, Modpack, Launcher, or Mojang.</p>
+        <p class="pull-right">Not affiliated with any Mod, Modpack, Launcher, Server, or Mojang.</p>
     </div>
 </footer>

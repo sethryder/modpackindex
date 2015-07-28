@@ -22,7 +22,7 @@ class ModpackController extends BaseController
 
     public function getModpack($version, $slug)
     {
-        $table_javascript = '/api/table/modpackmods_' . $version . '/' . $slug . '.json';
+        $mods_javascript = '/api/table/modpackmods_' . $version . '/' . $slug . '.json';
         $friendly_version = preg_replace('/-/', '.', $version);
 
         $modpack = Modpack::where('slug', '=', $slug)->first();
@@ -39,6 +39,7 @@ class ModpackController extends BaseController
         }
 
         $can_edit = false;
+        $has_servers = false;
 
         if (Auth::check()) {
             $maintainer = $modpack->maintainers()->where('user_id', Auth::id())->first();
@@ -52,8 +53,15 @@ class ModpackController extends BaseController
         $creators = $modpack->creators;
         $pack_code = $modpack->code;
         $tags = $modpack->tags;
+        $server_count = $modpack->servers()->where('active', 1)->count();
         $twitch_streams = $modpack->twitchStreams()->orderBy('viewers', 'desc')->get();
         $lets_plays = $modpack->youtubeVideos()->where('category_id', 1)->get();
+
+        if ($server_count > 0) {
+            $has_servers = true;
+        }
+
+        $server_javascript = '/api/table/servers_all.json?modpack=' . $modpack->id;
 
         $raw_links = [
             'website' => $modpack->website,
@@ -70,6 +78,11 @@ class ModpackController extends BaseController
             }
         }
 
+        $table_javascript = [
+            $mods_javascript,
+            $server_javascript
+        ];
+
         $markdown_html = Parsedown::instance()->setBreaksEnabled(true)->text(strip_tags($modpack->description));
         $modpack_description = str_replace('<table>', '<table class="table table-striped table-bordered">', $markdown_html);
 
@@ -84,12 +97,14 @@ class ModpackController extends BaseController
             'launcher' => $launcher,
             'creators' => $creators,
             'tags' => $tags,
+            'servers' => $has_servers,
             'title' => $title,
             'meta_description' => $meta_description,
             'pack_code' => $pack_code,
             'version' => $version,
             'twitch_streams' => $twitch_streams,
             'lets_plays' => $lets_plays,
+            'has_servers' => $has_servers,
             'can_edit' => $can_edit,
             'sticky_tabs' => true
         ));

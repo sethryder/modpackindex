@@ -24,6 +24,7 @@ class CreateServersTable extends Migration {
             $table->tinyInteger('permissions');
             $table->string('deck')->nullable();
             $table->string('website')->nullable();
+            $table->string('application_url')->nullable();
             $table->longText('description')->nullable();
             $table->boolean('server_address_hide')->default(false);
             $table->boolean('player_list_hide')->default(false);

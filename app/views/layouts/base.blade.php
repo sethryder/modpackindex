@@ -55,37 +55,42 @@
 <script src="/static/js/mvpready-core.js"></script>
 <script src="/static/js/mvpready-admin.js"></script>
 
-<?php if(isset($sticky_tabs)) { ?>
-<script src="/static/js/tab-control.js"></script>
-<?php } ?>
+@if (isset($sticky_tabs))
+    <script src="/static/js/tab-control.js"></script>
+@endif
 
-<?php if (isset($table_javascript)) { ?>
+@if (isset($table_javascript))
+    <script src="/static/js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="/static/js/plugins/dataTables/dataTables.bootstrap.js"></script>
 
-<script src="/static/js/plugins/dataTables/jquery.dataTables.js"></script>
-<script src="/static/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    @if (isset($table_fixed_header))
+        <script src="/static/js/plugins/dataTables/extensions/fixedHeader/dataTables.fixedHeader.min.js"></script>
+    @endif
 
-<?php if (isset($table_fixed_header)) { ?>
-<script src="/static/js/plugins/dataTables/extensions/fixedHeader/dataTables.fixedHeader.min.js"></script>
-<?php } ?>
+    @if (is_array($table_javascript))
+        @foreach ($table_javascript as $javascript)
+            <script src="{{ $javascript }}"></script>
+        @endforeach
+    @else
+        <script src="{{ $table_javascript }}"></script>
+    @endif
+@endif
 
-<script src="{{ $table_javascript }}"></script>
-<?php } ?>
+@if (isset($search_javascript))
+    <script src="/static/js/pack-finder-select.js"></script>
+@endif
 
-<?php if (isset($search_javascript)) { ?>
-<script src="/static/js/pack-finder-select.js"></script>
-<?php } ?>
+@if (isset($chosen))
+    <script src="/static/js/plugins/chosen/chosen.jquery.min.js"></script>
 
-<?php if(isset($chosen)) { ?>
-<script src="/static/js/plugins/chosen/chosen.jquery.min.js"></script>
-
-<script type="text/javascript">
-    var chosen_config = {
-        'placeholder_text_multiple': ' ',
-        'search_contains': true
-    }
-    $(".chosen-select").chosen(chosen_config)
-</script>
-<?php } ?>
+    <script type="text/javascript">
+        var chosen_config = {
+            'placeholder_text_multiple': ' ',
+            'search_contains': true,
+        }
+        $(".chosen-select").chosen(chosen_config)
+    </script>
+@endif
 
 <script>
     (function (i, s, o, g, r, a, m) {

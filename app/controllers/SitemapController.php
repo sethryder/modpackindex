@@ -98,6 +98,25 @@ class SitemapController extends BaseController
         return $this->sitemap->render('xml');
     }
 
+    public function getSitemapServers()
+    {
+        $modpacks = Modpack::orderBy('created_at', 'desc')->get();
+        $servers = Server::where('active', 1)->get();
+
+        //index
+        $this->sitemap->add(URL::to('servers'));
+
+        foreach ($modpacks as $modpack) {
+            $this->sitemap->add(URL::to('servers/' . $modpack->slug));
+        }
+
+        foreach ($servers as $server) {
+            $this->sitemap->add(URL::to('server/' . $server->id . '-' . $server->slug), $server->updated_at);
+        }
+
+        return $this->sitemap->render('xml');
+    }
+
     public function getSitemapVideos()
     {
         $videos = Youtube::orderBy('created_at', 'desc')->get();

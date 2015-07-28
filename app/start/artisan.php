@@ -15,3 +15,4 @@ Artisan::add(new BuildCacheCommand);
 Artisan::add(new ImportMCFModlistCommand);
 Artisan::add(new ImportNEMCommand);
 Artisan::add(new TwitchUpdateCommand);
+Artisan::add(new ServerUpdateQueueCommand);

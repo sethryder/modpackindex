@@ -93,6 +93,12 @@
                             <a href="#mod_list" data-toggle="tab">Mod List</a>
                         </li>
 
+                        @if ($has_servers)
+                            <li class="">
+                                <a href="#servers" data-toggle="tab">Servers</a>
+                            </li>
+                        @endif
+
                         @if (isset($twitch_streams[0]))
                             <li class="">
                                 <a href="#twitch_streams" data-toggle="tab">Twitch Streams</a>
@@ -134,6 +140,39 @@
                             </div>
                             <!-- /.portlet-body -->
                         </div>
+
+                        @if (isset($has_servers))
+                            <div class="tab-pane fade" id="servers">
+                                <div class="portlet-body">
+                                    <p class="pull-right"><b><a href="/server/add">Add Server</a></b></p>
+                                    <p>&nbsp;</p>
+
+                                    <table class="table table-striped table-bordered" id="servers-table">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 7%"></th>
+                                            <th style="width: 20%">Name</th>
+                                            <th style="width: 15%">Modpack</th>
+                                            <th style="width: 15%">Server Address</th>
+                                            <th style="width: 1%">Players</th>
+                                            <th style="width: 42%">Deck</th>
+                                        </tr>
+                                        </thead>
+                                        <tfoot>
+                                        <tr>
+                                            <th></th>
+                                            <th>Name</th>
+                                            <th>Modpack</th>
+                                            <th>Server Address</th>
+                                            <th>Players</th>
+                                            <th>Deck</th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div> <!-- /.tab-pane -->
+                            </div>
+                            <!-- /.portlet-body -->
+                        @endif
 
 
                         @if (isset($twitch_streams[0]))
