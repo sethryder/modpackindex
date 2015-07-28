@@ -875,6 +875,7 @@ class JSONController extends BaseController
             case 'servers':
                 $table_id = 'servers-table';
                 $table_order = false;
+                $table_empty = 'No servers found.';
                 $query_array = [];
                 $query_string = '';
 
