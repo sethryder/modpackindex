@@ -18,7 +18,15 @@
 
         @if ($show_mods)
             <a href="/profile/{{{ $user['username'] }}}/mods" class="list-group-item @if ($page == 'mods') active @endif">
-                <i class="fa fa-file"></i> &nbsp;Mods
+                <i class="fa fa-file"></i> &nbsp;&nbsp;Mods
+
+                <i class="fa fa-chevron-right list-group-chevron"></i>
+            </a>
+        @endif
+
+        @if ($show_servers)
+            <a href="/profile/{{{ $user['username'] }}}/servers" class="list-group-item @if ($page == 'servers') active @endif">
+                <i class="fa fa-cloud"></i> &nbsp;Servers
 
                 <i class="fa fa-chevron-right list-group-chevron"></i>
             </a>
