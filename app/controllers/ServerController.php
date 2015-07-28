@@ -459,7 +459,7 @@ class ServerController extends BaseController
 
         $server = Server::find($id);
 
-        if (Auth::id() != $server->user_id) {
+        if (Auth::id() != $server->user_id && !$this->checkRoute()) {
             return Redirect::to('/');
         }
 
@@ -497,6 +497,11 @@ class ServerController extends BaseController
         }
 
         $server = Server::find($id);
+
+        if (Auth::id() != $server->user_id && !$this->checkRoute()) {
+            return Redirect::to('/');
+        }
+
         $versions = MinecraftVersion::all();
         $title = 'Edit Server - ' . $this->site_name;
 

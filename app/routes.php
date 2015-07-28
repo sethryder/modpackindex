@@ -169,9 +169,9 @@ Route::get('stream/{channel}', 'TwitchController@getChannel');
 //servers
 Route::get('server/add', 'ServerController@getAdd');
 Route::post('server/add', 'ServerController@postAdd');
-Route::get('server/edit/{id}', 'ServerController@getEdit');
-Route::post('server/edit/{id}', 'ServerController@postEdit');
-Route::get('server/query', 'ServerController@getQuery');
+Route::get('server/edit/{id}', ['as' => 'server_edit', 'uses' => 'ServerController@getEdit']);
+Route::post('server/edit/{id}', ['as' => 'server_edit', 'uses' => 'ServerController@postEdit']);
+//Route::get('server/query', 'ServerController@getQuery');
 Route::get('servers/{slug?}', 'ServerController@getServers');
 Route::post('servers/{slug?}', 'ServerController@postServers');
 Route::get('server/{id}/{slug}', 'ServerController@getServer');
