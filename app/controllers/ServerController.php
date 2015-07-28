@@ -546,7 +546,7 @@ class ServerController extends BaseController
 
         $validator = Validator::make($input,
             [
-                'name' => 'required|unique:servers,name',
+                'name' => 'required|unique:servers,name,' . $server->id,
                 'server_host' => 'required|unique:servers,ip_host,' . $server->id . ',id,port,' . $server_port,
                 'deck' => 'required',
                 'website' => 'url',

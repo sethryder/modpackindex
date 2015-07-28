@@ -33,7 +33,7 @@
                                 <div class="alert alert-success">
                                     <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
                                     <strong>Edited!</strong> You may more edits below or return to the server's detail
-                                    page <a href="/server/{{{ $server->id }}}-{{{ $server->slug }}}">here</a>.
+                                    page <a href="/server/{{{ $server->id }}}/{{{ $server->slug }}}">here</a>.
                                 </div> <!-- /.alert -->
                             @endif
 
