@@ -322,7 +322,9 @@ class ServerController extends BaseController
             'active', 'email_alerts');
 
         $messages = [
-            'unique' => 'This server already exists in the database.',
+            'name.unique' => 'A server with this name already exists in the database.',
+            'server_host.unique' => 'A server with this address already exists in the database.',
+            'deck.required' => 'The short description field is required.',
             'url' => '',
         ];
 
@@ -338,12 +340,14 @@ class ServerController extends BaseController
             $server_port = 25565;
         }
 
+        $input['server_host'] = $server_host;
+
         $server_info = Server::check($server_host, $server_port, $modpack_version);
 
         $validator = Validator::make($input,
             [
-                'name' => 'required|unique:mods,name',
-                'server_address' => 'required|unique:servers,ip_host,NULL,id,port,' . $server_port,
+                'name' => 'required|unique:servers,name',
+                'server_host' => 'required|unique:servers,ip_host,NULL,id,port,' . $server_port,
                 'deck' => 'required',
                 'website' => 'url',
                 'application_url' => 'url',
@@ -518,7 +522,9 @@ class ServerController extends BaseController
             'permissions', 'active', 'email_alerts');
 
         $messages = [
-            'unique' => 'This server already exists in the database.',
+            'name.unique' => 'A server with this name already exists in the database.',
+            'server_host.unique' => 'A server with this address already exists in the database.',
+            'deck.required' => 'The short description field is required.',
             'url' => '',
         ];
 
@@ -534,12 +540,14 @@ class ServerController extends BaseController
             $server_port = 25565;
         }
 
+        $input['server_host'] = $server_host;
+
         $server_info = Server::check($server_host, $server_port, $modpack_version);
 
         $validator = Validator::make($input,
             [
-                'name' => 'required|unique:mods,name',
-                'server_address' => 'required|unique:servers,ip_host,' . $server->id . ',id,port,' . $server_port,
+                'name' => 'required|unique:servers,name',
+                'server_host' => 'required|unique:servers,ip_host,' . $server->id . ',id,port,' . $server_port,
                 'deck' => 'required',
                 'website' => 'url',
                 'application_url' => 'url',
@@ -654,5 +662,10 @@ class ServerController extends BaseController
                 return Redirect::to('/server/edit/' . $id)->withErrors(['message' => 'Unable to add server.'])->withInput();
             }
         }
+    }
+
+    public function UniqueServerValidator($attribute, $value, $parameters)
+    {
+
     }
 }
