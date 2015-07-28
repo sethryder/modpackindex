@@ -67,6 +67,7 @@
                             <div class="form-group">
                                 {{ Form::label('tags','Tags') }}:
                                 {{ Form::select('tags[]', ServerTag::lists('name', 'id'), null, array('multiple', 'class' => 'chosen-select form-control')) }}
+                                <p class="pull-right">Are we missing a tag? <a href="/contact" target="_blank">Let us know</a>.</p>
                             </div>
 
                             <div class="form-group">
