@@ -130,13 +130,13 @@
                                 </div>
                                 <!-- /.checkbox -->
 
-                                <div class="checkbox">
+{{--                                <div class="checkbox">
                                     <label>
                                         {{ Form::checkbox('motd_hide', 1);  }}
                                         Hide MoTD
                                     </label>
                                 </div>
-                                <!-- /.checkbox -->
+                                <!-- /.checkbox -->--}}
 
                             </div>
                             <!-- /.form-group -->
