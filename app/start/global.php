@@ -34,7 +34,7 @@ ClassLoader::addDirectories(array(
 Log::useFiles(storage_path().'/logs/laravel.log');
 
 $monolog = Log::getMonolog();
-$syslog = new \Monolog\Handler\SyslogHandler('papertrail');
+$syslog = new \Monolog\Handler\SyslogHandler('laravel');
 $formatter = new \Monolog\Formatter\LineFormatter('%channel%.%level_name%: %message% %extra%');
 $syslog->setFormatter($formatter);
 
