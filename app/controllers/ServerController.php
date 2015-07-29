@@ -35,12 +35,14 @@ class ServerController extends BaseController
 
         if (!$modpack_slug) {
             $title = 'Modded Servers - ' . $this->site_name;
+            $meta_description = 'Modded Minecraft servers for all the packs we list. With powerful searching and filtering.';
             $modpack_name = null;
 
         } else {
             $modpack = Modpack::where('slug', $modpack_slug)->first();
 
             $title = $modpack->name . ' Servers - ' . $this->site_name;
+            $meta_description = 'Minecraft Servers for the ' . $modpack->name . ' modpack. With powerful searching and filtering.';
             $modpack_name = $modpack->name;
             $modpack_line = 'for ' . $modpack->name .', ';
 
@@ -103,6 +105,7 @@ class ServerController extends BaseController
 
         return View::make('servers.list', [
             'title' => $title,
+            'meta_description' => $meta_description,
             'table_javascript' => $table_javascript,
             'modpack_name' => $modpack_name,
             'countries' => $countries,
@@ -227,6 +230,7 @@ class ServerController extends BaseController
         $description = str_replace('<table>', '<table class="table table-striped table-bordered">', $markdown_html);
 
         $title = $server->name . ' - ' . $modpack->name . ' Server - ' . $this->site_name;
+        $meta_description = $server->deck;
 
         return View::make('servers.detail', [
             'server' => $server,
@@ -241,6 +245,7 @@ class ServerController extends BaseController
             'description' => $description,
             'can_edit' => $can_edit,
             'title' => $title,
+            'meta_description' => $meta_description,
             'table_javascript' => $table_javascript,
         ]);
     }
