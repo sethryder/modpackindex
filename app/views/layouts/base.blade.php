@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="/static/css/mvpready-admin.css">
     <link rel="stylesheet" href="/static/css/mvpready-flat.css">
     <link rel="stylesheet" href="/static/css/chosen.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-datepicker3.css">
     <link rel="stylesheet" href="/static/css/flag-icon.css">
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js"></script>
@@ -89,6 +90,17 @@
             'search_contains': true,
         }
         $(".chosen-select").chosen(chosen_config)
+    </script>
+@endif
+
+@if (isset($datepicker))
+    <script src="/static/js/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript">
+        $('#datepicker input').datepicker({
+            format: "yyyy-mm-dd",
+            autoclose: true,
+            todayHighlight: true
+        });
     </script>
 @endif
 

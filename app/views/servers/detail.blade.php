@@ -61,6 +61,24 @@
                             @endforeach</p>
                     @endif
 
+                    <p>
+                        <i class="fa fa-globe"></i> Last World Reset:
+                        @if ($server->last_world_reset)
+                            {{{ $server->last_world_reset }}}
+                        @else
+                            Unknown
+                        @endif
+                        | <i class="fa fa-globe"></i> Next World Reset:
+                    @if ($server->next_world_reset)
+                            {{{ $server->next_world_reset }}}
+                        @else
+                            Unknown
+                        @endif
+
+                    </p>
+
+                    <hr>
+
                     <div class="portlet-body"></div>
                     @if ($server->description == '')
                         <p>{{{ $server->deck }}}</p>

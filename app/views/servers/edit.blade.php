@@ -17,6 +17,14 @@
 
                         <div class="portlet-body">
 
+                            <p>Edit your server below. Your server will need to be online at the time of edit.
+                                If the server goes offline and we are unable to reach it after many tries it will automatically
+                                be deactivated.</p>
+
+                            <p><b>Note</b>: Required fields have a (*) next to them.</p>
+
+                            <p>&nbsp;</p>
+
                             @if ( $errors->count() > 0 )
                                 <div class="alert alert-danger">
                                     <p>The following errors have occurred:</p>
@@ -40,13 +48,13 @@
                                 {{ Form::model($server, array('url' => '/server/edit/'.$server->id, 'class' => 'form parsley-form')) }}
 
                             <div class="form-group">
-                                {{ Form::label('name','Name') }}:
+                                {{ Form::label('name','Name') }}*:
                                 {{ Form::text('name', null, array('class' => 'form-control', 'data-required' => 'true'))}}
                             </div>
                             <!-- /.form-group -->
 
                             <div class="form-group">
-                                {{ Form::label('server_address','Server Address') }}:
+                                {{ Form::label('server_address','Server Address') }}*:
                                 {{ Form::text('server_address', $server->ip_host . ':' . $server->port, array('class' => 'form-control', 'placeholder' => 'mc.modpackindex.com:27016'))}}
 
                                 <div class="checkbox">
@@ -60,29 +68,29 @@
                             <!-- /.form-group -->
 
                             <div class="form-group">
-                                {{ Form::label('modpack','Modpack') }}:
+                                {{ Form::label('modpack','Modpack') }}*:
                                 {{ Form::select('modpack', Modpack::orderBy('name')->lists('name', 'id'), null, array('class' => 'form-control')) }}
                             </div>
                             <!-- /.form-group -->
 
                             <div class="form-group">
-                                {{ Form::label('selected_tags','Tags') }}:
+                                {{ Form::label('selected_tags','Tags') }}*:
                                 {{ Form::select('selected_tags[]', ServerTag::orderBy('name')->lists('name', 'id'), $selected_tags, array('multiple', 'class' => 'chosen-select form-control')) }}
                                 <p class="pull-right">Are we missing a tag? <a href="/contact" target="_blank">Let us know</a>.</p>
                             </div>
 
                             <div class="form-group">
-                                {{ Form::label('permissions','Server Permissions') }}:
+                                {{ Form::label('permissions','Server Permissions') }}*:
                                 {{ Form::select('permissions', $permissions, null, array('class' => 'form-control')) }}
                             </div>
 
                             <div class="form-group">
-                                {{ Form::label('country','Server Location') }}:
+                                {{ Form::label('country','Server Location') }}*:
                                 {{ Form::select('country', $countries, null, array('class' => 'form-control')) }}
                             </div>
 
                             <div class="form-group">
-                                {{ Form::label('deck','Short Description') }}:
+                                {{ Form::label('deck','Short Description') }}*:
                                 {{ Form::text('deck', null, array('class' => 'form-control'))}}
                             </div>
                             <!-- /.form-group -->
@@ -96,6 +104,18 @@
                             <div class="form-group">
                                 {{ Form::label('application_url','Whitelist / Greylist Application') }}:
                                 {{ Form::text('application_url', null, array('class' => 'form-control'))}}
+                            </div>
+                            <!-- /.form-group -->
+
+                            <div class="form-group" id="datepicker">
+                                {{ Form::label('last_world_reset','Last World Reset') }}:
+                                {{ Form::text('last_world_reset', null, array('class' => 'form-control', 'data-date-end-date' => '0d'))}}
+                            </div>
+                            <!-- /.form-group -->
+
+                            <div class="form-group" id="datepicker">
+                                {{ Form::label('next_world_reset','Next World Reset') }}:
+                                {{ Form::text('next_world_reset', null, array('class' => 'form-control', 'data-date-start-date' => '0d'))}}
                             </div>
                             <!-- /.form-group -->
 

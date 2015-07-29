@@ -229,6 +229,14 @@ class ServerController extends BaseController
         $markdown_html = Parsedown::instance()->setBreaksEnabled(true)->text(strip_tags($server->description));
         $description = str_replace('<table>', '<table class="table table-striped table-bordered">', $markdown_html);
 
+        if ($server->last_world_reset == '0000-00-00') {
+            $server->last_world_reset = NULL;
+        }
+
+        if ($server->next_world_reset == '0000-00-00') {
+            $server->next_world_reset = NULL;
+        }
+
         $title = $server->name . ' - ' . $modpack->name . ' Server - ' . $this->site_name;
         $meta_description = $server->deck;
 
@@ -301,6 +309,7 @@ class ServerController extends BaseController
             'versions' => $versions,
             'countries' => $countries,
             'permissions' => $permissions,
+            'datepicker' => true,
             'title' => $title,
         ]);
     }
@@ -311,6 +320,7 @@ class ServerController extends BaseController
             return Redirect::to('/login?return=server/add');
         }
 
+        $datetime_fields = true;
         $versions = MinecraftVersion::all();
         $title = 'Add Server - ' . $this->site_name;
 
@@ -324,7 +334,7 @@ class ServerController extends BaseController
 
         $input = Input::only('name', 'modpack', 'deck', 'website', 'application_url', 'description', 'slug',
             'server_address_hide', 'player_list_hide', 'motd_hide', 'server_address', 'tags', 'country', 'permissions',
-            'active', 'email_alerts');
+            'last_world_reset', 'next_world_reset', 'active', 'email_alerts');
 
         $messages = [
             'name.unique' => 'A server with this name already exists in the database.',
@@ -360,6 +370,8 @@ class ServerController extends BaseController
                 'tags' => 'required',
                 'country' => 'required',
                 'permissions' => 'required',
+                'last_world_reset' => 'date_format:Y-m-d',
+                'next_world_reset' => 'date_format:Y-m-d',
             ],
             $messages);
 
@@ -385,6 +397,8 @@ class ServerController extends BaseController
             $server->website = $input['website'];
             $server->application_url = $input['application_url'];
             $server->description = $input['description'];
+            $server->last_world_reset = $input['last_world_reset'];
+            $server->next_world_reset = $input['next_world_reset'];
             $server->last_check = Carbon\Carbon::now()->toDateTimeString();
 
             if ($input['active'] == 1) {
@@ -488,6 +502,14 @@ class ServerController extends BaseController
             3 => 'Open',
         ];
 
+        if ($server->last_world_reset == '0000-00-00') {
+            $server->last_world_reset = NULL;
+        }
+
+        if ($server->next_world_reset == '0000-00-00') {
+            $server->next_world_reset = NULL;
+        }
+
         return View::make('servers.edit', [
             'chosen' => true,
             'versions' => $versions,
@@ -496,6 +518,7 @@ class ServerController extends BaseController
             'title' => $title,
             'server' => $server,
             'selected_tags' => $selected_tags,
+            'datepicker' => true,
         ]);
 
     }
@@ -525,14 +548,16 @@ class ServerController extends BaseController
 
         $input = Input::only('name', 'modpack', 'deck', 'website', 'application_url', 'description', 'slug',
             'server_address_hide', 'player_list_hide', 'motd_hide', 'server_address', 'selected_tags', 'country',
-            'permissions', 'active', 'email_alerts');
+            'permissions', 'last_world_reset', 'next_world_reset', 'active', 'email_alerts');
 
         $messages = [
             'name.unique' => 'A server with this name already exists in the database.',
             'server_host.unique' => 'A server with this address already exists in the database.',
             'deck.required' => 'The short description field is required.',
             'deck.max' => 'The short description may not be greater than 255 characters.',
-            'url' => 'The :attribute field is not a valid URL.'
+            'url' => 'The :attribute field is not a valid URL.',
+            'last_world_reset' => 'date_format:Y-m-d',
+            'next_world_reset' => 'date_format:Y-m-d',
         ];
 
         $modpack = Modpack::find($input['modpack']);
@@ -584,6 +609,8 @@ class ServerController extends BaseController
             $server->website = $input['website'];
             $server->application_url = $input['application_url'];
             $server->description = $input['description'];
+            $server->last_world_reset = $input['last_world_reset'];
+            $server->next_world_reset = $input['next_world_reset'];
             $server->last_check = Carbon\Carbon::now()->toDateTimeString();
 
             $server->active = 0;
@@ -652,6 +679,14 @@ class ServerController extends BaseController
                         $selected_tags[] = $t->id;
                     }
 
+                    if ($updated_server->last_world_reset == '0000-00-00') {
+                        $updated_server->last_world_reset = NULL;
+                    }
+
+                    if ($updated_server->next_world_reset == '0000-00-00') {
+                        $updated_server->next_world_reset = NULL;
+                    }
+
                     return View::make('servers.edit', [
                         'chosen' => true,
                         'versions' => $versions,
@@ -661,6 +696,7 @@ class ServerController extends BaseController
                         'server' => $updated_server,
                         'selected_tags' => $selected_tags,
                         'success' => true,
+                        'datepicker' => true,
                     ]);
                 } else {
                     return Redirect::to('/server/edit/' . $id)->withErrors(['message' => 'Unable to add server.'])->withInput();
