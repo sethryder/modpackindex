@@ -566,8 +566,6 @@ class ServerController extends BaseController
             'deck.required' => 'The short description field is required.',
             'deck.max' => 'The short description may not be greater than 255 characters.',
             'url' => 'The :attribute field is not a valid URL.',
-            'last_world_reset' => 'date_format:Y-m-d',
-            'next_world_reset' => 'date_format:Y-m-d',
         ];
 
         $modpack = Modpack::find($input['modpack']);
@@ -596,6 +594,8 @@ class ServerController extends BaseController
                 'selected_tags' => 'required',
                 'country' => 'required|not_in:choose,separator1,separator2',
                 'permissions' => 'required',
+                'last_world_reset' => 'date_format:Y-m-d',
+                'next_world_reset' => 'date_format:Y-m-d',
             ],
             $messages);
 
