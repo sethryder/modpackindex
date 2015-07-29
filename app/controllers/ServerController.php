@@ -339,6 +339,7 @@ class ServerController extends BaseController
         $messages = [
             'name.unique' => 'A server with this name already exists in the database.',
             'server_host.unique' => 'A server with this address already exists in the database.',
+            'country.not_in' => 'The country field is required.',
             'deck.required' => 'The short description field is required.',
             'deck.max' => 'The short description may not be greater than 255 characters.',
             'url' => 'The :attribute field is not a valid URL.'
@@ -368,7 +369,7 @@ class ServerController extends BaseController
                 'website' => 'url',
                 'application_url' => 'url',
                 'tags' => 'required',
-                'country' => 'required',
+                'country' => 'required|not_in:choose,separator1,separator2',
                 'permissions' => 'required',
                 'last_world_reset' => 'date_format:Y-m-d',
                 'next_world_reset' => 'date_format:Y-m-d',
@@ -553,6 +554,7 @@ class ServerController extends BaseController
         $messages = [
             'name.unique' => 'A server with this name already exists in the database.',
             'server_host.unique' => 'A server with this address already exists in the database.',
+            'country.not_in' => 'The country field is required.',
             'deck.required' => 'The short description field is required.',
             'deck.max' => 'The short description may not be greater than 255 characters.',
             'url' => 'The :attribute field is not a valid URL.',
@@ -584,7 +586,7 @@ class ServerController extends BaseController
                 'website' => 'url',
                 'application_url' => 'url',
                 'selected_tags' => 'required',
-                'country' => 'required',
+                'country' => 'required|not_in:choose,separator1,separator2',
                 'permissions' => 'required',
             ],
             $messages);
