@@ -320,7 +320,6 @@ class ServerController extends BaseController
             return Redirect::to('/login?return=server/add');
         }
 
-        $datetime_fields = true;
         $versions = MinecraftVersion::all();
         $title = 'Add Server - ' . $this->site_name;
 
@@ -461,6 +460,7 @@ class ServerController extends BaseController
                         'title' => $title,
                         'chosen' => true,
                         'success' => true,
+                        'datepicker' => true,
                         'versions' => $versions,
                         'countries' => $countries,
                         'permissions' => $permissions
@@ -483,6 +483,10 @@ class ServerController extends BaseController
         }
 
         $server = Server::find($id);
+
+        if (!$server) {
+            return Redirect::to('/servers');
+        }
 
         if (Auth::id() != $server->user_id && !$this->checkRoute()) {
             return Redirect::to('/');
@@ -531,6 +535,10 @@ class ServerController extends BaseController
         }
 
         $server = Server::find($id);
+
+        if (!$server) {
+            return Redirect::to('/servers');
+        }
 
         if (Auth::id() != $server->user_id && !$this->checkRoute()) {
             return Redirect::to('/');
