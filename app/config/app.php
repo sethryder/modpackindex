@@ -7,7 +7,7 @@ return array(
 
 	//Server Settings
 	'server_failed_attempts' => 3, //number of failed attempts until a failure
-	'server_failed_disable' => 3, //number of failed checks until server is disabled
+	'server_failed_disable' => 12, //number of failed checks until server is disabled
 	'server_update_interval' => 300, //how often we check servers
 
 	/*
