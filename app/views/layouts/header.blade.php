@@ -70,6 +70,13 @@
                                 </li>
 
                                 <li>
+                                    <a href="/server/add">
+                                        <i class="fa fa-cloud"></i>
+                                        &nbsp;Server
+                                    </a>
+                                </li>
+
+                                <li>
                                     <a href="/submit-video">
                                         <i class="fa fa-youtube-play"></i>
                                         &nbsp;&nbsp;Video / Playlist
@@ -124,6 +131,13 @@
                                     <a href="/submit-modpack">
                                         <i class="fa fa-gear"></i>
                                         &nbsp;&nbsp;Modpack
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="/server/add">
+                                        <i class="fa fa-cloud"></i>
+                                        &nbsp;Server
                                     </a>
                                 </li>
 
@@ -402,6 +416,12 @@
                     <li>
                         <a href="/modpacks/compare">
                             Compare Packs
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/servers">
+                            Servers
                         </a>
                     </li>
 
