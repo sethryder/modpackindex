@@ -34,7 +34,7 @@ class ServerController extends BaseController
         $table_javascript = '/api/table/servers_all.json';
 
         if (!$modpack_slug) {
-            $title = 'Modded Servers - ' . $this->site_name;
+            $title = 'Modded Minecraft Servers - ' . $this->site_name;
             $meta_description = 'Modded Minecraft servers for all the packs we list. With powerful searching and filtering.';
             $modpack_name = null;
 
