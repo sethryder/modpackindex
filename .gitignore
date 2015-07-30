@@ -8,6 +8,7 @@ composer.phar
 .DS_Store
 Thumbs.db
 public.old
+app/controllers/TestController.php
 
 # Windows image file caches
 Thumbs.db
@@ -54,4 +55,3 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
-app/controllers/TestController.php
