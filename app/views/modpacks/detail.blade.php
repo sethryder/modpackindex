@@ -49,7 +49,7 @@
                         <p><?php $i = 0 ?>
                             <i class="fa fa-tags"></i> Tags:
                             @foreach ($tags as $tag)
-                                <a href="/modpack/finder/?tag={{{ $tag->slug }}}"
+                                <a href="/modpack/finder?tag={{{ $tag->slug }}}"
                                    title="{{{ $tag->deck }}}">{{{ $tag->name }}}</a>@if ($i+1 != count($tags)),@endif
                                 <?php $i++; ?>
                             @endforeach</p>

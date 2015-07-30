@@ -26,20 +26,12 @@
                     {{ Form::open(array('url' => '/modpack/finder', 'class' => 'form parsley-form')) }}
                     <div class="form-group">
                         {{ Form::label('mc_version','Minecraft Version') }}:
-                        @if (isset($results))
-                            {{ Form::select('mc_version', ['0' => 'All'] + MinecraftVersion::where('name', '!=', '1.8')->lists('name', 'id'), $mc_version, array('class' => 'form-control from-post')) }}
-                        @else
-                            {{ Form::select('mc_version', ['0' => 'All'] + MinecraftVersion::where('name', '!=', '1.8')->lists('name', 'id'), null, array('class' => 'form-control ')) }}
-                        @endif
+                        {{ Form::select('mc_version', ['all' => 'All'] + $version_select, $selected_version, array('class' => 'form-control from-post')) }}
                     </div>
 
                     <div class="form-group">
                         {{ Form::label('tags','Tags / Type') }}:
-                        @if (isset($results))
-                            {{ Form::select('tags[]', ModpackTag::orderBy('name')->lists('name', 'id'), $selected_tags, array('multiple', 'class' => 'chosen-select form-control')) }}
-                        @else
-                            {{ Form::select('tags[]',  ModpackTag::orderBy('name')->lists('name', 'id'), null, array('multiple', 'class' => 'chosen-select form-control')) }}
-                        @endif
+                        {{ Form::select('tags[]', ModpackTag::orderBy('name')->lists('name', 'slug'), $selected_tags, array('multiple', 'class' => 'chosen-select form-control')) }}
                     </div>
 
                     <div class="form-group">
@@ -50,8 +42,6 @@
                             @else
                                 {{ Form::select('mods[]', $mods, $selected_mods, array('multiple', 'data-placeholder' => 'Select Mods', 'class' => 'chosen-select form-control')) }}
                             @endif
-                        @else
-                            {{ Form::select('mods[]', [], null, array('multiple', 'disabled', 'data-placeholder' => 'Select a specific Minecraft version to search with mods', 'class' => 'chosen-select form-control')) }}
                         @endif
                     </div>
                     {{ Form::submit('Search', ['class' => 'btn btn-danger']) }}
@@ -59,7 +49,7 @@
                     {{ Form::close() }}
                 </div>
 
-                @if (isset($results))
+                @if ($results)
                     <p>&nbsp;</p>
                     <h4 class="portlet-title">
                         <u>Results</u>

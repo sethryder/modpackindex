@@ -4,64 +4,33 @@ class SearchController extends BaseController
 {
     public function getModpackSearch()
     {
-        $input = Input::only('tag');
+        $results = false;
+        $query_array = [];
+        $mod_select_array = [];
+        $version_select = [];
+        $selected_mods = [];
+        $selected_tags = [];
+        $url_version = 'all';
 
-        $title = ' Modpack Finder - ' . $this->site_name;
+        $title = 'Modpack Finder - ' . $this->site_name;
+        $meta_description = 'Find and discover amazing modpacks. Refine your search for packs that include specific mods and tags.';
 
-        if ($input['tag']) {
-            $tag = ModpackTag::where('slug', $input['tag'])->first();
+        $input = Input::only('tag', 'tags', 'mods', 'version');
 
-            if (!$tag) {
-                return Redirect::to('/modpack/finder/');
-            }
+        $minecraft_versions = MinecraftVersion::where('name', '!=', '1.8')->get();
+        $tags = ModpackTag::all();
 
-            $tag_id = $tag->id;
-
-            $title = $tag->name . ' Modpacks - Pack Finder - ' . $this->site_name;
-            $meta_description = 'Find and discover ' . $tag->name . ' Modpacks. Refine your search for packs that include specific mods.';
-
-            $selected_tags = ["$tag_id"];
-            $selected_mods = [];
-
-            $table_javascript = '/api/table/modpackfinder_all.json?tags=' . $tag->id;
-
-            return View::make('search.modpack', [
-                'chosen' => true,
-                'mods' => [],
-                'title' => $title,
-                'results' => true,
-                'table_javascript' => $table_javascript,
-                'selected_tags' => $selected_tags,
-                'selected_mods' => $selected_mods,
-                'mc_version' => '0',
-                'url_version' => 'all',
-                'search_javascript' => true,
-                'meta_description' => $meta_description
-            ]);
-
-        } else {
-            return View::make('search.modpack', ['chosen' => true, 'title' => $title, 'search_javascript' => true]);
-        }
-    }
-
-    public function postModpackSearch()
-    {
-        $input = Input::only('mods', 'tags', 'mc_version');
-        $version = $input['mc_version'];
-
-        if (!$version) {
-            $url_version = 'all';
+        foreach ($minecraft_versions as $v) {
+            $version_slug = preg_replace('/\./', '-', $v->name);
+            $version_select[$version_slug] = $v->name;
         }
 
-        $mods_string = '';
-        $tags_string = '';
-        $mod_select_array[] = [];
+        if ($input['version'] && $input['version'] != 'all') {
+            $url_version = $input['version'];
+            $version = preg_replace('/\-/', '.', $url_version);
 
-        if ($version) {
-            $minecraft_version = MinecraftVersion::find($version);
+            $minecraft_version = MinecraftVersion::where('name', $version)->first();
             $mods = $minecraft_version->mods;
-
-            $url_version = preg_replace('/\./', '-', $minecraft_version->name);
 
             foreach ($mods as $mod) {
                 $id = $mod->id;
@@ -69,42 +38,129 @@ class SearchController extends BaseController
             }
 
             if ($input['mods']) {
-                foreach ($input['mods'] as $mod) {
+                $mods_string = '';
+
+                $exploded_mods = explode(',', strtolower($input['mods']));
+
+                foreach ($exploded_mods as $mod) {
                     $mods_string .= $mod . ',';
+                    $selected_mods[] = $mod;
                 }
 
-                $mods_string = rtrim($mods_string, ',');
+                $query_array[] = 'mods=' . rtrim($mods_string, ',');
             }
+        }
+
+        if ($input['version'] == 'all') {
+            $results = true;
         }
 
         if ($input['tags']) {
-            foreach ($input['tags'] as $tag) {
-                $tags_string .= $tag . ',';
+            $tags_array = [];
+            $tags_javascript_string = '';
+
+            foreach ($tags as $t) {
+                $tags_array[$t->slug] = $t->id;
             }
 
-            $tags_string = rtrim($tags_string, ',');
+            $exploded_tags = explode(',', strtolower($input['tags']));
+
+            foreach ($exploded_tags as $t) {
+                if (array_key_exists($t, $tags_array)) {
+                    $tags_javascript_string .= $tags_array[$t] . ',';
+                    $selected_tags[] = $t;
+                }
+            }
+
+            $query_array[] = 'tags=' . rtrim($tags_javascript_string, ',');
         }
 
-        if ($input['mods'] && $input['tags']) {
-            $table_javascript = '/api/table/modpackfinder_' . $url_version . '.json?mods=' . $mods_string . '&tags=' . $tags_string;
-        } elseif ($input['mods']) {
-            $table_javascript = '/api/table/modpackfinder_' . $url_version . '.json?mods=' . $mods_string;
-        } elseif ($input['tags']) {
-            $table_javascript = '/api/table/modpackfinder_' . $url_version . '.json?tags=' . $tags_string;
-        } else {
-            $table_javascript = '/api/table/modpackfinder_' . $url_version . '.json';
+        if ($input['tag']) {
+            $tag = ModpackTag::where('slug', $input['tag'])->first();
+
+            if (!$tag) {
+                return Redirect::to('/modpack/finder');
+            }
+
+            $title = $tag->name . ' Modpacks - Pack Finder - ' . $this->site_name;
+            $meta_description = 'Find and discover ' . $tag->name . ' Modpacks. Refine your search for packs that include specific mods.';
+
+            $selected_tags[] = $tag->slug;
+            $query_array[] = 'tags=' . $tag->id;
+        }
+
+        $table_javascript = '/api/table/modpackfinder_' . $url_version . '.json';
+
+        $query_count = 0;
+
+        foreach($query_array as $q) {
+            if ($query_count == 0) {
+                $table_javascript .= '?';
+            } else {
+                $table_javascript .= '&';
+            }
+            $table_javascript .= $q;
+
+            $results = true;
+            $query_count++;
         }
 
         return View::make('search.modpack', [
             'chosen' => true,
-            'mc_version' => $version,
-            'url_version' => $url_version,
-            'results' => true,
+            'title' => $title,
+            'results' => $results,
             'table_javascript' => $table_javascript,
-            'selected_mods' => $input['mods'],
             'mods' => $mod_select_array,
-            'selected_tags' => $input['tags'],
-            'search_javascript' => true
+            'selected_mods' => $selected_mods,
+            'selected_tags' => $selected_tags,
+            'selected_version' => $input['version'],
+            'version_select' => $version_select,
+            'url_version' => $url_version,
+            'search_javascript' => true,
+            'meta_description' => $meta_description
         ]);
+    }
+
+    public function postModpackSearch()
+    {
+        $query_array = [];
+        $query_string = '';
+
+        $input = Input::only('mods', 'tags', 'mc_version');
+
+        if ($input['mc_version']) {
+            $query_array[] = 'version=' . $input['mc_version'];
+        }
+
+        if ($input['tags']) {
+            $tag_string = 'tags=';
+            foreach ($input['tags'] as $t) {
+                $tag_string .= $t . ',';
+            }
+            $query_array[] = rtrim($tag_string, ',');
+        }
+
+        if ($input['mods']) {
+            $mod_string = 'mods=';
+            foreach ($input['mods'] as $m) {
+                $mod_string .= $m . ',';
+            }
+            $query_array[] = rtrim($mod_string, ',');
+        }
+
+        $query_count = 0;
+
+        foreach($query_array as $q) {
+            if ($query_count == 0) {
+                $query_string .= '?';
+            } else {
+                $query_string .= '&';
+            }
+            $query_string .= $q;
+
+            $query_count++;
+        }
+
+        return Redirect::to('/modpack/finder' . $query_string);
     }
 }
