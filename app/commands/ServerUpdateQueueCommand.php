@@ -38,6 +38,7 @@ class ServerUpdateQueueCommand extends Command
      */
     public function fire()
     {
+        //Check servers that need to be updated.
         $this->info('Starting server update check.');
 
         $update_time = Carbon\Carbon::now()->subSeconds(Config::get('app.server_update_interval'))->toDateTimeString();
@@ -52,6 +53,20 @@ class ServerUpdateQueueCommand extends Command
         }
 
         $this->info('Finished server update check.');
+
+        //Check for any servers that may be stalled for any reason.
+        $this->info('Checking for stalled servers.');
+        $last_update_time = Carbon\Carbon::now()->subMinutes(60)->toDateTimeString();
+
+        $possible_stalled_servers = Server::where('active', 1)->where('queued', 1)->where('last_check', '<=', $last_update_time)->get();
+
+        foreach ($possible_stalled_servers as $server) {
+            $this->info('Resetting possible stalled server ID ' . $server->id . '.');
+            $server->queued = 0;
+            $server->save();
+        }
+
+        $this->info('Finished stalled server check.');
     }
 
     /**
