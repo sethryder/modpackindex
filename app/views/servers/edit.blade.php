@@ -69,7 +69,7 @@
 
                             <div class="form-group">
                                 {{ Form::label('modpack','Modpack') }}*:
-                                {{ Form::select('modpack', Modpack::orderBy('name')->lists('name', 'id'), null, array('class' => 'form-control')) }}
+                                {{ Form::select('modpack', Modpack::orderBy('name')->lists('name', 'id'), $server->modpack_id, array('class' => 'form-control')) }}
                             </div>
                             <!-- /.form-group -->
 

@@ -172,8 +172,6 @@ class ServerController extends BaseController
         } else {
             return Redirect::to('/servers' . $query_string);
         }
-
-
     }
 
     public function getServer($id, $slug)
@@ -345,7 +343,7 @@ class ServerController extends BaseController
         ];
 
         $modpack = Modpack::find($input['modpack']);
-        $modpack_version = $modpack->version;
+        $modpack_version = $modpack->version->name;
 
         if (preg_match('/:/', $input['server_address'])) {
             $exploded_hostname = explode(':', $input['server_address']);
@@ -440,8 +438,19 @@ class ServerController extends BaseController
                 $server_status = new ServerStatus;
 
                 $server_status->server_id = $server->id;
-                $server_status->current_players = $server_info['players']['online'];
-                $server_status->max_players = $server_info['players']['max'];
+
+                if (isset($server_info['players']['online'])) {
+                    $server_status->current_players = $server_info['players']['online'];
+                } elseif (isset($server_info['Players'])) {
+                    $server_status->current_players = $server_info['Players'];
+                }
+
+                if (isset($server_info['players']['max'])) {
+                    $server_status->max_players = $server_info['players']['max'];
+                } elseif (isset($server_info['MaxPlayers'])) {
+                    $server_status->max_players = $server_info['MaxPlayers'];
+                }
+
                 $server_status->last_success = Carbon\Carbon::now()->toDateTimeString();
 
                 if (isset($server_info['modinfo'])) {
@@ -569,7 +578,7 @@ class ServerController extends BaseController
         ];
 
         $modpack = Modpack::find($input['modpack']);
-        $modpack_version = $modpack->version;
+        $modpack_version = $modpack->version->name;
 
         if (preg_match('/:/', $input['server_address'])) {
             $exploded_hostname = explode(':', $input['server_address']);
@@ -668,8 +677,19 @@ class ServerController extends BaseController
                 $server_status = ServerStatus::where('server_id', $server->id)->first();
 
                 $server_status->server_id = $server->id;
-                $server_status->current_players = $server_info['players']['online'];
-                $server_status->max_players = $server_info['players']['max'];
+
+                if (isset($server_info['players']['online'])) {
+                    $server_status->current_players = $server_info['players']['online'];
+                } elseif (isset($server_info['Players'])) {
+                    $server_status->current_players = $server_info['Players'];
+                }
+
+                if (isset($server_info['players']['max'])) {
+                    $server_status->max_players = $server_info['players']['max'];
+                } elseif (isset($server_info['MaxPlayers'])) {
+                    $server_status->max_players = $server_info['MaxPlayers'];
+                }
+
                 $server_status->last_success = Carbon\Carbon::now()->toDateTimeString();
 
                 if (isset($server_info['modinfo'])) {
