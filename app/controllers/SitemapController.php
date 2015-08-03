@@ -24,6 +24,7 @@ class SitemapController extends BaseController
         $this->sitemap->addSitemap(URL::to('/sitemap/launchers.xml'));
         $this->sitemap->addSitemap(URL::to('/sitemap/modpacks.xml'));
         $this->sitemap->addSitemap(URL::to('/sitemap/mods.xml'));
+        $this->sitemap->addSitemap(URL::to('/sitemap/servers.xml'));
         $this->sitemap->addSitemap(URL::to('/sitemap/videos.xml'));
 
         return $this->sitemap->render('sitemapindex');
@@ -111,7 +112,7 @@ class SitemapController extends BaseController
         }
 
         foreach ($servers as $server) {
-            $this->sitemap->add(URL::to('server/' . $server->id . '-' . $server->slug), $server->updated_at);
+            $this->sitemap->add(URL::to('server/' . $server->id . '/' . $server->slug), $server->updated_at);
         }
 
         return $this->sitemap->render('xml');
