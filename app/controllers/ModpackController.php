@@ -169,6 +169,10 @@ class ModpackController extends BaseController
 
         $forward_string = '';
 
+        if (!$input['modpacks']) {
+            return Redirect::to('/modpacks/compare');
+        }
+
         foreach ($input['modpacks'] as $modpack_id) {
             $forward_string .= $modpack_id . ',';
         }
