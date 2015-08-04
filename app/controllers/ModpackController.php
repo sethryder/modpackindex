@@ -115,13 +115,12 @@ class ModpackController extends BaseController
         $results = false;
         $error = false;
         $modpacks = [];
+        $json_string = '';
 
         $input = Input::only('modpacks');
-        $modpacks_input = $input['modpacks'];
 
         $title = 'Compare Modpacks - ' . $this->site_name;
         $meta_description = 'Compare mods between two or more modpacks. Select the modpacks you are interested in below and we will generate a table comparing the mods in each pack.';
-
 
         if (!$input['modpacks']) {
             return View::make('modpacks.compare', [
@@ -134,15 +133,19 @@ class ModpackController extends BaseController
             ]);
         }
 
-        $table_javascript = '/api/table/compare_all.json?modpacks=' . $modpacks_input;
-
-        $modpack_ids = explode(',', $modpacks_input);
+        $modpack_ids = explode(',', $input['modpacks']);
 
         foreach ($modpack_ids as $id) {
             $modpack = Modpack::find($id);
-            $modpacks[$id] = '<a href=/modpack/' . preg_replace('/\./', '-',
-                    $modpack->version->name) . '/' . $modpack->slug . '>' . $modpack->name . '</a>';
+
+            if ($modpack) {
+                $modpacks[$id] = '<a href=/modpack/' . preg_replace('/\./', '-',
+                        $modpack->version->name) . '/' . $modpack->slug . '>' . $modpack->name . '</a>';
+                $json_string .= $modpack->id . ',';
+            }
         }
+
+        $table_javascript = '/api/table/compare_all.json?modpacks=' . rtrim($json_string, ',');
 
         if (count($modpacks) >= 2) {
             $results = true;
