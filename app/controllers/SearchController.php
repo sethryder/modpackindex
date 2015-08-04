@@ -26,6 +26,7 @@ class SearchController extends BaseController
         }
 
         if ($input['version'] && $input['version'] != 'all') {
+            $results = true;
             $url_version = $input['version'];
             $version = preg_replace('/\-/', '.', $url_version);
 
