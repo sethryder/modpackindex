@@ -196,11 +196,11 @@ class ServerController extends BaseController
         }
 
         $mods_javascript = '/api/table/servermods_all.json?id=' . $server->id;
-        $players_javscript = '/api/table/serverplayers_all.json?id=' . $server->id;
+        $players_javascript = '/api/table/serverplayers_all.json?id=' . $server->id;
 
         $table_javascript = [
             $mods_javascript,
-            $players_javscript
+            $players_javascript
         ];
 
         $raw_links = [
