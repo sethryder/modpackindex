@@ -46,15 +46,12 @@
 
                 <h3 class="portlet-title">
                     <u>{{ $modpack_name or "All" }} Servers</u>
+                    <div class="pull-right"> <a href="/server/add" class="btn btn-primary" role="button">Add Server</a></div>
                 </h3>
 
                 <div class="portlet-body">
 
-                    <p class="pull-left">{{{ $display_line }}}</p>
-
-                    <p class="pull-right"><b><a href="/server/add">Add Server</a></b></p>
-                    <p>&nbsp;</p>
-
+                    <p>{{{ $display_line }}}</p>
 
                     <table class="table table-striped table-bordered" id="servers-table">
                         <thead>
