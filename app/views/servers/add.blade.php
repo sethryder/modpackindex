@@ -175,6 +175,13 @@
                                         Hide Player List
                                     </label>
                                 </div>
+
+                                @if (!Auth::check())
+                                    <div class="form-group">
+                                        {{ Form::label('captcha','Are you a robot?') }}
+                                        {{ Form::captcha()}}
+                                    </div>
+                                @endif
                                 <!-- /.checkbox -->
 
 {{--                                <div class="checkbox">

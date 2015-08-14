@@ -334,16 +334,7 @@ class ServerController extends BaseController
 
         $input = Input::only('name', 'modpack', 'email', 'deck', 'website', 'application_url', 'description', 'slug',
             'server_address_hide', 'player_list_hide', 'motd_hide', 'server_address', 'tags', 'country', 'permissions',
-            'last_world_reset', 'next_world_reset', 'active', 'email_alerts');
-
-        $messages = [
-            'name.unique' => 'A server with this name already exists in the database.',
-            'server_host.unique' => 'A server with this address already exists in the database.',
-            'country.not_in' => 'The country field is required.',
-            'deck.required' => 'The short description field is required.',
-            'deck.max' => 'The short description may not be greater than 255 characters.',
-            'url' => 'The :attribute field is not a valid URL.'
-        ];
+            'last_world_reset', 'next_world_reset', 'active', 'email_alerts', 'g-recaptcha-response');
 
         $modpack = Modpack::find($input['modpack']);
         $modpack_version = $modpack->version->name;
@@ -361,6 +352,16 @@ class ServerController extends BaseController
 
         $server_info = Server::check($server_host, $server_port, $modpack_version);
 
+        $validator_messages = [
+            'name.unique' => 'A server with this name already exists in the database.',
+            'server_host.unique' => 'A server with this address already exists in the database.',
+            'country.not_in' => 'The country field is required.',
+            'deck.required' => 'The short description field is required.',
+            'deck.max' => 'The short description may not be greater than 255 characters.',
+            'url' => 'The :attribute field is not a valid URL.',
+            'g-recaptcha-response.required' => 'reCAPTCHA verification is required.',
+        ];
+
         $validator_rules = [
             'name' => 'required|unique:servers,name',
             'server_host' => 'required|unique:servers,ip_host,NULL,id,port,' . $server_port,
@@ -376,9 +377,10 @@ class ServerController extends BaseController
 
         if (!$logged_in) {
             $validator_rules['email'] = 'required|email';
+            $validator_rules['g-recaptcha-response'] = 'required|recaptcha';
         }
 
-        $validator = Validator::make($input, $validator_rules, $messages);
+        $validator = Validator::make($input, $validator_rules, $validator_messages);
 
         if (!$server_info) {
             $validator->fails(); //manually fail the validator since we can't reach the server
@@ -628,15 +630,6 @@ class ServerController extends BaseController
             'server_address_hide', 'player_list_hide', 'motd_hide', 'server_address', 'selected_tags', 'country',
             'permissions', 'last_world_reset', 'next_world_reset', 'active', 'email_alerts');
 
-        $messages = [
-            'name.unique' => 'A server with this name already exists in the database.',
-            'server_host.unique' => 'A server with this address already exists in the database.',
-            'country.not_in' => 'The country field is required.',
-            'deck.required' => 'The short description field is required.',
-            'deck.max' => 'The short description may not be greater than 255 characters.',
-            'url' => 'The :attribute field is not a valid URL.',
-        ];
-
         $modpack = Modpack::find($input['modpack']);
         $modpack_version = $modpack->version->name;
 
@@ -652,6 +645,15 @@ class ServerController extends BaseController
         $input['server_host'] = $server_host;
 
         $server_info = Server::check($server_host, $server_port, $modpack_version);
+
+        $validator_messages = [
+            'name.unique' => 'A server with this name already exists in the database.',
+            'server_host.unique' => 'A server with this address already exists in the database.',
+            'country.not_in' => 'The country field is required.',
+            'deck.required' => 'The short description field is required.',
+            'deck.max' => 'The short description may not be greater than 255 characters.',
+            'url' => 'The :attribute field is not a valid URL.',
+        ];
 
         $validator_rules = [
             'name' => 'required|unique:servers,name,' . $server->id,
@@ -670,7 +672,7 @@ class ServerController extends BaseController
             $validator_rules['email'] = 'required|email';
         }
 
-        $validator = Validator::make($input, $validator_rules, $messages);
+        $validator = Validator::make($input, $validator_rules, $validator_messages);
 
         if (!$server_info) {
             $validator->fails(); //manually fail the validator since we can't reach the server
