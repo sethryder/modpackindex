@@ -21,6 +21,13 @@
                             If the server goes offline and we are unable to reach it after many tries it will automatically
                             be deactivated.</p>
 
+                            @if (!Auth::check())
+                            <p>Since you are not logged in, we will send you an email to activate your server and a special
+                            URL so that you may edit your server after it is added. If you will be adding multiple servers
+                            we highly suggest creating a user account <a href="/user/register">here</a> to make it easier
+                            to manage.</p>
+                            @endif
+
                             <p><b>Note</b>: Required fields have a (*) next to them.</p>
 
                             <p>&nbsp;</p>
@@ -38,16 +45,25 @@
                             @endif
 
                             @if (isset($success))
-                                <div class="alert alert-success">
-                                    <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
-                                    <strong>Added!</strong> You may add another server below or leave this page.
-                                </div> <!-- /.alert -->
+                                @if (Auth::check())
+                                    <div class="alert alert-success">
+                                        <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+                                        <strong>Added!</strong> You may add another server below or leave this page.
+                                    </div> <!-- /.alert -->
+                                @else
+                                    <div class="alert alert-success">
+                                        <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+                                        <strong>Added!</strong> Check your email for the server confirmation. Your server
+                                        will not display on the server listings until activated! At times it can take up
+                                        to an hour for the email to arrive.
+                                    </div> <!-- /.alert -->
+                                @endif
                             @endif
 
                             {{ Form::open(array('url' => '/server/add', 'class' => 'form parsley-form')) }}
 
                             <div class="form-group">
-                                {{ Form::label('name','Name') }}*:
+                                {{ Form::label('name','Server Name') }}*:
                                 {{ Form::text('name', null, array('class' => 'form-control', 'data-required' => 'true'))}}
                             </div>
                             <!-- /.form-group -->
@@ -65,6 +81,15 @@
                                 <!-- /.checkbox -->
                             </div>
                             <!-- /.form-group -->
+
+                            @if (!Auth::check())
+                                <div class="form-group">
+                                    {{ Form::label('email','Email') }}*:
+                                    {{ Form::text('email', null, array('class' => 'form-control', 'data-required' => 'true'))}}
+                                    <p class="pull-right">Required so you can activate and edit your server.</p>
+                                </div>
+                                <!-- /.form-group -->
+                            @endif
 
                             <div class="form-group">
                                 {{ Form::label('modpack','Modpack') }}*:
@@ -125,15 +150,17 @@
                             </div>
                             <!-- /.form-group -->
 
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <label>
-                                        {{ Form::checkbox('active', 1, true);  }}
-                                        Active
-                                    </label>
-                                </div>
-                                <!-- /.checkbox -->
 
+                            <div class="form-group">
+                            @if (Auth::check())
+                                <div class="checkbox">
+                                        <label>
+                                            {{ Form::checkbox('active', 1, true);  }}
+                                            Active
+                                        </label>
+                                    </div>
+                                    <!-- /.checkbox -->
+                            @endif
                                 <div class="checkbox">
                                     <label>
                                         {{ Form::checkbox('email_alerts', 1, true);  }}

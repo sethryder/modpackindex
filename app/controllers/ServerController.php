@@ -287,9 +287,9 @@ class ServerController extends BaseController
 
     public function getAdd()
     {
-        if (!Auth::check()) {
+/*        if (Auth::check()) {
             return Redirect::to('/login?return=server/add');
-        }
+        }*/
 
         $title = 'Add Server - ' . $this->site_name;
 
@@ -314,9 +314,12 @@ class ServerController extends BaseController
 
     public function postAdd()
     {
-        if (!Auth::check()) {
-            return Redirect::to('/login?return=server/add');
+        $logged_in = false;
+
+        if (Auth::check()) {
+            $logged_in = true;
         }
+
 
         $versions = MinecraftVersion::all();
         $title = 'Add Server - ' . $this->site_name;
@@ -329,7 +332,7 @@ class ServerController extends BaseController
             3 => 'Open',
         ];
 
-        $input = Input::only('name', 'modpack', 'deck', 'website', 'application_url', 'description', 'slug',
+        $input = Input::only('name', 'modpack', 'email', 'deck', 'website', 'application_url', 'description', 'slug',
             'server_address_hide', 'player_list_hide', 'motd_hide', 'server_address', 'tags', 'country', 'permissions',
             'last_world_reset', 'next_world_reset', 'active', 'email_alerts');
 
@@ -358,20 +361,24 @@ class ServerController extends BaseController
 
         $server_info = Server::check($server_host, $server_port, $modpack_version);
 
-        $validator = Validator::make($input,
-            [
-                'name' => 'required|unique:servers,name',
-                'server_host' => 'required|unique:servers,ip_host,NULL,id,port,' . $server_port,
-                'deck' => 'required|max:255',
-                'website' => 'url',
-                'application_url' => 'url',
-                'tags' => 'required',
-                'country' => 'required|not_in:choose,separator1,separator2',
-                'permissions' => 'required',
-                'last_world_reset' => 'date_format:Y-m-d',
-                'next_world_reset' => 'date_format:Y-m-d',
-            ],
-            $messages);
+        $validator_rules = [
+            'name' => 'required|unique:servers,name',
+            'server_host' => 'required|unique:servers,ip_host,NULL,id,port,' . $server_port,
+            'deck' => 'required|max:255',
+            'website' => 'url',
+            'application_url' => 'url',
+            'tags' => 'required',
+            'country' => 'required|not_in:choose,separator1,separator2',
+            'permissions' => 'required',
+            'last_world_reset' => 'date_format:Y-m-d',
+            'next_world_reset' => 'date_format:Y-m-d',
+        ];
+
+        if (!$logged_in) {
+            $validator_rules['email'] = 'required|email';
+        }
+
+        $validator = Validator::make($input, $validator_rules, $messages);
 
         if (!$server_info) {
             $validator->fails(); //manually fail the validator since we can't reach the server
@@ -384,7 +391,6 @@ class ServerController extends BaseController
             $server = new Server;
 
             $server->modpack_id = $modpack->id;
-            $server->user_id = Auth::id();
             $server->minecraft_version_id = $modpack->minecraft_version_id;
             $server->name = $input['name'];
             $server->ip_host = $server_host;
@@ -399,8 +405,13 @@ class ServerController extends BaseController
             $server->next_world_reset = $input['next_world_reset'];
             $server->last_check = Carbon\Carbon::now()->toDateTimeString();
 
-            if ($input['active'] == 1) {
-                $server->active = 1;
+            if ($logged_in) {
+                if ($input['active'] == 1) {
+                    $server->active = 1;
+                }
+                $server->user_id = Auth::id();
+            } else {
+                $server->user_id = 0;
             }
 
             if ($input['email_alerts'] == 1) {
@@ -465,40 +476,72 @@ class ServerController extends BaseController
                 $success = $server_status->save();
 
                 if ($success) {
+
+                    if (!$logged_in) {
+                        $password = str_random(32);
+
+                        $server_user = new ServerUser;
+
+                        $server_user->server_id = $server->id;
+                        $server_user->email = $input['email'];
+                        $server_user->edit_password = Hash::make($password);
+                        $server_user->last_ip = Request::getClientIp();
+
+                        $server_user_success = $server_user->save();
+
+                        if ($server_user_success) {
+                            Mail::send('emails.server_add', array('password' => $password, 'server_id' => $server->id), function ($message) use ($input) {
+                                $message->from('noreply@modpackindex.com', 'Modpack Index');
+                                $message->to($input['email'])->subject('Server confirmation for ' . $input['name']);
+                            });
+                        }
+                    }
+
                     return View::make('servers.add', [
                         'title' => $title,
                         'chosen' => true,
                         'success' => true,
+                        'logged_in' => $logged_in,
                         'datepicker' => true,
                         'versions' => $versions,
                         'countries' => $countries,
                         'permissions' => $permissions
                     ]);
-                } else {
-                    return Redirect::to('/server/add/')->withErrors(['message' => 'Unable to add server.'])->withInput();
                 }
+
+                return Redirect::to('/server/add/')->withErrors(['message' => 'Unable to add server.'])->withInput();
+
             } else {
                 return Redirect::to('/server/add/')->withErrors(['message' => 'Unable to add server.'])->withInput();
             }
         }
     }
 
-    public function getEdit($id)
+    public function getEdit($id, $password = null)
     {
         $selected_tags = [];
-
-        if (!Auth::check()) {
-            return Redirect::to('/login?return=server/edit/' . $id);
-        }
+        $server_user = false;
 
         $server = Server::find($id);
 
         if (!$server) {
-            return Redirect::to('/servers');
+            return Redirect::to('/');
         }
 
-        if (Auth::id() != $server->user_id && !$this->checkRoute()) {
-            return Redirect::to('/');
+        if ($server->user_id == 0) {
+            $server_user = $server->serverUser;
+
+            if (!Hash::check($password, $server_user->edit_password)) {
+                return Redirect::to('/');
+            }
+        } else {
+            if (!Auth::check()) {
+                return Redirect::to('/login?return=server/edit/' . $id);
+            }
+
+            if (Auth::id() != $server->user_id && !$this->checkRoute()) {
+                return Redirect::to('/');
+            }
         }
 
         $title = 'Edit Server - ' . $this->site_name;
@@ -531,16 +574,21 @@ class ServerController extends BaseController
             'permissions' => $permissions,
             'title' => $title,
             'server' => $server,
+            'server_user' => $server_user,
+            'password' => $password,
             'selected_tags' => $selected_tags,
             'datepicker' => true,
         ]);
 
     }
 
-    public function postEdit($id)
+    public function postEdit($id, $password = null)
     {
-        if (!Auth::check()) {
-            return Redirect::to('/login?return=server/edit/' . $id);
+        $logged_in = false;
+        $server_user = false;
+
+        if (Auth::check()) {
+            $logged_in = true;
         }
 
         $server = Server::find($id);
@@ -549,8 +597,20 @@ class ServerController extends BaseController
             return Redirect::to('/servers');
         }
 
-        if (Auth::id() != $server->user_id && !$this->checkRoute()) {
-            return Redirect::to('/');
+        if ($server->user_id == 0) {
+            $server_user = $server->serverUser;
+
+            if (!Hash::check($password, $server_user->edit_password)) {
+                return Redirect::to('/');
+            }
+        } else {
+            if (!Auth::check()) {
+                return Redirect::to('/login?return=server/edit/' . $id);
+            }
+
+            if (Auth::id() != $server->user_id && !$this->checkRoute()) {
+                return Redirect::to('/');
+            }
         }
 
         $versions = MinecraftVersion::all();
@@ -564,7 +624,7 @@ class ServerController extends BaseController
             3 => 'Open',
         ];
 
-        $input = Input::only('name', 'modpack', 'deck', 'website', 'application_url', 'description', 'slug',
+        $input = Input::only('name', 'modpack', 'email', 'deck', 'website', 'application_url', 'description', 'slug',
             'server_address_hide', 'player_list_hide', 'motd_hide', 'server_address', 'selected_tags', 'country',
             'permissions', 'last_world_reset', 'next_world_reset', 'active', 'email_alerts');
 
@@ -593,27 +653,38 @@ class ServerController extends BaseController
 
         $server_info = Server::check($server_host, $server_port, $modpack_version);
 
-        $validator = Validator::make($input,
-            [
-                'name' => 'required|unique:servers,name,' . $server->id,
-                'server_host' => 'required|unique:servers,ip_host,' . $server->id . ',id,port,' . $server_port,
-                'deck' => 'required|max:255',
-                'website' => 'url',
-                'application_url' => 'url',
-                'selected_tags' => 'required',
-                'country' => 'required|not_in:choose,separator1,separator2',
-                'permissions' => 'required',
-                'last_world_reset' => 'date_format:Y-m-d',
-                'next_world_reset' => 'date_format:Y-m-d',
-            ],
-            $messages);
+        $validator_rules = [
+            'name' => 'required|unique:servers,name,' . $server->id,
+            'server_host' => 'required|unique:servers,ip_host,' . $server->id . ',id,port,' . $server_port,
+            'deck' => 'required|max:255',
+            'website' => 'url',
+            'application_url' => 'url',
+            'selected_tags' => 'required',
+            'country' => 'required|not_in:choose,separator1,separator2',
+            'permissions' => 'required',
+            'last_world_reset' => 'date_format:Y-m-d',
+            'next_world_reset' => 'date_format:Y-m-d',
+        ];
+
+        if (!$logged_in) {
+            $validator_rules['email'] = 'required|email';
+        }
+
+        $validator = Validator::make($input, $validator_rules, $messages);
 
         if (!$server_info) {
             $validator->fails(); //manually fail the validator since we can't reach the server
             $validator->getMessageBag()->add('server_address', 'Unable to reach server.');
 
+            if (!$logged_in) {
+                return Redirect::to('/server/edit/' . $id . '/' . $password)->withErrors($validator)->withInput();
+            }
+
             return Redirect::to('/server/edit/' . $id)->withErrors($validator)->withInput();
         } elseif ($validator->fails()) {
+            if (!$logged_in) {
+                return Redirect::to('/server/edit/' . $id . '/' . $password)->withErrors($validator)->withInput();
+            }
             return Redirect::to('/server/edit/' . $id)->withErrors($validator)->withInput();
         } else {
             $server->modpack_id = $modpack->id;
@@ -703,6 +774,14 @@ class ServerController extends BaseController
                 $success = $server_status->save();
 
                 if ($success) {
+                    if (!$logged_in) {
+
+                        $server_user = ServerUser::where('server_id', $server->id)->first();
+
+                        $server_user->email = $input['email'];
+                        $server_user->last_ip = Request::getClientIp();
+                    }
+
                     $updated_server = Server::find($id);
 
                     foreach ($updated_server->tags as $t) {
@@ -724,21 +803,58 @@ class ServerController extends BaseController
                         'permissions' => $permissions,
                         'title' => $title,
                         'server' => $updated_server,
+                        'server_user' => $server_user,
+                        'password' => $password,
                         'selected_tags' => $selected_tags,
                         'success' => true,
                         'datepicker' => true,
                     ]);
                 } else {
-                    return Redirect::to('/server/edit/' . $id)->withErrors(['message' => 'Unable to add server.'])->withInput();
+                    if (!$logged_in) {
+                        return Redirect::to('/server/edit/' . $id . '/' . $password)->withErrors(['message' => 'Unable to edit server.'])->withInput();
+                    }
+                    return Redirect::to('/server/edit/' . $id)->withErrors(['message' => 'Unable to edit server.'])->withInput();
                 }
             } else {
-                return Redirect::to('/server/edit/' . $id)->withErrors(['message' => 'Unable to add server.'])->withInput();
+                if (!$logged_in) {
+                    return Redirect::to('/server/edit/' . $id . '/' . $password)->withErrors(['message' => 'Unable to edit server.'])->withInput();
+                }
+                return Redirect::to('/server/edit/' . $id)->withErrors(['message' => 'Unable to edit server.'])->withInput();
             }
         }
     }
 
-    public function UniqueServerValidator($attribute, $value, $parameters)
+    public function getConfirm($id, $password)
     {
+        $error = 'Unable to activate server!';
+        $server = Server::find($id);
 
+        if (!$server) {
+            App::abort(404);
+        }
+
+        $server_user = $server->serverUser;
+
+        if (Hash::check($password, $server_user->edit_password)) {
+            if ($server_user->is_confirmed) {
+                $error = 'Server is already confirmed!';
+            } else {
+                $server_user->is_confirmed = 1;
+                $server->active = 1;
+
+                $server->save();
+                $server_user->save();
+
+                $error = false;
+            }
+        }
+
+        $title = 'Server Confirmation - ' . $this->site_name;
+
+        return View::make('servers.confirmed', [
+            'server' => $server,
+            'error' => $error,
+            'title' => $title,
+        ]);
     }
 }

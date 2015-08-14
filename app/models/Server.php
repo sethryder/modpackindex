@@ -24,6 +24,11 @@ class Server extends Eloquent
         return $this->belongsTo('User');
     }
 
+    public function serverUser()
+    {
+        return $this->hasOne('ServerUser');
+    }
+
     public function version()
     {
         return $this->belongsTo('MinecraftVersion', 'minecraft_version_id');

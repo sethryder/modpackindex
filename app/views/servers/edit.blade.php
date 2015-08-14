@@ -45,10 +45,15 @@
                                 </div> <!-- /.alert -->
                             @endif
 
+                            @if (Auth::check())
                                 {{ Form::model($server, array('url' => '/server/edit/'.$server->id, 'class' => 'form parsley-form')) }}
+                            @else
+                                {{ Form::model($server, array('url' => '/server/edit/' . $server->id . '/' . $password, 'class' => 'form parsley-form')) }}
+                            @endif
+
 
                             <div class="form-group">
-                                {{ Form::label('name','Name') }}*:
+                                {{ Form::label('name','Server Name') }}*:
                                 {{ Form::text('name', null, array('class' => 'form-control', 'data-required' => 'true'))}}
                             </div>
                             <!-- /.form-group -->
@@ -66,6 +71,14 @@
                                 <!-- /.checkbox -->
                             </div>
                             <!-- /.form-group -->
+
+                            @if (!Auth::check())
+                                <div class="form-group">
+                                    {{ Form::label('email','Email') }}*:
+                                    {{ Form::text('email', $server_user->email, array('class' => 'form-control', 'data-required' => 'true'))}}
+                                </div>
+                                <!-- /.form-group -->
+                            @endif
 
                             <div class="form-group">
                                 {{ Form::label('modpack','Modpack') }}*:
