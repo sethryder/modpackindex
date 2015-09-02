@@ -2,6 +2,8 @@
 
 Class APIController extends BaseController
 {
+    use \App\TraitCommon;
+
     public function getModpacks($version = 'all')
     {
         $modpacks = [];
@@ -20,12 +22,11 @@ Class APIController extends BaseController
 
         if ($version == 'all') {
             $raw_modpacks = Modpack::select('id', 'name', 'deck', 'website', 'download_link', 'wiki_link',
-                'description', 'slug', 'created_at', 'updated_at')
-                ->skip($offset)->take($limit)->get();
+                'description', 'slug', 'created_at', 'updated_at')->skip($offset)->take($limit)->get();
 
             $modpack_count = Modpack::select('id')->count();
         } else {
-            $version = preg_replace('/-/', '.', $version);
+            $version = $this->getVersion($version);
             $raw_version = MinecraftVersion::where('name', '=', $version)->first();
 
             if (!$raw_version) {
@@ -35,8 +36,7 @@ Class APIController extends BaseController
             $version_id = $raw_version->id;
             $raw_modpacks = Modpack::select('id', 'name', 'deck', 'website', 'download_link', 'donate_link',
                 'wiki_link', 'description', 'slug', 'created_at', 'updated_at')
-                ->where('minecraft_version_id', $version_id)
-                ->skip($offset)->take($limit)->get();
+                ->where('minecraft_version_id', $version_id)->skip($offset)->take($limit)->get();
 
             $modpack_count = Modpack::select('id')->where('minecraft_version_id', $version_id)->count();
         }
@@ -66,7 +66,6 @@ Class APIController extends BaseController
             'limit' => $limit,
             'offset' => $offset
         ];
-
 
         return json_encode($modpacks);
     }
@@ -135,12 +134,11 @@ Class APIController extends BaseController
 
         if ($version == 'all') {
             $raw_mods = Mod::select('id', 'name', 'deck', 'website', 'download_link', 'wiki_link', 'description',
-                'slug', 'created_at', 'updated_at')
-                ->skip($offset)->take($limit)->get();
+                'slug', 'created_at', 'updated_at')->skip($offset)->take($limit)->get();
 
             $mod_count = Mod::select('id')->count();
         } else {
-            $version = preg_replace('/-/', '.', $version);
+            $version = $this->getVersion($version);
             $raw_version = MinecraftVersion::where('name', '=', $version)->first();
             $version_id = $raw_version->id;
 

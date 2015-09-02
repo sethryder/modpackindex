@@ -2,10 +2,12 @@
 
 class ModpackController extends BaseController
 {
+    use \App\TraitCommon;
+
     public function getModpackVersion($version = 'all')
     {
-        $table_javascript = '/api/table/modpacks_' . $version . '.json';
-        $version = preg_replace('/-/', '.', $version);
+        $table_javascript = route('tdf', ['modpacks', $version]);
+        $version = $this->getVersion($version);
 
         if ($version == 'all') {
             $version = 'All';
@@ -13,17 +15,17 @@ class ModpackController extends BaseController
 
         $title = $version . ' Modpacks - ' . $this->site_name;
 
-        return View::make('modpacks.list', array(
+        return View::make('modpacks.list', [
             'table_javascript' => $table_javascript,
             'version' => $version,
             'title' => $title
-        ));
+        ]);
     }
 
     public function getModpack($version, $slug)
     {
-        $mods_javascript = '/api/table/modpackmods_' . $version . '/' . $slug . '.json';
-        $friendly_version = preg_replace('/-/', '.', $version);
+        $mods_javascript = route('tdf_name', ['modpackmods', $version, $slug]);
+        $friendly_version = $this->getVersion($version);
 
         $modpack = Modpack::where('slug', '=', $slug)->first();
 
@@ -61,7 +63,7 @@ class ModpackController extends BaseController
             $has_servers = true;
         }
 
-        $server_javascript = '/api/table/servers_all.json?modpack=' . $modpack->id;
+        $server_javascript = route('tdf', ['servers', 'all']) . '?modpack=' . $modpack->id;
 
         $raw_links = [
             'website' => $modpack->website,
@@ -84,12 +86,13 @@ class ModpackController extends BaseController
         ];
 
         $markdown_html = Parsedown::instance()->setBreaksEnabled(true)->text(strip_tags($modpack->description));
-        $modpack_description = str_replace('<table>', '<table class="table table-striped table-bordered">', $markdown_html);
+        $modpack_description = str_replace('<table>', '<table class="table table-striped table-bordered">',
+            $markdown_html);
 
         $title = $modpack->name . ' - ' . $friendly_version . ' Modpack - ' . $this->site_name;
         $meta_description = $modpack->deck;
 
-        return View::make('modpacks.detail', array(
+        return View::make('modpacks.detail', [
             'table_javascript' => $table_javascript,
             'modpack' => $modpack,
             'modpack_description' => $modpack_description,
@@ -107,7 +110,7 @@ class ModpackController extends BaseController
             'has_servers' => $has_servers,
             'can_edit' => $can_edit,
             'sticky_tabs' => true
-        ));
+        ]);
     }
 
     public function getCompare()
@@ -139,13 +142,12 @@ class ModpackController extends BaseController
             $modpack = Modpack::find($id);
 
             if ($modpack) {
-                $modpacks[$id] = '<a href=/modpack/' . preg_replace('/\./', '-',
-                        $modpack->version->name) . '/' . $modpack->slug . '>' . $modpack->name . '</a>';
+                $modpacks[$id] = '<a href=/modpack/' . $this->getVersion($modpack->version->name) . '/' . $modpack->slug . '>' . $modpack->name . '</a>';
                 $json_string .= $modpack->id . ',';
             }
         }
 
-        $table_javascript = '/api/table/compare_all.json?modpacks=' . rtrim($json_string, ',');
+        $table_javascript = route('tdf', ['compare', 'all']) . '?modpacks=' . rtrim($json_string, ',');
 
         if (count($modpacks) >= 2) {
             $results = true;
@@ -173,25 +175,25 @@ class ModpackController extends BaseController
         $forward_string = '';
 
         if (!$input['modpacks']) {
-            return Redirect::to('/modpacks/compare');
+            return Redirect::action('ModpackController@getCompare');
         }
 
         foreach ($input['modpacks'] as $modpack_id) {
             $forward_string .= $modpack_id . ',';
         }
 
-        return Redirect::to('/modpacks/compare?modpacks=' . rtrim($forward_string, ','));
+        return Redirect::action('ModpackController@getCompare?modpacks=' . rtrim($forward_string, ','));
     }
 
     public function getAdd($version)
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::action('ModpackController@getModpackVersion');
         }
 
         $mod_select_array = [];
         $url_version = $version;
-        $version = preg_replace('/-/', '.', $version);
+        $version = $this->getVersion($version);
         $title = 'Add A ' . $version . ' Modpack - ' . $this->site_name;
         $minecraft_version = MinecraftVersion::where('name', '=', $version)->first();
 
@@ -216,11 +218,11 @@ class ModpackController extends BaseController
     public function postAdd($version)
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::action('ModpackController@getModpackVersion');
         }
 
         $url_version = $version;
-        $version = preg_replace('/-/', '.', $version);
+        $version = $this->getVersion($version);
         $title = 'Add A Modpack - ' . $this->site_name;
         $minecraft_version = MinecraftVersion::where('name', '=', $version)->first();
 
@@ -232,19 +234,17 @@ class ModpackController extends BaseController
             'url' => 'The :attribute field is not a valid URL.'
         ];
 
-        $validator = Validator::make($input,
-            [
-                'name' => 'required|unique:modpacks,name',
-                'launcher' => 'required',
-                'mods' => 'required',
-                'creators' => 'required',
-                'deck' => 'required',
-                'website' => 'url',
-                'download_url' => 'url',
-                'wiki_url' => 'url',
-                'donate_link' => 'url',
-            ],
-            $messages);
+        $validator = Validator::make($input, [
+            'name' => 'required|unique:modpacks,name',
+            'launcher' => 'required',
+            'mods' => 'required',
+            'creators' => 'required',
+            'deck' => 'required',
+            'website' => 'url',
+            'download_url' => 'url',
+            'wiki_url' => 'url',
+            'donate_link' => 'url',
+        ], $messages);
 
         if ($validator->fails()) {
             return Redirect::to('/modpack/' . $url_version . '/add')->withErrors($validator)->withInput();
@@ -306,7 +306,8 @@ class ModpackController extends BaseController
                     'mods' => $mod_select_array
                 ]);
             } else {
-                return Redirect::to('/modpack/' . $url_version . '/add')->withErrors(['message' => 'Unable to add modpack.'])->withInput();
+                return Redirect::action('ModpackController@getAdd', [$url_version])
+                    ->withErrors(['message' => 'Unable to add modpack.'])->withInput();
             }
 
         }
@@ -324,8 +325,7 @@ class ModpackController extends BaseController
 
         $modpack = Modpack::find($id);
 
-        if (Auth::check())
-        {
+        if (Auth::check()) {
             $maintainer = $modpack->maintainers()->where('user_id', Auth::id())->first();
 
             if (!$maintainer) {
@@ -391,8 +391,7 @@ class ModpackController extends BaseController
         $title = 'Edit A Modpack - ' . $this->site_name;
         $modpack = Modpack::find($id);
 
-        if (Auth::check())
-        {
+        if (Auth::check()) {
             $maintainer = $modpack->maintainers()->where('user_id', Auth::id())->first();
 
             if (!$maintainer) {
@@ -412,27 +411,26 @@ class ModpackController extends BaseController
         $tags = $modpack->tags;
         $maintainers = $modpack->maintainers;
 
-        $input = Input::only('name', 'launcher', 'selected_mods', 'selected_creators', 'selected_tags', 'selected_maintainers',
-            'deck', 'website', 'download_link', 'donate_link', 'wiki_link', 'description', 'slug');
+        $input = Input::only('name', 'launcher', 'selected_mods', 'selected_creators', 'selected_tags',
+            'selected_maintainers', 'deck', 'website', 'download_link', 'donate_link', 'wiki_link', 'description',
+            'slug');
 
         $messages = [
             'unique' => 'This modpack already exists in the database. If it requires an update let us know!',
             'url' => 'The :attribute field is not a valid URL.'
         ];
 
-        $validator = Validator::make($input,
-            [
-                'name' => 'required|unique:modpacks,name,' . $modpack->id,
-                'launcher' => 'required',
-                'selected_mods' => 'required',
-                'selected_creators' => 'required',
-                'deck' => 'required',
-                'website' => 'url',
-                'download_url' => 'url',
-                'wiki_url' => 'url',
-                'donate_link' => 'url',
-            ],
-            $messages);
+        $validator = Validator::make($input, [
+            'name' => 'required|unique:modpacks,name,' . $modpack->id,
+            'launcher' => 'required',
+            'selected_mods' => 'required',
+            'selected_creators' => 'required',
+            'deck' => 'required',
+            'website' => 'url',
+            'download_url' => 'url',
+            'wiki_url' => 'url',
+            'donate_link' => 'url',
+        ], $messages);
 
         if ($validator->fails()) {
             return Redirect::to('/modpack/edit/' . $modpack->id)->withErrors($validator)->withInput();
@@ -484,7 +482,6 @@ class ModpackController extends BaseController
                     }
                 }
 
-
                 $version_mods = $minecraft_version->mods;
                 $updated_modpack = Modpack::find($modpack->id);
 
@@ -533,7 +530,8 @@ class ModpackController extends BaseController
                     'can_edit_maintainers' => $can_edit_maintainers,
                 ]);
             } else {
-                return Redirect::to('/modpack/edit/' . $modpack->id)->withErrors(['message' => 'Unable to edit modpack.'])->withInput();
+                return Redirect::action('ModController@getEdit', [$modpack->id])
+                    ->withErrors(['message' => 'Unable to edit modpack.'])->withInput();
             }
 
         }
