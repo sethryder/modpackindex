@@ -2,6 +2,8 @@
 
 class ModController extends BaseController
 {
+    use \App\TraitCommon;
+
     public function getAll()
     {
         return Mod::all();
@@ -9,8 +11,8 @@ class ModController extends BaseController
 
     public function getModVersion($version = 'all')
     {
-        $table_javascript = '/api/table/mods_' . $version . '.json';
-        $version = preg_replace('/-/', '.', $version);
+        $table_javascript = route('tdf', ['mods', $version]);
+        $version = $this->getVersion($version);
 
         if ($version == 'all') {
             $version = 'All';
@@ -24,7 +26,7 @@ class ModController extends BaseController
 
     public function getMod($slug)
     {
-        $table_javascript = '/api/table/modmodpacks_0/' . $slug . '.json';
+        $table_javascript = route('tdf_name', ['modmodpacks', '0', $slug]);
 
         $mod = Mod::where('slug', '=', $slug)->first();
 
@@ -74,7 +76,7 @@ class ModController extends BaseController
         $title = $mod->name . ' - Mod - ' . $this->site_name;
         $meta_description = $mod->deck;
 
-        return View::make('mods.detail', array(
+        return View::make('mods.detail', [
             'table_javascript' => $table_javascript,
             'mod' => $mod,
             'mod_description' => $mod_description,
@@ -86,7 +88,7 @@ class ModController extends BaseController
             'spotlights' => $spotlights,
             'tutorials' => $tutorials,
             'can_edit' => $can_edit,
-        ));
+        ]);
     }
 
     public function getAdd()
@@ -117,18 +119,16 @@ class ModController extends BaseController
             'url' => 'The :attribute field is not a valid URL.'
         ];
 
-        $validator = Validator::make($input,
-            [
-                'name' => 'required|unique:mods,name',
-                'author' => 'required',
-                'versions' => 'required',
-                'deck' => 'required',
-                'website' => 'url',
-                'download_url' => 'url',
-                'wiki_url' => 'url',
-                'donate_link' => 'url',
-            ],
-            $messages);
+        $validator = Validator::make($input, [
+            'name' => 'required|unique:mods,name',
+            'author' => 'required',
+            'versions' => 'required',
+            'deck' => 'required',
+            'website' => 'url',
+            'download_url' => 'url',
+            'wiki_url' => 'url',
+            'donate_link' => 'url',
+        ], $messages);
 
         if ($validator->fails()) {
             return Redirect::to('/mod/add/')->withErrors($validator)->withInput();
@@ -173,7 +173,8 @@ class ModController extends BaseController
                 return View::make('mods.add',
                     ['title' => $title, 'chosen' => true, 'success' => true, 'versions' => $versions]);
             } else {
-                return Redirect::to('/mod/add/')->withErrors(['message' => 'Unable to add mod.'])->withInput();
+                return Redirect::action('ModController@getAdd')->withErrors(['message' => 'Unable to add mod.'])
+                    ->withInput();
             }
 
         }
@@ -190,8 +191,7 @@ class ModController extends BaseController
 
         $mod = Mod::find($id);
 
-        if (Auth::check())
-        {
+        if (Auth::check()) {
             $maintainer = $mod->maintainers()->where('user_id', Auth::id())->first();
 
             if (!$maintainer) {
@@ -240,8 +240,7 @@ class ModController extends BaseController
 
         $mod = Mod::find($id);
 
-        if (Auth::check())
-        {
+        if (Auth::check()) {
             $maintainer = $mod->maintainers()->where('user_id', Auth::id())->first();
 
             if (!$maintainer) {
@@ -267,18 +266,16 @@ class ModController extends BaseController
             'url' => 'The :attribute field is not a valid URL.'
         ];
 
-        $validator = Validator::make($input,
-            [
-                'name' => 'required|unique:mods,name,' . $mod->id,
-                'selected_authors' => 'required',
-                'selected_versions' => 'required',
-                'deck' => 'required',
-                'website' => 'url',
-                'download_url' => 'url',
-                'wiki_url' => 'url',
-                'donate_link' => 'url',
-            ],
-            $messages);
+        $validator = Validator::make($input, [
+            'name' => 'required|unique:mods,name,' . $mod->id,
+            'selected_authors' => 'required',
+            'selected_versions' => 'required',
+            'deck' => 'required',
+            'website' => 'url',
+            'download_url' => 'url',
+            'wiki_url' => 'url',
+            'donate_link' => 'url',
+        ], $messages);
 
         if ($validator->fails()) {
             return Redirect::to('/mod/edit/' . $mod->id)->withErrors($validator)->withInput();
@@ -360,7 +357,8 @@ class ModController extends BaseController
                     'can_edit_maintainers' => $can_edit_maintainers,
                 ]);
             } else {
-                return Redirect::to('/mod/edit/' . $mod->id)->withErrors(['message' => 'Unable to edit mod.'])->withInput();
+                return Redirect::action('ModController@getEdit', [$mod->id])
+                    ->withErrors(['message' => 'Unable to edit mod.'])->withInput();
             }
 
         }

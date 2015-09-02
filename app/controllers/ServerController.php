@@ -14,7 +14,7 @@ class ServerController extends BaseController
         $country_line = 'in any country, ';
         $permission_line = 'and with any permission.';
 
-        $permissions_array= [
+        $permissions_array = [
             'whitelist' => "Whitelist",
             'greylist' => "Greylist",
             'open' => "Open"
@@ -31,7 +31,7 @@ class ServerController extends BaseController
         $countries = Server::countryList();
         $tags = ServerTag::all();
 
-        $table_javascript = '/api/table/servers_all.json';
+        $table_javascript = route('tdf', ['servers', 'all']);
 
         if (!$modpack_slug) {
             $title = 'Modded Minecraft Servers - ' . $this->site_name;
@@ -44,7 +44,7 @@ class ServerController extends BaseController
             $title = $modpack->name . ' Servers - ' . $this->site_name;
             $meta_description = 'Minecraft Servers for the ' . $modpack->name . ' modpack. With powerful searching and filtering.';
             $modpack_name = $modpack->name;
-            $modpack_line = 'for ' . $modpack->name .', ';
+            $modpack_line = 'for ' . $modpack->name . ', ';
 
             $query_array[] = 'modpack=' . $modpack->id;
         }
@@ -89,7 +89,7 @@ class ServerController extends BaseController
 
         $query_count = 0;
 
-        foreach($query_array as $q) {
+        foreach ($query_array as $q) {
             if ($query_count == 0) {
                 $table_javascript .= '?';
             } else {
@@ -101,7 +101,6 @@ class ServerController extends BaseController
         }
 
         $display_line = 'Displaying servers ' . $modpack_line . $tag_line . $country_line . $permission_line;
-
 
         return View::make('servers.list', [
             'title' => $title,
@@ -156,7 +155,7 @@ class ServerController extends BaseController
 
         $query_count = 0;
 
-        foreach($query_array as $q) {
+        foreach ($query_array as $q) {
             if ($query_count == 0) {
                 $query_string .= '?';
             } else {
@@ -168,9 +167,9 @@ class ServerController extends BaseController
         }
 
         if ($modpack) {
-            return Redirect::to('/servers/' . $modpack . $query_string);
+            return Redirect::to(action('ServerController@getServers', [$modpack]) . $query_string);
         } else {
-            return Redirect::to('/servers' . $query_string);
+            return Redirect::to(action('ServerController@getServers') . $query_string);
         }
     }
 
@@ -180,11 +179,11 @@ class ServerController extends BaseController
         $countries = Server::countryList();
 
         if (!$server) {
-            return Redirect::to('servers', 301);
+            return Redirect::action('ServerController@getServers', [], 301);
         }
 
         if ($slug != $server->slug) {
-            return Redirect::to('server/' . $server->id . '/' . $server->slug, 301);
+            return Redirect::action('ServerController@getServer', [$server->id, $server->slug], 301);;
         }
 
         $can_edit = false;
@@ -195,8 +194,8 @@ class ServerController extends BaseController
             }
         }
 
-        $mods_javascript = '/api/table/servermods_all.json?id=' . $server->id;
-        $players_javascript = '/api/table/serverplayers_all.json?id=' . $server->id;
+        $mods_javascript = route('tdf', ['servermods', 'all']) . '?id=' . $server->id;
+        $players_javascript = route('tdf', ['serverplayers', 'all']) . '?id=' . $server->id;
 
         $table_javascript = [
             $mods_javascript,
@@ -228,11 +227,11 @@ class ServerController extends BaseController
         $description = str_replace('<table>', '<table class="table table-striped table-bordered">', $markdown_html);
 
         if ($server->last_world_reset == '0000-00-00') {
-            $server->last_world_reset = NULL;
+            $server->last_world_reset = null;
         }
 
         if ($server->next_world_reset == '0000-00-00') {
-            $server->next_world_reset = NULL;
+            $server->next_world_reset = null;
         }
 
         $title = $server->name . ' - ' . $modpack->name . ' Server - ' . $this->site_name;
@@ -287,9 +286,9 @@ class ServerController extends BaseController
 
     public function getAdd()
     {
-/*        if (Auth::check()) {
-            return Redirect::to('/login?return=server/add');
-        }*/
+        /*        if (Auth::check()) {
+                    return Redirect::to('/login?return=server/add');
+                }*/
 
         $title = 'Add Server - ' . $this->site_name;
 
@@ -319,7 +318,6 @@ class ServerController extends BaseController
         if (Auth::check()) {
             $logged_in = true;
         }
-
 
         $versions = MinecraftVersion::all();
         $title = 'Add Server - ' . $this->site_name;
@@ -386,9 +384,9 @@ class ServerController extends BaseController
             $validator->fails(); //manually fail the validator since we can't reach the server
             $validator->getMessageBag()->add('server_address', 'Unable to reach server.');
 
-            return Redirect::to('/server/add/')->withErrors($validator)->withInput();
+            return Redirect::action('ServerController@getAdd')->withErrors($validator)->withInput();
         } elseif ($validator->fails()) {
-            return Redirect::to('/server/add/')->withErrors($validator)->withInput();
+            return Redirect::action('ServerController@getAdd')->withErrors($validator)->withInput();
         } else {
             $server = new Server;
 
@@ -441,7 +439,6 @@ class ServerController extends BaseController
 
             $success = $server->save();
 
-
             if ($success) {
 
                 foreach ($input['tags'] as $tag) {
@@ -470,7 +467,6 @@ class ServerController extends BaseController
                     $server_status->mods = json_encode($server_info['modinfo']);
                 }
 
-
                 if (isset($server_info['players']['sample'])) {
                     $server_status->players = json_encode($server_info['players']['sample']);
                 }
@@ -492,10 +488,11 @@ class ServerController extends BaseController
                         $server_user_success = $server_user->save();
 
                         if ($server_user_success) {
-                            Mail::send('emails.server_add', array('password' => $password, 'server_id' => $server->id), function ($message) use ($input) {
-                                $message->from('noreply@modpackindex.com', 'Modpack Index');
-                                $message->to($input['email'])->subject('Server confirmation for ' . $input['name']);
-                            });
+                            Mail::send('emails.server_add', ['password' => $password, 'server_id' => $server->id],
+                                function ($message) use ($input) {
+                                    $message->from('noreply@modpackindex.com', 'Modpack Index');
+                                    $message->to($input['email'])->subject('Server confirmation for ' . $input['name']);
+                                });
                         }
                     }
 
@@ -511,10 +508,12 @@ class ServerController extends BaseController
                     ]);
                 }
 
-                return Redirect::to('/server/add/')->withErrors(['message' => 'Unable to add server.'])->withInput();
+                return Redirect::action('ServerController@getAdd')->withErrors(['message' => 'Unable to add server.'])
+                    ->withInput();
 
             } else {
-                return Redirect::to('/server/add/')->withErrors(['message' => 'Unable to add server.'])->withInput();
+                return Redirect::action('ServerController@getAdd')->withErrors(['message' => 'Unable to add server.'])
+                    ->withInput();
             }
         }
     }
@@ -562,11 +561,11 @@ class ServerController extends BaseController
         ];
 
         if ($server->last_world_reset == '0000-00-00') {
-            $server->last_world_reset = NULL;
+            $server->last_world_reset = null;
         }
 
         if ($server->next_world_reset == '0000-00-00') {
-            $server->next_world_reset = NULL;
+            $server->next_world_reset = null;
         }
 
         return View::make('servers.edit', [
@@ -596,22 +595,22 @@ class ServerController extends BaseController
         $server = Server::find($id);
 
         if (!$server) {
-            return Redirect::to('/servers');
+            return Redirect::action('ServerController@getServers');
         }
 
         if ($server->user_id == 0) {
             $server_user = $server->serverUser;
 
             if (!Hash::check($password, $server_user->edit_password)) {
-                return Redirect::to('/');
+                return Redirect::route('index');
             }
         } else {
             if (!Auth::check()) {
-                return Redirect::to('/login?return=server/edit/' . $id);
+                return Redirect::to(action('UserController@getLogin') . '?return=server/edit/' . $id);
             }
 
             if (Auth::id() != $server->user_id && !$this->checkRoute()) {
-                return Redirect::to('/');
+                return Redirect::route('index');
             }
         }
 
@@ -679,15 +678,18 @@ class ServerController extends BaseController
             $validator->getMessageBag()->add('server_address', 'Unable to reach server.');
 
             if (!$logged_in) {
-                return Redirect::to('/server/edit/' . $id . '/' . $password)->withErrors($validator)->withInput();
+                return Redirect::action('ServerController@getEdit', [$id, $password])->withErrors($validator)
+                    ->withInput();
             }
 
-            return Redirect::to('/server/edit/' . $id)->withErrors($validator)->withInput();
+            return Redirect::action('ServerController@getEdit', [$id])->withErrors($validator)->withInput();
         } elseif ($validator->fails()) {
             if (!$logged_in) {
-                return Redirect::to('/server/edit/' . $id . '/' . $password)->withErrors($validator)->withInput();
+                return Redirect::action('ServerController@getEdit', [$id, $password])->withErrors($validator)
+                    ->withInput();
             }
-            return Redirect::to('/server/edit/' . $id)->withErrors($validator)->withInput();
+
+            return Redirect::action('ServerController@getEdit', [$id])->withErrors($validator)->withInput();
         } else {
             $server->modpack_id = $modpack->id;
             $server->user_id = Auth::id();
@@ -791,11 +793,11 @@ class ServerController extends BaseController
                     }
 
                     if ($updated_server->last_world_reset == '0000-00-00') {
-                        $updated_server->last_world_reset = NULL;
+                        $updated_server->last_world_reset = null;
                     }
 
                     if ($updated_server->next_world_reset == '0000-00-00') {
-                        $updated_server->next_world_reset = NULL;
+                        $updated_server->next_world_reset = null;
                     }
 
                     return View::make('servers.edit', [
@@ -813,15 +815,21 @@ class ServerController extends BaseController
                     ]);
                 } else {
                     if (!$logged_in) {
-                        return Redirect::to('/server/edit/' . $id . '/' . $password)->withErrors(['message' => 'Unable to edit server.'])->withInput();
+                        return Redirect::action('ServerController@getEdit', [$id, $password])
+                            ->withErrors(['message' => 'Unable to edit server.'])->withInput();
                     }
-                    return Redirect::to('/server/edit/' . $id)->withErrors(['message' => 'Unable to edit server.'])->withInput();
+
+                    return Redirect::action('ServerController@getEdit', [$id])
+                        ->withErrors(['message' => 'Unable to edit server.'])->withInput();
                 }
             } else {
                 if (!$logged_in) {
-                    return Redirect::to('/server/edit/' . $id . '/' . $password)->withErrors(['message' => 'Unable to edit server.'])->withInput();
+                    return Redirect::action('ServerController@getEdit', [$id, $password])
+                        ->withErrors(['message' => 'Unable to edit server.'])->withInput();
                 }
-                return Redirect::to('/server/edit/' . $id)->withErrors(['message' => 'Unable to edit server.'])->withInput();
+
+                return Redirect::action('ServerController@getEdit', [$id])
+                    ->withErrors(['message' => 'Unable to edit server.'])->withInput();
             }
         }
     }

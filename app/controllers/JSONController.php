@@ -2,6 +2,8 @@
 
 class JSONController extends BaseController
 {
+    use \App\TraitCommon;
+
     public function getTableMods($version = 'all')
     {
         $cache_key = 'table-mods-' . $version;
@@ -11,7 +13,7 @@ class JSONController extends BaseController
         } else {
             $mods_array = [];
             $mod_id_array = [];
-            $version = preg_replace('/-/', '.', $version);
+            $version = $this->getVersion($version);
 
             if ($version == 'all') {
                 $raw_mods = Mod::with('versions')->with('authors')->get();
@@ -21,12 +23,6 @@ class JSONController extends BaseController
             }
 
             foreach ($raw_mods as $mod) {
-                $supported_versions = '';
-                $authors = '';
-                $links = '';
-                $version_array = [];
-                $i = 0;
-
                 if ($mod->mod_list_hide == 1) {
                     continue;
                 }
@@ -35,63 +31,14 @@ class JSONController extends BaseController
                     continue;
                 }
 
-                $name = link_to_route('ModController@getMod', $mod->name, [$mod->slug]);
-
-                foreach ($mod->versions as $v) {
-                    if (!in_array($v->name, $version_array)) {
-                        $version_array[] = $v->name;
-                        $supported_versions .= $v->name;
-                        $supported_versions .= ', ';
-                    }
-                    ++$i;
-                }
-
-                if (!$supported_versions) {
-                    $supported_versions = 'Unknown';
-                }
-
-                foreach ($mod->authors as $v) {
-                    $authors .= $v->name;
-                    $authors .= ', ';
-                }
-
-                if (!$authors) {
-                    $authors = 'N/A';
-                }
-
-                if ($mod->website) {
-                    $links .= link_to($mod->website, 'Website');
-                    $links .= ' / ';
-                }
-
-                if ($mod->donate_link) {
-                    $links .= link_to($mod->donate_link, 'Donate');
-                    $links .= ' / ';
-                }
-
-                if ($mod->wiki_link) {
-                    $links .= link_to($mod->wiki_link, 'Wiki');
-                    $links .= ' / ';
-                }
-
-                $mods_array[] = [
-                    'name' => $name,
-                    'deck' => json_encode($mod->deck),
-                    'links' => json_encode(rtrim($links, ' / ')),
-                    'versions' => rtrim($supported_versions, ', '),
-                    'authors' => rtrim($authors, ', '),
-                ];
-
+                $mods_array[] = $this->buildModArray($mod);
                 $mod_id_array[] = $mod->id;
             }
 
             Cache::tags('mods')->forever($cache_key, $mods_array);
         }
 
-        return View::make('api.table.mods.json', [
-                'mods' => $mods_array,
-                'version' => $version,
-            ]);
+        return $this->buildDTModOutput($mods_array);
     }
 
     public function getTableModpacks($get_version = 'all')
@@ -103,7 +50,7 @@ class JSONController extends BaseController
         } else {
             $modpacks_array = [];
             $modpack_id_array = [];
-            $get_version = preg_replace('/-/', '.', $get_version);
+            $get_version = $this->getVersion($get_version);
 
             if ($get_version == 'all') {
                 $raw_modpacks = Modpack::with('creators')->with('version')->with('launcher')->get();
@@ -113,89 +60,18 @@ class JSONController extends BaseController
             }
 
             foreach ($raw_modpacks as $modpack) {
-                $creators = '';
-                $links = '';
-
                 if (in_array($modpack->id, $modpack_id_array)) {
                     continue;
                 }
 
-                $name = link_to_action('ModpackController@getModpack', $modpack->name, [
-                        preg_replace('/\./', '-', $modpack->version->name),
-                        $modpack->slug,
-                    ]);
-
-                switch ($modpack->launcher->short_name) {
-                    case 'ftb':
-                        $icon = asset('/static/img/icons/ftb.png');
-                        break;
-                    case 'atlauncher':
-                        $icon = asset('/static/img/icons/atlauncher.png');
-                        break;
-                    case 'technic':
-                        $icon = asset('/static/img/icons/technic.png');
-                        break;
-                    case 'curse':
-                        $icon = asset('/static/img/icons/curse.png');
-                        break;
-                    default:
-                        $icon = asset('/static/img/icons/custom.png');
-                }
-
-                $icon_html = [
-                    'icon' => $icon,
-                    'link' => action('LauncherController@getLauncherVersion', [$modpack->launcher->slug]),
-                    'title' => $modpack->launcher->short_name ? $modpack->launcher->short_name : 'custom',
-                    'launcher_id' => $modpack->launcher->id,
-                ];
-
-                foreach ($modpack->creators as $v) {
-                    $creators .= $v->name;
-                    $creators .= ', ';
-                }
-
-                if (!$creators) {
-                    $creators = 'N/A';
-                }
-
-                if ($get_version == 'all') {
-                    $version = $modpack->version->name;
-                } else {
-                    $version = $raw_version->name;
-                }
-
-                if ($modpack->website) {
-                    $links .= '<a href="' . $modpack->website . '">Website</a>';
-                    $links .= ' / ';
-                }
-
-                if ($modpack->donate_link) {
-                    $links .= '<a href="' . $modpack->donate_link . '">Donate</a>';
-                    $links .= ' / ';
-                }
-
-                if ($modpack->wiki_link) {
-                    $links .= '<a href="' . $modpack->wiki_link . '">Wiki</a>';
-                    $links .= ' / ';
-                }
-
-                $modpacks_array[] = [
-                    'icon_html' => json_encode($icon_html),
-                    'name' => $name,
-                    'icon' => $icon,
-                    'deck' => json_encode($modpack->deck),
-                    'links' => json_encode(rtrim($links, ' / ')),
-                    'version' => $version,
-                    'creators' => rtrim($creators, ', '),
-                ];
-
+                $modpacks_array[] = $this->buildModpackArray($modpack);
                 $mod_id_array[] = $modpack->id;
             }
 
             Cache::tags('modpacks')->forever($cache_key, $modpacks_array);
         }
 
-        return View::make('api.table.modpacks.json', ['modpacks' => $modpacks_array]);
+        return $this->buildDTModpackOutput($modpacks_array);
     }
 
     public function getTableLaunchers($name, $get_version = 'all')
@@ -207,7 +83,7 @@ class JSONController extends BaseController
         } else {
             $modpacks_array = [];
             $modpack_id_array = [];
-            $get_version = preg_replace('/-/', '.', $get_version);
+            $get_version = $this->getVersion($get_version);
             $launcher = Launcher::where('slug', '=', $name)->first();
             $launcher_id = $launcher->id;
 
@@ -224,84 +100,18 @@ class JSONController extends BaseController
             }
 
             foreach ($raw_modpacks as $modpack) {
-                $creators = '';
-                $links = '';
-
                 if (in_array($modpack->id, $modpack_id_array)) {
                     continue;
                 }
 
-                $name = link_to_action('ModpackController@getModpack', $modpack->name, [
-                        preg_replace('/\./', '-', $modpack->version->name),
-                        $modpack->slug,
-                    ]);
-
-                switch ($modpack->launcher->short_name) {
-                    case 'ftb':
-                        $icon = '/static/img/icons/ftb.png';
-                        break;
-                    case 'atlauncher':
-                        $icon = '/static/img/icons/atlauncher.png';
-                        break;
-                    case 'technic':
-                        $icon = '/static/img/icons/technic.png';
-                        break;
-                    case 'curse':
-                        $icon = '/static/img/icons/curse.png';
-                        break;
-                    default:
-                        $icon = '/static/img/icons/custom.png';
-                }
-
-                $icon_html = '<a href="/launcher/' . $modpack->launcher->slug . '"><img src="' . $icon . '"/></a>';
-
-                foreach ($modpack->creators as $v) {
-                    $creators .= $v->name;
-                    $creators .= ', ';
-                }
-
-                if (!$creators) {
-                    $creators = 'N/A';
-                }
-
-                if ($get_version == 'all') {
-                    $version = $modpack->version->name;
-                } else {
-                    $version = $get_version;
-                }
-
-                if ($modpack->website) {
-                    $links .= '<a href="' . $modpack->website . '">Website</a>';
-                    $links .= ' / ';
-                }
-
-                if ($modpack->donate_link) {
-                    $links .= '<a href="' . $modpack->donate_link . '">Donate</a>';
-                    $links .= ' / ';
-                }
-
-                if ($modpack->wiki_link) {
-                    $links .= '<a href="' . $modpack->wiki_link . '">Wiki</a>';
-                    $links .= ' / ';
-                }
-
-                $modpacks_array[] = [
-                    'icon_html' => json_encode($icon_html),
-                    'name' => $name,
-                    'icon' => $icon,
-                    'deck' => json_encode($modpack->deck),
-                    'links' => json_encode(rtrim($links, ' / ')),
-                    'version' => $version,
-                    'creators' => rtrim($creators, ', '),
-                ];
-
+                $modpacks_array[] = $this->buildModpackArray($modpack);
                 $mod_id_array[] = $modpack->id;
             }
 
             Cache::tags('launchers')->forever($cache_key, $modpacks_array);
         }
 
-        return View::make('api.table.launchers.json', ['modpacks' => $modpacks_array]);
+        return $this->buildDTLauncherOutput($modpacks_array);
     }
 
     public function getTableModpackMods($name)
@@ -317,73 +127,18 @@ class JSONController extends BaseController
             $raw_mods = $modpack->mods()->with('authors')->with('versions')->get();
 
             foreach ($raw_mods as $mod) {
-                $supported_versions = '';
-                $authors = '';
-                $links = '';
-                $version_array = [];
-                $i = 0;
-
                 if (in_array($mod->id, $mod_id_array)) {
                     continue;
                 }
 
-                $name = '<a href=/mod/' . $mod->slug . '>' . $mod->name . '</a>';
-
-                foreach ($mod->versions as $v) {
-                    if (!in_array($v->name, $version_array)) {
-                        $version_array[] = $v->name;
-                        $supported_versions .= $v->name;
-                        $supported_versions .= ', ';
-                    }
-                    ++$i;
-                }
-
-                if (!$supported_versions) {
-                    $supported_versions = 'Unknown';
-                }
-
-                foreach ($mod->authors as $v) {
-                    $authors .= $v->name;
-                    $authors .= ', ';
-                }
-
-                if (!$authors) {
-                    $authors = 'N/A';
-                }
-
-                if ($mod->website) {
-                    $links .= '<a href="' . $mod->website . '">Website</a>';
-                    $links .= ' / ';
-                }
-
-                if ($mod->donate_link) {
-                    $links .= '<a href="' . $mod->donate_link . '">Donate</a>';
-                    $links .= ' / ';
-                }
-
-                if ($mod->wiki_link) {
-                    $links .= '<a href="' . $mod->wiki_link . '">Wiki</a>';
-                    $links .= ' / ';
-                }
-
-                $mods_array[] = [
-                    'name' => $name,
-                    'deck' => json_encode($mod->deck),
-                    'links' => json_encode(rtrim($links, ' / ')),
-                    'versions' => rtrim($supported_versions, ', '),
-                    'authors' => rtrim($authors, ', '),
-                ];
-
+                $mods_array[] = $this->buildModArray($mod);
                 $mod_id_array[] = $mod->id;
             }
 
             Cache::tags('modpackmods')->forever($cache_key, $mods_array);
         }
 
-        return View::make('api.table.mods.json', [
-                'mods' => $mods_array,
-                'version' => null,
-            ]);
+        return $this->buildDTModOutput($mods_array);
     }
 
     public function getModModpacks($name)
@@ -399,78 +154,18 @@ class JSONController extends BaseController
             $modpacks = $mod->modpacks()->with('creators')->with('launcher')->with('version')->get();
 
             foreach ($modpacks as $modpack) {
-                $creators = '';
-                $links = '';
-
                 if (in_array($modpack->id, $modpack_id_array)) {
                     continue;
                 }
 
-                $name = '<a href=/modpack/' . preg_replace('/\./', '-',
-                        $modpack->version->name) . '/' . $modpack->slug . '>' . $modpack->name . '</a>';
-
-                switch ($modpack->launcher->short_name) {
-                    case 'ftb':
-                        $icon = '/static/img/icons/ftb.png';
-                        break;
-                    case 'atlauncher':
-                        $icon = '/static/img/icons/atlauncher.png';
-                        break;
-                    case 'technic':
-                        $icon = '/static/img/icons/technic.png';
-                        break;
-                    case 'curse':
-                        $icon = '/static/img/icons/curse.png';
-                        break;
-                    default:
-                        $icon = '/static/img/icons/custom.png';
-                }
-
-                $icon_html = '<a href="/launcher/' . $modpack->launcher->slug . '"><img src="' . $icon . '"/></a>';
-
-                foreach ($modpack->creators as $v) {
-                    $creators .= $v->name;
-                    $creators .= ', ';
-                }
-
-                if (!$creators) {
-                    $creators = 'N/A';
-                }
-
-                $version = $modpack->version->name;
-
-                if ($modpack->website) {
-                    $links .= '<a href="' . $modpack->website . '">Website</a>';
-                    $links .= ' / ';
-                }
-
-                if ($modpack->donate_link) {
-                    $links .= '<a href="' . $modpack->donate_link . '">Donate</a>';
-                    $links .= ' / ';
-                }
-
-                if ($modpack->wiki_link) {
-                    $links .= '<a href="' . $modpack->wiki_link . '">Wiki</a>';
-                    $links .= ' / ';
-                }
-
-                $modpacks_array[] = [
-                    'icon_html' => json_encode($icon_html),
-                    'name' => $name,
-                    'icon' => $icon,
-                    'deck' => json_encode($modpack->deck),
-                    'links' => json_encode(rtrim($links, ' / ')),
-                    'version' => $version,
-                    'creators' => rtrim($creators, ', '),
-                ];
-
+                $modpacks_array[] = $this->buildModpackArray($modpack);
                 $modpack_id_array[] = $modpack->id;
             }
 
             Cache::tags('modmodpacks')->forever($cache_key, $modpacks_array);
         }
 
-        return View::make('api.table.launchers.json', ['modpacks' => $modpacks_array]);
+        return $this->buildDTLauncherOutput($modpacks_array);
     }
 
     public function getModpackSearch($version)
@@ -482,7 +177,7 @@ class JSONController extends BaseController
         if ($version == 'all') {
             $modpack = Modpack::where('id', '!=', '0'); //there has to be a better way
         } else {
-            $version_name = preg_replace('/-/', '.', $version);
+            $version_name = $this->getVersion($version);
             $minecraft_version = MinecraftVersion::where('name', $version_name)->first();
             $modpack = Modpack::where('minecraft_version_id', $minecraft_version->id);
         }
@@ -510,73 +205,14 @@ class JSONController extends BaseController
         $modpacks = $modpack->with('creators')->with('launcher')->with('version')->get();
 
         foreach ($modpacks as $modpack) {
-            $creators = '';
-            $links = '';
-
             if (in_array($modpack->id, $modpack_id_array)) {
                 continue;
             }
 
-            $name = '<a href=/modpack/' . preg_replace('/\./', '-',
-                    $modpack->version->name) . '/' . $modpack->slug . '>' . $modpack->name . '</a>';
-
-            switch ($modpack->launcher->short_name) {
-                case 'ftb':
-                    $icon = '/static/img/icons/ftb.png';
-                    break;
-                case 'atlauncher':
-                    $icon = '/static/img/icons/atlauncher.png';
-                    break;
-                case 'technic':
-                    $icon = '/static/img/icons/technic.png';
-                    break;
-                case 'curse':
-                    $icon = '/static/img/icons/curse.png';
-                    break;
-                default:
-                    $icon = '/static/img/icons/custom.png';
-            }
-
-            $icon_html = '<a href="/launcher/' . $modpack->launcher->slug . '"><img src="' . $icon . '"/></a>';
-
-            foreach ($modpack->creators as $v) {
-                $creators .= $v->name;
-                $creators .= ', ';
-            }
-
-            if (!$creators) {
-                $creators = 'N/A';
-            }
-
-            $version = $modpack->version->name;
-
-            if ($modpack->website) {
-                $links .= '<a href="' . $modpack->website . '">Website</a>';
-                $links .= ' / ';
-            }
-
-            if ($modpack->donate_link) {
-                $links .= '<a href="' . $modpack->donate_link . '">Donate</a>';
-                $links .= ' / ';
-            }
-
-            if ($modpack->wiki_link) {
-                $links .= '<a href="' . $modpack->wiki_link . '">Wiki</a>';
-                $links .= ' / ';
-            }
-
-            $modpacks_array[] = [
-                'icon_html' => json_encode($icon_html),
-                'name' => $name,
-                'icon' => $icon,
-                'deck' => json_encode($modpack->deck),
-                'links' => json_encode(rtrim($links, ' / ')),
-                'version' => $version,
-                'creators' => rtrim($creators, ', '),
-            ];
+            $modpacks_array[] = $this->buildModpackArray($modpack);
         }
 
-        return View::make('api.table.modpacks.json', ['modpacks' => $modpacks_array]);
+        return $this->buildDTModpackOutput($modpacks_array);
     }
 
     public function getModpackCompare()
@@ -593,22 +229,19 @@ class JSONController extends BaseController
 
             $modpacks[$id] = $modpack->name;
 
-            foreach ($modpack_mods as $m) {
-                $m_id = $m->id;
-                $mods[$m_id]['name'] = '<a href=/mod/' . $m->slug . '>' . $m->name . '</a>';
+            foreach ($modpack_mods as $modpack_mod) {
+                $m_id = $modpack_mod->id;
+                $mods[$m_id]['name'] = link_to_action('ModController@getMod', $modpack_mod->name, [$modpack_mod->slug]);
                 $mods[$m_id]['packs'][] = $modpack->id;
             }
         }
 
-        return View::make('api.table.modpacks.compare', [
-                'mods' => $mods,
-                'modpacks' => $modpacks,
-            ]);
+        return $this->buildDTCompareOutput($mods, $modpacks);
     }
 
     public function getModsSelect($version)
     {
-        $version = preg_replace('/-/', '.', $version);
+        $version = $this->getVersion($version);
         $sort_array = [];
         $mods_array = [];
 
@@ -623,13 +256,10 @@ class JSONController extends BaseController
         natcasesort($sort_array);
 
         foreach ($sort_array as $k => $mod) {
-            $mods_array[] = [
-                'name' => $mod,
-                'value' => $k,
-            ];
+            $mods_array[] = ['name' => $mod, 'value' => $k];
         }
 
-        return json_encode($mods_array);
+        return Response::json($mods_array);
     }
 
     public function getServers()
@@ -689,7 +319,7 @@ class JSONController extends BaseController
                 $server_address = $server->ip_host . ':' . $server->port;
             }
 
-            $version_slug = preg_replace('/\./', '-', $versions[$modpack->minecraft_version_id]);
+            $version_slug = $this->getVersion($versions[$modpack->minecraft_version_id]);
 
             $options = '';
 
@@ -714,13 +344,13 @@ class JSONController extends BaseController
             $options .= '<span class="flag-icon flag-icon-' . strtolower($server->country) . '" title="' . $country_name . '"></span> ';
 
             $server_name = link_to_action('ServerController@getServer', $server->name, [
-                    $server->id,
-                    $server->slug,
-                ]);
+                $server->id,
+                $server->slug,
+            ]);
             $modpack = link_to_action('ModpackController@getModpack', $modpack->name, [
-                    $version_slug,
-                    $modpack->slug,
-                ]);
+                $version_slug,
+                $modpack->slug,
+            ]);
 
             $players = $server_status->current_players . ' / ' . $server_status->max_players;
 
@@ -737,7 +367,7 @@ class JSONController extends BaseController
 
         shuffle($servers_array);
 
-        return View::make('api.table.servers.json', ['servers' => $servers_array]);
+        return $this->buildDTServerOutput($servers_array);
     }
 
     public function getServerPlayers($id)
@@ -754,13 +384,13 @@ class JSONController extends BaseController
             if ($raw_players) {
                 foreach ($raw_players as $player) {
                     $players_array[] = [
-                        'name' => preg_replace('/\x{00A7}.{1}/u', '', $player->name),
+                        'name' => preg_replace('/\x{00A7}.{1}/u', '', $player->name)
                     ];
                 }
             }
         }
 
-        return View::make('api.table.servers.players', ['players' => $players_array]);
+        return $this->buildDTServerPlayerOutput($players_array);
     }
 
     public function getServerMods($id)
@@ -773,6 +403,7 @@ class JSONController extends BaseController
 
         if ($raw_mods) {
             foreach ($raw_mods->modList as $mod) {
+
                 $mods_array[] = [
                     'name' => $mod->modid,
                     'version' => $mod->version,
@@ -780,7 +411,7 @@ class JSONController extends BaseController
             }
         }
 
-        return View::make('api.table.servers.mods', ['mods' => $mods_array]);
+        return $this->buildDTServerModOutput($mods_array);
     }
 
     public function getTableDataFile($type, $version, $name = null)
@@ -803,6 +434,7 @@ class JSONController extends BaseController
                 ];
                 $ajax_source = action('JSONController@getTableMods', $version);
                 break;
+
             case 'modpacks':
                 $columns_array = [
                     'name',
@@ -814,8 +446,10 @@ class JSONController extends BaseController
                 ];
 
                 $table_empty = 'No Modpacks found.';
-                $ajax_source = action('JSONController@getTableModpacks', $version);
+
+                $ajax_source = '/api/table/modpacks/' . $version . '.json';
                 break;
+
             case 'launchers':
                 $columns_array = [
                     'name',
@@ -827,10 +461,11 @@ class JSONController extends BaseController
                 ];
 
                 $ajax_source = action('JSONController@getTableLaunchers', [
-                        $name,
-                        $version,
-                    ]);
+                    $name,
+                    $version,
+                ]);
                 break;
+
             case 'modpackmods':
                 $columns_array = [
                     'name',
@@ -840,8 +475,9 @@ class JSONController extends BaseController
                     'links',
                 ];
 
-                $ajax_source = action('JSONController@getTableModpackMods', $name);
+                $ajax_source = action('JSONController@getTableModpackMods', [$name]);
                 break;
+
             case 'modmodpacks':
                 $columns_array = [
                     'name',
@@ -852,7 +488,7 @@ class JSONController extends BaseController
                     'links',
                 ];
 
-                $ajax_source = action('JSONController@getModModpacks', $name);
+                $ajax_source = action('JSONController@getModModpacks', [$name]);
                 break;
 
             case 'compare':
@@ -888,13 +524,13 @@ class JSONController extends BaseController
 
                 if ($input['tags'] && $input['mods']) {
                     $ajax_source = action('JSONController@getModpackSearch',
-                            $version) . '?mods=' . $input['mods'] . '&tags=' . $input['tags'];
+                            [$version]) . '?mods=' . $input['mods'] . '&tags=' . $input['tags'];
                 } elseif ($input['mods']) {
-                    $ajax_source = action('JSONController@getModpackSearch', $version) . '?mods=' . $input['mods'];
+                    $ajax_source = action('JSONController@getModpackSearch', [$version]) . '?mods=' . $input['mods'];
                 } elseif ($input['tags']) {
-                    $ajax_source = action('JSONController@getModpackSearch', $version) . '?tags=' . $input['tags'];
+                    $ajax_source = action('JSONController@getModpackSearch', [$version]) . '?tags=' . $input['tags'];
                 } else {
-                    $ajax_source = action('JSONController@getModpackSearch', $version);
+                    $ajax_source = action('JSONController@getModpackSearch', [$version]);
                 }
                 break;
 
@@ -947,7 +583,7 @@ class JSONController extends BaseController
                     }
                     $query_string .= $q;
 
-                    ++$query_count;
+                    $query_count++;
                 }
 
                 $ajax_source = action('JSONController@getServers') . $query_string;
@@ -965,7 +601,8 @@ class JSONController extends BaseController
 
                 $input = Input::only('id');
 
-                $ajax_source = action('JSONController@getServerPlayers', $input['id']);
+                $ajax_source = action('JSONController@getServerPlayers', [$input['id']]);
+
                 break;
 
             case 'servermods':
@@ -980,20 +617,21 @@ class JSONController extends BaseController
 
                 $input = Input::only('id');
 
-                $ajax_source = action('JSONController@getServerMods', $input['id']);
+                $ajax_source = action('JSONController@getServerMods', [$input['id']]);
 
                 break;
         }
 
-        return View::make('api.table.data', [
-                'ajax_source' => $ajax_source,
-                'columns' => $columns_array,
-                'table_id' => $table_id,
-                'table_sdom' => $table_sdom,
-                'table_empty' => $table_empty,
-                'table_length' => $table_length,
-                'table_fixed_header' => $table_fixed_header,
-                'table_order' => $table_order,
-            ]);
+        return Response::view('api.table.data', [
+            'type' => $type,
+            'ajax_source' => $ajax_source,
+            'columns' => $columns_array,
+            'table_id' => $table_id,
+            'table_sdom' => $table_sdom,
+            'table_empty' => $table_empty,
+            'table_length' => $table_length,
+            'table_fixed_header' => $table_fixed_header,
+            'table_order' => $table_order,
+        ], 200, ['Content-Type' => 'application/json']);
     }
 }

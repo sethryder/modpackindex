@@ -11,9 +11,8 @@
 |
 */
 
-Route::get('/', 'ModpackController@getModpackVersion');
+Route::get('/', ['as' => 'index', 'uses' => 'ModpackController@getModpackVersion']);
 //Route::get('/', 'StaticPagesController@getNotLaunched');
-
 
 Route::get('/test/route', ['as' => 'route_test', 'uses' => 'TestController@getRoute']);
 
@@ -54,7 +53,8 @@ Route::post('modpack-code/edit/{id}', ['as' => 'modpack_code_edit', 'uses' => 'M
 //Modpack Aliases
 Route::get('modpack-alias/add', ['as' => 'modpack_alias_add', 'uses' => 'ModpackAliasController@getAdd']);
 Route::post('modpack-alias/add', ['as' => 'modpack_alias_add', 'uses' => 'ModpackAliasController@postAdd']);
-Route::get('modpack/{version}/{slug}/aliases', ['as' => 'modpack_alias_add', 'uses' => 'ModpackAliasController@getAliases']);
+Route::get('modpack/{version}/{slug}/aliases',
+    ['as' => 'modpack_alias_add', 'uses' => 'ModpackAliasController@getAliases']);
 
 //Modpack Tags
 Route::get('tag/modpack/add', ['as' => 'modpack_tag', 'uses' => 'ModpackTagController@getAdd']);
@@ -83,26 +83,25 @@ Route::post('mod/import', ['as' => 'mod_import', 'uses' => 'ImportController@pos
 Route::get('mod/import/{id}', ['as' => 'mod_import', 'uses' => 'ImportController@getImportMod']);
 Route::post('mod/import/{id}', ['as' => 'mod_import', 'uses' => 'ImportController@postImportMod']);
 Route::get('mod/import/{id}/author/{author_id?}', ['as' => 'mod_import', 'uses' => 'ImportController@getImportAuthor']);
-Route::post('mod/import/{id}/author/{author_id}', ['as' => 'mod_import', 'uses' => 'ImportController@postImportAuthor']);
-
+Route::post('mod/import/{id}/author/{author_id}',
+    ['as' => 'mod_import', 'uses' => 'ImportController@postImportAuthor']);
 
 //Cache
 Route::get('/cache/clear/{tag?}', ['as' => 'cache_clear', 'uses' => 'AdminController@getClearCache']);
 
 //Misc
-Route::get('memcache/stats','AdminController@getMemcacheStats');
-
+Route::get('memcache/stats', 'AdminController@getMemcacheStats');
 
 /*
  * General Site Routes
  */
 
 //search
-Route::get('modpack/finder','SearchController@getModpackSearch');
-Route::post('modpack/finder','SearchController@postModpackSearch');
+Route::get('modpack/finder', 'SearchController@getModpackSearch');
+Route::post('modpack/finder', 'SearchController@postModpackSearch');
 
 //redirect old routes
-Route::get('modpack/finder/{version}', function(){
+Route::get('modpack/finder/{version}', function () {
     return Redirect::to('/modpack/finder', 301);
 });
 
@@ -127,7 +126,6 @@ Route::get('modpack/{version}/{slug}/lets-play/{id}-{creator}', 'YoutubeControll
 //launchers
 Route::get('launcher/{name}/{version?}', 'LauncherController@getLauncherVersion');
 
-
 //user
 Route::get('profile/edit', 'UserController@getEditProfile');
 Route::post('profile/edit', 'UserController@postEditProfile');
@@ -143,9 +141,6 @@ Route::get('profile/servers', 'UserController@getServers');
 
 Route::get('profile/{username}', 'UserController@getProfile');
 Route::get('profile', 'UserController@getProfile');
-
-
-
 
 Route::get('login', 'UserController@getLogin');
 Route::post('login', 'UserController@postLogin');
@@ -177,12 +172,9 @@ Route::get('servers/{slug?}', 'ServerController@getServers');
 Route::post('servers/{slug?}', 'ServerController@postServers');
 Route::get('server/{id}/{slug}', 'ServerController@getServer');
 
-
-
 /*
  * API Routes
  */
-
 
 //api for users
 Route::get('api/v1/modpacks/{version}.json', 'APIController@getModpacks');
@@ -193,8 +185,8 @@ Route::get('api/v1/mod/{id}.json', 'APIController@getMod');
 //api calls for json for the tables
 Route::get('api/table/modpack_finder/{version}.json', 'JSONController@getModpackSearch');
 
-Route::get('api/table/{type}_{version}.json', 'JSONController@getTableDataFile');
-Route::get('api/table/{type}_{version}/{name}.json', 'JSONController@getTableDataFile');
+Route::get('api/table/{type}_{version}.json', ['as' => 'tdf', 'uses' => 'JSONController@getTableDataFile']);
+Route::get('api/table/{type}_{version}/{name}.json', ['as' => 'tdf_name', 'uses' => 'JSONController@getTableDataFile']);
 
 Route::get('api/table/mods/{version}.json', 'JSONController@getTableMods');
 Route::get('api/table/mod/modpacks/{name}.json', 'JSONController@getModModpacks');

@@ -2,10 +2,12 @@
 
 class LauncherController extends BaseController
 {
+    use \App\TraitCommon;
+
     public function getLauncherVersion($name, $version = 'all')
     {
-        $table_javascript = '/api/table/launchers_' . $version . '/' . $name . '.json';
-        $version = preg_replace('/-/', '.', $version);
+        $table_javascript = route('tdf_name', ['launchers', $version, $name]);
+        $version = $this->getVersion($version);
 
         if ($version == 'all') {
             $version = 'All';
@@ -35,13 +37,13 @@ class LauncherController extends BaseController
         $title = $version . ' ' . $launcher->name . ' Modpacks - ' . $this->site_name;
         $meta_description = $version . ' Modpacks for ' . $launcher->name;
 
-        return View::make('launchers.list', array(
+        return View::make('launchers.list', [
             'table_javascript' => $table_javascript,
             'version' => $version,
             'launcher' => $launcher,
             'links' => $links,
             'title' => $title,
             'meta_description' => $meta_description
-        ));
+        ]);
     }
 }

@@ -27,16 +27,15 @@ class ModpackCodeController extends BaseController
             'unique' => 'A code for this launcher/modpack combination already exists in the database!',
         ];
 
-        $validator = Validator::make($input,
-            [
+        $validator = Validator::make($input, [
                 'code' => 'required|unique:modpack_codes,code',
                 'launcher' => 'required',
                 'modpack' => 'required',
-            ],
-            $messages);
+            ], $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/modpack-code/add')->withErrors($validator)->withInput();
+            // TODO this line originally redirects to modpack-code/add, there's no route for this, is this an error?
+            return Redirect::action('ModpackCodeController@getAdd')->withErrors($validator)->withInput();
         } else {
             $modpackcode = new ModpackCode;
 
@@ -53,7 +52,8 @@ class ModpackCodeController extends BaseController
 
                 return View::make('modpackcodes.add', ['title' => $title, 'success' => true]);
             } else {
-                return Redirect::to('/modpack-codes/add')->withErrors(['message' => 'Unable to add modpack code.'])->withInput();
+                return Redirect::action('ModpackCodeController@getAdd')
+                    ->withErrors(['message' => 'Unable to add modpack code.'])->withInput();
             }
 
         }
@@ -88,16 +88,15 @@ class ModpackCodeController extends BaseController
             'unique' => 'A code for this launcher/modpack combination already exists in the database!',
         ];
 
-        $validator = Validator::make($input,
-            [
+        $validator = Validator::make($input, [
                 'code' => 'required|unique:modpack_codes,code,' . $modpackcode->id,
                 'launcher' => 'required',
                 'modpack' => 'required',
-            ],
-            $messages);
+            ], $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/modpack-code/edit/' . $id)->withErrors($validator)->withInput();
+            // TODO this line originally redirects to modpack-code/edit, there's no route for this, is this an error?
+            return Redirect::action('ModpackCodeController@getEdit', [$id])->withErrors($validator)->withInput();
         } else {
             $modpackcode->code = $input['code'];
             $modpackcode->modpack_id = $input['modpack'];
@@ -113,7 +112,8 @@ class ModpackCodeController extends BaseController
                 return View::make('modpackcodes.edit',
                     ['title' => $title, 'success' => true, 'modpackcode' => $modpackcode]);
             } else {
-                return Redirect::to('/modpack-codes/edit/' . $id)->withErrors(['message' => 'Unable to add modpack code.'])->withInput();
+                return Redirect::action('ModpackCodeController@getEdit', [$id])
+                    ->withErrors(['message' => 'Unable to add modpack code.'])->withInput();
             }
 
         }

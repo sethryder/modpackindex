@@ -2,6 +2,8 @@
 
 class SearchController extends BaseController
 {
+    use \App\TraitCommon;
+
     public function getModpackSearch()
     {
         $results = false;
@@ -21,14 +23,14 @@ class SearchController extends BaseController
         $tags = ModpackTag::all();
 
         foreach ($minecraft_versions as $v) {
-            $version_slug = preg_replace('/\./', '-', $v->name);
+            $version_slug = $this->getVersionSlug($v->name);
             $version_select[$version_slug] = $v->name;
         }
 
         if ($input['version'] && $input['version'] != 'all') {
             $results = true;
             $url_version = $input['version'];
-            $version = preg_replace('/\-/', '.', $url_version);
+            $version = $this->getVersion($url_version);
 
             $minecraft_version = MinecraftVersion::where('name', $version)->first();
             $mods = $minecraft_version->mods;
@@ -80,7 +82,7 @@ class SearchController extends BaseController
             $tag = ModpackTag::where('slug', $input['tag'])->first();
 
             if (!$tag) {
-                return Redirect::to('/modpack/finder');
+                return Redirect::action('SearchController@getModpackSearch');
             }
 
             $title = $tag->name . ' Modpacks - Pack Finder - ' . $this->site_name;
@@ -90,11 +92,11 @@ class SearchController extends BaseController
             $query_array[] = 'tags=' . $tag->id;
         }
 
-        $table_javascript = '/api/table/modpackfinder_' . $url_version . '.json';
+        $table_javascript = route('tdf', ['modpackfinder', $url_version]);
 
         $query_count = 0;
 
-        foreach($query_array as $q) {
+        foreach ($query_array as $q) {
             if ($query_count == 0) {
                 $table_javascript .= '?';
             } else {
@@ -151,7 +153,7 @@ class SearchController extends BaseController
 
         $query_count = 0;
 
-        foreach($query_array as $q) {
+        foreach ($query_array as $q) {
             if ($query_count == 0) {
                 $query_string .= '?';
             } else {
@@ -162,6 +164,6 @@ class SearchController extends BaseController
             $query_count++;
         }
 
-        return Redirect::to('/modpack/finder' . $query_string);
+        return Redirect::to(action('SearchController@getModpackSearch') . $query_string);
     }
 }

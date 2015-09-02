@@ -40,7 +40,7 @@ class ModpackTagController extends BaseController
             $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/tag/modpack/add')->withErrors($validator)->withInput();
+            return Redirect::action('ModpackTagController@getAdd')->withErrors($validator)->withInput();
         } else {
             $modpacktag = new ModpackTag;
 
@@ -64,7 +64,7 @@ class ModpackTagController extends BaseController
 
                 return View::make('tags.modpacks.add', ['title' => $title, 'success' => true]);
             } else {
-                return Redirect::to('/tag/modpack/add')->withErrors(['message' => 'Unable to add modpack tag.'])->withInput();
+                return Redirect::action('ModpackTagController@getAdd')->withErrors(['message' => 'Unable to add modpack tag.'])->withInput();
             }
 
         }
@@ -108,7 +108,7 @@ class ModpackTagController extends BaseController
             $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/tag/modpack/edit/' . $id)->withErrors($validator)->withInput();
+            return Redirect::action('ModpackTagController@getEdit', [$id])->withErrors($validator)->withInput();
         } else {
             $modpacktag->name = $input['name'];
             $modpacktag->deck = $input['deck'];
@@ -131,7 +131,7 @@ class ModpackTagController extends BaseController
                 return View::make('tags.modpacks.edit',
                     ['title' => $title, 'success' => true, 'modpacktag' => $modpacktag]);
             } else {
-                return Redirect::to('/tag/modpack/' . $id)->withErrors(['message' => 'Unable to edit modpack code.'])->withInput();
+                return Redirect::action('ModpackTagController@getEdit', [$id])->withErrors(['message' => 'Unable to edit modpack code.'])->withInput();
             }
 
         }
