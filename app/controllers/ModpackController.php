@@ -188,7 +188,7 @@ class ModpackController extends BaseController
     public function getAdd($version)
     {
         if (!$this->checkRoute()) {
-            return Redirect::action('ModpackController@getModpackVersion');
+            return Redirect::route('index');
         }
 
         $mod_select_array = [];
@@ -218,7 +218,7 @@ class ModpackController extends BaseController
     public function postAdd($version)
     {
         if (!$this->checkRoute()) {
-            return Redirect::action('ModpackController@getModpackVersion');
+            return Redirect::route('index');
         }
 
         $url_version = $version;
@@ -398,11 +398,11 @@ class ModpackController extends BaseController
                 if ($this->checkRoute()) {
                     $can_edit_maintainers = true;
                 } else {
-                    return Redirect::action('ModpackController@getModpackVersion');
+                    return Redirect::route('index');
                 }
             }
         } else {
-            return Redirect::action('ModpackController@getModpackVersion');
+            return Redirect::route('index');
         }
 
         $minecraft_version = MinecraftVersion::where('id', '=', $modpack->minecraft_version_id)->first();
