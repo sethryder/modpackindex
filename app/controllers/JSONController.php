@@ -429,7 +429,6 @@ class JSONController extends BaseController
 
         switch ($type) {
             case 'mods':
-
                 $columns_array = [
                     'name',
                     'versions',
@@ -439,8 +438,8 @@ class JSONController extends BaseController
                 ];
                 $ajax_source = action('JSONController@getTableMods', $version);
                 break;
-            case 'modpacks':
 
+            case 'modpacks':
                 $columns_array = [
                     'name',
                     'version',
@@ -454,6 +453,7 @@ class JSONController extends BaseController
 
                 $ajax_source = '/api/table/modpacks/' . $version . '.json';
                 break;
+
             case 'launchers':
                 $columns_array = [
                     'name',
@@ -469,6 +469,7 @@ class JSONController extends BaseController
                     $version,
                 ]);
                 break;
+
             case 'modpackmods':
                 $columns_array = [
                     'name',
@@ -480,6 +481,7 @@ class JSONController extends BaseController
 
                 $ajax_source = action('JSONController@getTableModpackMods', [$name]);
                 break;
+
             case 'modmodpacks':
                 $columns_array = [
                     'name',
@@ -627,6 +629,7 @@ class JSONController extends BaseController
         }
 
         return Response::view('api.table.data', [
+            'type' => $type,
             'ajax_source' => $ajax_source,
             'columns' => $columns_array,
             'table_id' => $table_id,
