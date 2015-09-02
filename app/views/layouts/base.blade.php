@@ -20,13 +20,13 @@
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,800,800italic">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Oswald:400,300,700">
 
-    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/static/css/bootstrap.css">
-    <link rel="stylesheet" href="/static/css/mvpready-admin.css">
-    <link rel="stylesheet" href="/static/css/mvpready-flat.css">
-    <link rel="stylesheet" href="/static/css/chosen.min.css">
-    <link rel="stylesheet" href="/static/css/bootstrap-datepicker3.css">
-    <link rel="stylesheet" href="/static/css/flag-icon.css">
+    <link rel="stylesheet" href="{{ asset('static/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('static/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('static/css/mvpready-admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('static/css/mvpready-flat.css') }}">
+    <link rel="stylesheet" href="{{ asset('static/css/chosen.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('static/css/bootstrap-datepicker3.css') }}">
+    <link rel="stylesheet" href="{{ asset('static/css/flag-icon.css') }}">
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js"></script>
 
@@ -53,19 +53,19 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
-<script src="/static/js/mvpready-core.js"></script>
-<script src="/static/js/mvpready-admin.js"></script>
+<script src="{{ asset('/static/js/mvpready-core.js') }}"></script>
+<script src="{{ asset('/static/js/mvpready-admin.js') }}"></script>
 
 @if (isset($sticky_tabs))
-    <script src="/static/js/tab-control.js"></script>
+    <script src="{{ asset('/static/js/tab-control.js') }}"></script>
 @endif
 
 @if (isset($table_javascript))
-    <script src="/static/js/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="/static/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="{{ asset('/static/js/plugins/dataTables/jquery.dataTables.js') }}"></script>
+    <script src="{{ asset('/static/js/plugins/dataTables/dataTables.bootstrap.js') }}"></script>
 
     @if (isset($table_fixed_header))
-        <script src="/static/js/plugins/dataTables/extensions/fixedHeader/dataTables.fixedHeader.min.js"></script>
+        <script src="{{ asset('/static/js/plugins/dataTables/extensions/fixedHeader/dataTables.fixedHeader.min.js') }}"></script>
     @endif
 
     @if (is_array($table_javascript))
@@ -78,25 +78,25 @@
 @endif
 
 @if (isset($search_javascript))
-    <script src="/static/js/pack-finder-select.js"></script>
+    <script src="{{ asset('/static/js/pack-finder-select.js') }}"></script>
 @endif
 
 @if (isset($chosen))
-    <script src="/static/js/plugins/chosen/chosen.jquery.min.js"></script>
+    <script src="{{ asset('/static/js/plugins/chosen/chosen.jquery.min.js') }}"></script>
 
     <script type="text/javascript">
         var chosen_config = {
             'placeholder_text_multiple': ' ',
-            'search_contains': true,
-        }
+            'search_contains': true
+        };
         $(".chosen-select").chosen(chosen_config)
     </script>
 @endif
 
 @if (isset($datepicker))
-    <script src="/static/js/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ asset('/static/js/plugins/datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     <script type="text/javascript">
-        $('#datepicker input').datepicker({
+        $('#datepicker').find('input').datepicker({
             format: "yyyy-mm-dd",
             autoclose: true,
             todayHighlight: true
