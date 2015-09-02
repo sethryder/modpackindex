@@ -164,6 +164,6 @@ class SearchController extends BaseController
             $query_count++;
         }
 
-        return Redirect::action('SearchController@getModpackSearch') . $query_string;
+        return Redirect::to(action('SearchController@getModpackSearch') . $query_string);
     }
 }

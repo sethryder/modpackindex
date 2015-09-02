@@ -167,9 +167,9 @@ class ServerController extends BaseController
         }
 
         if ($modpack) {
-            return Redirect::action('ServerController@getServers', [$modpack]) . $query_string;
+            return Redirect::to(action('ServerController@getServers', [$modpack]) . $query_string);
         } else {
-            return Redirect::action('ServerController@getServers') . $query_string;
+            return Redirect::to(action('ServerController@getServers') . $query_string);
         }
     }
 
@@ -606,7 +606,7 @@ class ServerController extends BaseController
             }
         } else {
             if (!Auth::check()) {
-                return Redirect::action('UserController@getLogin') . '?return=server/edit/' . $id;
+                return Redirect::to(action('UserController@getLogin') . '?return=server/edit/' . $id);
             }
 
             if (Auth::id() != $server->user_id && !$this->checkRoute()) {
@@ -678,13 +678,15 @@ class ServerController extends BaseController
             $validator->getMessageBag()->add('server_address', 'Unable to reach server.');
 
             if (!$logged_in) {
-                return Redirect::action('ServerController@getEdit', [$id, $password])->withErrors($validator)->withInput();
+                return Redirect::action('ServerController@getEdit', [$id, $password])->withErrors($validator)
+                    ->withInput();
             }
 
             return Redirect::action('ServerController@getEdit', [$id])->withErrors($validator)->withInput();
         } elseif ($validator->fails()) {
             if (!$logged_in) {
-                return Redirect::action('ServerController@getEdit', [$id, $password])->withErrors($validator)->withInput();
+                return Redirect::action('ServerController@getEdit', [$id, $password])->withErrors($validator)
+                    ->withInput();
             }
 
             return Redirect::action('ServerController@getEdit', [$id])->withErrors($validator)->withInput();
@@ -817,8 +819,8 @@ class ServerController extends BaseController
                             ->withErrors(['message' => 'Unable to edit server.'])->withInput();
                     }
 
-                    return Redirect::action('ServerController@getEdit', [$id])->withErrors(['message' => 'Unable to edit server.'])
-                        ->withInput();
+                    return Redirect::action('ServerController@getEdit', [$id])
+                        ->withErrors(['message' => 'Unable to edit server.'])->withInput();
                 }
             } else {
                 if (!$logged_in) {
@@ -826,8 +828,8 @@ class ServerController extends BaseController
                         ->withErrors(['message' => 'Unable to edit server.'])->withInput();
                 }
 
-                return Redirect::action('ServerController@getEdit', [$id])->withErrors(['message' => 'Unable to edit server.'])
-                    ->withInput();
+                return Redirect::action('ServerController@getEdit', [$id])
+                    ->withErrors(['message' => 'Unable to edit server.'])->withInput();
             }
         }
     }

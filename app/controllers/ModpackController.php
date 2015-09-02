@@ -182,7 +182,7 @@ class ModpackController extends BaseController
             $forward_string .= $modpack_id . ',';
         }
 
-        return Redirect::action('ModpackController@getCompare?modpacks=' . rtrim($forward_string, ','));
+        return Redirect::to(action('ModpackController@getCompare') . '?modpacks=' . rtrim($forward_string, ','));
     }
 
     public function getAdd($version)
