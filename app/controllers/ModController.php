@@ -11,7 +11,7 @@ class ModController extends BaseController
 
     public function getModVersion($version = 'all')
     {
-        $table_javascript = '/api/table/mods_' . $version . '.json';
+        $table_javascript = route('tdf', ['mods', $version]);
         $version = $this->getVersion($version);
 
         if ($version == 'all') {
@@ -26,7 +26,7 @@ class ModController extends BaseController
 
     public function getMod($slug)
     {
-        $table_javascript = '/api/table/modmodpacks_0/' . $slug . '.json';
+        $table_javascript = route('tdf_name', ['modmodpacks', '0', $slug]);
 
         $mod = Mod::where('slug', '=', $slug)->first();
 
@@ -120,15 +120,15 @@ class ModController extends BaseController
         ];
 
         $validator = Validator::make($input, [
-                'name' => 'required|unique:mods,name',
-                'author' => 'required',
-                'versions' => 'required',
-                'deck' => 'required',
-                'website' => 'url',
-                'download_url' => 'url',
-                'wiki_url' => 'url',
-                'donate_link' => 'url',
-            ], $messages);
+            'name' => 'required|unique:mods,name',
+            'author' => 'required',
+            'versions' => 'required',
+            'deck' => 'required',
+            'website' => 'url',
+            'download_url' => 'url',
+            'wiki_url' => 'url',
+            'donate_link' => 'url',
+        ], $messages);
 
         if ($validator->fails()) {
             return Redirect::to('/mod/add/')->withErrors($validator)->withInput();
@@ -173,7 +173,8 @@ class ModController extends BaseController
                 return View::make('mods.add',
                     ['title' => $title, 'chosen' => true, 'success' => true, 'versions' => $versions]);
             } else {
-                return Redirect::to('/mod/add/')->withErrors(['message' => 'Unable to add mod.'])->withInput();
+                return Redirect::action('ModController@getAdd')->withErrors(['message' => 'Unable to add mod.'])
+                    ->withInput();
             }
 
         }
@@ -266,15 +267,15 @@ class ModController extends BaseController
         ];
 
         $validator = Validator::make($input, [
-                'name' => 'required|unique:mods,name,' . $mod->id,
-                'selected_authors' => 'required',
-                'selected_versions' => 'required',
-                'deck' => 'required',
-                'website' => 'url',
-                'download_url' => 'url',
-                'wiki_url' => 'url',
-                'donate_link' => 'url',
-            ], $messages);
+            'name' => 'required|unique:mods,name,' . $mod->id,
+            'selected_authors' => 'required',
+            'selected_versions' => 'required',
+            'deck' => 'required',
+            'website' => 'url',
+            'download_url' => 'url',
+            'wiki_url' => 'url',
+            'donate_link' => 'url',
+        ], $messages);
 
         if ($validator->fails()) {
             return Redirect::to('/mod/edit/' . $mod->id)->withErrors($validator)->withInput();
@@ -356,8 +357,8 @@ class ModController extends BaseController
                     'can_edit_maintainers' => $can_edit_maintainers,
                 ]);
             } else {
-                return Redirect::to('/mod/edit/' . $mod->id)->withErrors(['message' => 'Unable to edit mod.'])
-                    ->withInput();
+                return Redirect::action('ModController@getEdit', [$mod->id])
+                    ->withErrors(['message' => 'Unable to edit mod.'])->withInput();
             }
 
         }

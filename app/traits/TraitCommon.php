@@ -11,6 +11,11 @@ trait TraitCommon
         return preg_replace('/-/', '.', $version);
     }
 
+    public function getVersionSlug($version)
+    {
+        return preg_replace('/\./', '-', $version);
+    }
+
     public function buildModpackArray(\Modpack $modpack)
     {
         $creators = '';

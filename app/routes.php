@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'ModpackController@getModpackVersion');
+Route::get('/', ['as' => 'index', 'uses' => 'ModpackController@getModpackVersion']);
 //Route::get('/', 'StaticPagesController@getNotLaunched');
 
 Route::get('/test/route', ['as' => 'route_test', 'uses' => 'TestController@getRoute']);

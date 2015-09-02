@@ -1,57 +1,52 @@
 <div id="wrapper">
-
     <header class="navbar navbar-inverse" role="banner">
-
         <div class="container">
-
             <div class="navbar-header">
                 <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <i class="fa fa-cog"></i>
                 </button>
 
-                <a href="/" class="navbar-brand">
+                <a href="{{ route('index') }}" class="navbar-brand">
                     Modpack Index
                 </a>
             </div>
             <!-- /.navbar-header -->
 
             <nav class="collapse navbar-collapse" role="navigation">
-
                 <ul class="nav navbar-nav navbar-right">
+                    {{--<li>--}}
+                    {{--<a href="/about">About</a>--}}
+                    {{--</li>--}}
+                    {{--<li>--}}
+                    {{--<a href="/contact">Contact</a>--}}
+                    {{--</li>--}}
 
-                    {{--          <li>
-                                <a href="/about">About</a>
-                              </li>
-                              <li>
-                                <a href="/contact">Contact</a>
-                              </li>--}}
+                    {{--<li class="dropdown navbar-profile">--}}
+                    {{--<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">--}}
+                    {{--Submit &nbsp;--}}
+                    {{--<i class="fa fa-caret-down"></i>--}}
+                    {{--</a>--}}
 
-                    {{--          <li class="dropdown navbar-profile">
-                                  <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                      Submit &nbsp;
-                                      <i class="fa fa-caret-down"></i>
-                                  </a>
+                    {{--<ul class="dropdown-menu" role="menu">--}}
 
-                                  <ul class="dropdown-menu" role="menu">
+                    {{--<li>--}}
+                    {{--<a href="/submit-modpack">--}}
+                    {{--<i class="fa fa-gear"></i>--}}
+                    {{--&nbsp;&nbsp;Modpack--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
 
-                                      <li>
-                                          <a href="/submit-modpack">
-                                              <i class="fa fa-gear"></i>
-                                              &nbsp;&nbsp;Modpack
-                                          </a>
-                                      </li>
+                    {{--<li>--}}
+                    {{--<a href="/submit-video">--}}
+                    {{--<i class="fa fa-youtube-play"></i>--}}
+                    {{--&nbsp;&nbsp;Video / Playlist--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
 
-                                      <li>
-                                          <a href="/submit-video">
-                                              <i class="fa fa-youtube-play"></i>
-                                              &nbsp;&nbsp;Video / Playlist
-                                          </a>
-                                      </li>
+                    {{--</ul>--}}
 
-                                  </ul>
-
-                              </li>--}}
+                    {{--</li>--}}
 
                     @if (Auth::check())
                         <li class="dropdown navbar-profile">
@@ -436,227 +431,226 @@
                         </a>
                     </li>
 
-                    {{--          <li class="dropdown">
-                                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
-                                    Modpacks
-                                    <i class="mainnav-caret"></i>
-                                    </a>
+                    {{--<li class="dropdown">--}}
+                    {{--<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">--}}
+                    {{--Modpacks--}}
+                    {{--<i class="mainnav-caret"></i>--}}
+                    {{--</a>--}}
 
-                                    <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                      <a href="/modpacks/1-7-10/">
-                                      <img class="fa" src="/static/img/icons/enderman.png" />
-                                      &nbsp;&nbsp;1.7.10 Packs
-                                      </a>
-                                    </li>
+                    {{--<ul class="dropdown-menu" role="menu">--}}
+                    {{--<li>--}}
+                    {{--<a href="/modpacks/1-7-10/">--}}
+                    {{--<img class="fa" src="/static/img/icons/enderman.png"/>--}}
+                    {{--&nbsp;&nbsp;1.7.10 Packs--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
 
-                                    <li>
-                                      <a href="/modpacks/1-6-4/">
-                                      <img class="fa" src="/static/img/icons/creeper.png" />
-                                      &nbsp;&nbsp;1.6.4 Packs
-                                      </a>
-                                    </li>
+                    {{--<li>--}}
+                    {{--<a href="/modpacks/1-6-4/">--}}
+                    {{--<img class="fa" src="/static/img/icons/creeper.png"/>--}}
+                    {{--&nbsp;&nbsp;1.6.4 Packs--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
 
-                                    <li>
-                                      <a href="/modpacks/">
-                                      <img class="fa" src="/static/img/icons/custom.png" />
-                                      &nbsp;&nbsp;All Packs
-                                      </a>
-                                    </li>
-                                    </ul>
-                                </li>
+                    {{--<li>--}}
+                    {{--<a href="/modpacks/">--}}
+                    {{--<img class="fa" src="/static/img/icons/custom.png"/>--}}
+                    {{--&nbsp;&nbsp;All Packs--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
+                    {{--</ul>--}}
+                    {{--</li>--}}
 
+                    {{--<li class="dropdown">--}}
 
-                              <li class="dropdown ">
+                    {{--<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">--}}
+                    {{--Launchers--}}
+                    {{--<i class="mainnav-caret"></i>--}}
+                    {{--</a>--}}
 
-                                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
-                                Launchers
-                                <i class="mainnav-caret"></i>
-                                </a>
+                    {{--<ul class="dropdown-menu" role="menu">--}}
 
-                                <ul class="dropdown-menu" role="menu">
+                    {{--<li class="dropdown-submenu">--}}
+                    {{--<a href="/launcher/feed-the-beast">--}}
+                    {{--<img class="fa" src="/static/img/icons/ftb.png"/>--}}
+                    {{--&nbsp;&nbsp;Feed The Beast--}}
+                    {{--</a>--}}
 
-                                  <li class="dropdown-submenu">
-                                        <a href="/launcher/feed-the-beast">
-                                            <img class="fa" src="/static/img/icons/ftb.png" />
-                                            &nbsp;&nbsp;Feed The Beast
-                                        </a>
+                    {{--<ul class="dropdown-menu">--}}
+                    {{--<li>--}}
+                    {{--<a href="/launcher/feed-the-beast/1-7-10">--}}
+                    {{--<img class="fa" src="/static/img/icons/enderman.png"/>--}}
+                    {{--&nbsp;&nbsp;1.7.10 Packs--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
 
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <a href="/launcher/feed-the-beast/1-7-10">
-                                                    <img class="fa" src="/static/img/icons/enderman.png" />
-                                                    &nbsp;&nbsp;1.7.10 Packs
-                                                </a>
-                                            </li>
+                    {{--<li>--}}
+                    {{--<a href="/launcher/feed-the-beast/1-6-4">--}}
+                    {{--<img class="fa" src="/static/img/icons/creeper.png"/>--}}
+                    {{--&nbsp;&nbsp;1.6.4 Packs--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
 
-                                            <li>
-                                                <a href="/launcher/feed-the-beast/1-6-4">
-                                                    <img class="fa" src="/static/img/icons/creeper.png" />
-                                                    &nbsp;&nbsp;1.6.4 Packs
-                                                </a>
-                                            </li>
+                    {{--<li>--}}
+                    {{--<a href="/launcher/feed-the-beast">--}}
+                    {{--<img class="fa" src="/static/img/icons/custom.png"/>--}}
+                    {{--&nbsp;&nbsp;All Packs--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
+                    {{--</ul>--}}
+                    {{--</li>--}}
 
-                                            <li>
-                                                <a href="/launcher/feed-the-beast">
-                                                    <img class="fa" src="/static/img/icons/custom.png" />
-                                                    &nbsp;&nbsp;All Packs
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
+                    {{--<li class="dropdown-submenu">--}}
+                    {{--<a href="/launcher/curse-launcher">--}}
+                    {{--<img class="fa" src="/static/img/icons/curse.png"/>--}}
+                    {{--&nbsp;&nbsp;Curse Launcher--}}
+                    {{--</a>--}}
 
-                                    <li class="dropdown-submenu">
-                                        <a href="/launcher/curse-launcher">
-                                            <img class="fa" src="/static/img/icons/curse.png" />
-                                            &nbsp;&nbsp;Curse Launcher
-                                        </a>
+                    {{--<ul class="dropdown-menu">--}}
+                    {{--<li>--}}
+                    {{--<a href="/launcher/curse-launcher/1-7-10">--}}
+                    {{--<img class="fa" src="/static/img/icons/enderman.png"/>--}}
+                    {{--&nbsp;&nbsp;1.7.10 Packs--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
 
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <a href="/launcher/curse-launcher/1-7-10">
-                                                    <img class="fa" src="/static/img/icons/enderman.png" />
-                                                    &nbsp;&nbsp;1.7.10 Packs
-                                                </a>
-                                            </li>
+                    {{--<li>--}}
+                    {{--<a href="/launcher/curse-launcher/1-6-4">--}}
+                    {{--<img class="fa" src="/static/img/icons/creeper.png"/>--}}
+                    {{--&nbsp;&nbsp;1.6.4 Packs--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
 
-                                            <li>
-                                                <a href="/launcher/curse-launcher/1-6-4">
-                                                    <img class="fa" src="/static/img/icons/creeper.png" />
-                                                    &nbsp;&nbsp;1.6.4 Packs
-                                                </a>
-                                            </li>
+                    {{--<li>--}}
+                    {{--<a href="/launcher/curse-launcher">--}}
+                    {{--<img class="fa" src="/static/img/icons/custom.png"/>--}}
+                    {{--&nbsp;&nbsp;All Packs--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
+                    {{--</ul>--}}
+                    {{--</li>--}}
 
-                                            <li>
-                                                <a href="/launcher/curse-launcher">
-                                                    <img class="fa" src="/static/img/icons/custom.png" />
-                                                    &nbsp;&nbsp;All Packs
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
+                    {{--<li class="dropdown-submenu">--}}
+                    {{--<a href="/launcher/atlauncher">--}}
+                    {{--<img class="fa" src="/static/img/icons/atlauncher.png"/>--}}
+                    {{--&nbsp;&nbsp;ATLaucher--}}
+                    {{--</a>--}}
 
-                                  <li class="dropdown-submenu">
-                                    <a href="/launcher/atlauncher">
-                                    <img class="fa" src="/static/img/icons/atlauncher.png" />
-                                    &nbsp;&nbsp;ATLaucher
-                                    </a>
+                    {{--<ul class="dropdown-menu">--}}
+                    {{--<li>--}}
+                    {{--<a href="/launcher/atlauncher/1-7-10">--}}
+                    {{--<img class="fa" src="/static/img/icons/enderman.png"/>--}}
+                    {{--&nbsp;&nbsp;1.7.10 Packs--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
 
-                                    <ul class="dropdown-menu">
-                                          <li>
-                                            <a href="/launcher/atlauncher/1-7-10">
-                                            <img class="fa" src="/static/img/icons/enderman.png" />
-                                            &nbsp;&nbsp;1.7.10 Packs
-                                            </a>
-                                          </li>
+                    {{--<li>--}}
+                    {{--<a href="/launcher/atlauncher/1-6-4">--}}
+                    {{--<img class="fa" src="/static/img/icons/creeper.png"/>--}}
+                    {{--&nbsp;&nbsp;1.6.4 Packs--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
 
-                                          <li>
-                                            <a href="/launcher/atlauncher/1-6-4">
-                                            <img class="fa" src="/static/img/icons/creeper.png" />
-                                            &nbsp;&nbsp;1.6.4 Packs
-                                            </a>
-                                          </li>
+                    {{--<li>--}}
+                    {{--<a href="/launcher/atlauncher">--}}
+                    {{--<img class="fa" src="/static/img/icons/custom.png"/>--}}
+                    {{--&nbsp;&nbsp;All Packs--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
+                    {{--</ul>--}}
+                    {{--</li>--}}
 
-                                          <li>
-                                            <a href="/launcher/atlauncher">
-                                            <img class="fa" src="/static/img/icons/custom.png" />
-                                            &nbsp;&nbsp;All Packs
-                                            </a>
-                                          </li>
-                                      </ul>
-                                  </li>
+                    {{--<li class="dropdown-submenu">--}}
+                    {{--<a href="/launcher/technic-platform">--}}
+                    {{--<img class="fa" src="/static/img/icons/technic.png"/>--}}
+                    {{--&nbsp;&nbsp;Technic Platform--}}
+                    {{--</a>--}}
 
-                                  <li class="dropdown-submenu">
-                                    <a href="/launcher/technic-platform">
-                                    <img class="fa" src="/static/img/icons/technic.png" />
-                                    &nbsp;&nbsp;Technic Platform
-                                    </a>
+                    {{--<ul class="dropdown-menu">--}}
+                    {{--<li>--}}
+                    {{--<a href="/launcher/technic-platform/1-7-10">--}}
+                    {{--<img class="fa" src="/static/img/icons/enderman.png"/>--}}
+                    {{--&nbsp;&nbsp;1.7.10 Packs--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
 
-                                    <ul class="dropdown-menu">
-                                          <li>
-                                            <a href="/launcher/technic-platform/1-7-10">
-                                            <img class="fa" src="/static/img/icons/enderman.png" />
-                                            &nbsp;&nbsp;1.7.10 Packs
-                                            </a>
-                                          </li>
+                    {{--<li>--}}
+                    {{--<a href="/launcher/technic-platform/1-6-4">--}}
+                    {{--<img class="fa" src="/static/img/icons/creeper.png"/>--}}
+                    {{--&nbsp;&nbsp;1.6.4 Packs--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
 
-                                          <li>
-                                            <a href="/launcher/technic-platform/1-6-4">
-                                            <img class="fa" src="/static/img/icons/creeper.png" />
-                                            &nbsp;&nbsp;1.6.4 Packs
-                                            </a>
-                                          </li>
+                    {{--<li>--}}
+                    {{--<a href="/launcher/technic-platform">--}}
+                    {{--<img class="fa" src="/static/img/icons/custom.png"/>--}}
+                    {{--&nbsp;&nbsp;All Packs--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
+                    {{--</ul>--}}
+                    {{--</li>--}}
 
-                                          <li>
-                                            <a href="/launcher/technic-platform">
-                                            <img class="fa" src="/static/img/icons/custom.png" />
-                                            &nbsp;&nbsp;All Packs
-                                            </a>
-                                          </li>
-                                      </ul>
-                                  </li>
+                    {{--<li class="dropdown-submenu">--}}
+                    {{--<a href="/launcher/custom">--}}
+                    {{--<img class="fa" src="/static/img/icons/custom.png"/>--}}
+                    {{--&nbsp;&nbsp;Custom--}}
+                    {{--</a>--}}
 
-                                  <li class="dropdown-submenu">
-                                    <a href="/launcher/custom">
-                                    <img class="fa" src="/static/img/icons/custom.png" />
-                                    &nbsp;&nbsp;Custom
-                                    </a>
+                    {{--<ul class="dropdown-menu">--}}
+                    {{--<li>--}}
+                    {{--<a href="/launcher/custom/1-7-10">--}}
+                    {{--<img class="fa" src="/static/img/icons/enderman.png"/>--}}
+                    {{--&nbsp;&nbsp;1.7.10 Packs--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
 
-                                    <ul class="dropdown-menu">
-                                          <li>
-                                            <a href="/launcher/custom/1-7-10">
-                                            <img class="fa" src="/static/img/icons/enderman.png" />
-                                            &nbsp;&nbsp;1.7.10 Packs
-                                            </a>
-                                          </li>
+                    {{--<li>--}}
+                    {{--<a href="/launcher/custom/1-6-4">--}}
+                    {{--<img class="fa" src="/static/img/icons/creeper.png"/>--}}
+                    {{--&nbsp;&nbsp;1.6.4 Packs--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
 
-                                          <li>
-                                            <a href="/launcher/custom/1-6-4">
-                                            <img class="fa" src="/static/img/icons/creeper.png" />
-                                            &nbsp;&nbsp;1.6.4 Packs
-                                            </a>
-                                          </li>
+                    {{--<li>--}}
+                    {{--<a href="/launcher/custom">--}}
+                    {{--<img class="fa" src="/static/img/icons/custom.png"/>--}}
+                    {{--&nbsp;&nbsp;All Packs--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
+                    {{--</ul>--}}
+                    {{--</li>--}}
+                    {{--</ul>--}}
+                    {{--</li>--}}
 
-                                          <li>
-                                            <a href="/launcher/custom">
-                                            <img class="fa" src="/static/img/icons/custom.png" />
-                                            &nbsp;&nbsp;All Packs
-                                            </a>
-                                          </li>
-                                      </ul>
-                                  </li>
-                                </ul>
-                              </li>
+                    {{--<li class="dropdown">--}}
+                    {{--<a href="/mods" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">--}}
+                    {{--Mods--}}
+                    {{--<i class="mainnav-caret"></i>--}}
+                    {{--</a>--}}
 
-                                <li class="dropdown">
-                                    <a href="/mods" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
-                                    Mods
-                                    <i class="mainnav-caret"></i>
-                                    </a>
+                    {{--<ul class="dropdown-menu" role="menu">--}}
+                    {{--<li>--}}
+                    {{--<a href="/mods/1-7-10/">--}}
+                    {{--<img class="fa" src="/static/img/icons/enderman.png"/>--}}
+                    {{--&nbsp;&nbsp;1.7.10 Mods--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
 
-                                    <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                      <a href="/mods/1-7-10/">
-                                      <img class="fa" src="/static/img/icons/enderman.png" />
-                                      &nbsp;&nbsp;1.7.10 Mods
-                                      </a>
-                                    </li>
+                    {{--<li>--}}
+                    {{--<a href="/mods/1-6-4/">--}}
+                    {{--<img class="fa" src="/static/img/icons/creeper.png"/>--}}
+                    {{--&nbsp;&nbsp;1.6.4 Mods--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
 
-                                    <li>
-                                      <a href="/mods/1-6-4/">
-                                      <img class="fa" src="/static/img/icons/creeper.png" />
-                                      &nbsp;&nbsp;1.6.4 Mods
-                                      </a>
-                                    </li>
-
-                                    <li>
-                                      <a href="/mods/">
-                                      <img class="fa" src="/static/img/icons/custom.png" />
-                                      &nbsp;&nbsp;All Mods
-                                      </a>
-                                    </li>
-                                    </ul>
-                                </li>--}}
+                    {{--<li>--}}
+                    {{--<a href="/mods/">--}}
+                    {{--<img class="fa" src="/static/img/icons/custom.png"/>--}}
+                    {{--&nbsp;&nbsp;All Mods--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
+                    {{--</ul>--}}
+                    {{--</li>--}}
 
                     @if (isset($user_permissions))
                         <li class="dropdown">

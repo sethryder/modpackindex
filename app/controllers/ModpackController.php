@@ -247,7 +247,7 @@ class ModpackController extends BaseController
         ], $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/modpack/' . $url_version . '/add')->withErrors($validator)->withInput();
+            return Redirect::action('ModpackController@getAdd', [$url_version])->withErrors($validator)->withInput();
         } else {
             $modpack = new Modpack;
 
@@ -398,11 +398,11 @@ class ModpackController extends BaseController
                 if ($this->checkRoute()) {
                     $can_edit_maintainers = true;
                 } else {
-                    return Redirect::to('/');
+                    return Redirect::action('ModpackController@getModpackVersion');
                 }
             }
         } else {
-            return Redirect::to('/');
+            return Redirect::action('ModpackController@getModpackVersion');
         }
 
         $minecraft_version = MinecraftVersion::where('id', '=', $modpack->minecraft_version_id)->first();
@@ -433,7 +433,7 @@ class ModpackController extends BaseController
         ], $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/modpack/edit/' . $modpack->id)->withErrors($validator)->withInput();
+            return Redirect::action('ModController@getEdit', [$modpack->id])->withErrors($validator)->withInput();
         } else {
             $modpack->name = $input['name'];
             $modpack->launcher_id = $input['launcher'];
