@@ -6,7 +6,7 @@ class LauncherController extends BaseController
 
     public function getLauncherVersion($name, $version = 'all')
     {
-        $table_javascript = '/api/table/launchers_' . $version . '/' . $name . '.json';
+        $table_javascript = route('tdf_name', ['launchers', $version, $name]);
         $version = $this->getVersion($version);
 
         if ($version == 'all') {
