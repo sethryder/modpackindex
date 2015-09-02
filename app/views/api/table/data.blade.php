@@ -21,7 +21,9 @@ $(this).parents ('.dataTables_wrapper').find ('.dataTables_filter input').prop (
 },
 "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 var icon_object = aData.icon_html;
+if (typeof icon_object !== 'undefined') {
 $('td:eq(4)', nRow).html("<a href='"+icon_object.link+"'>"+"<img src='"+icon_object.icon+"'></a>");
+}
 }});
 @if ($table_fixed_header == true)new $.fn.dataTable.FixedHeader( table_1 );
 @endif
