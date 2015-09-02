@@ -284,7 +284,7 @@
                                     <li class="dropdown-submenu">
                                         <a href="{{ action('LauncherController@getLauncherVersion', ['at-launcher']) }}">
                                             <img class="fa" src="{{ asset('/static/img/icons/atlauncher.png') }}"/>
-                                            &nbsp;&nbsp;ATLaucher
+                                            &nbsp;&nbsp;ATLauncher
                                         </a>
 
                                         <ul class="dropdown-menu">
