@@ -236,11 +236,7 @@ class JSONController extends BaseController
             }
         }
 
-        // TODO convert to Response::json
-        return View::make('api.table.modpacks.compare', [
-            'mods' => $mods,
-            'modpacks' => $modpacks,
-        ]);
+        return $this->buildDTCompareOutput($mods, $modpacks);
     }
 
     public function getModsSelect($version)
@@ -528,15 +524,13 @@ class JSONController extends BaseController
 
                 if ($input['tags'] && $input['mods']) {
                     $ajax_source = action('JSONController@getModpackSearch',
-                            [$version]) . '.json?mods=' . $input['mods'] . '&tags=' . $input['tags'];
+                            [$version]) . '?mods=' . $input['mods'] . '&tags=' . $input['tags'];
                 } elseif ($input['mods']) {
-                    $ajax_source = action('JSONController@getModpackSearch',
-                            [$version]) . '.json?mods=' . $input['mods'];
+                    $ajax_source = action('JSONController@getModpackSearch', [$version]) . '?mods=' . $input['mods'];
                 } elseif ($input['tags']) {
-                    $ajax_source = action('JSONController@getModpackSearch',
-                            [$version]) . '.json?tags=' . $input['tags'];
+                    $ajax_source = action('JSONController@getModpackSearch', [$version]) . '?tags=' . $input['tags'];
                 } else {
-                    $ajax_source = action('JSONController@getModpackSearch', [$version]) . '.json';
+                    $ajax_source = action('JSONController@getModpackSearch', [$version]);
                 }
                 break;
 

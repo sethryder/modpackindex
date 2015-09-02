@@ -226,4 +226,27 @@ trait TraitCommon
 
         return Response::json(['id' => -1, 'fieldErrors' => '', 'sError' => '', 'aaData' => $dtArray]);
     }
+
+    public function buildDTCompareOutput($mod_data, $modpack_data)
+    {
+        // rebuild the data table array to add the dt row id field
+        $dtArray = [];
+        $i = 0;
+        foreach ($mod_data as $mod) {
+            $mod['DT_RowId'] = $i;
+
+            foreach ($modpack_data as $modpack_id => $modpack) {
+                if (in_array($modpack_id, $mod['packs'])) {
+                    $mod[$modpack_id] = 'X';
+                } else {
+                    $mod[$modpack_id] = '';
+                }
+            }
+
+            $dtArray[] = $mod;
+            $i++;
+        }
+
+        return Response::json(['id' => -1, 'fieldErrors' => '', 'sError' => '', 'aaData' => $dtArray]);
+    }
 }
