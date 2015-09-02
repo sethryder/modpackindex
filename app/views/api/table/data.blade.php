@@ -21,7 +21,7 @@ var table_1 = $('#{{ $table_id }}').dataTable ({
 "fnInitComplete": function(oSettings, json) {
 $(this).parents ('.dataTables_wrapper').find ('.dataTables_filter input').prop ('placeholder', 'Search...').addClass ('form-control input-sm')
 },
-@if (($type == 'modpacks') || ($type == 'launchers') || ($type == 'modpackfinder'))
+@if (($type == 'modpacks') || ($type == 'launchers') || ($type == 'modpackfinder') || $type == 'modmodpacks')
 "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 var icon_object = aData.icon_html;
 if (typeof icon_object !== 'undefined') {
@@ -31,7 +31,7 @@ $('td:eq(4)', nRow).html("<a href='"+icon_object.link+"'>"+"<img src='"+icon_obj
 });
 @if ($table_fixed_header == true)new $.fn.dataTable.FixedHeader( table_1 );
 @endif
-@if (($type == 'modpacks') || ($type == 'launchers') || ($type == 'modpackfinder'))
+@if (($type == 'modpacks') || ($type == 'launchers') || ($type == 'modpackfinder') || $type == 'modmodpacks')
 jQuery.extend( jQuery.fn.dataTableExt.oSort, {
 "launcher-asc": function( a, b ) {
 var x = a.title.toLowerCase();

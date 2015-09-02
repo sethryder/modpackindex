@@ -165,7 +165,7 @@ class JSONController extends BaseController
             Cache::tags('modmodpacks')->forever($cache_key, $modpacks_array);
         }
 
-        return $this->buildDTLauncherOutput($modpacks_array);
+        return $this->buildDTModpackOutput($modpacks_array);
     }
 
     public function getModpackSearch($version)
@@ -356,9 +356,9 @@ class JSONController extends BaseController
 
             $servers_array[] = [
                 'id' => $server->id,
-                'name' => json_encode($server_name),
-                'modpack' => json_encode($modpack),
-                'options' => json_encode($options),
+                'name' => $server_name,
+                'modpack' => $modpack,
+                'options' => $options,
                 'server_address' => $server_address,
                 'players' => $players,
                 'deck' => $server->deck,
@@ -607,7 +607,7 @@ class JSONController extends BaseController
 
             case 'servermods':
                 $columns_array = [
-                    'mod',
+                    'name',
                     'version',
                 ];
 
