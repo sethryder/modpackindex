@@ -377,27 +377,27 @@
                             </li>
 
                             <li class="dropdown-submenu">
-                                <a href="{{ action('ModController@getMod') }}">
+                                <a href="{{ action('ModController@getModVersion') }}">
                                     &nbsp;&nbsp;Mods
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="{{ action('ModController@getMod', ['1-7-10']) }}">
+                                        <a href="{{ action('ModController@getModVersion', ['1-7-10']) }}">
                                             <img class="fa" src="{{ asset('/static/img/icons/enderman.png') }}"/>
                                             &nbsp;&nbsp;1.7.10 Mods
                                         </a>
                                     </li>
 
                                     <li>
-                                        <a href="{{ action('ModController@getMod', ['1-6-4']) }}">
+                                        <a href="{{ action('ModController@getModVersion', ['1-6-4']) }}">
                                             <img class="fa" src="{{ asset('/static/img/icons/creeper.png') }}"/>
                                             &nbsp;&nbsp;1.6.4 Mods
                                         </a>
                                     </li>
 
                                     <li>
-                                        <a href="{{ action('ModController@getMod') }}">
+                                        <a href="{{ action('ModController@getModVersion') }}">
                                             <img class="fa" src="{{ asset('/static/img/icons/custom.png') }}"/>
                                             &nbsp;&nbsp;All Mods
                                         </a>
