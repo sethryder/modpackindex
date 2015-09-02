@@ -24,9 +24,11 @@ $app = new Illuminate\Foundation\Application;
 |
 */
 
-/*$env = $app->detectEnvironment(function () {
-    return require __DIR__ . '/environment.php'; // load the specified environment
-});*/
+$env = $app->detectEnvironment(array(
+
+    'dev' => array('zpm'),
+
+));
 
 /*
 |--------------------------------------------------------------------------
