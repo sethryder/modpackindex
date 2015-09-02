@@ -5,8 +5,7 @@
 composer.phar
 .env.*.php
 .env.php
-.DS_Store
-Thumbs.db
+environment.php
 public.old
 app/controllers/TestController.php
 
@@ -55,3 +54,5 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+_ide_helper.php
