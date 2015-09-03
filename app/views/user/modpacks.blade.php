@@ -28,7 +28,7 @@
                             <tr>
                                 <td>{{{ $modpack['name'] }}}</td>
                                 <td>{{{ $modpack['version'] }}}</td>
-                                <td><a href="/modpack/{{{ $modpack['version_slug'] }}}/{{{ $modpack['slug'] }}}">View</a> @if($my_profile)| <a href="/modpack/edit/{{ $modpack['id'] }}">Edit</a>@endif</td>
+                                <td><a href="{{ action('ModpackController@getModpack', [$modpack['version_slug'], $modpack['slug']]) }}">View</a> @if($my_profile)| <a href="{{ action('ModpackController@getEdit', [$modpack['id']]) }}">Edit</a>@endif</td>
                             </tr>
                         @endforeach
                         </tbody>

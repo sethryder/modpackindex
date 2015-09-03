@@ -9,7 +9,7 @@
 
                 @if (!$error)
                     <div class="alert alert-success">
-                        <strong>Server confirmed!</strong> You can view your server <a href="/server/{{{ $server->id }}}/{{{ $server->slug }}}">here</a>.
+                        <strong>Server confirmed!</strong> You can view your server <a href="{{ action('ServerController@getServer', [$server->id, $server->slug]) }}">here</a>.
                     </div> <!-- /.alert -->
                 @else
                     <div class="alert alert-danger">

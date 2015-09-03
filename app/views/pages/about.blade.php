@@ -14,7 +14,7 @@
                 <div class="portlet-body">
                     <p><b>Modpack Index</b> was built as utility to help keep track of the amazing growing community of
                         modpacks. The sites true aim is to help you find the right modpack for yourself, that is why we
-                        built the ‘<a href="/modpack/finder/1-7-10/">Pack Finder</a>’ feature to help you do so. The
+                        built the ‘<a href="{{ action('SearchController@getModpackSearch') }}">Pack Finder</a>’ feature to help you do so. The
                         site is currently in early beta so it may have some rough edges, but we are continuing to add
                         features and fix bugs.</p>
 

@@ -39,7 +39,7 @@
                 <!-- /.form-group -->
 
                 <div class="form-group">
-                    {{ Form::text('email', null, array('class' => 'form-control', 'placeholder' => 'Your Email'))}}
+                    {{ Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'Your Email'])}}
                 </div>
                 <!-- /.form-group -->
 
@@ -49,7 +49,7 @@
                 <!-- /.form-group -->
 
                 <div class="form-group">
-                    {{ Form::password('confirm_password', array('class' => 'form-control', 'placeholder' => 'Confirm Your Password'))}}
+                    {{ Form::password('confirm_password', ['class' => 'form-control', 'placeholder' => 'Confirm Your Password'])}}
                 </div>
                 <!-- /.form-group -->
 
@@ -67,7 +67,7 @@
             <div class="account-footer">
                 <p>
                     Already have an account?
-                    <a href="/login" class="">Login in!</a>
+                    <a href="{{ action('UserController@getLogin') }}" class="">Login in!</a>
                 </p>
             </div>
             <!-- /.account-footer -->

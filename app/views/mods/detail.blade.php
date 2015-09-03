@@ -39,7 +39,7 @@
                             <?php $i++; ?>
                         @endforeach
                         @if (isset($user_permissions['mod_edit']) || $can_edit == true)
-                            | <a href="/mod/edit/{{{ $mod->id }}}"><i class="fa fa-edit"></i>Edit</a>
+                            | <a href="{{ action('ModController@getEdit', [$mod->id]) }}"><i class="fa fa-edit"></i>Edit</a>
                         @endif
                     </p>
 
@@ -66,7 +66,7 @@
 
                         @if (isset($tutorials[0]))
                             <li class="">
-                                <a href="#tutorials" data-toggle="tab">Spotlights</a>
+                                <a href="#tutorials" data-toggle="tab">Tutorials</a>
                             </li>
                         @endif
                     </ul>
@@ -112,7 +112,7 @@
 
                                             <div class="thumbnail">
                                                 <div class="thumbnail-view">
-                                                    <a href="/mod/{{{ $mod->slug }}}/spotlight/{{{ $spotlight->id }}}-{{{ Str::slug($spotlight->channel_title)  }}}">
+                                                    <a href="{{ action('YoutubeController@getModVideo', [$mod->slug, $spotlight->id, Str::slug($spotlight->channel_title)]) }}">
                                                         <img src="{{{ $spotlight->thumbnail }}}" style="width: 100%"/></a>
                                                 </div>
                                                 <div class="thumbnail-footer">
@@ -139,7 +139,7 @@
 
                                             <div class="thumbnail">
                                                 <div class="thumbnail-view">
-                                                    <a href="/modpack/{{{ $version }}}/{{{ $modpack->slug }}}/video/{{{ $tutorial->id }}}">
+                                                    <a href="{{ action('YoutubeController@getModVideo', [$tutorial->slug, $tutorial->id, Str::slug($tutorial->channel_title)]) }}">
                                                         <img src="{{{ $tutorial->thumbnail }}}" style="width: 100%"/></a>
                                                 </div>
                                                 <div class="thumbnail-footer">

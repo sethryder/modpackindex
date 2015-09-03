@@ -21,7 +21,7 @@
 
                         <div class="form-group server-filter-tags">
                             {{ Form::label('tags','Tags') }}:
-                            {{ Form::select('tags[]', ServerTag::orderBy('name')->lists('name', 'slug'), $selected_tags, array('multiple', 'class' => 'chosen-select form-control')) }}
+                            {{ Form::select('tags[]', ServerTag::orderBy('name')->lists('name', 'slug'), $selected_tags, ['multiple', 'class' => 'chosen-select form-control']) }}
                         </div>
 
                         <div class="form-group">
@@ -31,7 +31,7 @@
 
                         <div class="form-group">
                             {{ Form::label('permission','Permission') }}:
-                            {{ Form::select('permission', ['any' => 'Any'] + $permissions, $selected_permission, array('class' => 'server-filter form-control')) }}
+                            {{ Form::select('permission', ['any' => 'Any'] + $permissions, $selected_permission, ['class' => 'server-filter form-control']) }}
                         </div>
 
                         {{ Form::submit('Filter', ['class' => 'btn btn-danger']) }}
@@ -46,7 +46,7 @@
 
                 <h3 class="portlet-title">
                     <u>{{ $modpack_name or "All" }} Servers</u>
-                    <div class="pull-right"> <a href="/server/add" class="btn btn-primary" role="button">Add Server</a></div>
+                    <div class="pull-right"> <a href="{{ action('ServerController@getAdd') }}" class="btn btn-primary" role="button">Add Server</a></div>
                 </h3>
 
                 <div class="portlet-body">

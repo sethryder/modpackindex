@@ -24,7 +24,7 @@
                             @if (!Auth::check())
                             <p>Since you are not logged in, we will send you an email to activate your server and a special
                             URL so that you may edit your server after it is added. If you will be adding multiple servers
-                            we highly suggest creating a user account <a href="/user/register">here</a> to make it easier
+                            we highly suggest creating a user account <a href="{{ action('UserController@getRegister') }}">here</a> to make it easier
                             to manage.</p>
                             @endif
 

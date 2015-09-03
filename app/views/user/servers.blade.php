@@ -30,7 +30,7 @@
                         @foreach ($active_servers as $server)
                             <tr>
                                 <td>{{{ $server->name }}}</td>
-                                <td><a href="/server/{{{ $server->id }}}/{{{ $server->slug }}}">View</a> @if($my_profile)| <a href="/server/edit/{{ $server->id }}">Edit</a>@endif</td>
+                                <td><a href="{{ action('ServerController@getServer', [$server->id, $server->slug]) }}">View</a> @if($my_profile)| <a href="{{ action('ServerController@getEdit', [$server->id]) }}">Edit</a>@endif</td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -60,7 +60,7 @@
                             @foreach ($inactive_servers as $server)
                                 <tr>
                                     <td>{{{ $server->name }}}</td>
-                                    <td><a href="/server/{{{ $server->id }}}/{{{ $server->slug }}}">View</a> @if($my_profile)| <a href="/server/edit/{{ $server->id }}">Edit</a>@endif</td>
+                                    <td><a href="{{ action('ServerController@getServer', [$server->id, $server->slug]) }}">View</a> @if($my_profile)| <a href="{{ action('ServerController@getEdit', [$server->id]) }}">Edit</a>@endif</td>
                                 </tr>
                             @endforeach
                             </tbody>

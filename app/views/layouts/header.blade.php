@@ -51,7 +51,7 @@
                     @if (Auth::check())
                         <li class="dropdown navbar-profile">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                Submit 
+                                Submit
                                 <i class="fa fa-caret-down"></i>
                             </a>
 
@@ -83,7 +83,7 @@
                         </li>
                         <li class="dropdown navbar-profile">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                {{{ Auth::user()->username }}} 
+                                {{{ Auth::user()->username }}}
                                 <i class="fa fa-caret-down"></i>
                             </a>
 
@@ -116,7 +116,7 @@
                         </li>
                         <li class="dropdown navbar-profile">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                Submit 
+                                Submit
                                 <i class="fa fa-caret-down"></i>
                             </a>
 
@@ -654,7 +654,7 @@
 
                     @if (isset($user_permissions))
                         <li class="dropdown">
-                            <a href="/mods" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                            <a href="{{ action('ModController@getModVersion') }}" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
                                 Site Admin
                                 <i class="mainnav-caret"></i>
                             </a>
