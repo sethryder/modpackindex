@@ -54,16 +54,16 @@ class ModpackController extends BaseController
         $launcher = $modpack->launcher;
         $creators = $modpack->creators;
 
-        $creators_formatted = implode(',', array_map(function ($creator) {
-            return $creator->name;
+        $creators_formatted = implode(', ', array_map(function ($creator) {
+            return $creator['name'];
         }, $creators->toArray()));
 
         $pack_code = $modpack->code;
         $tags = $modpack->tags;
 
-        $tags_formatted = implode(',', array_map(function ($tag) {
-            return link_to(action('SearchController@getModpackSearch') . '?tag=' . $tag->slug, $tag->name,
-                ['title' => $tag->deck]);
+        $tags_formatted = implode(', ', array_map(function ($tag) {
+            return link_to(action('SearchController@getModpackSearch') . '?tag=' . $tag['slug'], $tag['name'],
+                ['title' => $tag['deck']]);
         }, $tags->toArray()));
 
         $server_count = $modpack->servers()->where('active', 1)->count();
@@ -91,7 +91,7 @@ class ModpackController extends BaseController
             }
         }
 
-        $links_formatted = implode('|', array_map(function ($link) {
+        $links_formatted = implode(' | ', array_map(function ($link) {
             if ($link['type'] == 'website') {
                 return "<a href='{$link['link']}'><i class='fa fa-external-link'></i>Website</a>";
             }

@@ -15,7 +15,7 @@
 
                     <p>
                         <a href="{{ action('LauncherController@getLauncherVersion', [$launcher->slug]) }}"><i class="fa fa-rocket"></i>{{ $launcher->name }}</a>
-                        |{{ $links_formatted }}
+                        | {{ $links_formatted }}
                         @if (isset($user_permissions['modpack_edit']) || $can_edit == true)
                             | <a href="{{ action('ModpackController@getEdit', [$modpack->id]) }}"><i
                                         class="fa fa-edit"></i>Edit</a>
