@@ -50,7 +50,7 @@ class ModpackAliasController extends BaseController
             $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/modpack-alias/add')->withErrors($validator)->withInput();
+            return Redirect::action('ModpackAliasController@getAdd')->withErrors($validator)->withInput();
         } else {
             $modpackalias = new ModpackAlias();
 

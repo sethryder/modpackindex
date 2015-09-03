@@ -131,7 +131,7 @@ class ModController extends BaseController
         ], $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/mod/add/')->withErrors($validator)->withInput();
+            return Redirect::action('ModController@getAdd')->withErrors($validator)->withInput();
         } else {
             $mod = new Mod;
 
@@ -278,7 +278,7 @@ class ModController extends BaseController
         ], $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/mod/edit/' . $mod->id)->withErrors($validator)->withInput();
+            return Redirect::action('ModController@getEdit', [$mod->id])->withErrors($validator)->withInput();
         } else {
             $mod->name = $input['name'];
             $mod->deck = $input['deck'];

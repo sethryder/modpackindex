@@ -60,7 +60,8 @@ class ImportController extends BaseController
             $mod_info = $this->processUpload($import_file);
 
             if (!$mod_info) {
-                return Redirect::to('/mod/import')->withErrors(['message' => 'Unable to process uploaded file.'])->withInput();
+                return Redirect::action('ImportController@getStartImport')
+                    ->withErrors(['message' => 'Unable to process uploaded file.'])->withInput();
             }
         } else {
             $import_type = 'mcmodinfo';
@@ -70,13 +71,15 @@ class ImportController extends BaseController
                 $mod_info = $import->downloadModInfo($input['url']);
 
                 if (!$mod_info) {
-                    return Redirect::to('/mod/import')->withErrors(['message' => 'Cannot parse URL contents.'])->withInput();
+                    return Redirect::action('ImportController@getStartImport')
+                        ->withErrors(['message' => 'Cannot parse URL contents.'])->withInput();
                 }
             } elseif ($input['json']) {
                 $mod_info = json_decode($input['json']);
 
                 if (!$mod_info) {
-                    return Redirect::to('/mod/import')->withErrors(['message' => 'Cannot parse JSON.'])->withInput();
+                    return Redirect::action('ImportController@getStartImport')
+                        ->withErrors(['message' => 'Cannot parse JSON.'])->withInput();
                 }
             }
         }
@@ -114,7 +117,6 @@ class ImportController extends BaseController
                 }
             }
 
-
             $mod_info_array['minecraft_version'] = $nem_mod->raw_minecraft_versions;
             $mod_info_array['authors'] = $nem_mod->raw_authors;
             $mod_info_array['url'] = $nem_mod->url;
@@ -144,7 +146,8 @@ class ImportController extends BaseController
             $success = $import_index->save();
 
             if (!$success) {
-                return Redirect::to('/mod/import')->withErrors(['message' => 'Unable to save to database.'])->withInput();
+                return Redirect::action('ImportController@getStartImport')
+                    ->withErrors(['message' => 'Unable to save to database.'])->withInput();
             }
 
             $import_id = $import_index->id;
@@ -152,13 +155,14 @@ class ImportController extends BaseController
             $authors_to_process = $this->processAuthors($import_id, unserialize($mod_info_array['authors']));
 
             if ($authors_to_process > 0) {
-                return Redirect::to('/mod/import/' . $import_id . '/author');
+                return Redirect::action('ImportController@getImportAuthor', [$import_id]);
             } else {
-                return Redirect::to('/mod/import/' . $import_id);
+                return Redirect::action('ImportController@getImportMod', [$import_id]);
             }
         }
 
-        return Redirect::to('/mod/import')->withErrors(['message' => 'Something went wrong.'])->withInput();
+        return Redirect::action('ImportController@getStartImport')->withErrors(['message' => 'Something went wrong.'])
+            ->withInput();
     }
 
     public function getImportAuthor($import_id, $author_id = null)
@@ -170,15 +174,14 @@ class ImportController extends BaseController
         $import_mod = Import::find($import_id);
 
         if ($author_id) {
-            $import_author = ImportAuthor::where('import_id', '=', $import_id)->where('status', '=', 0)->where('id',
-                '=', $author_id)->first();
+            $import_author = ImportAuthor::where('import_id', '=', $import_id)->where('status', '=', 0)
+                ->where('id', '=', $author_id)->first();
         } else {
             $import_author = ImportAuthor::where('import_id', '=', $import_id)->where('status', '=', 0)->first();
         }
 
-
         if (!$import_author) {
-            return Redirect::to('/mod/import/' . $import_id);
+            return Redirect::action('ImportController@getImportMod', [$import_id]);
         }
 
         $title = 'Author Import for ' . $import_mod->name . ' - ' . $this->site_name;
@@ -211,16 +214,15 @@ class ImportController extends BaseController
             'url' => 'The :attribute field is not a valid URL.'
         ];
 
-        $validator = Validator::make($input,
-            [
+        $validator = Validator::make($input, [
                 'name' => 'required|unique:authors,name',
                 'website' => 'url',
                 'donate_link' => 'url',
-            ],
-            $messages);
+            ], $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/mod/import/' . $import_id . '/' . $author_id)->withErrors($validator)->withInput();
+            return Redirect::action('ImportController@getImportAuthor', [$import_id, $author_id])
+                ->withErrors($validator)->withInput();
         } else {
             if ($input['alias'] == 0) {
                 $author = new Author;
@@ -266,12 +268,12 @@ class ImportController extends BaseController
                 $import_authors = ImportAuthor::where('import_id', '=', $import_id)->where('status', '=', 0)->first();
 
                 if (!$import_authors) {
-                    return Redirect::to('/mod/import/' . $import_mod->id);
+                    return Redirect::action('ImportController@getImportMod', [$import_mod->id]);
                 } else {
-                    return Redirect::to('/mod/import/' . $import_mod->id . '/author');
+                    return Redirect::action('ImportController@getImportAuthor', [$import_mod->id]);
                 }
             } else {
-                return Redirect::to('/mod/import/' . $import_mod->id . '/authors/' . $import_mod->id)
+                return Redirect::action('ImportController@getImportAuthor', [$import_mod->id, $import_author->id])
                     ->withErrors(['message' => 'Unable to add author.'])->withInput();
             }
 
@@ -292,7 +294,7 @@ class ImportController extends BaseController
         $versions = MinecraftVersion::all();
 
         if ($to_process_authors) {
-            return Redirect::to('/mod/import/' . $import_id . '/author');
+            return Redirect::action('ImportController@getImportAuthor', [$import_id]);
         }
 
         $import_authors = ImportAuthor::where('import_id', '=', $import_id)->get();
@@ -347,8 +349,7 @@ class ImportController extends BaseController
             'url' => 'The :attribute field is not a valid URL.'
         ];
 
-        $validator = Validator::make($input,
-            [
+        $validator = Validator::make($input, [
                 'name' => 'required|unique:mods,name',
                 'selected_authors' => 'required',
                 'versions' => 'selected_versions',
@@ -357,11 +358,10 @@ class ImportController extends BaseController
                 'download_url' => 'url',
                 'wiki_url' => 'url',
                 'donate_link' => 'url',
-            ],
-            $messages);
+            ], $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/mod/import/' . $import_mod->id)->withErrors($validator)->withInput();
+            return Redirect::action('ImportController@getImportMod', [$import_mod->id])->withErrors($validator)->withInput();
         } else {
             $mod = new Mod;
 
@@ -428,7 +428,8 @@ class ImportController extends BaseController
                     'versions' => $versions
                 ]);
             } else {
-                return Redirect::to('/mod/import/' . $import_mod->id)->withErrors(['message' => 'Unable to import mod.'])->withInput();
+                return Redirect::action('ImportController@getImportMod', [$import_mod->id])
+                    ->withErrors(['message' => 'Unable to import mod.'])->withInput();
             }
 
         }
@@ -536,7 +537,6 @@ class ImportController extends BaseController
 
         $raw_body = $response->getBody();
         $decoded_body = json_decode($raw_body);
-
 
         if (!$decoded_body) {
             return false;
