@@ -37,7 +37,7 @@
 
                 <h5>We'll email you instructions on how to reset your password.</h5>
 
-                {{ Form::open(array('url' => '/forgot', 'class' => 'form account-form')) }}
+                {{ Form::open(array('url' => action('UserController@postForgotPassword'), 'class' => 'form account-form')) }}
 
                 <div class="form-group">
                     {{ Form::text('email', null, array('class' => 'form-control', 'data-required' => 'true', 'placeholder' => 'Email'))}}

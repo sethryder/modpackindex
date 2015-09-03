@@ -24,7 +24,7 @@
                         <strong>Password Updated!</strong> You can login below.
                     </div> <!-- /.alert -->
 
-                    {{ Form::open(array('url' => '/login', 'class' => 'form account-form')) }}
+                    {{ Form::open(array('url' => action('UserController@postLogin'), 'class' => 'form account-form')) }}
 
                     <div class="form-group">
                         {{ Form::text('email', null, array('class' => 'form-control', 'data-required' => 'true', 'placeholder' => 'Email'))}}

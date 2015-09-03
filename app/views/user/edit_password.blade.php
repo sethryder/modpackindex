@@ -34,7 +34,7 @@
                         </div> <!-- /.alert -->
                     @endif
 
-                    {{ Form::open(array('url' => '/profile/edit/password', 'class' => 'form parsley-form')) }}
+                    {{ Form::open(array('url' => action('UserController@postEditPassword'), 'class' => 'form parsley-form')) }}
 
                     <div class="form-group">
                         {{ Form::label('current_password','Current Password') }}:

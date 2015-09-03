@@ -36,7 +36,7 @@
                                 </div> <!-- /.alert -->
                             @endif
 
-                            {{ Form::open(array('url' => '/youtube/add', 'class' => 'form parsley-form')) }}
+                            {{ Form::open(array('url' => action('YoutubeController@postAdd'), 'class' => 'form parsley-form')) }}
 
                             <div class="form-group">
                                 {{ Form::label('url','URL') }}:

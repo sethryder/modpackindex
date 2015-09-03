@@ -46,9 +46,9 @@
                             @endif
 
                             @if (Auth::check())
-                                {{ Form::model($server, array('url' => '/server/edit/'.$server->id, 'class' => 'form parsley-form')) }}
+                                {{ Form::model($server, array('url' => action('ServerController@postEdit', [$server->id]), 'class' => 'form parsley-form')) }}
                             @else
-                                {{ Form::model($server, array('url' => '/server/edit/' . $server->id . '/' . $password, 'class' => 'form parsley-form')) }}
+                                {{ Form::model($server, array('url' => action('ServerController@postEdit', [$server->id, $password]), 'class' => 'form parsley-form')) }}
                             @endif
 
 
@@ -60,7 +60,7 @@
 
                             <div class="form-group">
                                 {{ Form::label('server_address','Server Address') }}*:
-                                {{ Form::text('server_address', $server->ip_host . ':' . $server->port, array('class' => 'form-control', 'placeholder' => 'mc.modpackindex.com:27016'))}}
+                                {{ Form::text('server_address', $server->ip_host . ':' . $server->port, ['class' => 'form-control', 'placeholder' => 'mc.modpackindex.com:27016'])}}
 
                                 <div class="checkbox">
                                     <label>
@@ -99,12 +99,12 @@
 
                             <div class="form-group">
                                 {{ Form::label('country','Server Location') }}*:
-                                {{ Form::select('country', $countries, null, array('class' => 'form-control')) }}
+                                {{ Form::select('country', $countries, null, ['class' => 'form-control']) }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('deck','Short Description') }}*:
-                                {{ Form::text('deck', null, array('class' => 'form-control'))}}
+                                {{ Form::text('deck', null, ['class' => 'form-control'])}}
                             </div>
                             <!-- /.form-group -->
 
@@ -116,7 +116,7 @@
 
                             <div class="form-group">
                                 {{ Form::label('application_url','Whitelist / Greylist Application') }}:
-                                {{ Form::text('application_url', null, array('class' => 'form-control'))}}
+                                {{ Form::text('application_url', null, ['class' => 'form-control'])}}
                             </div>
                             <!-- /.form-group -->
 
@@ -128,7 +128,7 @@
 
                             <div class="form-group" id="datepicker">
                                 {{ Form::label('next_world_reset','Next World Reset') }}:
-                                {{ Form::text('next_world_reset', null, array('class' => 'form-control', 'data-date-start-date' => '0d'))}}
+                                {{ Form::text('next_world_reset', null, ['class' => 'form-control', 'data-date-start-date' => '0d'])}}
                             </div>
                             <!-- /.form-group -->
 

@@ -31,7 +31,7 @@
 
                 <!-- <h5></h5> -->
 
-                {{ Form::open(array('url' => '/register', 'class' => 'form parsley-form')) }}
+                {{ Form::open(array('url' => action('UserController@postRegister'), 'class' => 'form parsley-form')) }}
 
                 <div class="form-group">
                     {{ Form::text('username', null, array('class' => 'form-control', 'data-required' => 'true', 'placeholder' => 'Your Username'))}}

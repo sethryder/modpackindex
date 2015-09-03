@@ -36,7 +36,7 @@
                                 </div> <!-- /.alert -->
                             @endif
 
-                            {{ Form::model($form_mod, array('url' => '/mod/import/'.$import_mod->id, 'class' => 'form parsley-form')) }}
+                            {{ Form::model($form_mod, array('url' => action('ImportController@postImportMod', [$import_mod->id]), 'class' => 'form parsley-form')) }}
 
                             <div class="form-group">
                                 {{ Form::label('name','Name') }}:
@@ -64,7 +64,7 @@
 
                             <div class="form-group">
                                 {{ Form::label('selected_authors','Author(s)') }}:
-                                {{ Form::select('selected_authors[]', Author::lists('name', 'id'), $selected_authors, array('multiple', 'class' => 'chosen-select form-control')) }}
+                                {{ Form::select('selected_authors[]', Author::lists('name', 'id'), $selected_authors, ['multiple', 'class' => 'chosen-select form-control']) }}
                             </div>
 
                             <div class="form-group">
@@ -75,19 +75,19 @@
 
                             <div class="form-group">
                                 {{ Form::label('website','Website') }}:
-                                {{ Form::text('website', null, array('class' => 'form-control'))}}
+                                {{ Form::text('website', null, ['class' => 'form-control'])}}
                             </div>
                             <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('download_link','Download Link') }}:
-                                {{ Form::text('download_link', null, array('class' => 'form-control'))}}
+                                {{ Form::text('download_link', null, ['class' => 'form-control'])}}
                             </div>
                             <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('donate_link','Donate Link') }}:
-                                {{ Form::text('donate_link', null, array('class' => 'form-control'))}}
+                                {{ Form::text('donate_link', null, ['class' => 'form-control'])}}
                             </div>
                             <!-- /.form-group -->
 
@@ -99,7 +99,7 @@
 
                             <div class="form-group">
                                 {{ Form::label('description','Description') }}:
-                                {{ Form::textarea('description', null, array('class' => 'form-control'))}}
+                                {{ Form::textarea('description', null, ['class' => 'form-control'])}}
                             </div>
                             <!-- /.form-group -->
 

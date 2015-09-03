@@ -39,7 +39,7 @@
                         </div> <!-- /.alert -->
                     @endif
 
-                    {{ Form::model($user_info, array('url' => '/profile/edit', 'class' => 'form parsley-form')) }}
+                    {{ Form::model($user_info, array('url' => action('UserController@postEditProfile'), 'class' => 'form parsley-form')) }}
 
                     <div class="form-group">
                         {{ Form::label('email','Email') }}:

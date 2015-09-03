@@ -12,7 +12,7 @@
                 </h3>
                 <div id="filters" class="accordion-body panel-collapse collapse">
                     <div class="portlet-body">
-                        {{ Form::open(array('url' => '/servers/', 'class' => 'form parsley-form')) }}
+                        {{ Form::open(array('url' => action('ServerController@postServers'), 'class' => 'form parsley-form')) }}
 
                         <div class="form-group">
                             {{ Form::label('modpack','Modpack'  ) }}:
