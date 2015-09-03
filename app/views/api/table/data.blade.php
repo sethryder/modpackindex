@@ -9,7 +9,7 @@ var table_1 = $('#{{ $table_id }}').dataTable ({
 "sEmptyTable": "{{{ $table_empty }}}",
 },
 "aoColumnDefs": [
-@if (($type == 'modpacks') || ($type == 'launchers') || ($type == 'modpackfinder'))
+@if (($type == 'modpacks') || ($type == 'launchers') || ($type == 'modpackfinder') || $type == 'modmodpacks')
 { sType: 'launcher', aTargets: [4] }
 @endif
 ],
