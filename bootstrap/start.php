@@ -25,6 +25,10 @@ $app = new Illuminate\Foundation\Application;
 */
 
 $env = $app->detectEnvironment(function () {
+    if (!file_exists(__DIR__ . '/environment.php')) {
+        return '';
+    }
+
     return require __DIR__ . '/environment.php'; // load the specified environment
 });
 
