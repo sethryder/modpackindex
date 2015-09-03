@@ -110,7 +110,7 @@ class AuthorController extends BaseController
             $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/author/edit/' . $id)->withErrors($validator)->withInput();
+            return Redirect::action('AuthorController@getEdit', [$id])->withErrors($validator)->withInput();
         } else {
 
             $author->name = $input['name'];
@@ -133,7 +133,7 @@ class AuthorController extends BaseController
             if ($success) {
                 return View::make('authors.edit', ['title' => $title, 'success' => true, 'author' => $author]);
             } else {
-                return Redirect::to('/author/edit/' . $id)->withErrors(['message' => 'Unable to add author.'])->withInput();
+                return Redirect::action('AuthorController@getEdit', [$id])->withErrors(['message' => 'Unable to add author.'])->withInput();
             }
 
         }
