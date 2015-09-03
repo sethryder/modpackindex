@@ -142,7 +142,8 @@ class ModpackController extends BaseController
             $modpack = Modpack::find($id);
 
             if ($modpack) {
-                $modpacks[$id] = '<a href=/modpack/' . $this->getVersion($modpack->version->name) . '/' . $modpack->slug . '>' . $modpack->name . '</a>';
+                $modpacks[$id] = link_to_action('ModpackController@getModpack', $modpack->name,
+                    [$this->getVersion($modpack->version->name), $modpack->slug]);
                 $json_string .= $modpack->id . ',';
             }
         }
