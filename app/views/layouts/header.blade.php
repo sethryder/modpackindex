@@ -19,12 +19,12 @@
                     {{--<a href="/about">About</a>--}}
                     {{--</li>--}}
                     {{--<li>--}}
-                    {{--<a href="/contact">Contact</a>--}}
+                    {{--<a href="{{ action('StaticPagesController@getContact') }}">Contact</a>--}}
                     {{--</li>--}}
 
                     {{--<li class="dropdown navbar-profile">--}}
                     {{--<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">--}}
-                    {{--Submit &nbsp;--}}
+                    {{--Submit --}}
                     {{--<i class="fa fa-caret-down"></i>--}}
                     {{--</a>--}}
 
@@ -33,14 +33,14 @@
                     {{--<li>--}}
                     {{--<a href="/submit-modpack">--}}
                     {{--<i class="fa fa-gear"></i>--}}
-                    {{--&nbsp;&nbsp;Modpack--}}
+                    {{--Modpack--}}
                     {{--</a>--}}
                     {{--</li>--}}
 
                     {{--<li>--}}
                     {{--<a href="/submit-video">--}}
                     {{--<i class="fa fa-youtube-play"></i>--}}
-                    {{--&nbsp;&nbsp;Video / Playlist--}}
+                    {{--Video / Playlist--}}
                     {{--</a>--}}
                     {{--</li>--}}
 
@@ -51,7 +51,7 @@
                     @if (Auth::check())
                         <li class="dropdown navbar-profile">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                Submit &nbsp;
+                                Submit 
                                 <i class="fa fa-caret-down"></i>
                             </a>
 
@@ -60,21 +60,21 @@
                                 <li>
                                     <a href="{{ action('StaticPagesController@getSubmitModpack') }}">
                                         <i class="fa fa-gear"></i>
-                                        &nbsp;&nbsp;Modpack
+                                        Modpack
                                     </a>
                                 </li>
 
                                 <li>
                                     <a href="{{ action('ServerController@getAdd') }}">
                                         <i class="fa fa-cloud"></i>
-                                        &nbsp;Server
+                                        Server
                                     </a>
                                 </li>
 
                                 <li>
                                     <a href="{{ action('StaticPagesController@getSubmitVideo') }}">
                                         <i class="fa fa-youtube-play"></i>
-                                        &nbsp;&nbsp;Video / Playlist
+                                        Video / Playlist
                                     </a>
                                 </li>
 
@@ -83,7 +83,7 @@
                         </li>
                         <li class="dropdown navbar-profile">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                {{{ Auth::user()->username }}} &nbsp;
+                                {{{ Auth::user()->username }}} 
                                 <i class="fa fa-caret-down"></i>
                             </a>
 
@@ -92,14 +92,14 @@
                                 <li>
                                     <a href="{{ action('UserController@getProfile', [Auth::user()->username]) }}">
                                         <i class="fa fa-user"></i>
-                                        &nbsp;&nbsp;&nbsp;Profile
+                                        Profile
                                     </a>
                                 </li>
 
                                 <li>
                                     <a href="{{ action('UserController@getLogout') }}">
                                         <i class="fa fa-reply"></i>
-                                        &nbsp;&nbsp;Logout
+                                        Logout
                                     </a>
                                 </li>
 
@@ -116,7 +116,7 @@
                         </li>
                         <li class="dropdown navbar-profile">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                Submit &nbsp;
+                                Submit 
                                 <i class="fa fa-caret-down"></i>
                             </a>
 
@@ -125,21 +125,21 @@
                                 <li>
                                     <a href="{{ action('StaticPagesController@getSubmitModpack') }}">
                                         <i class="fa fa-gear"></i>
-                                        &nbsp;&nbsp;Modpack
+                                        Modpack
                                     </a>
                                 </li>
 
                                 <li>
                                     <a href="{{ action('ServerController@getAdd') }}">
                                         <i class="fa fa-cloud"></i>
-                                        &nbsp;Server
+                                        Server
                                     </a>
                                 </li>
 
                                 <li>
                                     <a href="{{ action('StaticPagesController@getSubmitVideo') }}">
                                         <i class="fa fa-youtube-play"></i>
-                                        &nbsp;&nbsp;Video / Playlist
+                                        Video / Playlist
                                     </a>
                                 </li>
 
@@ -186,28 +186,28 @@
 
                             <li class="dropdown-submenu">
                                 <a href="{{ action('ModpackController@getModpackVersion') }}">
-                                    &nbsp;&nbsp;Modpacks
+                                    Modpacks
                                 </a>
 
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a href="{{ action('ModpackController@getModpackVersion', ['1-7-10']) }}">
-                                            <img class="fa" src="{{ asset('/static/img/icons/enderman.png') }}"/>
-                                            &nbsp;&nbsp;1.7.10 Packs
+                                            <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/enderman.png') }}"/>
+                                            1.7.10 Packs
                                         </a>
                                     </li>
 
                                     <li>
                                         <a href="{{ action('ModpackController@getModpackVersion', ['1-6-4']) }}">
-                                            <img class="fa" src="{{ asset('/static/img/icons/creeper.png') }}"/>
-                                            &nbsp;&nbsp;1.6.4 Packs
+                                            <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/creeper.png') }}"/>
+                                            1.6.4 Packs
                                         </a>
                                     </li>
 
                                     <li>
                                         <a href="{{ action('ModpackController@getModpackVersion') }}">
-                                            <img class="fa" src="{{ asset('/static/img/icons/custom.png') }}"/>
-                                            &nbsp;&nbsp;All Packs
+                                            <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/custom.png') }}"/>
+                                            All Packs
                                         </a>
                                     </li>
                                 </ul>
@@ -215,36 +215,36 @@
 
                             <li class="dropdown-submenu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
-                                    &nbsp;&nbsp;Launchers
+                                    Launchers
                                 </a>
 
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-submenu">
                                         <a href="{{ action('LauncherController@getLauncherVersion', ['feed-the-beast']) }}">
-                                            <img class="fa" src="{{ asset('/static/img/icons/ftb.png') }}"/>
-                                            &nbsp;&nbsp;Feed The Beast
+                                            <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/ftb.png') }}"/>
+                                            Feed The Beast
                                         </a>
 
                                         <ul class="dropdown-menu">
                                             <li>
                                                 <a href="{{ action('LauncherController@getLauncherVersion', ['feed-the-beast', '1-7-10']) }}">
-                                                    <img class="fa"
+                                                    <img class="fa fa-fw icon-menu"
                                                          src="{{ asset('/static/img/icons/enderman.png') }}"/>
-                                                    &nbsp;&nbsp;1.7.10 Packs
+                                                    1.7.10 Packs
                                                 </a>
                                             </li>
 
                                             <li>
                                                 <a href="{{ action('LauncherController@getLauncherVersion', ['feed-the-beast', '1-6-4']) }}">
-                                                    <img class="fa" src="{{ asset('/static/img/icons/creeper.png') }}"/>
-                                                    &nbsp;&nbsp;1.6.4 Packs
+                                                    <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/creeper.png') }}"/>
+                                                    1.6.4 Packs
                                                 </a>
                                             </li>
 
                                             <li>
                                                 <a href="{{ action('LauncherController@getLauncherVersion', ['feed-the-beast']) }}">
-                                                    <img class="fa" src="{{ asset('/static/img/icons/custom.png') }}"/>
-                                                    &nbsp;&nbsp;All Packs
+                                                    <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/custom.png') }}"/>
+                                                    All Packs
                                                 </a>
                                             </li>
                                         </ul>
@@ -252,30 +252,30 @@
 
                                     <li class="dropdown-submenu">
                                         <a href="{{ action('LauncherController@getLauncherVersion', ['curse-launcher']) }}">
-                                            <img class="fa" src="{{ asset('/static/img/icons/curse.png') }}"/>
-                                            &nbsp;&nbsp;Curse Launcher
+                                            <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/curse.png') }}"/>
+                                            Curse Launcher
                                         </a>
 
                                         <ul class="dropdown-menu">
                                             <li>
                                                 <a href="{{ action('LauncherController@getLauncherVersion', ['curse-launcher', '1-7-10']) }}">
-                                                    <img class="fa"
+                                                    <img class="fa fa-fw icon-menu"
                                                          src="{{ asset('/static/img/icons/enderman.png') }}"/>
-                                                    &nbsp;&nbsp;1.7.10 Packs
+                                                    1.7.10 Packs
                                                 </a>
                                             </li>
 
                                             <li>
                                                 <a href="{{ action('LauncherController@getLauncherVersion', ['curse-launcher', '1-6-4']) }}">
-                                                    <img class="fa" src="{{ asset('/static/img/icons/creeper.png') }}"/>
-                                                    &nbsp;&nbsp;1.6.4 Packs
+                                                    <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/creeper.png') }}"/>
+                                                    1.6.4 Packs
                                                 </a>
                                             </li>
 
                                             <li>
                                                 <a href="{{ action('LauncherController@getLauncherVersion', ['curse-launcher']) }}">
-                                                    <img class="fa" src="{{ asset('/static/img/icons/custom.png') }}"/>
-                                                    &nbsp;&nbsp;All Packs
+                                                    <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/custom.png') }}"/>
+                                                    All Packs
                                                 </a>
                                             </li>
                                         </ul>
@@ -283,30 +283,30 @@
 
                                     <li class="dropdown-submenu">
                                         <a href="{{ action('LauncherController@getLauncherVersion', ['atlauncher']) }}">
-                                            <img class="fa" src="{{ asset('/static/img/icons/atlauncher.png') }}"/>
-                                            &nbsp;&nbsp;ATLauncher
+                                            <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/atlauncher.png') }}"/>
+                                            ATLauncher
                                         </a>
 
                                         <ul class="dropdown-menu">
                                             <li>
                                                 <a href="{{ action('LauncherController@getLauncherVersion', ['atlauncher', '1-7-10']) }}">
-                                                    <img class="fa"
+                                                    <img class="fa fa-fw icon-menu"
                                                          src="{{ asset('/static/img/icons/enderman.png') }}"/>
-                                                    &nbsp;&nbsp;1.7.10 Packs
+                                                    1.7.10 Packs
                                                 </a>
                                             </li>
 
                                             <li>
                                                 <a href="{{ action('LauncherController@getLauncherVersion', ['atlauncher', '1-6-4']) }}">
-                                                    <img class="fa" src="{{ asset('/static/img/icons/creeper.png') }}"/>
-                                                    &nbsp;&nbsp;1.6.4 Packs
+                                                    <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/creeper.png') }}"/>
+                                                    1.6.4 Packs
                                                 </a>
                                             </li>
 
                                             <li>
                                                 <a href="{{ action('LauncherController@getLauncherVersion', ['atlauncher']) }}">
-                                                    <img class="fa" src="{{ asset('/static/img/icons/custom.png') }}"/>
-                                                    &nbsp;&nbsp;All Packs
+                                                    <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/custom.png') }}"/>
+                                                    All Packs
                                                 </a>
                                             </li>
                                         </ul>
@@ -314,30 +314,30 @@
 
                                     <li class="dropdown-submenu">
                                         <a href="{{ action('LauncherController@getLauncherVersion', ['technic-platform']) }}">
-                                            <img class="fa" src="{{ asset('/static/img/icons/technic.png') }}"/>
-                                            &nbsp;&nbsp;Technic Platform
+                                            <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/technic.png') }}"/>
+                                            Technic Platform
                                         </a>
 
                                         <ul class="dropdown-menu">
                                             <li>
                                                 <a href="{{ action('LauncherController@getLauncherVersion', ['technic-platform', '1-7-10']) }}">
-                                                    <img class="fa"
+                                                    <img class="fa fa-fw icon-menu"
                                                          src="{{ asset('/static/img/icons/enderman.png') }}"/>
-                                                    &nbsp;&nbsp;1.7.10 Packs
+                                                    1.7.10 Packs
                                                 </a>
                                             </li>
 
                                             <li>
                                                 <a href="{{ action('LauncherController@getLauncherVersion', ['technic-platform', '1-6-4']) }}">
-                                                    <img class="fa" src="{{ asset('/static/img/icons/creeper.png') }}"/>
-                                                    &nbsp;&nbsp;1.6.4 Packs
+                                                    <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/creeper.png') }}"/>
+                                                    1.6.4 Packs
                                                 </a>
                                             </li>
 
                                             <li>
                                                 <a href="{{ action('LauncherController@getLauncherVersion', ['technic-platform']) }}">
-                                                    <img class="fa" src="{{ asset('/static/img/icons/custom.png') }}"/>
-                                                    &nbsp;&nbsp;All Packs
+                                                    <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/custom.png') }}"/>
+                                                    All Packs
                                                 </a>
                                             </li>
                                         </ul>
@@ -345,30 +345,30 @@
 
                                     <li class="dropdown-submenu">
                                         <a href="{{ action('LauncherController@getLauncherVersion', ['custom']) }}">
-                                            <img class="fa" src="{{ asset('/static/img/icons/custom.png') }}"/>
-                                            &nbsp;&nbsp;Custom
+                                            <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/custom.png') }}"/>
+                                            Custom
                                         </a>
 
                                         <ul class="dropdown-menu">
                                             <li>
                                                 <a href="{{ action('LauncherController@getLauncherVersion', ['custom', '1-7-10']) }}">
-                                                    <img class="fa"
+                                                    <img class="fa fa-fw icon-menu"
                                                          src="{{ asset('/static/img/icons/enderman.png') }}"/>
-                                                    &nbsp;&nbsp;1.7.10 Packs
+                                                    1.7.10 Packs
                                                 </a>
                                             </li>
 
                                             <li>
                                                 <a href="{{ action('LauncherController@getLauncherVersion', ['custom', '1-6-4']) }}">
-                                                    <img class="fa" src="{{ asset('/static/img/icons/creeper.png') }}"/>
-                                                    &nbsp;&nbsp;1.6.4 Packs
+                                                    <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/creeper.png') }}"/>
+                                                    1.6.4 Packs
                                                 </a>
                                             </li>
 
                                             <li>
                                                 <a href="{{ action('LauncherController@getLauncherVersion', ['custom']) }}">
-                                                    <img class="fa" src="{{ asset('/static/img/icons/custom.png') }}"/>
-                                                    &nbsp;&nbsp;All Packs
+                                                    <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/custom.png') }}"/>
+                                                    All Packs
                                                 </a>
                                             </li>
                                         </ul>
@@ -378,28 +378,28 @@
 
                             <li class="dropdown-submenu">
                                 <a href="{{ action('ModController@getModVersion') }}">
-                                    &nbsp;&nbsp;Mods
+                                    Mods
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
                                         <a href="{{ action('ModController@getModVersion', ['1-7-10']) }}">
-                                            <img class="fa" src="{{ asset('/static/img/icons/enderman.png') }}"/>
-                                            &nbsp;&nbsp;1.7.10 Mods
+                                            <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/enderman.png') }}"/>
+                                            1.7.10 Mods
                                         </a>
                                     </li>
 
                                     <li>
                                         <a href="{{ action('ModController@getModVersion', ['1-6-4']) }}">
-                                            <img class="fa" src="{{ asset('/static/img/icons/creeper.png') }}"/>
-                                            &nbsp;&nbsp;1.6.4 Mods
+                                            <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/creeper.png') }}"/>
+                                            1.6.4 Mods
                                         </a>
                                     </li>
 
                                     <li>
                                         <a href="{{ action('ModController@getModVersion') }}">
-                                            <img class="fa" src="{{ asset('/static/img/icons/custom.png') }}"/>
-                                            &nbsp;&nbsp;All Mods
+                                            <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/custom.png') }}"/>
+                                            All Mods
                                         </a>
                                     </li>
                                 </ul>
@@ -440,22 +440,22 @@
                     {{--<ul class="dropdown-menu" role="menu">--}}
                     {{--<li>--}}
                     {{--<a href="/modpacks/1-7-10/">--}}
-                    {{--<img class="fa" src="/static/img/icons/enderman.png"/>--}}
-                    {{--&nbsp;&nbsp;1.7.10 Packs--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/enderman.png"/>--}}
+                    {{--1.7.10 Packs--}}
                     {{--</a>--}}
                     {{--</li>--}}
 
                     {{--<li>--}}
                     {{--<a href="/modpacks/1-6-4/">--}}
-                    {{--<img class="fa" src="/static/img/icons/creeper.png"/>--}}
-                    {{--&nbsp;&nbsp;1.6.4 Packs--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/creeper.png"/>--}}
+                    {{--1.6.4 Packs--}}
                     {{--</a>--}}
                     {{--</li>--}}
 
                     {{--<li>--}}
                     {{--<a href="/modpacks/">--}}
-                    {{--<img class="fa" src="/static/img/icons/custom.png"/>--}}
-                    {{--&nbsp;&nbsp;All Packs--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/custom.png"/>--}}
+                    {{--All Packs--}}
                     {{--</a>--}}
                     {{--</li>--}}
                     {{--</ul>--}}
@@ -472,29 +472,29 @@
 
                     {{--<li class="dropdown-submenu">--}}
                     {{--<a href="/launcher/feed-the-beast">--}}
-                    {{--<img class="fa" src="/static/img/icons/ftb.png"/>--}}
-                    {{--&nbsp;&nbsp;Feed The Beast--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/ftb.png"/>--}}
+                    {{--Feed The Beast--}}
                     {{--</a>--}}
 
                     {{--<ul class="dropdown-menu">--}}
                     {{--<li>--}}
                     {{--<a href="/launcher/feed-the-beast/1-7-10">--}}
-                    {{--<img class="fa" src="/static/img/icons/enderman.png"/>--}}
-                    {{--&nbsp;&nbsp;1.7.10 Packs--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/enderman.png"/>--}}
+                    {{--1.7.10 Packs--}}
                     {{--</a>--}}
                     {{--</li>--}}
 
                     {{--<li>--}}
                     {{--<a href="/launcher/feed-the-beast/1-6-4">--}}
-                    {{--<img class="fa" src="/static/img/icons/creeper.png"/>--}}
-                    {{--&nbsp;&nbsp;1.6.4 Packs--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/creeper.png"/>--}}
+                    {{--1.6.4 Packs--}}
                     {{--</a>--}}
                     {{--</li>--}}
 
                     {{--<li>--}}
                     {{--<a href="/launcher/feed-the-beast">--}}
-                    {{--<img class="fa" src="/static/img/icons/custom.png"/>--}}
-                    {{--&nbsp;&nbsp;All Packs--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/custom.png"/>--}}
+                    {{--All Packs--}}
                     {{--</a>--}}
                     {{--</li>--}}
                     {{--</ul>--}}
@@ -502,29 +502,29 @@
 
                     {{--<li class="dropdown-submenu">--}}
                     {{--<a href="/launcher/curse-launcher">--}}
-                    {{--<img class="fa" src="/static/img/icons/curse.png"/>--}}
-                    {{--&nbsp;&nbsp;Curse Launcher--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/curse.png"/>--}}
+                    {{--Curse Launcher--}}
                     {{--</a>--}}
 
                     {{--<ul class="dropdown-menu">--}}
                     {{--<li>--}}
                     {{--<a href="/launcher/curse-launcher/1-7-10">--}}
-                    {{--<img class="fa" src="/static/img/icons/enderman.png"/>--}}
-                    {{--&nbsp;&nbsp;1.7.10 Packs--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/enderman.png"/>--}}
+                    {{--1.7.10 Packs--}}
                     {{--</a>--}}
                     {{--</li>--}}
 
                     {{--<li>--}}
                     {{--<a href="/launcher/curse-launcher/1-6-4">--}}
-                    {{--<img class="fa" src="/static/img/icons/creeper.png"/>--}}
-                    {{--&nbsp;&nbsp;1.6.4 Packs--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/creeper.png"/>--}}
+                    {{--1.6.4 Packs--}}
                     {{--</a>--}}
                     {{--</li>--}}
 
                     {{--<li>--}}
                     {{--<a href="/launcher/curse-launcher">--}}
-                    {{--<img class="fa" src="/static/img/icons/custom.png"/>--}}
-                    {{--&nbsp;&nbsp;All Packs--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/custom.png"/>--}}
+                    {{--All Packs--}}
                     {{--</a>--}}
                     {{--</li>--}}
                     {{--</ul>--}}
@@ -532,29 +532,29 @@
 
                     {{--<li class="dropdown-submenu">--}}
                     {{--<a href="/launcher/atlauncher">--}}
-                    {{--<img class="fa" src="/static/img/icons/atlauncher.png"/>--}}
-                    {{--&nbsp;&nbsp;ATLaucher--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/atlauncher.png"/>--}}
+                    {{--ATLaucher--}}
                     {{--</a>--}}
 
                     {{--<ul class="dropdown-menu">--}}
                     {{--<li>--}}
                     {{--<a href="/launcher/atlauncher/1-7-10">--}}
-                    {{--<img class="fa" src="/static/img/icons/enderman.png"/>--}}
-                    {{--&nbsp;&nbsp;1.7.10 Packs--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/enderman.png"/>--}}
+                    {{--1.7.10 Packs--}}
                     {{--</a>--}}
                     {{--</li>--}}
 
                     {{--<li>--}}
                     {{--<a href="/launcher/atlauncher/1-6-4">--}}
-                    {{--<img class="fa" src="/static/img/icons/creeper.png"/>--}}
-                    {{--&nbsp;&nbsp;1.6.4 Packs--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/creeper.png"/>--}}
+                    {{--1.6.4 Packs--}}
                     {{--</a>--}}
                     {{--</li>--}}
 
                     {{--<li>--}}
                     {{--<a href="/launcher/atlauncher">--}}
-                    {{--<img class="fa" src="/static/img/icons/custom.png"/>--}}
-                    {{--&nbsp;&nbsp;All Packs--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/custom.png"/>--}}
+                    {{--All Packs--}}
                     {{--</a>--}}
                     {{--</li>--}}
                     {{--</ul>--}}
@@ -562,29 +562,29 @@
 
                     {{--<li class="dropdown-submenu">--}}
                     {{--<a href="/launcher/technic-platform">--}}
-                    {{--<img class="fa" src="/static/img/icons/technic.png"/>--}}
-                    {{--&nbsp;&nbsp;Technic Platform--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/technic.png"/>--}}
+                    {{--Technic Platform--}}
                     {{--</a>--}}
 
                     {{--<ul class="dropdown-menu">--}}
                     {{--<li>--}}
                     {{--<a href="/launcher/technic-platform/1-7-10">--}}
-                    {{--<img class="fa" src="/static/img/icons/enderman.png"/>--}}
-                    {{--&nbsp;&nbsp;1.7.10 Packs--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/enderman.png"/>--}}
+                    {{--1.7.10 Packs--}}
                     {{--</a>--}}
                     {{--</li>--}}
 
                     {{--<li>--}}
                     {{--<a href="/launcher/technic-platform/1-6-4">--}}
-                    {{--<img class="fa" src="/static/img/icons/creeper.png"/>--}}
-                    {{--&nbsp;&nbsp;1.6.4 Packs--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/creeper.png"/>--}}
+                    {{--1.6.4 Packs--}}
                     {{--</a>--}}
                     {{--</li>--}}
 
                     {{--<li>--}}
                     {{--<a href="/launcher/technic-platform">--}}
-                    {{--<img class="fa" src="/static/img/icons/custom.png"/>--}}
-                    {{--&nbsp;&nbsp;All Packs--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/custom.png"/>--}}
+                    {{--All Packs--}}
                     {{--</a>--}}
                     {{--</li>--}}
                     {{--</ul>--}}
@@ -592,29 +592,29 @@
 
                     {{--<li class="dropdown-submenu">--}}
                     {{--<a href="/launcher/custom">--}}
-                    {{--<img class="fa" src="/static/img/icons/custom.png"/>--}}
-                    {{--&nbsp;&nbsp;Custom--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/custom.png"/>--}}
+                    {{--Custom--}}
                     {{--</a>--}}
 
                     {{--<ul class="dropdown-menu">--}}
                     {{--<li>--}}
                     {{--<a href="/launcher/custom/1-7-10">--}}
-                    {{--<img class="fa" src="/static/img/icons/enderman.png"/>--}}
-                    {{--&nbsp;&nbsp;1.7.10 Packs--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/enderman.png"/>--}}
+                    {{--1.7.10 Packs--}}
                     {{--</a>--}}
                     {{--</li>--}}
 
                     {{--<li>--}}
                     {{--<a href="/launcher/custom/1-6-4">--}}
-                    {{--<img class="fa" src="/static/img/icons/creeper.png"/>--}}
-                    {{--&nbsp;&nbsp;1.6.4 Packs--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/creeper.png"/>--}}
+                    {{--1.6.4 Packs--}}
                     {{--</a>--}}
                     {{--</li>--}}
 
                     {{--<li>--}}
                     {{--<a href="/launcher/custom">--}}
-                    {{--<img class="fa" src="/static/img/icons/custom.png"/>--}}
-                    {{--&nbsp;&nbsp;All Packs--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/custom.png"/>--}}
+                    {{--All Packs--}}
                     {{--</a>--}}
                     {{--</li>--}}
                     {{--</ul>--}}
@@ -631,22 +631,22 @@
                     {{--<ul class="dropdown-menu" role="menu">--}}
                     {{--<li>--}}
                     {{--<a href="/mods/1-7-10/">--}}
-                    {{--<img class="fa" src="/static/img/icons/enderman.png"/>--}}
-                    {{--&nbsp;&nbsp;1.7.10 Mods--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/enderman.png"/>--}}
+                    {{--1.7.10 Mods--}}
                     {{--</a>--}}
                     {{--</li>--}}
 
                     {{--<li>--}}
                     {{--<a href="/mods/1-6-4/">--}}
-                    {{--<img class="fa" src="/static/img/icons/creeper.png"/>--}}
-                    {{--&nbsp;&nbsp;1.6.4 Mods--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/creeper.png"/>--}}
+                    {{--1.6.4 Mods--}}
                     {{--</a>--}}
                     {{--</li>--}}
 
                     {{--<li>--}}
                     {{--<a href="/mods/">--}}
-                    {{--<img class="fa" src="/static/img/icons/custom.png"/>--}}
-                    {{--&nbsp;&nbsp;All Mods--}}
+                    {{--<img class="fa fa-fw icon-menu" src="/static/img/icons/custom.png"/>--}}
+                    {{--All Mods--}}
                     {{--</a>--}}
                     {{--</li>--}}
                     {{--</ul>--}}
@@ -662,47 +662,47 @@
                                 @if ($user_permissions['author_add'] == 1)
                                     <li>
                                         <a href="{{ action('AuthorController@getAdd') }}">
-                                            &nbsp;&nbsp;Add Author
+                                            Add Author
                                         </a>
                                     </li>
                                 @endif
                                 @if ($user_permissions['mod_add'] == 1)
                                     <li>
                                         <a href="{{ action('ModController@getAdd') }}">
-                                            &nbsp;&nbsp;Add Mod
+                                            Add Mod
                                         </a>
                                     </li>
                                 @endif
                                 @if ($user_permissions['mod_import'] == 1)
                                     <li>
                                         <a href="{{ action('ImportController@getStartImport') }}">
-                                            &nbsp;&nbsp;Import Mod
+                                            Import Mod
                                         </a>
                                     </li>
                                 @endif
                                 @if ($user_permissions['creator_add'] == 1)
                                     <li>
                                         <a href="{{ action('CreatorController@getAdd') }}">
-                                            &nbsp;&nbsp;Add Modpack Creator
+                                            Add Modpack Creator
                                         </a>
                                     </li>
                                 @endif
                                 @if ($user_permissions['modpack_add'] == 1)
                                     <li class="dropdown-submenu">
                                         <a href="#">
-                                            &nbsp;&nbsp;Add Modpack
+                                            Add Modpack
                                         </a>
 
                                         <ul class="dropdown-menu">
                                             <li>
                                                 <a href="{{ action('ModpackController@getAdd', ['1-7-10']) }}">
-                                                    &nbsp;&nbsp;1.7.10 Pack
+                                                    1.7.10 Pack
                                                 </a>
                                             </li>
 
                                             <li>
                                                 <a href="{{ action('ModpackController@getAdd', ['1-6-4']) }}">
-                                                    &nbsp;&nbsp;1.6.4 Pack
+                                                    1.6.4 Pack
                                                 </a>
                                             </li>
                                         </ul>
@@ -711,59 +711,59 @@
                                 @if ($user_permissions['youtube_add'] == 1)
                                     <li>
                                         <a href="{{ action('YoutubeController@getadd') }}">
-                                            &nbsp;&nbsp;Add Youtube Video / Playlist
+                                            Add Youtube Video / Playlist
                                         </a>
                                     </li>
                                 @endif
                                 @if ($user_permissions['modpack_tag'] == 1)
                                     <li>
                                         <a href="{{ action('ModpackTagController@getAdd') }}">
-                                            &nbsp;&nbsp;Add Modpack Tag
+                                            Add Modpack Tag
                                         </a>
                                     </li>
                                 @endif
                                 @if ($user_permissions['modpack_code_add'] == 1)
                                     <li>
                                         <a href="{{ action('ModpackCodeController@getAdd') }}">
-                                            &nbsp;&nbsp;Add Modpack Code
+                                            Add Modpack Code
                                         </a>
                                     </li>
                                 @endif
                                 @if ($user_permissions['cache_clear'] == 1)
                                     <li class="dropdown-submenu">
                                         <a href="{{ action('AdminController@getClearCache') }}">
-                                            &nbsp;&nbsp;Clear Cache
+                                            Clear Cache
                                         </a>
 
                                         <ul class="dropdown-menu">
                                             <li>
                                                 <a href="{{ action('AdminController@getClearCache', ['mods']) }}">
-                                                    &nbsp;&nbsp;Clear Mod Cache
+                                                    Clear Mod Cache
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="{{ action('AdminController@getClearCache', ['modpacks']) }}">
-                                                    &nbsp;&nbsp;Clear Modpack Cache
+                                                    Clear Modpack Cache
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="{{ action('AdminController@getClearCache', ['launchers']) }}">
-                                                    &nbsp;&nbsp;Clear Launcher Cache
+                                                    Clear Launcher Cache
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="{{ action('AdminController@getClearCache', ['modpackmods']) }}">
-                                                    &nbsp;&nbsp;Clear Modpack's Mods Cache
+                                                    Clear Modpack's Mods Cache
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="{{ action('AdminController@getClearCache', ['modmodpacks']) }}">
-                                                    &nbsp;&nbsp;Clear Mod's Modpacks Cache
+                                                    Clear Mod's Modpacks Cache
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="{{ action('AdminController@getClearCache', ['user-permissions']) }}">
-                                                    &nbsp;&nbsp;Clear User Permission Cache
+                                                    Clear User Permission Cache
                                                 </a>
                                             </li>
                                         </ul>
