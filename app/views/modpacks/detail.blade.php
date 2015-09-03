@@ -23,7 +23,7 @@
                     </p>
 
                     @if (count($tags) > 0)
-                        <p><i class="fa fa-tags"></i>Tags:{{ $tags_formatted }}</p>
+                        <p><i class="fa fa-tags"></i>Tags: {{ $tags_formatted }}</p>
                     @endif
 
 
