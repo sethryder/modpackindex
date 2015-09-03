@@ -282,14 +282,14 @@
                                     </li>
 
                                     <li class="dropdown-submenu">
-                                        <a href="{{ action('LauncherController@getLauncherVersion', ['at-launcher']) }}">
+                                        <a href="{{ action('LauncherController@getLauncherVersion', ['atlauncher']) }}">
                                             <img class="fa" src="{{ asset('/static/img/icons/atlauncher.png') }}"/>
                                             &nbsp;&nbsp;ATLauncher
                                         </a>
 
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a href="{{ action('LauncherController@getLauncherVersion', ['at-launcher', '1-7-10']) }}">
+                                                <a href="{{ action('LauncherController@getLauncherVersion', ['atlauncher', '1-7-10']) }}">
                                                     <img class="fa"
                                                          src="{{ asset('/static/img/icons/enderman.png') }}"/>
                                                     &nbsp;&nbsp;1.7.10 Packs
@@ -297,14 +297,14 @@
                                             </li>
 
                                             <li>
-                                                <a href="{{ action('LauncherController@getLauncherVersion', ['at-launcher', '1-6-4']) }}">
+                                                <a href="{{ action('LauncherController@getLauncherVersion', ['atlauncher', '1-6-4']) }}">
                                                     <img class="fa" src="{{ asset('/static/img/icons/creeper.png') }}"/>
                                                     &nbsp;&nbsp;1.6.4 Packs
                                                 </a>
                                             </li>
 
                                             <li>
-                                                <a href="{{ action('LauncherController@getLauncherVersion', ['at-launcher']) }}">
+                                                <a href="{{ action('LauncherController@getLauncherVersion', ['atlauncher']) }}">
                                                     <img class="fa" src="{{ asset('/static/img/icons/custom.png') }}"/>
                                                     &nbsp;&nbsp;All Packs
                                                 </a>
