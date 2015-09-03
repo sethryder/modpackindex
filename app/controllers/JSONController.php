@@ -447,7 +447,7 @@ class JSONController extends BaseController
 
                 $table_empty = 'No Modpacks found.';
 
-                $ajax_source = '/api/table/modpacks/' . $version . '.json';
+                $ajax_source = action('JSONController@getTableModpacks', [$version]);
                 break;
 
             case 'launchers':
