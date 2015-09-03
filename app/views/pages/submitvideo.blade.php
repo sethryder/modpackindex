@@ -40,11 +40,11 @@
                             @if (isset($success))
                                 <div class="alert alert-success">
                                     <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
-                                    <strong>Submitted!</strong> We will get this modpack added ASAP!
+                                    <strong>Submitted!</strong> We will get this video added ASAP!
                                 </div> <!-- /.alert -->
                             @endif
 
-                            {{ Form::open(array('url' => '/submit-video', 'class' => 'form parsley-form')) }}
+                            {{ Form::open(array('url' => action('StaticPagesController@postSubmitVideo'), 'class' => 'form parsley-form')) }}
 
                             <div class="form-group">
                                 {{ Form::label('url','Video / Playlist URL') }}:

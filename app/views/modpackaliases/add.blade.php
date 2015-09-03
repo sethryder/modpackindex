@@ -36,11 +36,11 @@
                                 </div> <!-- /.alert -->
                             @endif
 
-                            {{ Form::open(array('url' => '/modpack-alias/add', 'class' => 'form parsley-form')) }}
+                            {{ Form::open(array('url' => action('ModpackAliasController@postAdd'), 'class' => 'form parsley-form')) }}
 
                             <div class="form-group">
                                 {{ Form::label('alias','Alias') }}:
-                                {{ Form::text('alias', null, array('class' => 'form-control', 'data-required' => 'true'))}}
+                                {{ Form::text('alias', null, ['class' => 'form-control', 'data-required' => 'true'])}}
                             </div>
                             <!-- /.form-group -->
 

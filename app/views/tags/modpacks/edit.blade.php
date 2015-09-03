@@ -36,7 +36,7 @@
                                 </div> <!-- /.alert -->
                             @endif
 
-                            {{ Form::open(array('url' => '/tag/modpack/edit/' . $modpacktag->id, 'class' => 'form parsley-form')) }}
+                            {{ Form::open(['url' => action('ModpackTagController@postEdit', [$modpacktag->id]), 'class' => 'form parsley-form']) }}
 
                             <div class="form-group">
                                 {{ Form::label('name','Tag') }}:
@@ -58,7 +58,7 @@
 
                             <div class="form-group">
                                 {{ Form::label('slug','Slug') }}:
-                                {{ Form::text('slug', $modpacktag->slug, array('class' => 'form-control', 'data-required' => 'true'))}}
+                                {{ Form::text('slug', $modpacktag->slug, ['class' => 'form-control', 'data-required' => 'true'])}}
                             </div>
                             <!-- /.form-group -->
 

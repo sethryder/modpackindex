@@ -5,7 +5,7 @@ class ServerTagController extends BaseController
     public function getTags()
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $tags = ServerTag::all();
@@ -18,7 +18,7 @@ class ServerTagController extends BaseController
     public function getAdd()
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Add A Server Tag - ' . $this->site_name;
@@ -29,7 +29,7 @@ class ServerTagController extends BaseController
     public function postAdd()
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Add A Server Tag - ' . $this->site_name;
@@ -48,7 +48,7 @@ class ServerTagController extends BaseController
             $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/tag/server/add')->withErrors($validator)->withInput();
+            return Redirect::action('ServerTagController@getAdd')->withErrors($validator)->withInput();
         } else {
             $server_tag = new ServerTag;
 
@@ -71,7 +71,7 @@ class ServerTagController extends BaseController
                 //Queue::push('BuildCache');
                 return View::make('tags.server.add', ['title' => $title, 'success' => true]);
             } else {
-                return Redirect::to('/tag/server/add')->withErrors(['message' => 'Unable to add modpack tag.'])->withInput();
+                return Redirect::action('ServerTagController@getAdd')->withErrors(['message' => 'Unable to add modpack tag.'])->withInput();
             }
 
         }
@@ -80,7 +80,7 @@ class ServerTagController extends BaseController
     public function getEdit($id)
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Edit A Server Tag - ' . $this->site_name;
@@ -94,7 +94,7 @@ class ServerTagController extends BaseController
     public function postEdit($id)
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Edit A Server Code - ' . $this->site_name;
@@ -115,7 +115,7 @@ class ServerTagController extends BaseController
             $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/tag/server/edit/' . $id)->withErrors($validator)->withInput();
+            return Redirect::action('ServerTagController@getEdit', [$id])->withErrors($validator)->withInput();
         } else {
             $server_tag->name = $input['name'];
             $server_tag->deck = $input['deck'];
@@ -137,7 +137,7 @@ class ServerTagController extends BaseController
                 return View::make('tags.server.edit',
                     ['title' => $title, 'success' => true, 'server_tag' => $server_tag]);
             } else {
-                return Redirect::to('/tag/server/' . $id)->withErrors(['message' => 'Unable to edit modpack code.'])->withInput();
+                return Redirect::action('ServerTagController@getEdit', [$id])->withErrors(['message' => 'Unable to edit modpack code.'])->withInput();
             }
 
         }

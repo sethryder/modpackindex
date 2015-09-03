@@ -19,7 +19,7 @@
                     @endif
 
 
-                    {{ Form::open(array('url' => '/login', 'class' => 'form account-form')) }}
+                    {{ Form::open(array('url' => action('UserController@postLogin'), 'class' => 'form account-form')) }}
 
                     <div class="form-group">
                         {{ Form::text('email', null, array('class' => 'form-control', 'data-required' => 'true', 'placeholder' => 'Email'))}}
@@ -38,7 +38,7 @@
                         </div>
 
                         <div class="pull-right">
-                            <small><a href="/forgot">Forgot Password?</a></small>
+                            <small><a href="{{ action('UserController@getForgotPassword') }}">Forgot Password?</a></small>
                         </div>
                     </div> <!-- /.form-group -->
 
@@ -51,7 +51,7 @@
                         <strong>Error!</strong> Unable to confirm your account.
                     </div> <!-- /.alert -->
 
-                    <p>If you feel this is an error, please <a href="/contact">contact us</a>.</p>
+                    <p>If you feel this is an error, please <a href="{{ action('StaticPagesController@getContact') }}">contact us</a>.</p>
                 @endif
 
 
@@ -61,7 +61,7 @@
             <div class="account-footer">
                 <p>
                     Don't have an account? &nbsp;
-                    <a href="/register" class="">Create an Account!</a>
+                    <a href="{{ action('UserController@getRegister') }}" class="">Create an Account!</a>
                 </p>
             </div>
             <!-- /.account-footer -->

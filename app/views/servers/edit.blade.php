@@ -41,14 +41,14 @@
                                 <div class="alert alert-success">
                                     <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
                                     <strong>Edited!</strong> You may more edits below or return to the server's detail
-                                    page <a href="/server/{{{ $server->id }}}/{{{ $server->slug }}}">here</a>.
+                                    page <a href="{{ action('ServerController@getServer', [$server->id, $server->slug]) }}">here</a>.
                                 </div> <!-- /.alert -->
                             @endif
 
                             @if (Auth::check())
-                                {{ Form::model($server, array('url' => '/server/edit/'.$server->id, 'class' => 'form parsley-form')) }}
+                                {{ Form::model($server, array('url' => action('ServerController@postEdit', [$server->id]), 'class' => 'form parsley-form')) }}
                             @else
-                                {{ Form::model($server, array('url' => '/server/edit/' . $server->id . '/' . $password, 'class' => 'form parsley-form')) }}
+                                {{ Form::model($server, ['url' => action('ServerController@postEdit', [$server->id, $password]), 'class' => 'form parsley-form']) }}
                             @endif
 
 
@@ -60,7 +60,7 @@
 
                             <div class="form-group">
                                 {{ Form::label('server_address','Server Address') }}*:
-                                {{ Form::text('server_address', $server->ip_host . ':' . $server->port, array('class' => 'form-control', 'placeholder' => 'mc.modpackindex.com:27016'))}}
+                                {{ Form::text('server_address', $server->ip_host . ':' . $server->port, ['class' => 'form-control', 'placeholder' => 'mc.modpackindex.com:27016'])}}
 
                                 <div class="checkbox">
                                     <label>
@@ -89,34 +89,34 @@
                             <div class="form-group">
                                 {{ Form::label('selected_tags','Tags') }}*:
                                 {{ Form::select('selected_tags[]', ServerTag::orderBy('name')->lists('name', 'id'), $selected_tags, array('multiple', 'class' => 'chosen-select form-control')) }}
-                                <p class="pull-right">Are we missing a tag? <a href="/contact" target="_blank">Let us know</a>.</p>
+                                <p class="pull-right">Are we missing a tag? <a href="{{ action('StaticPagesController@getContact') }}" target="_blank">Let us know</a>.</p>
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('permissions','Server Permissions') }}*:
-                                {{ Form::select('permissions', $permissions, null, array('class' => 'form-control')) }}
+                                {{ Form::select('permissions', $permissions, null, ['class' => 'form-control']) }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('country','Server Location') }}*:
-                                {{ Form::select('country', $countries, null, array('class' => 'form-control')) }}
+                                {{ Form::select('country', $countries, null, ['class' => 'form-control']) }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('deck','Short Description') }}*:
-                                {{ Form::text('deck', null, array('class' => 'form-control'))}}
+                                {{ Form::text('deck', null, ['class' => 'form-control'])}}
                             </div>
                             <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('website','Website') }}:
-                                {{ Form::text('website', null, array('class' => 'form-control'))}}
+                                {{ Form::text('website', null, ['class' => 'form-control'])}}
                             </div>
                             <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('application_url','Whitelist / Greylist Application') }}:
-                                {{ Form::text('application_url', null, array('class' => 'form-control'))}}
+                                {{ Form::text('application_url', null, ['class' => 'form-control'])}}
                             </div>
                             <!-- /.form-group -->
 
@@ -128,13 +128,13 @@
 
                             <div class="form-group" id="datepicker">
                                 {{ Form::label('next_world_reset','Next World Reset') }}:
-                                {{ Form::text('next_world_reset', null, array('class' => 'form-control', 'data-date-start-date' => '0d'))}}
+                                {{ Form::text('next_world_reset', null, ['class' => 'form-control', 'data-date-start-date' => '0d'])}}
                             </div>
                             <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('description','Description') }}:
-                                {{ Form::textarea('description', null, array('class' => 'form-control'))}}
+                                {{ Form::textarea('description', null, ['class' => 'form-control'])}}
                                 <p class="pull-right">We support <a href="https://help.github.com/articles/github-flavored-markdown/" target="_blank">Github Flavored Markdown</a>.</p>
                             </div>
                             <!-- /.form-group -->

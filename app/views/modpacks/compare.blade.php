@@ -19,7 +19,7 @@
 
                 <div class="portlet-body" style="width: 50%">
                     <div class="form-group">
-                        {{ Form::open(array('url' => '/modpacks/compare', 'class' => 'form parsley-form')) }}
+                        {{ Form::open(array('url' => action('ModpackController@postCompare'), 'class' => 'form parsley-form')) }}
 
                         {{ Form::label('modpacks','Modpacks') }}:
                         @if (isset($results))

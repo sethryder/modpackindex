@@ -526,14 +526,14 @@ class ServerController extends BaseController
         $server = Server::find($id);
 
         if (!$server) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         if ($server->user_id == 0) {
             $server_user = $server->serverUser;
 
             if (!Hash::check($password, $server_user->edit_password)) {
-                return Redirect::to('/');
+                return Redirect::route('index');
             }
         } else {
             if (!Auth::check()) {
@@ -541,7 +541,7 @@ class ServerController extends BaseController
             }
 
             if (Auth::id() != $server->user_id && !$this->checkRoute()) {
-                return Redirect::to('/');
+                return Redirect::route('index');
             }
         }
 

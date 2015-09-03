@@ -42,7 +42,7 @@
                                 </div> <!-- /.alert -->
                             @endif
 
-                            {{ Form::open(array('url' => '/mod/import', 'class' => 'form parsley-form', 'files' => true)) }}
+                            {{ Form::open(array('url' => action('ImportController@postStartImport'), 'class' => 'form parsley-form', 'files' => true)) }}
 
                             <div class="form-group">
                                 {{ Form::label('import_nem','Not Enough Mods') }}:

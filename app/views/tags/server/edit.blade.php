@@ -36,7 +36,7 @@
                                 </div> <!-- /.alert -->
                             @endif
 
-                            {{ Form::open(array('url' => '/tag/server/edit/' . $server_tag->id, 'class' => 'form parsley-form')) }}
+                            {{ Form::open(['url' => action('ServerTagController@postEdit', [$server_tag->id]), 'class' => 'form parsley-form']) }}
 
                             <div class="form-group">
                                 {{ Form::label('name','Tag') }}:
@@ -58,7 +58,7 @@
 
                             <div class="form-group">
                                 {{ Form::label('slug','Slug') }}:
-                                {{ Form::text('slug', $server_tag->slug, array('class' => 'form-control', 'data-required' => 'true'))}}
+                                {{ Form::text('slug', $server_tag->slug, ['class' => 'form-control', 'data-required' => 'true'])}}
                             </div>
                             <!-- /.form-group -->
 

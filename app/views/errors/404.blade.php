@@ -18,7 +18,7 @@
 
                     <p>We can not find the page you're looking for. Is there a typo in the url? If you followed a valid
                         link
-                        please let us know <a href="/contact">here</a>.</p>
+                        please let us know <a href="{{ action('StaticPagesController@getContact') }}">here</a>.</p>
 
                 </div>
                 <!-- /.error-details -->

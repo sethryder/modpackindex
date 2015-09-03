@@ -13,7 +13,7 @@
                         <u>{{{ $modpack->name }}} ({{{ $modpack->version->name  }}}) Aliases</u>
                     </h3>
 
-                    <div style="text-align: center;"><h4><a href="/modpack-alias/add">Add</a></h4></div>
+                    <div style="text-align: center;"><h4><a href="{{ action('ModpackAliasController@getAdd') }}">Add</a></h4></div>
 
                     <div class="table-responsive">
 

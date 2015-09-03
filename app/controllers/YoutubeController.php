@@ -70,7 +70,7 @@ class YoutubeController extends BaseController
     public function getAdd()
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Add A Youtube Video / Playlist - ' . $this->site_name;
@@ -81,7 +81,7 @@ class YoutubeController extends BaseController
     public function postAdd()
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Add A Youtube Video / Playlist - ' . $this->site_name;
@@ -94,20 +94,20 @@ class YoutubeController extends BaseController
             ]);
 
         if ($validator->fails()) {
-            return Redirect::to('/youtube/add')->withErrors($validator)->withInput();
+            return Redirect::action('YoutubeController@getadd')->withErrors($validator)->withInput();
         } else {
             $youtube = New Youtube;
 
             $processed_url = $this->processURL($input['url']);
 
             if (!$processed_url['type']) {
-                return Redirect::to('/youtube/add')->withErrors(['message' => 'Unable to process URL.'])->withInput();
+                return Redirect::action('YoutubeController@getadd')->withErrors(['message' => 'Unable to process URL.'])->withInput();
             }
 
             $youtube_information = $youtube->getVideoInfo($processed_url['id'], $processed_url['type']);
 
             if (!$youtube_information) {
-                return Redirect::to('/youtube/add')->withErrors(['message' => 'Unable to process Youtube API.'])->withInput();
+                return Redirect::action('YoutubeController@getadd')->withErrors(['message' => 'Unable to process Youtube API.'])->withInput();
             }
 
             $youtube_information = $youtube_information->items[0];
@@ -137,7 +137,7 @@ class YoutubeController extends BaseController
                 return View::make('youtube.add',
                     ['title' => $title, 'success' => true, 'categories' => $this->categories]);
             } else {
-                return Redirect::to('/youtube/add')->withErrors(['message' => 'Unable to add modpack code.'])->withInput();
+                return Redirect::action('YoutubeController@getadd')->withErrors(['message' => 'Unable to add modpack code.'])->withInput();
             }
 
         }

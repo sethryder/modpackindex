@@ -94,7 +94,7 @@ class ModController extends BaseController
     public function getAdd()
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $versions = MinecraftVersion::all();
@@ -105,7 +105,7 @@ class ModController extends BaseController
     public function postAdd()
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $versions = MinecraftVersion::all();
@@ -131,7 +131,7 @@ class ModController extends BaseController
         ], $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/mod/add/')->withErrors($validator)->withInput();
+            return Redirect::action('ModController@getAdd')->withErrors($validator)->withInput();
         } else {
             $mod = new Mod;
 
@@ -198,11 +198,11 @@ class ModController extends BaseController
                 if ($this->checkRoute()) {
                     $can_edit_maintainers = true;
                 } else {
-                    return Redirect::to('/');
+                    return Redirect::route('index');
                 }
             }
         } else {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         foreach ($mod->versions as $v) {
@@ -247,11 +247,11 @@ class ModController extends BaseController
                 if ($this->checkRoute()) {
                     $can_edit_maintainers = true;
                 } else {
-                    return Redirect::to('/');
+                    return Redirect::route('index');
                 }
             }
         } else {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $authors = $mod->authors;
@@ -278,7 +278,7 @@ class ModController extends BaseController
         ], $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/mod/edit/' . $mod->id)->withErrors($validator)->withInput();
+            return Redirect::action('ModController@getEdit', [$mod->id])->withErrors($validator)->withInput();
         } else {
             $mod->name = $input['name'];
             $mod->deck = $input['deck'];

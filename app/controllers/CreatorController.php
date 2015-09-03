@@ -5,7 +5,7 @@ class CreatorController extends BaseController
     public function getAdd()
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Add A Modpack Creator - ' . $this->site_name;
@@ -16,7 +16,7 @@ class CreatorController extends BaseController
     public function postAdd()
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Add A Modpack Creator - ' . $this->site_name;
@@ -28,16 +28,14 @@ class CreatorController extends BaseController
             'url' => 'The :attribute field is not a valid URL.'
         ];
 
-        $validator = Validator::make($input,
-            [
+        $validator = Validator::make($input, [
                 'name' => 'required|unique:creators,name',
                 'website' => 'url',
                 'donate_link' => 'url',
-            ],
-            $messages);
+            ], $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/creator/add/')->withErrors($validator)->withInput();
+            return Redirect::action('CreatorController@getAdd')->withErrors($validator)->withInput();
         } else {
             $creator = new Creator;
 
@@ -61,7 +59,8 @@ class CreatorController extends BaseController
             if ($success) {
                 return View::make('creators.add', ['title' => $title, 'success' => true]);
             } else {
-                return Redirect::to('/creator/add/')->withErrors(['message' => 'Unable to add modpack creator.'])->withInput();
+                return Redirect::action('CreatorController@getAdd')
+                    ->withErrors(['message' => 'Unable to add modpack creator.'])->withInput();
             }
 
         }
@@ -70,7 +69,7 @@ class CreatorController extends BaseController
     public function getEdit($id)
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Edit A Modpack Creator - ' . $this->site_name;
@@ -83,7 +82,7 @@ class CreatorController extends BaseController
     public function postEdit($id)
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Edit A Modpack Creator - ' . $this->site_name;
@@ -96,16 +95,14 @@ class CreatorController extends BaseController
             'url' => 'The :attribute field is not a valid URL.'
         ];
 
-        $validator = Validator::make($input,
-            [
+        $validator = Validator::make($input, [
                 'name' => 'required|unique:creators,name,' . $creator->id,
                 'website' => 'url',
                 'donate_link' => 'url',
-            ],
-            $messages);
+            ], $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/creator/add/')->withErrors($validator)->withInput();
+            return Redirect::action('CreatorController@getAdd')->withErrors($validator)->withInput();
         } else {
             $creator->name = $input['name'];
             $creator->deck = $input['deck'];
@@ -127,7 +124,8 @@ class CreatorController extends BaseController
             if ($success) {
                 return View::make('creators.edit', ['title' => $title, 'creator' => $creator, 'success' => true]);
             } else {
-                return Redirect::to('/creator/edit/' . $id)->withErrors(['message' => 'Unable to edit modpack creator.'])->withInput();
+                return Redirect::action('CreatorController@getEdit', [$id])
+                    ->withErrors(['message' => 'Unable to edit modpack creator.'])->withInput();
             }
 
         }

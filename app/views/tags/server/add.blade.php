@@ -36,7 +36,7 @@
                                 </div> <!-- /.alert -->
                             @endif
 
-                            {{ Form::open(array('url' => '/tag/server/add', 'class' => 'form parsley-form')) }}
+                            {{ Form::open(array('url' => action('ServerTagController@postAdd'), 'class' => 'form parsley-form')) }}
 
                             <div class="form-group">
                                 {{ Form::label('name','Tag') }}:

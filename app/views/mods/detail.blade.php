@@ -24,22 +24,22 @@
                         <?php $i = 0 ?>
                         @foreach ($links as $index => $link)
                             @if ($index == 'website')
-                                <a href="{{{ $link }}}"><i class="fa fa-external-link"></i> Website</a>
+                                <a href="{{{ $link }}}"><i class="fa fa-external-link"></i>Website</a>
                             @endif
                             @if ($index == 'download_link')
-                                <a href="{{{ $link }}}"><i class="fa fa-download"></i> Download</a>
+                                <a href="{{{ $link }}}"><i class="fa fa-download"></i>Download</a>
                             @endif
                             @if ($index == 'donate_link')
-                                <a href="{{{ $link }}}"><i class="fa fa-dollar"></i> Donate</a>
+                                <a href="{{{ $link }}}"><i class="fa fa-dollar"></i>Donate</a>
                             @endif
                             @if ($index == 'wiki_link')
-                                <a href="{{{ $link }}}"><i class="fa fa-book"></i> Wiki</a>
+                                <a href="{{{ $link }}}"><i class="fa fa-book"></i>Wiki</a>
                             @endif
                             @if ($i+1 != count($links))| @endif
                             <?php $i++; ?>
                         @endforeach
                         @if (isset($user_permissions['mod_edit']) || $can_edit == true)
-                            | <a href="/mod/edit/{{{ $mod->id }}}"><i class="fa fa-edit"></i> Edit</a>
+                            | <a href="{{ action('ModController@getEdit', [$mod->id]) }}"><i class="fa fa-edit"></i>Edit</a>
                         @endif
                     </p>
 
@@ -66,7 +66,7 @@
 
                         @if (isset($tutorials[0]))
                             <li class="">
-                                <a href="#tutorials" data-toggle="tab">Spotlights</a>
+                                <a href="#tutorials" data-toggle="tab">Tutorials</a>
                             </li>
                         @endif
                     </ul>
@@ -112,7 +112,7 @@
 
                                             <div class="thumbnail">
                                                 <div class="thumbnail-view">
-                                                    <a href="/mod/{{{ $mod->slug }}}/spotlight/{{{ $spotlight->id }}}-{{{ Str::slug($spotlight->channel_title)  }}}">
+                                                    <a href="{{ action('YoutubeController@getModVideo', [$mod->slug, $spotlight->id, Str::slug($spotlight->channel_title)]) }}">
                                                         <img src="{{{ $spotlight->thumbnail }}}" style="width: 100%"/></a>
                                                 </div>
                                                 <div class="thumbnail-footer">
@@ -139,7 +139,7 @@
 
                                             <div class="thumbnail">
                                                 <div class="thumbnail-view">
-                                                    <a href="/modpack/{{{ $version }}}/{{{ $modpack->slug }}}/video/{{{ $tutorial->id }}}">
+                                                    <a href="{{ action('YoutubeController@getModVideo', [$tutorial->slug, $tutorial->id, Str::slug($tutorial->channel_title)]) }}">
                                                         <img src="{{{ $tutorial->thumbnail }}}" style="width: 100%"/></a>
                                                 </div>
                                                 <div class="thumbnail-footer">
@@ -159,7 +159,7 @@
                         @endif
                     </div>
 
-                    <div class="pull-right"><p><a href="/contact?mod={{{ $mod->id }}}">Something incorrect?</a></p></div>
+                    <div class="pull-right"><p><a href="{{ action('StaticPagesController@getContact') }}?mod={{{ $mod->id }}}">Something incorrect?</a></p></div>
 
                 </div>
                 <!-- /.portlet -->

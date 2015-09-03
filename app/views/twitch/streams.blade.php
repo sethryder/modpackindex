@@ -17,7 +17,7 @@
 
                                 <div class="thumbnail">
                                     <div class="thumbnail-view">
-                                        <a href="/stream/{{{ $stream->display_name }}}">
+                                        <a href="{{ action('TwitchController@getChannel', [$stream->display_name]) }}">
                                             <img src="{{{ $stream->preview }}}" style="width: 100%"/></a>
                                     </div>
                                     <div class="thumbnail-footer">
@@ -26,11 +26,11 @@
                                         </div>
 
                                         <div class="pull-right">
-                                            <a href="/stream/{{{ $stream->display_name }}}"><i
-                                                        class="fa fa-bullhorn"></i> {{{ $stream->language }}}</a>
-                                            <a href="/stream/{{{ $stream->display_name }}}"><i
-                                                        class="fa fa-eye"></i> {{{ $stream->viewers }}}</a>
-                                            <!-- <a href="javascript:;"><i class="fa fa-heart"></i> {{{ $stream->followers }}}</a> -->
+                                            <a href="{{ action('TwitchController@getChannel', [$stream->display_name]) }}">
+                                                <i class="fa fa-bullhorn"></i>{{{ $stream->language }}}</a>
+                                            <a href="{{ action('TwitchController@getChannel', [$stream->display_name]) }}">
+                                                <i class="fa fa-eye"></i>{{{ $stream->viewers }}}</a>
+                                            <!-- <a href="javascript:;"><i class="fa fa-heart"></i>{{{ $stream->followers }}}</a> -->
                                         </div>
                                     </div>
                                 </div>
@@ -46,5 +46,6 @@
         <!-- /.container -->
 
     </div> <!-- .content -->
+    {{--// Extra closing div tag?--}}
     </div>
 @stop

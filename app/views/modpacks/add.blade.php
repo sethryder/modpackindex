@@ -36,17 +36,17 @@
                                 </div> <!-- /.alert -->
                             @endif
 
-                            {{ Form::open(array('url' => '/modpack/' . $url_version . '/add', 'class' => 'form parsley-form')) }}
+                            {{ Form::open(['url' => action('ModpackController@postAdd', [$url_version]), 'class' => 'form parsley-form']) }}
 
                             <div class="form-group">
                                 {{ Form::label('name','Name') }}:
-                                {{ Form::text('name', null, array('class' => 'form-control', 'data-required' => 'true'))}}
+                                {{ Form::text('name', null, ['class' => 'form-control', 'data-required' => 'true'])}}
                             </div>
                             <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('launcher','Launcher') }}:
-                                {{ Form::select('launcher', Launcher::orderBy('name')->lists('name', 'id'), null, array('class' => 'form-control')) }}
+                                {{ Form::select('launcher', Launcher::orderBy('name')->lists('name', 'id'), null, ['class' => 'form-control']) }}
                             </div>
 
                             <div class="form-group">
@@ -66,44 +66,46 @@
 
                             <div class="form-group">
                                 {{ Form::label('deck','Deck') }}:
-                                {{ Form::text('deck', null, array('class' => 'form-control'))}}
+                                {{ Form::text('deck', null, ['class' => 'form-control'])}}
                             </div>
                             <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('website','Website') }}:
-                                {{ Form::text('website', null, array('class' => 'form-control'))}}
+                                {{ Form::text('website', null, ['class' => 'form-control'])}}
                             </div>
                             <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('download_link','Download Link') }}:
-                                {{ Form::text('download_link', null, array('class' => 'form-control'))}}
+                                {{ Form::text('download_link', null, ['class' => 'form-control'])}}
                             </div>
                             <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('donate_link','Donate Link') }}:
-                                {{ Form::text('donate_link', null, array('class' => 'form-control'))}}
+                                {{ Form::text('donate_link', null, ['class' => 'form-control'])}}
                             </div>
                             <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('wiki_link','Wiki Link') }}:
-                                {{ Form::text('wiki_link', null, array('class' => 'form-control'))}}
+                                {{ Form::text('wiki_link', null, ['class' => 'form-control'])}}
                             </div>
                             <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('description','Description') }}:
-                                {{ Form::textarea('description', null, array('class' => 'form-control'))}}
-                                <p class="pull-right">We support <a href="https://help.github.com/articles/github-flavored-markdown/" target="_blank">Github Flavored Markdown</a>.</p>
+                                {{ Form::textarea('description', null, ['class' => 'form-control'])}}
+                                <p class="pull-right">We support <a
+                                            href="https://help.github.com/articles/github-flavored-markdown/"
+                                            target="_blank">Github Flavored Markdown</a>.</p>
                             </div>
                             <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('slug','Slug') }}:
-                                {{ Form::text('slug', null, array('class' => 'form-control'))}}
+                                {{ Form::text('slug', null, ['class' => 'form-control'])}}
                             </div>
                             <!-- /.form-group -->
 

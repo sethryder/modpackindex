@@ -28,7 +28,7 @@
                             <tr>
                                 <td>{{{ $mod['name'] }}}</td>
                                 <td>{{{ $mod['versions'] }}}</td>
-                                <td><a href="/mod/{{{ $mod['slug'] }}}">View</a> @if($my_profile)| <a href="/mod/edit/{{ $mod['id'] }}">Edit</a>@endif</td>
+                                <td><a href="{{ action('ModController@getMod', [$mod['slug']]) }}">View</a> @if($my_profile)| <a href="{{ action('ModController@getEdit', [$mod['id']]) }}">Edit</a>@endif</td>
                             </tr>
                         @endforeach
                         </tbody>

@@ -36,7 +36,7 @@
                                 </div> <!-- /.alert -->
                             @endif
 
-                            {{ Form::model($modpack, array('url' => '/modpack/edit/'.$modpack->id, 'class' => 'form parsley-form')) }}
+                            {{ Form::model($modpack, array('url' => action('ModpackController@postEdit', [$modpack->id]), 'class' => 'form parsley-form')) }}
 
                             <div class="form-group">
                                 {{ Form::label('name','Name') }}:
@@ -67,7 +67,7 @@
                             @if ($can_edit_maintainers == true)
                                 <div class="form-group">
                                     {{ Form::label('selected_maintainers','Site Maintainer(s)') }}:
-                                    {{ Form::select('selected_maintainers[]', User::orderBy('username')->lists('username', 'id'), $selected_maintainers, array('multiple', 'class' => 'chosen-select form-control')) }}
+                                    {{ Form::select('selected_maintainers[]', User::orderBy('username')->lists('username', 'id'), $selected_maintainers, ['multiple', 'class' => 'chosen-select form-control']) }}
                                 </div>
                             @endif
 
@@ -79,25 +79,25 @@
 
                             <div class="form-group">
                                 {{ Form::label('website','Website') }}:
-                                {{ Form::text('website', null, array('class' => 'form-control'))}}
+                                {{ Form::text('website', null, ['class' => 'form-control'])}}
                             </div>
                             <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('download_link','Download Link') }}:
-                                {{ Form::text('download_link', null, array('class' => 'form-control'))}}
+                                {{ Form::text('download_link', null, ['class' => 'form-control'])}}
                             </div>
                             <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('donate_link','Donate Link') }}:
-                                {{ Form::text('donate_link', null, array('class' => 'form-control'))}}
+                                {{ Form::text('donate_link', null, ['class' => 'form-control'])}}
                             </div>
                             <!-- /.form-group -->
 
                             <div class="form-group">
                                 {{ Form::label('wiki_link','Wiki Link') }}:
-                                {{ Form::text('wiki_link', null, array('class' => 'form-control'))}}
+                                {{ Form::text('wiki_link', null, ['class' => 'form-control'])}}
                             </div>
                             <!-- /.form-group -->
 
@@ -111,7 +111,7 @@
                             @if ($can_edit_maintainers == true)
                             <div class="form-group">
                                 {{ Form::label('slug','Slug') }}:
-                                {{ Form::text('slug', null, array('class' => 'form-control'))}}
+                                {{ Form::text('slug', null, ['class' => 'form-control'])}}
                             </div>
                             <!-- /.form-group -->
                             @endif

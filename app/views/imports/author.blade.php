@@ -36,7 +36,7 @@
                                 </div> <!-- /.alert -->
                             @endif
 
-                            {{ Form::model($author, array('url' => '/mod/import/' . $import_mod->id . '/author/' .$author->id, 'class' => 'form parsley-form')) }}
+                            {{ Form::model($author, array('url' => action('ImportController@postImportAuthor', [$import_mod->id, $author->id]), 'class' => 'form parsley-form')) }}
 
                             <div class="form-group">
                                 {{ Form::label('alias','Attach to Existing Author') }}:

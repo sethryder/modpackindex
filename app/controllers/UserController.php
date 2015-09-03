@@ -81,13 +81,13 @@ class UserController extends BaseController
         );
 
         if ($validator->fails()) {
-            return Redirect::to('/forgot')->withErrors($validator);
+            return Redirect::action('UserController@getForgotPassword')->withErrors($validator);
         } else {
             //check to see if valid user
             $user = User::where('email', $input['email'])->first();
 
             if (!$user) {
-                return Redirect::to('/forgot')->withErrors(['Error' => 'Email does not exist in our database.']);
+                return Redirect::action('UserController@getForgotPassword')->withErrors(['Error' => 'Email does not exist in our database.']);
             }
 
             //make sure no password reminder is already out there.
@@ -95,7 +95,7 @@ class UserController extends BaseController
             where('email', $input['email'])->count();
 
             if ($existing_reminders > 0) {
-                return Redirect::to('/forgot')->withErrors(['Error' => 'A password reminder for this email is already active.']);
+                return Redirect::action('UserController@getForgotPassword')->withErrors(['Error' => 'A password reminder for this email is already active.']);
             }
 
             //make sure this IP isn't spamming password requests
@@ -103,7 +103,7 @@ class UserController extends BaseController
             where('ip', Request::getClientIp())->count();
 
             if ($ip_reminder_count > 0) {
-                return Redirect::to('/forgot')->withErrors(['Error' => 'A password reminder has already been requested with your IP address.']);
+                return Redirect::action('UserController@getForgotPassword')->withErrors(['Error' => 'A password reminder has already been requested with your IP address.']);
             }
 
             $password_reset = new PasswordReminder;
@@ -123,7 +123,7 @@ class UserController extends BaseController
 
                 return View::make('user.forgot_password', ['success' => true]);
             } else {
-                return Redirect::to('/reset')->withErrors(['Error' => 'Unable to reset password.']);
+                return Redirect::action('UserController@getResetPassword')->withErrors(['Error' => 'Unable to reset password.']);
             }
         }
 
@@ -136,14 +136,14 @@ class UserController extends BaseController
         $one_hour_ago = Carbon\Carbon::now()->subHours(1)->toDateTimeString();
 
         if (!$token) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $reset_request = PasswordReminder::where('created_at', '>=', $one_hour_ago)->
         where('token', $token)->first();
 
         if (!$reset_request) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $user = User::where('email', $reset_request->email)->first();
@@ -163,7 +163,7 @@ class UserController extends BaseController
         where('token', $token)->first();
 
         if (!$reset_request) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $validator = Validator::make($input,
@@ -173,7 +173,7 @@ class UserController extends BaseController
             ]);
 
         if ($validator->fails()) {
-            return Redirect::to('/reset/' . $token)->withErrors($validator);
+            return Redirect::action('UserController@getResetPassword', [$token])->withErrors($validator);
         } else {
             $user = User::where('email', $reset_request->email)->first();
 
@@ -186,7 +186,7 @@ class UserController extends BaseController
             if ($success) {
                 return View::make('user.reset_password', ['title' => $title, 'success' => true, 'user' => $user]);
             } else {
-                return Redirect::to('/reset/' . $token)->withErrors(['message' => 'Unable to reset password.']);
+                return Redirect::action('UserController@getResetPassword', [$token])->withErrors(['message' => 'Unable to reset password.']);
             }
         }
     }
@@ -224,7 +224,7 @@ class UserController extends BaseController
             );
 
             if ($validator->fails()) {
-                return Redirect::to('/login')->withErrors($validator);
+                return Redirect::action('UserController@getLogin')->withErrors($validator);
             }
         }
 
@@ -242,17 +242,17 @@ class UserController extends BaseController
         ), $remember_me)
         ) {
             if ($input['return']) {
-                return Redirect::to('/' . $input['return']);
+                return Redirect::to(route('index') . $input['return']);
             }
-            return Redirect::intended('/');
+            return Redirect::intended(route('index'));
         } else {
             Cache::put($ip_cache_key, $attempts + 1, 60);
 
             if ($input['return']) {
-                return Redirect::to('/login?return=' . $input['return'])->withErrors(['Error' => 'Unable to login with provided information.'])->withInput();
+                return Redirect::to(action('UserController@getLogin').'?return=' . $input['return'])->withErrors(['Error' => 'Unable to login with provided information.'])->withInput();
             }
 
-            return Redirect::to('/login')->withErrors(['Error' => 'Unable to login with provided information.'])->withInput();
+            return Redirect::action('UserController@getLogin')->withErrors(['Error' => 'Unable to login with provided information.'])->withInput();
         }
     }
 
@@ -276,7 +276,7 @@ class UserController extends BaseController
         );
 
         if ($validator->fails()) {
-            return Redirect::to('/register')->withErrors($validator)->withInput();
+            return Redirect::action('UserController@getRegister')->withErrors($validator)->withInput();
         } else {
             $user = new User;
             $confirmation = str_random(64);
@@ -305,7 +305,7 @@ class UserController extends BaseController
 
                 return View::make('user.register_success', ['email' => $user->email]);
             } else {
-                return Redirect::to('/register')->withErrors(['Error' => 'Unable to create account'])->withInput();
+                return Redirect::action('UserController@getRegister')->withErrors(['Error' => 'Unable to create account'])->withInput();
             }
         }
     }
@@ -514,7 +514,7 @@ class UserController extends BaseController
             $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/profile/edit')->withErrors($validator)->withInput();
+            return Redirect::action('UserController@getEditProfile')->withErrors($validator)->withInput();
         } else {
             $user->email = $input['email'];
             $user_info->real_name = $input['real_name'];
@@ -548,7 +548,7 @@ class UserController extends BaseController
                 return View::make('user.edit',
                     ['title' => $title, 'success' => true, 'user' => $user, 'user_info' => $user_info]);
             } else {
-                return Redirect::to('/profile/edit')->withErrors(['message' => 'Unable to edit profile.'])->withInput();
+                return Redirect::action('UserController@getEditProfile')->withErrors(['message' => 'Unable to edit profile.'])->withInput();
             }
         }
     }
@@ -600,7 +600,7 @@ class UserController extends BaseController
             $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/profile/edit/password')->withErrors($validator);
+            return Redirect::action('UserController@getEditPassword')->withErrors($validator);
         } else {
             $user->password = Hash::make($input['new_password']);
             $user->remember_token = null; //kill the remember_token for security
@@ -611,7 +611,7 @@ class UserController extends BaseController
             if ($success) {
                 return View::make('user.edit_password', ['title' => $title, 'success' => true, 'user' => $user]);
             } else {
-                return Redirect::to('/profile/edit/password')->withErrors(['message' => 'Unable to edit password.']);
+                return Redirect::action('UserController@getEditPassword')->withErrors(['message' => 'Unable to edit password.']);
             }
         }
     }
@@ -641,7 +641,7 @@ class UserController extends BaseController
     public function getUserPermissions($id)
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $user = User::find($id);
@@ -663,7 +663,7 @@ class UserController extends BaseController
     public function postUserPermissions($id)
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $input = Input::only('selected_permissions');
