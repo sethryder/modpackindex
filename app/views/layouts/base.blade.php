@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="{{ asset('static/css/chosen.min.css') }}">
     <link rel="stylesheet" href="{{ asset('static/css/bootstrap-datepicker3.css') }}">
     <link rel="stylesheet" href="{{ asset('static/css/flag-icon.css') }}">
+    <link rel="stylesheet" href="{{ asset('static/css/site.css') }}">
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js"></script>
 
