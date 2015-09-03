@@ -11,7 +11,6 @@
 |
 */
 
-Route::get('/', ['as' => 'index', 'uses' => 'ModpackController@getModpackVersion']);
 //Route::get('/', 'StaticPagesController@getNotLaunched');
 
 Route::get('/test/route', ['as' => 'route_test', 'uses' => 'TestController@getRoute']);
@@ -232,6 +231,9 @@ Route::get('/sitemap/modpacks.xml', 'SitemapController@getSitemapModpacks');
 Route::get('/sitemap/mods.xml', 'SitemapController@getSitemapMods');
 Route::get('/sitemap/servers.xml', 'SitemapController@getSitemapServers');
 Route::get('/sitemap/videos.xml', 'SitemapController@getSitemapVideos');
+
+//home
+Route::get('/', ['as' => 'index', 'uses' => 'ModpackController@getModpackVersion']);
 
 /*
  * Misc/Testing Routes
