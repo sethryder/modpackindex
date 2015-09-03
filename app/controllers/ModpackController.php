@@ -53,8 +53,19 @@ class ModpackController extends BaseController
 
         $launcher = $modpack->launcher;
         $creators = $modpack->creators;
+
+        $creators_formatted = implode(',', array_map(function ($creator) {
+            return $creator->name;
+        }, $creators->toArray()));
+
         $pack_code = $modpack->code;
         $tags = $modpack->tags;
+
+        $tags_formatted = implode(',', array_map(function ($tag) {
+            return link_to(action('SearchController@getModpackSearch') . '?tag=' . $tag->slug, $tag->name,
+                ['title' => $tag->deck]);
+        }, $tags->toArray()));
+
         $server_count = $modpack->servers()->where('active', 1)->count();
         $twitch_streams = $modpack->twitchStreams()->orderBy('viewers', 'desc')->get();
         $lets_plays = $modpack->youtubeVideos()->where('category_id', 1)->get();
@@ -75,10 +86,30 @@ class ModpackController extends BaseController
         $links = [];
 
         foreach ($raw_links as $index => $link) {
-            if ($link != '') {
-                $links["$index"] = $link;
+            if (!empty($link)) {
+                $links[] = ['type' => $index, 'link' => $link];
             }
         }
+
+        $links_formatted = implode('|', array_map(function ($link) {
+            if ($link['type'] == 'website') {
+                return "<a href='{$link['link']}'><i class='fa fa-external-link'></i>Website</a>";
+            }
+
+            if ($link['type'] == 'download_link') {
+                return "<a href='{$link['link']}'><i class='fa fa-download'></i>Download</a>";
+            }
+
+            if ($link['type'] == 'donate_link') {
+                return "<a href='{$link['link']}'><i class='fa fa-dollar'></i>Donate</a>";
+            }
+
+            if ($link['type'] == 'wiki_link') {
+                return "<a href='{$link['link']}'><i class='fa fa-book'></i>Wiki</a>";
+            }
+
+            return '';
+        }, $links));
 
         $table_javascript = [
             $mods_javascript,
@@ -97,9 +128,12 @@ class ModpackController extends BaseController
             'modpack' => $modpack,
             'modpack_description' => $modpack_description,
             'links' => $links,
+            'links_formatted' => $links_formatted,
             'launcher' => $launcher,
             'creators' => $creators,
+            'creators_formatted' => $creators_formatted,
             'tags' => $tags,
+            'tags_formatted' => $tags_formatted,
             'servers' => $has_servers,
             'title' => $title,
             'meta_description' => $meta_description,

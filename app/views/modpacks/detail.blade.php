@@ -12,7 +12,7 @@
 
                 </h3>
 
-                <div style="position: relative; bottom: 15px;"><h5>by
+                <div style="position: relative; bottom: 15px;"><h5>by {{ $creators_formatted }}</h5>
                         <?php $i = 0 ?>
                         @foreach($creators as $index => $creator)
                             {{{$creator->name}}}@if ($i+1 != count($creators)), @endif
@@ -27,19 +27,7 @@
                         @foreach ($links as $index => $link)
                             @if ($index == 'website')
                                 <a href="{{{ $link }}}"><i class="fa fa-external-link"></i> Website</a>
-                            @endif
-                            @if ($index == 'download_link')
-                                <a href="{{{ $link }}}"><i class="fa fa-download"></i> Download</a>
-                            @endif
-                            @if ($index == 'donate_link')
-                                <a href="{{{ $link }}}"><i class="fa fa-dollar"></i> Donate</a>
-                            @endif
-                            @if ($index == 'wiki_link')
-                                <a href="{{{ $link }}}"><i class="fa fa-book"></i> Wiki</a>
-                            @endif
-                            @if ($i+1 != count($links))| @endif
-                            <?php $i++; ?>
-                        @endforeach
+                        |{{ $links_formatted }}
                         @if (isset($user_permissions['modpack_edit']) || $can_edit == true)
                             | <a href="/modpack/edit/{{{ $modpack->id }}}"><i class="fa fa-edit"></i> Edit</a>
                         @endif
@@ -47,7 +35,7 @@
 
                     @if (count($tags) > 0)
                         <p><?php $i = 0 ?>
-                            <i class="fa fa-tags"></i> Tags:
+                        <p><i class="fa fa-tags"></i>Tags:{{ $tags_formatted }}</p>
                             @foreach ($tags as $tag)
                                 <a href="/modpack/finder?tag={{{ $tag->slug }}}"
                                    title="{{{ $tag->deck }}}">{{{ $tag->name }}}</a>@if ($i+1 != count($tags)),@endif
