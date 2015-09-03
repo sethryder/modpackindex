@@ -60,7 +60,7 @@
             <div class="account-footer">
                 <p>
                     Don't have an account? &nbsp;
-                    <a href="/register" class="">Create an Account!</a>
+                    <a href="{{ action('UserController@getRegister') }}" class="">Create an Account!</a>
                 </p>
             </div>
             <!-- /.account-footer -->

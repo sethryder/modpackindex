@@ -89,7 +89,7 @@
                             <div class="form-group">
                                 {{ Form::label('selected_tags','Tags') }}*:
                                 {{ Form::select('selected_tags[]', ServerTag::orderBy('name')->lists('name', 'id'), $selected_tags, array('multiple', 'class' => 'chosen-select form-control')) }}
-                                <p class="pull-right">Are we missing a tag? <a href="/contact" target="_blank">Let us know</a>.</p>
+                                <p class="pull-right">Are we missing a tag? <a href="{{ action('StaticPagesController@getContact') }}" target="_blank">Let us know</a>.</p>
                             </div>
 
                             <div class="form-group">

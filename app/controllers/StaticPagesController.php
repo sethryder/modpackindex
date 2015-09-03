@@ -62,7 +62,7 @@ class StaticPagesController extends BaseController
         );
 
         if ($validator->fails()) {
-            return Redirect::to('/contact')->withErrors($validator)->withInput();
+            return Redirect::action('StaticPagesController@getContact')->withErrors($validator)->withInput();
         } else {
             Mail::send('emails.contact', array('input' => $input), function ($message) use ($input) {
                 $message->from('noreply@modpackindex.com', 'Modpack Index');
@@ -125,7 +125,7 @@ class StaticPagesController extends BaseController
         }
 
         if ($validator->fails()) {
-            return Redirect::to('/submit-modpack')->withErrors($validator)->withInput();
+            return Redirect::action('StaticPagesController@getSubmitModpack')->withErrors($validator)->withInput();
         } else {
             Mail::send('emails.submitmodpack', array('input' => $input), function ($message) use ($input) {
                 $message->from('noreply@modpackindex.com', 'Modpack Index');
@@ -197,7 +197,7 @@ class StaticPagesController extends BaseController
         }
 
         if ($validator->fails()) {
-            return Redirect::to('/submit-video')->withErrors($validator)->withInput();
+            return Redirect::action('StaticPagesController@getSubmitVideo')->withErrors($validator)->withInput();
         } else {
             Mail::send('emails.submitvideo', array('input' => $input),
                 function ($message) use ($input, $email_subject) {

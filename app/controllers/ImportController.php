@@ -5,7 +5,7 @@ class ImportController extends BaseController
     public function getStartImport()
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $mcf_mods_array = [];
@@ -39,7 +39,7 @@ class ImportController extends BaseController
     public function postStartImport()
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $mod_info_array = [];
@@ -164,7 +164,7 @@ class ImportController extends BaseController
     public function getImportAuthor($import_id, $author_id = null)
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $import_mod = Import::find($import_id);
@@ -198,7 +198,7 @@ class ImportController extends BaseController
     public function postImportAuthor($import_id, $author_id)
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $import_mod = Import::find($import_id);
@@ -281,7 +281,7 @@ class ImportController extends BaseController
     public function getImportMod($import_id)
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $import_mod = Import::find($import_id);
@@ -332,7 +332,7 @@ class ImportController extends BaseController
     public function postImportMod($import_id)
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $import_mod = Import::find($import_id);

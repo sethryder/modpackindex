@@ -43,7 +43,7 @@
                                 </div> <!-- /.alert -->
                             @endif
 
-                            {{ Form::open(array('url' => '/submit-modpack', 'class' => 'form parsley-form')) }}
+                            {{ Form::open(array('url' => action('StaticPagesController@postSubmitModpack'), 'class' => 'form parsley-form')) }}
 
                             <div class="form-group">
                                 {{ Form::label('name','Modpack Name') }}*:

@@ -329,13 +329,13 @@ class JSONController extends BaseController
 
             switch ($server->permissions) {
                 case 1:
-                    $options = '<i class="fa fa-lock" title="Whitelist"></i> ';
+                    $options = '<i class="fa fa-lock" title="Whitelist"></i>';
                     break;
                 case 2:
-                    $options = '<i class="fa fa-lock" title="Greylist"></i> ';
+                    $options = '<i class="fa fa-lock" title="Greylist"></i>';
                     break;
                 case 3:
-                    $options = '<i class="fa fa-unlock-alt" title="Open"></i> ';
+                    $options = '<i class="fa fa-unlock-alt" title="Open"></i>';
                     break;
             }
 

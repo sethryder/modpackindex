@@ -13,62 +13,62 @@
                 </h3>
 
                 <div style="position: relative; bottom: 15px;"><h5>
-                        Modpack: <a href="/modpack/{{{ $version_slug }}}/{{{ $modpack->slug }}}">{{{ $modpack->name }}}</a>
+                        Modpack: <a href="{{ action('ModpackController@getModpack', [$version_slug, $modpack->slug]) }}">{{{ $modpack->name }}}</a>
                     </h5>
                     <p>
                         @if ($server->server_address_hide)
-                            <i class="fa fa-play-circle" title="Host"></i> Private
+                            <i class="fa fa-play-circle" title="Host"></i>Private
                         @else
-                            <i class="fa fa-play-circle" title="Host"></i> {{{ $server->ip_host }}}:{{{ $server->port }}}
+                            <i class="fa fa-play-circle" title="Host"></i>{{{ $server->ip_host }}}:{{{ $server->port }}}
                         @endif
                         |
                         <?php $i = 0 ?>
                         @foreach ($links as $index => $link)
                             @if ($index == 'website')
-                                <a href="{{{ $link }}}"><i class="fa fa-external-link"></i> Website</a>
+                                <a href="{{{ $link }}}"><i class="fa fa-external-link"></i>Website</a>
                             @endif
                             @if ($index == 'application_url')
-                                <a href="{{{ $link }}}"><i class="fa fa-pencil"></i> Application</a>
+                                <a href="{{{ $link }}}"><i class="fa fa-pencil"></i>Application</a>
                             @endif
                             @if ($i+1 != count($links))| @endif
                             <?php $i++; ?>
                         @endforeach
                         @if (isset($user_permissions['server_edit']) || $can_edit == true)
-                            | <a href="/server/edit/{{{ $server->id }}}"><i class="fa fa-edit"></i> Edit</a>
+                            | <a href="{{ action('ServerController@getEdit', [$server->id]) }}"><i class="fa fa-edit"></i>Edit</a>
                         @endif
                     </p>
                     <p>
-                        <i class="fa fa-users" title="Players"></i> {{{ $status->current_players }}} / {{{ $status->max_players }}}
+                        <i class="fa fa-users" title="Players"></i>{{{ $status->current_players }}} / {{{ $status->max_players }}}
                     |
                         @if ($server->permissions == 1)
-                            <i class="fa fa-lock" title="Whitelist"></i> Whitelist
+                            <i class="fa fa-lock" title="Whitelist"></i>Whitelist
                         @elseif ($server->permissions == 2)
-                            <i class="fa fa-lock" title="Greylist"></i> Greylist
+                            <i class="fa fa-lock" title="Greylist"></i>Greylist
                         @elseif ($server->permissions == 3)
-                            <i class="fa fa-unlock-alt" title="Open"></i> Open
+                            <i class="fa fa-unlock-alt" title="Open"></i>Open
                         @endif
                     |
-                        <span class="flag-icon flag-icon-{{{ $country_code }}}" title="{{{ $country_name }}}"></span> {{{ $country_name }}}
+                        <span class="flag-icon flag-icon-{{{ $country_code }}}" title="{{{ $country_name }}}"></span>{{{ $country_name }}}
 
 
                     @if (count($tags) > 0)
                         | <?php $i = 0 ?>
-                            <i class="fa fa-tags"></i> Tags:
+                            <i class="fa fa-tags"></i>Tags:
                             @foreach ($tags as $tag)
-                                <a href="/servers?tags={{{ $tag->slug }}}"
+                                <a href="{{ action('ServerController@getServers') }}?tags={{{ $tag->slug }}}"
                                    title="{{{ $tag->deck }}}">{{{ $tag->name }}}</a>@if ($i+1 != count($tags)),@endif
                                 <?php $i++; ?>
                             @endforeach</p>
                     @endif
 
                     <p>
-                        <i class="fa fa-globe"></i> Last World Reset:
+                        <i class="fa fa-globe"></i>Last World Reset:
                         @if ($server->last_world_reset)
                             {{{ $server->last_world_reset }}}
                         @else
                             Unknown
                         @endif
-                        | <i class="fa fa-globe"></i> Next World Reset:
+                        | <i class="fa fa-globe"></i>Next World Reset:
                     @if ($server->next_world_reset)
                             {{{ $server->next_world_reset }}}
                         @else

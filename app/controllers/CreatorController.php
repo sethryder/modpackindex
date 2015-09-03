@@ -5,7 +5,7 @@ class CreatorController extends BaseController
     public function getAdd()
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Add A Modpack Creator - ' . $this->site_name;
@@ -16,7 +16,7 @@ class CreatorController extends BaseController
     public function postAdd()
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Add A Modpack Creator - ' . $this->site_name;
@@ -70,7 +70,7 @@ class CreatorController extends BaseController
     public function getEdit($id)
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Edit A Modpack Creator - ' . $this->site_name;
@@ -83,7 +83,7 @@ class CreatorController extends BaseController
     public function postEdit($id)
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Edit A Modpack Creator - ' . $this->site_name;

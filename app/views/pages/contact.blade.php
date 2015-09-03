@@ -46,7 +46,7 @@
                                 </div> <!-- /.alert -->
                             @endif
 
-                            {{ Form::open(array('url' => '/contact', 'class' => 'form parsley-form')) }}
+                            {{ Form::open(array('url' => action('StaticPagesController@postContact'), 'class' => 'form parsley-form')) }}
 
                             <div class="form-group">
                                 {{ Form::label('name','Your Name') }}:

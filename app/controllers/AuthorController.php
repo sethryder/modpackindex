@@ -10,7 +10,7 @@ class AuthorController extends BaseController
     public function getAdd()
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Add An Author - ' . $this->site_name;
@@ -21,7 +21,7 @@ class AuthorController extends BaseController
     public function postAdd()
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Add An Author - ' . $this->site_name;
@@ -42,7 +42,7 @@ class AuthorController extends BaseController
             $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/author/add/')->withErrors($validator)->withInput();
+            return Redirect::action('AuthorController@getAdd')->withErrors($validator)->withInput();
         } else {
             $author = new Author;
 
@@ -66,7 +66,7 @@ class AuthorController extends BaseController
             if ($success) {
                 return View::make('authors.add', ['title' => $title, 'success' => true]);
             } else {
-                return Redirect::to('/author/add/')->withErrors(['message' => 'Unable to add author.'])->withInput();
+                return Redirect::action('AuthorController@getAdd')->withErrors(['message' => 'Unable to add author.'])->withInput();
             }
 
         }
@@ -75,7 +75,7 @@ class AuthorController extends BaseController
     public function getEdit($id)
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Edit An Author - ' . $this->site_name;
@@ -88,7 +88,7 @@ class AuthorController extends BaseController
     public function postEdit($id)
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Edit An Author - ' . $this->site_name;

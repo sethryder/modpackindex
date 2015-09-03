@@ -36,7 +36,7 @@
                                 </div> <!-- /.alert -->
                             @endif
 
-                            {{ Form::model($mod, array('url' => '/mod/edit/'.$mod->id, 'class' => 'form parsley-form')) }}
+                            {{ Form::model($mod, array('url' => action('ModController@postEdit', [$mod->id]), 'class' => 'form parsley-form')) }}
 
                             <div class="form-group">
                                 {{ Form::label('name','Name') }}:

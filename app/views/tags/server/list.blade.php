@@ -17,7 +17,7 @@
 
                         <div class="portlet-body">
 
-                            <p class="pull-right"><a href="/tag/server/add">Add</a></p>
+                            <p class="pull-right"><a href="{{ action('ModpackTagController@getAdd') }}">Add</a></p>
                             <table class="table table-striped table-bordered" id="table-1">
                                 <thead>
                                 <tr>
@@ -29,7 +29,7 @@
                                 @foreach ($tags as $tag)
                                     <tr>
                                         <td>{{{ $tag['name'] }}}</td>
-                                        <td><a href="/tag/server/edit/{{{ $tag['id'] }}}">Edit</a></td>
+                                        <td><a href="{{ action('ModpackTagController@getEdit', [$tag['id']]) }}">Edit</a></td>
                                     </tr>
                                 @endforeach
                                 </tbody>

@@ -16,7 +16,7 @@
                         <strong>Error!</strong> {{{ $error }}}
                     </div> <!-- /.alert -->
 
-                    <p>If you feel this is an error, please <a href="/contact">contact us</a>.</p>
+                    <p>If you feel this is an error, please <a href="{{ action('StaticPagesController@getContact') }}">contact us</a>.</p>
                 @endif
 
 

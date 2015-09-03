@@ -36,7 +36,7 @@
                                 </div> <!-- /.alert -->
                             @endif
 
-                            {{ Form::open(array('url' => '/author/add', 'class' => 'form parsley-form')) }}
+                            {{ Form::open(array('url' => action('AuthorController@postAdd'), 'class' => 'form parsley-form')) }}
 
                             <div class="form-group">
                                 {{ Form::label('name','Name') }}:

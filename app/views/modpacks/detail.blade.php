@@ -9,57 +9,43 @@
 
                 <h3 class="portlet-title">
                     <u>{{{ $modpack->name }}} ({{{ $modpack->version->name  }}})</u>
-
                 </h3>
 
                 <div style="position: relative; bottom: 15px;"><h5>by {{ $creators_formatted }}</h5>
-                        <?php $i = 0 ?>
-                        @foreach($creators as $index => $creator)
-                            {{{$creator->name}}}@if ($i+1 != count($creators)), @endif
-                            <?php $i++; ?>
-                        @endforeach
-                    </h5>
 
                     <p>
-                        <a href="/launcher/{{ $launcher->slug }}"><i class="fa fa-rocket"></i> {{ $launcher->name }}</a>
-                        |
-                        <?php $i = 0 ?>
-                        @foreach ($links as $index => $link)
-                            @if ($index == 'website')
-                                <a href="{{{ $link }}}"><i class="fa fa-external-link"></i> Website</a>
+                        <a href="{{ action('LauncherController@getLauncherVersion', [$launcher->slug]) }}"><i class="fa fa-rocket"></i>{{ $launcher->name }}</a>
                         |{{ $links_formatted }}
                         @if (isset($user_permissions['modpack_edit']) || $can_edit == true)
-                            | <a href="/modpack/edit/{{{ $modpack->id }}}"><i class="fa fa-edit"></i> Edit</a>
+                            | <a href="{{ action('ModpackController@getEdit', [$modpack->id]) }}"><i
+                                        class="fa fa-edit"></i>Edit</a>
                         @endif
                     </p>
 
                     @if (count($tags) > 0)
-                        <p><?php $i = 0 ?>
                         <p><i class="fa fa-tags"></i>Tags:{{ $tags_formatted }}</p>
-                            @foreach ($tags as $tag)
-                                <a href="/modpack/finder?tag={{{ $tag->slug }}}"
-                                   title="{{{ $tag->deck }}}">{{{ $tag->name }}}</a>@if ($i+1 != count($tags)),@endif
-                                <?php $i++; ?>
-                            @endforeach</p>
                     @endif
 
 
                     @if (isset($pack_code))
                         <p>
                             @if ($launcher->slug == 'feed-the-beast')
-                                Pack Code: <b>{{{ $pack_code->code }}}</b> (<a href="/about/modpack-codes">What's
+                                Pack Code: <b>{{{ $pack_code->code }}}</b> (<a
+                                        href="{{ action('StaticPagesController@getPackCodes') }}">What's
                                     this?</a>)
                             @endif
                             @if ($launcher->slug == 'atlauncher')
-                                Pack Code: <b>{{{ $pack_code->code }}}</b> (<a href="/about/modpack-codes">What's
+                                Pack Code: <b>{{{ $pack_code->code }}}</b> (<a
+                                        href="{{ action('StaticPagesController@getPackCodes') }}">What's
                                     this?</a>)
                             @endif
                             @if ($launcher->slug == 'technic-platform')
                                 Pack URL: <input type="text" name="url" value="{{{ $pack_code->code }}}"> (<a
-                                        href="/about/modpack-codes">What's this?</a>)
+                                        href="{{ action('StaticPagesController@getPackCodes') }}">What's this?</a>)
                             @endif
                             @if (isset($user_permissions['modpack_code_edit']))
-                                <a href="/modpack-code/edit/{{{ $pack_code->id }}}"><i class="fa fa-edit"></i> Edit</a>
+                                <a href="{{ action('ModpackCodeController@getEdit', [$pack_code->id]) }}"><i
+                                            class="fa fa-edit"></i>Edit</a>
                             @endif
                         </p>
                     @endif
@@ -132,7 +118,8 @@
                         @if (isset($has_servers))
                             <div class="tab-pane fade" id="servers">
                                 <div class="portlet-body">
-                                    <p class="pull-right"><b><a href="/server/add">Add Server</a></b></p>
+                                    <p class="pull-right"><b><a href="{{ action('ServerController@getAdd') }}">Add Server</a></b></p>
+
                                     <p>&nbsp;</p>
 
                                     <table class="table table-striped table-bordered" id="servers-table">
@@ -157,7 +144,8 @@
                                         </tr>
                                         </tfoot>
                                     </table>
-                                </div> <!-- /.tab-pane -->
+                                </div>
+                                <!-- /.tab-pane -->
                             </div>
                             <!-- /.portlet-body -->
                         @endif
@@ -171,7 +159,7 @@
 
                                             <div class="thumbnail">
                                                 <div class="thumbnail-view">
-                                                    <a href="/stream/{{{ $stream->display_name }}}">
+                                                    <a href="{{ action('TwitchController@getChannel', [$stream->display_name]) }}">
                                                         <img src="{{{ $stream->preview }}}" style="width: 100%"/></a>
                                                 </div>
                                                 <div class="thumbnail-footer">
@@ -180,12 +168,12 @@
                                                     </div>
 
                                                     <div class="pull-right">
-                                                        <a href="/stream/{{{ $stream->display_name }}}"><i
-                                                                    class="fa fa-bullhorn"></i> {{{ $stream->language }}}
+                                                        <a href="{{ action('TwitchController@getChannel', [$stream->display_name]) }}">
+                                                            <i class="fa fa-bullhorn"></i>{{{ $stream->language }}}
                                                         </a>
-                                                        <a href="/stream/{{ $stream->display_name }}"><i
-                                                                    class="fa fa-eye"></i> {{{ $stream->viewers }}}</a>
-                                                        <!-- <a href="javascript:;"><i class="fa fa-heart"></i> {{{ $stream->followers }}}</a> -->
+                                                        <a href="{{ action('TwitchController@getChannel', [$stream->display_name]) }}">
+                                                            <i class="fa fa-eye"></i>{{{ $stream->viewers }}}</a>
+                                                        <!-- <a href="javascript:;"><i class="fa fa-heart"></i>{{{ $stream->followers }}}</a> -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -204,8 +192,9 @@
 
                                             <div class="thumbnail">
                                                 <div class="thumbnail-view">
-                                                    <a href="/modpack/{{{ $version }}}/{{{ $modpack->slug }}}/lets-play/{{{ $lets_play->id }}}-{{{ Str::slug($lets_play->channel_title) }}}">
-                                                        <img src="{{{ $lets_play->thumbnail }}}" style="width: 100%"/></a>
+                                                    <a href="{{ action('YoutubeController@getModpackVideo', [$version, $modpack->slug, $lets_play->id, Str::slug($lets_play->channel_title)]) }}">
+                                                        <img src="{{{ $lets_play->thumbnail }}}"
+                                                             style="width: 100%"/></a>
                                                 </div>
                                                 <div class="thumbnail-footer">
                                                     <div class="pull-left">
@@ -225,7 +214,8 @@
 
                     </div>
 
-                    <div class="pull-right"><p><a href="/contact?modpack={{{ $modpack->id }}}">Something incorrect?</a></p></div>
+                    <div class="pull-right"><p><a href="{{ action('StaticPagesController@getContact') }}?modpack={{{ $modpack->id }}}">Something incorrect?</a>
+                        </p></div>
 
                 </div>
                 <!-- /.portlet -->

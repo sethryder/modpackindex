@@ -23,7 +23,7 @@
                 </h4>
 
                 <div class="portlet-body" style="width: 50%">
-                    {{ Form::open(array('url' => '/modpack/finder', 'class' => 'form parsley-form')) }}
+                    {{ Form::open(array('url' => action('SearchController@postModpackSearch'), 'class' => 'form parsley-form')) }}
                     <div class="form-group">
                         {{ Form::label('mc_version','Minecraft Version') }}:
                         {{ Form::select('mc_version', ['all' => 'All'] + $version_select, $selected_version, array('class' => 'form-control from-post')) }}

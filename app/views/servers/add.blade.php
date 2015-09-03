@@ -60,7 +60,7 @@
                                 @endif
                             @endif
 
-                            {{ Form::open(array('url' => '/server/add', 'class' => 'form parsley-form')) }}
+                            {{ Form::open(array('url' => action('ServerController@postAdd'), 'class' => 'form parsley-form')) }}
 
                             <div class="form-group">
                                 {{ Form::label('name','Server Name') }}*:
@@ -85,7 +85,7 @@
                             @if (!Auth::check())
                                 <div class="form-group">
                                     {{ Form::label('email','Email') }}*:
-                                    {{ Form::text('email', null, array('class' => 'form-control', 'data-required' => 'true'))}}
+                                    {{ Form::text('email', null, ['class' => 'form-control', 'data-required' => 'true'])}}
                                     <p class="pull-right">Required so you can activate and edit your server.</p>
                                 </div>
                                 <!-- /.form-group -->
@@ -100,12 +100,12 @@
                             <div class="form-group">
                                 {{ Form::label('tags','Tags') }}*:
                                 {{ Form::select('tags[]', ServerTag::orderBy('name')->lists('name', 'id'), null, array('multiple', 'class' => 'chosen-select form-control')) }}
-                                <p class="pull-right">Are we missing a tag? <a href="/contact" target="_blank">Let us know</a>.</p>
+                                <p class="pull-right">Are we missing a tag? <a href="{{ action('StaticPagesController@getContact') }}" target="_blank">Let us know</a>.</p>
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('permissions','Server Permissions') }}*:
-                                {{ Form::select('permissions', $permissions, null, array('class' => 'form-control')) }}
+                                {{ Form::select('permissions', $permissions, null, ['class' => 'form-control']) }}
                             </div>
 
                             <div class="form-group">
@@ -133,7 +133,7 @@
 
                             <div class="form-group" id="datepicker">
                                 {{ Form::label('last_world_reset','Last World Reset') }}:
-                                {{ Form::text('last_world_reset', null, array('class' => 'form-control', 'data-date-end-date' => '0d'))}}
+                                {{ Form::text('last_world_reset', null, ['class' => 'form-control', 'data-date-end-date' => '0d'])}}
                             </div>
                             <!-- /.form-group -->
 
@@ -145,7 +145,7 @@
 
                             <div class="form-group">
                                 {{ Form::label('description','Description') }}:
-                                {{ Form::textarea('description', null, array('class' => 'form-control'))}}
+                                {{ Form::textarea('description', null, ['class' => 'form-control'])}}
                                 <p class="pull-right">We support <a href="https://help.github.com/articles/github-flavored-markdown/" target="_blank">Github Flavored Markdown</a>.</p>
                             </div>
                             <!-- /.form-group -->

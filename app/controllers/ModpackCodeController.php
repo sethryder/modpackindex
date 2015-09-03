@@ -5,7 +5,7 @@ class ModpackCodeController extends BaseController
     public function getAdd()
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Add A Modpack Code - ' . $this->site_name;
@@ -16,7 +16,7 @@ class ModpackCodeController extends BaseController
     public function postAdd()
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Add A Modpack Code - ' . $this->site_name;
@@ -62,7 +62,7 @@ class ModpackCodeController extends BaseController
     public function getEdit($id)
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Edit A Modpack Code - ' . $this->site_name;
@@ -75,7 +75,7 @@ class ModpackCodeController extends BaseController
     public function postEdit($id)
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $title = 'Edit A Modpack Code - ' . $this->site_name;

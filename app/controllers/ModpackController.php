@@ -367,11 +367,11 @@ class ModpackController extends BaseController
                 if ($this->checkRoute()) {
                     $can_edit_maintainers = true;
                 } else {
-                    return Redirect::to('/');
+                    return Redirect::route('index');
                 }
             }
         } else {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         $minecraft_version = MinecraftVersion::where('id', '=', $modpack->minecraft_version_id)->first();

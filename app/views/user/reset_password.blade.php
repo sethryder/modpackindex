@@ -52,7 +52,7 @@
                     <h3>Reset Password</h3>
                     <h3>for {{{ $username }}}</h3>
 
-                    {{ Form::open(array('url' => '/reset/' . $token, 'class' => 'form account-form')) }}
+                    {{ Form::open(array('url' => action('UserController@getResetPassword', [$token]), 'class' => 'form account-form')) }}
 
                     <div class="form-group">
                         {{ Form::password('new_password', array('class' => 'form-control', 'placeholder' => 'New Password'))}}
@@ -74,7 +74,7 @@
             <div class="account-footer">
                 <p>
                     Don't have an account? &nbsp;
-                    <a href="/register" class="">Create an Account!</a>
+                    <a href="{{ action('UserController@getRegister') }}" class="">Create an Account!</a>
                 </p>
             </div>
             <!-- /.account-footer -->

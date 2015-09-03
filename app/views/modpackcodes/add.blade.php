@@ -36,7 +36,7 @@
                                 </div> <!-- /.alert -->
                             @endif
 
-                            {{ Form::open(array('url' => '/modpack-code/add', 'class' => 'form parsley-form')) }}
+                            {{ Form::open(array('url' => action('ModpackCodeController@postAdd'), 'class' => 'form parsley-form')) }}
 
                             <div class="form-group">
                                 {{ Form::label('code','Code') }}:

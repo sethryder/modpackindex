@@ -5,7 +5,7 @@ class AdminController extends BaseController
     public function getClearCache($tag = 'all')
     {
         if (!$this->checkRoute()) {
-            return Redirect::to('/');
+            return Redirect::route('index');
         }
 
         if ($tag == 'all') {
