@@ -49,7 +49,7 @@ Class APIController extends BaseController
             $modpacks['results'][] = [
                 'id' => $modpack->id,
                 'name' => $modpack->name,
-                'deck' => $modpack->deck,
+                'short_description' => $modpack->deck,
                 'website' => $modpack->website,
                 'download_link' => $modpack->download_link,
                 'donate_link' => $modpack->website,
@@ -86,7 +86,7 @@ Class APIController extends BaseController
             $mods[] = [
                 'id' => $mod->id,
                 'name' => $mod->name,
-                'deck' => $mod->deck,
+                'short_description' => $mod->deck,
                 'website' => $mod->website,
                 'download_link' => $mod->download_link,
                 'donate_link' => $mod->website,
@@ -101,7 +101,7 @@ Class APIController extends BaseController
         $results = [
             'id' => $raw_modpack->id,
             'name' => $raw_modpack->name,
-            'deck' => $raw_modpack->deck,
+            'short_description' => $raw_modpack->deck,
             'website' => $raw_modpack->website,
             'download_link' => $raw_modpack->download_link,
             'donate_link' => $raw_modpack->website,
@@ -163,7 +163,7 @@ Class APIController extends BaseController
             $mods['results'][] = [
                 'id' => $mod->id,
                 'name' => $mod->name,
-                'deck' => $mod->deck,
+                'short_description' => $mod->deck,
                 'website' => $mod->website,
                 'download_link' => $mod->download_link,
                 'donate_link' => $mod->website,
@@ -200,7 +200,7 @@ Class APIController extends BaseController
             $modpacks[] = [
                 'id' => $modpack->id,
                 'name' => $modpack->name,
-                'deck' => $modpack->deck,
+                'short_description' => $modpack->deck,
                 'website' => $modpack->website,
                 'download_link' => $modpack->download_link,
                 'donate_link' => $modpack->website,
@@ -215,7 +215,7 @@ Class APIController extends BaseController
         $results = [
             'id' => $raw_mod->id,
             'name' => $raw_mod->name,
-            'deck' => $raw_mod->deck,
+            'short_description' => $raw_mod->deck,
             'website' => $raw_mod->website,
             'download_link' => $raw_mod->download_link,
             'donate_link' => $raw_mod->website,
@@ -230,6 +230,154 @@ Class APIController extends BaseController
         return Response::json($results);
     }
 
+    public function getServers($modpack ='all')
+    {
+        $servers = [];
+        $limit = 100;
+        $offset = 0;
+        $active = 0;
+
+        $input = Input::only('limit', 'offset', 'active');
+
+        if (!$input['active']) {
+            $active = 1;
+        }
+
+        if ($input['limit']) {
+            $limit = $input['limit'];
+        }
+
+        if ($input['offset']) {
+            $offset = $input['offset'];
+        }
+
+        if ($modpack == 'all') {
+            $raw_servers = Server::select('id', 'modpack_id', 'name', 'ip_host', 'port', 'permissions', 'country', 'deck',
+                'description', 'website', 'application_url', 'slug', 'last_check', 'last_world_reset', 'next_world_reset',
+                'created_at', 'updated_at')
+                ->where('active', $active)
+                ->skip($offset)->take($limit)->get();
+
+            $server_count = Server::select('id')->where('active', $active)->count();
+        } else {
+            $raw_servers = Server::select('id', 'modpack_id', 'name', 'ip_host', 'port', 'permissions', 'country', 'deck',
+                'description', 'website', 'application_url', 'slug', 'last_check', 'last_world_reset', 'next_world_reset',
+                'created_at', 'updated_at')
+                ->where('active', $active)
+                ->where('modpack_id', $modpack)
+                ->skip($offset)->take($limit)->get();
+
+            $server_count = Server::select('id')->where('active', $active)->where('modpack_id', $modpack)->count();
+        }
+
+        if (!$raw_servers) {
+            return json_encode(['error' => 'No results.']);
+        }
+
+        foreach ($raw_servers as $server) {
+            if ($server->server_address_hide) {
+                $server_address = 'Hidden';
+            } else {
+                $server_address = $server->ip_host . ':' . $server->port;
+            }
+
+            $servers['results'][] = [
+                'id' => $server->id,
+                'modpack_id' => $server->modpack_id,
+                'name' => $server->name,
+                'short_description' => $server->deck,
+                'server_address' => $server_address,
+                'country' => $server->country,
+                'permissions' => $server->permissions,
+                'website' => $server->wiki_link,
+                'application_url' => $server->description,
+                'description' => $server->slug,
+                'server_address_hide' => $server->server_address_hide,
+                'player_list_hide' => $server->player_list_hide,
+                'slug' => $server->slug,
+                'last_world_reset' => $server->last_world_reset,
+                'next_world_reset' => $server->next_world_reset,
+                'created_at' => $server->created_at,
+                'updated_at' => $server->updated_at,
+            ];
+        }
+
+        $servers['meta'] = [
+            'total_results' => $server_count,
+            'limit' => $limit,
+            'offset' => $offset
+        ];
+
+        return Response::json($servers);
+    }
+
+    public function getServer($id)
+    {
+        $players_array = [];
+        $mods_array = [];
+
+        $server = Server::find($id);
+
+        if (!$server) {
+            return json_encode(['error' => 'No mod with that ID found.']);
+        }
+
+        $server_status = ServerStatus::where('server_id', $id)->first();
+
+        if (!$server->player_list_hide) {
+            $raw_players = json_decode($server_status->players);
+
+            if ($raw_players) {
+                foreach ($raw_players as $player) {
+                    $players_array[] = [
+                        'name' => preg_replace('/\x{00A7}.{1}/u', '', $player->name)
+                    ];
+                }
+            }
+        }
+
+        if ($server_status->mods) {
+            $raw_mods = json_decode($server_status->mods);
+
+            foreach ($raw_mods->modList as $mod) {
+                $mods_array[] = [
+                    'name' => htmlspecialchars($mod->modid),
+                    'version' => $mod->version,
+                ];
+            }
+        }
+
+        if ($server->server_address_hide) {
+            $server_address = 'Hidden';
+        } else {
+            $server_address = $server->ip_host . ':' . $server->port;
+        }
+
+        $results = [
+            'id' => $server->id,
+            'modpack_id' => $server->modpack_id,
+            'name' => $server->name,
+            'short_description' => $server->deck,
+            'server_address' => $server_address,
+            'country' => $server->country,
+            'permissions' => $server->permissions,
+            'website' => $server->wiki_link,
+            'application_url' => $server->description,
+            'description' => $server->slug,
+            'players' => $players_array,
+            'mods' => $mods_array,
+            'server_address_hide' => $server->server_address_hide,
+            'player_list_hide' => $server->player_list_hide,
+            'slug' => $server->slug,
+            'last_world_reset' => $server->last_world_reset,
+            'next_world_reset' => $server->next_world_reset,
+            'created_at' => $server->created_at,
+            'updated_at' => $server->updated_at,
+        ];
+
+        return Response::json($results);
+    }
+
     public function getStreams($limit = 100, $offset)
     {
 
@@ -239,5 +387,4 @@ Class APIController extends BaseController
     {
 
     }
-
 }

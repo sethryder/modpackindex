@@ -180,6 +180,8 @@ Route::get('api/v1/modpacks/{version}.json', 'APIController@getModpacks');
 Route::get('api/v1/modpack/{id}.json', 'APIController@getModpack');
 Route::get('api/v1/mods/{version}.json', 'APIController@getMods');
 Route::get('api/v1/mod/{id}.json', 'APIController@getMod');
+Route::get('api/v1/servers/{id}.json', 'APIController@getServers');
+Route::get('api/v1/server/{id}.json', 'APIController@getServer');
 
 //api calls for json for the tables
 Route::get('api/table/modpack_finder/{version}.json', 'JSONController@getModpackSearch');
