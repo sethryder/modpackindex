@@ -36,27 +36,26 @@ class ModpackCodeController extends BaseController
         if ($validator->fails()) {
             // TODO this line originally redirects to modpack-code/add, there's no route for this, is this an error?
             return Redirect::action('ModpackCodeController@getAdd')->withErrors($validator)->withInput();
-        } else {
-            $modpackcode = new ModpackCode;
-
-            $modpackcode->code = $input['code'];
-            $modpackcode->modpack_id = $input['modpack'];
-            $modpackcode->launcher_id = $input['launcher'];
-            $modpackcode->last_ip = Request::getClientIp();
-
-            $success = $modpackcode->save();
-
-            if ($success) {
-                Cache::tags('modpacks')->flush();
-                Queue::push('BuildCache');
-
-                return View::make('modpackcodes.add', ['title' => $title, 'success' => true]);
-            } else {
-                return Redirect::action('ModpackCodeController@getAdd')
-                    ->withErrors(['message' => 'Unable to add modpack code.'])->withInput();
-            }
-
         }
+
+        $modpackcode = new ModpackCode;
+
+        $modpackcode->code = $input['code'];
+        $modpackcode->modpack_id = $input['modpack'];
+        $modpackcode->launcher_id = $input['launcher'];
+        $modpackcode->last_ip = Request::getClientIp();
+
+        $success = $modpackcode->save();
+
+        if ($success) {
+            Cache::tags('modpacks')->flush();
+            Queue::push('BuildCache');
+
+            return View::make('modpackcodes.add', ['title' => $title, 'success' => true]);
+        }
+
+        return Redirect::action('ModpackCodeController@getAdd')
+            ->withErrors(['message' => 'Unable to add modpack code.'])->withInput();
     }
 
     public function getEdit($id)
@@ -97,25 +96,24 @@ class ModpackCodeController extends BaseController
         if ($validator->fails()) {
             // TODO this line originally redirects to modpack-code/edit, there's no route for this, is this an error?
             return Redirect::action('ModpackCodeController@getEdit', [$id])->withErrors($validator)->withInput();
-        } else {
-            $modpackcode->code = $input['code'];
-            $modpackcode->modpack_id = $input['modpack'];
-            $modpackcode->launcher_id = $input['launcher'];
-            $modpackcode->last_ip = Request::getClientIp();
-
-            $success = $modpackcode->save();
-
-            if ($success) {
-                Cache::tags('modpacks')->flush();
-                Queue::push('BuildCache');
-
-                return View::make('modpackcodes.edit',
-                    ['title' => $title, 'success' => true, 'modpackcode' => $modpackcode]);
-            } else {
-                return Redirect::action('ModpackCodeController@getEdit', [$id])
-                    ->withErrors(['message' => 'Unable to add modpack code.'])->withInput();
-            }
-
         }
+
+        $modpackcode->code = $input['code'];
+        $modpackcode->modpack_id = $input['modpack'];
+        $modpackcode->launcher_id = $input['launcher'];
+        $modpackcode->last_ip = Request::getClientIp();
+
+        $success = $modpackcode->save();
+
+        if ($success) {
+            Cache::tags('modpacks')->flush();
+            Queue::push('BuildCache');
+
+            return View::make('modpackcodes.edit',
+                ['title' => $title, 'success' => true, 'modpackcode' => $modpackcode]);
+        }
+
+        return Redirect::action('ModpackCodeController@getEdit', [$id])
+            ->withErrors(['message' => 'Unable to add modpack code.'])->withInput();
     }
 }

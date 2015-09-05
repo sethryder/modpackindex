@@ -168,9 +168,9 @@ class ServerController extends BaseController
 
         if ($modpack) {
             return Redirect::to(action('ServerController@getServers', [$modpack]) . $query_string);
-        } else {
-            return Redirect::to(action('ServerController@getServers') . $query_string);
         }
+
+        return Redirect::to(action('ServerController@getServers') . $query_string);
     }
 
     public function getServer($id, $slug)
@@ -387,135 +387,134 @@ class ServerController extends BaseController
             return Redirect::action('ServerController@getAdd')->withErrors($validator)->withInput();
         } elseif ($validator->fails()) {
             return Redirect::action('ServerController@getAdd')->withErrors($validator)->withInput();
+        }
+
+        $server = new Server;
+
+        $server->modpack_id = $modpack->id;
+        $server->minecraft_version_id = $modpack->minecraft_version_id;
+        $server->name = $input['name'];
+        $server->ip_host = $server_host;
+        $server->port = $server_port;
+        $server->deck = $input['deck'];
+        $server->country = $input['country'];
+        $server->permissions = $input['permissions'];
+        $server->website = $input['website'];
+        $server->application_url = $input['application_url'];
+        $server->description = $input['description'];
+        $server->last_world_reset = $input['last_world_reset'];
+        $server->next_world_reset = $input['next_world_reset'];
+        $server->last_check = Carbon\Carbon::now()->toDateTimeString();
+
+        if ($logged_in) {
+            if ($input['active'] == 1) {
+                $server->active = 1;
+            }
+            $server->user_id = Auth::id();
         } else {
-            $server = new Server;
+            $server->user_id = 0;
+        }
 
-            $server->modpack_id = $modpack->id;
-            $server->minecraft_version_id = $modpack->minecraft_version_id;
-            $server->name = $input['name'];
-            $server->ip_host = $server_host;
-            $server->port = $server_port;
-            $server->deck = $input['deck'];
-            $server->country = $input['country'];
-            $server->permissions = $input['permissions'];
-            $server->website = $input['website'];
-            $server->application_url = $input['application_url'];
-            $server->description = $input['description'];
-            $server->last_world_reset = $input['last_world_reset'];
-            $server->next_world_reset = $input['next_world_reset'];
-            $server->last_check = Carbon\Carbon::now()->toDateTimeString();
+        if ($input['email_alerts'] == 1) {
+            $server->email_alerts = 1;
+        }
 
-            if ($logged_in) {
-                if ($input['active'] == 1) {
-                    $server->active = 1;
-                }
-                $server->user_id = Auth::id();
-            } else {
-                $server->user_id = 0;
+        if ($input['server_address_hide'] == 1) {
+            $server->server_address_hide = 1;
+        }
+        if ($input['player_list_hide'] == 1) {
+            $server->player_list_hide = 1;
+        }
+        if ($input['motd_hide'] == 1) {
+            $server->motd_hide = 1;
+        }
+
+        if ($input['slug'] == '') {
+            $slug = Str::slug($input['name']);
+        } else {
+            $slug = $input['slug'];
+        }
+
+        $server->slug = $slug;
+        $server->last_ip = Request::getClientIp();
+
+        $success = $server->save();
+
+        if ($success) {
+
+            foreach ($input['tags'] as $tag) {
+                $server->tags()->attach($tag);
             }
 
-            if ($input['email_alerts'] == 1) {
-                $server->email_alerts = 1;
+            $server_status = new ServerStatus;
+
+            $server_status->server_id = $server->id;
+
+            if (isset($server_info['players']['online'])) {
+                $server_status->current_players = $server_info['players']['online'];
+            } elseif (isset($server_info['Players'])) {
+                $server_status->current_players = $server_info['Players'];
             }
 
-            if ($input['server_address_hide'] == 1) {
-                $server->server_address_hide = 1;
-            }
-            if ($input['player_list_hide'] == 1) {
-                $server->player_list_hide = 1;
-            }
-            if ($input['motd_hide'] == 1) {
-                $server->motd_hide = 1;
+            if (isset($server_info['players']['max'])) {
+                $server_status->max_players = $server_info['players']['max'];
+            } elseif (isset($server_info['MaxPlayers'])) {
+                $server_status->max_players = $server_info['MaxPlayers'];
             }
 
-            if ($input['slug'] == '') {
-                $slug = Str::slug($input['name']);
-            } else {
-                $slug = $input['slug'];
+            $server_status->last_success = Carbon\Carbon::now()->toDateTimeString();
+
+            if (isset($server_info['modinfo'])) {
+                $server_status->mods = json_encode($server_info['modinfo']);
             }
 
-            $server->slug = $slug;
-            $server->last_ip = Request::getClientIp();
+            if (isset($server_info['players']['sample'])) {
+                $server_status->players = json_encode($server_info['players']['sample']);
+            }
 
-            $success = $server->save();
+            $success = $server_status->save();
 
             if ($success) {
 
-                foreach ($input['tags'] as $tag) {
-                    $server->tags()->attach($tag);
-                }
+                if (!$logged_in) {
+                    $password = str_random(32);
 
-                $server_status = new ServerStatus;
+                    $server_user = new ServerUser;
 
-                $server_status->server_id = $server->id;
+                    $server_user->server_id = $server->id;
+                    $server_user->email = $input['email'];
+                    $server_user->edit_password = Hash::make($password);
+                    $server_user->last_ip = Request::getClientIp();
 
-                if (isset($server_info['players']['online'])) {
-                    $server_status->current_players = $server_info['players']['online'];
-                } elseif (isset($server_info['Players'])) {
-                    $server_status->current_players = $server_info['Players'];
-                }
+                    $server_user_success = $server_user->save();
 
-                if (isset($server_info['players']['max'])) {
-                    $server_status->max_players = $server_info['players']['max'];
-                } elseif (isset($server_info['MaxPlayers'])) {
-                    $server_status->max_players = $server_info['MaxPlayers'];
-                }
-
-                $server_status->last_success = Carbon\Carbon::now()->toDateTimeString();
-
-                if (isset($server_info['modinfo'])) {
-                    $server_status->mods = json_encode($server_info['modinfo']);
-                }
-
-                if (isset($server_info['players']['sample'])) {
-                    $server_status->players = json_encode($server_info['players']['sample']);
-                }
-
-                $success = $server_status->save();
-
-                if ($success) {
-
-                    if (!$logged_in) {
-                        $password = str_random(32);
-
-                        $server_user = new ServerUser;
-
-                        $server_user->server_id = $server->id;
-                        $server_user->email = $input['email'];
-                        $server_user->edit_password = Hash::make($password);
-                        $server_user->last_ip = Request::getClientIp();
-
-                        $server_user_success = $server_user->save();
-
-                        if ($server_user_success) {
-                            Mail::send('emails.server_add', ['password' => $password, 'server_id' => $server->id],
-                                function ($message) use ($input) {
-                                    $message->from('noreply@modpackindex.com', 'Modpack Index');
-                                    $message->to($input['email'])->subject('Server confirmation for ' . $input['name']);
-                                });
-                        }
+                    if ($server_user_success) {
+                        Mail::send('emails.server_add', ['password' => $password, 'server_id' => $server->id],
+                            function ($message) use ($input) {
+                                $message->from('noreply@modpackindex.com', 'Modpack Index');
+                                $message->to($input['email'])->subject('Server confirmation for ' . $input['name']);
+                            });
                     }
-
-                    return View::make('servers.add', [
-                        'title' => $title,
-                        'chosen' => true,
-                        'success' => true,
-                        'logged_in' => $logged_in,
-                        'datepicker' => true,
-                        'versions' => $versions,
-                        'countries' => $countries,
-                        'permissions' => $permissions
-                    ]);
                 }
 
-                return Redirect::action('ServerController@getAdd')->withErrors(['message' => 'Unable to add server.'])
-                    ->withInput();
-
-            } else {
-                return Redirect::action('ServerController@getAdd')->withErrors(['message' => 'Unable to add server.'])
-                    ->withInput();
+                return View::make('servers.add', [
+                    'title' => $title,
+                    'chosen' => true,
+                    'success' => true,
+                    'logged_in' => $logged_in,
+                    'datepicker' => true,
+                    'versions' => $versions,
+                    'countries' => $countries,
+                    'permissions' => $permissions
+                ]);
             }
+
+            return Redirect::action('ServerController@getAdd')->withErrors(['message' => 'Unable to add server.'])
+                ->withInput();
         }
+
+        return Redirect::action('ServerController@getAdd')->withErrors(['message' => 'Unable to add server.'])
+            ->withInput();
     }
 
     public function getEdit($id, $password = null)
@@ -690,148 +689,148 @@ class ServerController extends BaseController
             }
 
             return Redirect::action('ServerController@getEdit', [$id])->withErrors($validator)->withInput();
+        }
+
+        $server->modpack_id = $modpack->id;
+        $server->user_id = Auth::id();
+        $server->minecraft_version_id = $modpack->minecraft_version_id;
+        $server->name = $input['name'];
+        $server->ip_host = $server_host;
+        $server->port = $server_port;
+        $server->deck = $input['deck'];
+        $server->country = $input['country'];
+        $server->permissions = $input['permissions'];
+        $server->website = $input['website'];
+        $server->application_url = $input['application_url'];
+        $server->description = $input['description'];
+        $server->last_world_reset = $input['last_world_reset'];
+        $server->next_world_reset = $input['next_world_reset'];
+        $server->last_check = Carbon\Carbon::now()->toDateTimeString();
+
+        $server->active = 0;
+        if ($input['active'] == 1) {
+            $server->active = 1;
+        }
+
+        $server->email_alerts = 0;
+        if ($input['email_alerts'] == 1) {
+            $server->email_alerts = 1;
+        }
+
+        $server->server_address_hide = 0;
+        if ($input['server_address_hide'] == 1) {
+            $server->server_address_hide = 1;
+        }
+
+        $server->player_list_hide = 0;
+        if ($input['player_list_hide'] == 1) {
+            $server->player_list_hide = 1;
+        }
+
+        $server->motd_hide = 0;
+        if ($input['motd_hide'] == 1) {
+            $server->motd_hide = 1;
+        }
+
+        if ($input['slug'] == '') {
+            $slug = Str::slug($input['name']);
         } else {
-            $server->modpack_id = $modpack->id;
-            $server->user_id = Auth::id();
-            $server->minecraft_version_id = $modpack->minecraft_version_id;
-            $server->name = $input['name'];
-            $server->ip_host = $server_host;
-            $server->port = $server_port;
-            $server->deck = $input['deck'];
-            $server->country = $input['country'];
-            $server->permissions = $input['permissions'];
-            $server->website = $input['website'];
-            $server->application_url = $input['application_url'];
-            $server->description = $input['description'];
-            $server->last_world_reset = $input['last_world_reset'];
-            $server->next_world_reset = $input['next_world_reset'];
-            $server->last_check = Carbon\Carbon::now()->toDateTimeString();
+            $slug = $input['slug'];
+        }
 
-            $server->active = 0;
-            if ($input['active'] == 1) {
-                $server->active = 1;
+        $server->slug = $slug;
+        $server->last_ip = Request::getClientIp();
+
+        $success = $server->save();
+
+        if ($success) {
+            foreach ($server->tags as $t) {
+                $server->tags()->detach($t->id);
+            }
+            $server->tags()->attach($input['selected_tags']);
+
+            $server_status = ServerStatus::where('server_id', $server->id)->first();
+
+            $server_status->server_id = $server->id;
+
+            if (isset($server_info['players']['online'])) {
+                $server_status->current_players = $server_info['players']['online'];
+            } elseif (isset($server_info['Players'])) {
+                $server_status->current_players = $server_info['Players'];
             }
 
-            $server->email_alerts = 0;
-            if ($input['email_alerts'] == 1) {
-                $server->email_alerts = 1;
+            if (isset($server_info['players']['max'])) {
+                $server_status->max_players = $server_info['players']['max'];
+            } elseif (isset($server_info['MaxPlayers'])) {
+                $server_status->max_players = $server_info['MaxPlayers'];
             }
 
-            $server->server_address_hide = 0;
-            if ($input['server_address_hide'] == 1) {
-                $server->server_address_hide = 1;
+            $server_status->last_success = Carbon\Carbon::now()->toDateTimeString();
+
+            if (isset($server_info['modinfo'])) {
+                $server_status->mods = json_encode($server_info['modinfo']);
             }
 
-            $server->player_list_hide = 0;
-            if ($input['player_list_hide'] == 1) {
-                $server->player_list_hide = 1;
+            if (isset($server_info['players']['sample'])) {
+                $server_status->players = json_encode($server_info['players']['sample']);
             }
 
-            $server->motd_hide = 0;
-            if ($input['motd_hide'] == 1) {
-                $server->motd_hide = 1;
-            }
-
-            if ($input['slug'] == '') {
-                $slug = Str::slug($input['name']);
-            } else {
-                $slug = $input['slug'];
-            }
-
-            $server->slug = $slug;
-            $server->last_ip = Request::getClientIp();
-
-            $success = $server->save();
+            $success = $server_status->save();
 
             if ($success) {
-                foreach ($server->tags as $t) {
-                    $server->tags()->detach($t->id);
-                }
-                $server->tags()->attach($input['selected_tags']);
-
-                $server_status = ServerStatus::where('server_id', $server->id)->first();
-
-                $server_status->server_id = $server->id;
-
-                if (isset($server_info['players']['online'])) {
-                    $server_status->current_players = $server_info['players']['online'];
-                } elseif (isset($server_info['Players'])) {
-                    $server_status->current_players = $server_info['Players'];
-                }
-
-                if (isset($server_info['players']['max'])) {
-                    $server_status->max_players = $server_info['players']['max'];
-                } elseif (isset($server_info['MaxPlayers'])) {
-                    $server_status->max_players = $server_info['MaxPlayers'];
-                }
-
-                $server_status->last_success = Carbon\Carbon::now()->toDateTimeString();
-
-                if (isset($server_info['modinfo'])) {
-                    $server_status->mods = json_encode($server_info['modinfo']);
-                }
-
-                if (isset($server_info['players']['sample'])) {
-                    $server_status->players = json_encode($server_info['players']['sample']);
-                }
-
-                $success = $server_status->save();
-
-                if ($success) {
-                    if (!$logged_in) {
-
-                        $server_user = ServerUser::where('server_id', $server->id)->first();
-
-                        $server_user->email = $input['email'];
-                        $server_user->last_ip = Request::getClientIp();
-                    }
-
-                    $updated_server = Server::find($id);
-
-                    foreach ($updated_server->tags as $t) {
-                        $selected_tags[] = $t->id;
-                    }
-
-                    if ($updated_server->last_world_reset == '0000-00-00') {
-                        $updated_server->last_world_reset = null;
-                    }
-
-                    if ($updated_server->next_world_reset == '0000-00-00') {
-                        $updated_server->next_world_reset = null;
-                    }
-
-                    return View::make('servers.edit', [
-                        'chosen' => true,
-                        'versions' => $versions,
-                        'countries' => $countries,
-                        'permissions' => $permissions,
-                        'title' => $title,
-                        'server' => $updated_server,
-                        'server_user' => $server_user,
-                        'password' => $password,
-                        'selected_tags' => $selected_tags,
-                        'success' => true,
-                        'datepicker' => true,
-                    ]);
-                } else {
-                    if (!$logged_in) {
-                        return Redirect::action('ServerController@getEdit', [$id, $password])
-                            ->withErrors(['message' => 'Unable to edit server.'])->withInput();
-                    }
-
-                    return Redirect::action('ServerController@getEdit', [$id])
-                        ->withErrors(['message' => 'Unable to edit server.'])->withInput();
-                }
-            } else {
                 if (!$logged_in) {
-                    return Redirect::action('ServerController@getEdit', [$id, $password])
-                        ->withErrors(['message' => 'Unable to edit server.'])->withInput();
+
+                    $server_user = ServerUser::where('server_id', $server->id)->first();
+
+                    $server_user->email = $input['email'];
+                    $server_user->last_ip = Request::getClientIp();
                 }
 
-                return Redirect::action('ServerController@getEdit', [$id])
+                $updated_server = Server::find($id);
+
+                foreach ($updated_server->tags as $t) {
+                    $selected_tags[] = $t->id;
+                }
+
+                if ($updated_server->last_world_reset == '0000-00-00') {
+                    $updated_server->last_world_reset = null;
+                }
+
+                if ($updated_server->next_world_reset == '0000-00-00') {
+                    $updated_server->next_world_reset = null;
+                }
+
+                return View::make('servers.edit', [
+                    'chosen' => true,
+                    'versions' => $versions,
+                    'countries' => $countries,
+                    'permissions' => $permissions,
+                    'title' => $title,
+                    'server' => $updated_server,
+                    'server_user' => $server_user,
+                    'password' => $password,
+                    'selected_tags' => $selected_tags,
+                    'success' => true,
+                    'datepicker' => true,
+                ]);
+            }
+
+            if (!$logged_in) {
+                return Redirect::action('ServerController@getEdit', [$id, $password])
                     ->withErrors(['message' => 'Unable to edit server.'])->withInput();
             }
+
+            return Redirect::action('ServerController@getEdit', [$id])
+                ->withErrors(['message' => 'Unable to edit server.'])->withInput();
         }
+
+        if (!$logged_in) {
+            return Redirect::action('ServerController@getEdit', [$id, $password])
+                ->withErrors(['message' => 'Unable to edit server.'])->withInput();
+        }
+
+        return Redirect::action('ServerController@getEdit', [$id])
+            ->withErrors(['message' => 'Unable to edit server.'])->withInput();
     }
 
     public function getConfirm($id, $password)

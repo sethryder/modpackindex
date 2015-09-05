@@ -95,52 +95,51 @@ class YoutubeController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('YoutubeController@getadd')->withErrors($validator)->withInput();
-        } else {
-            $youtube = New Youtube;
-
-            $processed_url = $this->processURL($input['url']);
-
-            if (!$processed_url['type']) {
-                return Redirect::action('YoutubeController@getadd')->withErrors(['message' => 'Unable to process URL.'])->withInput();
-            }
-
-            $youtube_information = $youtube->getVideoInfo($processed_url['id'], $processed_url['type']);
-
-            if (!$youtube_information) {
-                return Redirect::action('YoutubeController@getadd')->withErrors(['message' => 'Unable to process Youtube API.'])->withInput();
-            }
-
-            $youtube_information = $youtube_information->items[0];
-
-            $youtube->type = $processed_url['type'];
-            $youtube->title = $youtube_information->snippet->title;
-            $youtube->youtube_id = $youtube_information->id;
-            $youtube->channel_title = $youtube_information->snippet->channelTitle;
-            $youtube->channel_id = $youtube_information->snippet->channelId;
-            $youtube->thumbnail = $youtube_information->snippet->thumbnails->medium->url;
-            $youtube->category_id = $input['category'];
-
-            if ($input['modpack']) {
-                $youtube->modpack_id = $input['modpack'];
-            } elseif ($input['mod']) {
-                $youtube->mod_id = $input['mod'];
-            }
-
-            $youtube->last_ip = Request::getClientIp();
-            $success = $youtube->save();
-
-            if ($success) {
-                Cache::tags('modpacks')->flush();
-                Cache::tags('mods')->flush();
-                Queue::push('BuildCache');
-
-                return View::make('youtube.add',
-                    ['title' => $title, 'success' => true, 'categories' => $this->categories]);
-            } else {
-                return Redirect::action('YoutubeController@getadd')->withErrors(['message' => 'Unable to add modpack code.'])->withInput();
-            }
-
         }
+
+        $youtube = New Youtube;
+
+        $processed_url = $this->processURL($input['url']);
+
+        if (!$processed_url['type']) {
+            return Redirect::action('YoutubeController@getadd')->withErrors(['message' => 'Unable to process URL.'])->withInput();
+        }
+
+        $youtube_information = $youtube->getVideoInfo($processed_url['id'], $processed_url['type']);
+
+        if (!$youtube_information) {
+            return Redirect::action('YoutubeController@getadd')->withErrors(['message' => 'Unable to process Youtube API.'])->withInput();
+        }
+
+        $youtube_information = $youtube_information->items[0];
+
+        $youtube->type = $processed_url['type'];
+        $youtube->title = $youtube_information->snippet->title;
+        $youtube->youtube_id = $youtube_information->id;
+        $youtube->channel_title = $youtube_information->snippet->channelTitle;
+        $youtube->channel_id = $youtube_information->snippet->channelId;
+        $youtube->thumbnail = $youtube_information->snippet->thumbnails->medium->url;
+        $youtube->category_id = $input['category'];
+
+        if ($input['modpack']) {
+            $youtube->modpack_id = $input['modpack'];
+        } elseif ($input['mod']) {
+            $youtube->mod_id = $input['mod'];
+        }
+
+        $youtube->last_ip = Request::getClientIp();
+        $success = $youtube->save();
+
+        if ($success) {
+            Cache::tags('modpacks')->flush();
+            Cache::tags('mods')->flush();
+            Queue::push('BuildCache');
+
+            return View::make('youtube.add',
+                ['title' => $title, 'success' => true, 'categories' => $this->categories]);
+        }
+
+        return Redirect::action('YoutubeController@getadd')->withErrors(['message' => 'Unable to add modpack code.'])->withInput();
     }
 
     public function getEdit()

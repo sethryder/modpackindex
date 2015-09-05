@@ -36,34 +36,33 @@ class CreatorController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('CreatorController@getAdd')->withErrors($validator)->withInput();
-        } else {
-            $creator = new Creator;
-
-            $creator->name = $input['name'];
-            $creator->deck = $input['deck'];
-            $creator->website = $input['website'];
-            $creator->donate_link = $input['donate_link'];
-            $creator->bio = $input['bio'];
-
-            if ($input['slug'] == '') {
-                $slug = Str::slug($input['name']);
-            } else {
-                $slug = $input['slug'];
-            }
-
-            $creator->slug = $slug;
-            $creator->last_ip = Request::getClientIp();
-
-            $success = $creator->save();
-
-            if ($success) {
-                return View::make('creators.add', ['title' => $title, 'success' => true]);
-            } else {
-                return Redirect::action('CreatorController@getAdd')
-                    ->withErrors(['message' => 'Unable to add modpack creator.'])->withInput();
-            }
-
         }
+
+        $creator = new Creator;
+
+        $creator->name = $input['name'];
+        $creator->deck = $input['deck'];
+        $creator->website = $input['website'];
+        $creator->donate_link = $input['donate_link'];
+        $creator->bio = $input['bio'];
+
+        if ($input['slug'] == '') {
+            $slug = Str::slug($input['name']);
+        } else {
+            $slug = $input['slug'];
+        }
+
+        $creator->slug = $slug;
+        $creator->last_ip = Request::getClientIp();
+
+        $success = $creator->save();
+
+        if ($success) {
+            return View::make('creators.add', ['title' => $title, 'success' => true]);
+        }
+
+        return Redirect::action('CreatorController@getAdd')
+                ->withErrors(['message' => 'Unable to add modpack creator.'])->withInput();
     }
 
     public function getEdit($id)
@@ -103,32 +102,30 @@ class CreatorController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('CreatorController@getAdd')->withErrors($validator)->withInput();
-        } else {
-            $creator->name = $input['name'];
-            $creator->deck = $input['deck'];
-            $creator->website = $input['website'];
-            $creator->donate_link = $input['donate_link'];
-            $creator->bio = $input['bio'];
-
-            if ($input['slug'] == '' || $input['slug'] == $creator->slug) {
-                $slug = Str::slug($input['name']);
-            } else {
-                $slug = $input['slug'];
-            }
-
-            $creator->slug = $slug;
-            $creator->last_ip = Request::getClientIp();
-
-            $success = $creator->save();
-
-            if ($success) {
-                return View::make('creators.edit', ['title' => $title, 'creator' => $creator, 'success' => true]);
-            } else {
-                return Redirect::action('CreatorController@getEdit', [$id])
-                    ->withErrors(['message' => 'Unable to edit modpack creator.'])->withInput();
-            }
-
         }
 
-    }
+        $creator->name = $input['name'];
+        $creator->deck = $input['deck'];
+        $creator->website = $input['website'];
+        $creator->donate_link = $input['donate_link'];
+        $creator->bio = $input['bio'];
+
+        if ($input['slug'] == '' || $input['slug'] == $creator->slug) {
+            $slug = Str::slug($input['name']);
+        } else {
+            $slug = $input['slug'];
+        }
+
+        $creator->slug = $slug;
+        $creator->last_ip = Request::getClientIp();
+
+        $success = $creator->save();
+
+        if ($success) {
+            return View::make('creators.edit', ['title' => $title, 'creator' => $creator, 'success' => true]);
+        }
+
+        return Redirect::action('CreatorController@getEdit', [$id])
+                    ->withErrors(['message' => 'Unable to edit modpack creator.'])->withInput();
+        }
 }

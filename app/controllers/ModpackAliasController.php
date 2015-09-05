@@ -51,20 +51,19 @@ class ModpackAliasController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('ModpackAliasController@getAdd')->withErrors($validator)->withInput();
-        } else {
-            $modpackalias = new ModpackAlias();
-
-            $modpackalias->alias = $input['alias'];
-            $modpackalias->modpack_id = $input['modpack'];
-
-            $success = $modpackalias->save();
-
-            if ($success) {
-                return View::make('modpackaliases.add', ['title' => $title, 'success' => true]);
-            } else {
-                return Redirect::action('ModpackAliasController@getAdd')->withErrors(['message' => 'Unable to add modpack code.'])->withInput();
-            }
-
         }
+
+        $modpackalias = new ModpackAlias();
+
+        $modpackalias->alias = $input['alias'];
+        $modpackalias->modpack_id = $input['modpack'];
+
+        $success = $modpackalias->save();
+
+        if ($success) {
+            return View::make('modpackaliases.add', ['title' => $title, 'success' => true]);
+        }
+
+        return Redirect::action('ModpackAliasController@getAdd')->withErrors(['message' => 'Unable to add modpack code.'])->withInput();
     }
 }

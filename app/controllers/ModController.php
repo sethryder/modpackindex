@@ -132,52 +132,51 @@ class ModController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('ModController@getAdd')->withErrors($validator)->withInput();
-        } else {
-            $mod = new Mod;
-
-            $mod->name = $input['name'];
-            $mod->deck = $input['deck'];
-            $mod->website = $input['website'];
-            $mod->download_link = $input['download_link'];
-            $mod->donate_link = $input['donate_link'];
-            $mod->wiki_link = $input['wiki_link'];
-            $mod->description = $input['description'];
-
-            if ($input['slug'] == '') {
-                $slug = Str::slug($input['name']);
-            } else {
-                $slug = $input['slug'];
-            }
-
-            if ($input['mod_list_hide'] == 1) {
-                $mod->mod_list_hide = 1;
-            }
-
-            $mod->slug = $slug;
-            $mod->last_ip = Request::getClientIp();
-
-            $success = $mod->save();
-
-            if ($success) {
-                foreach ($input['author'] as $author) {
-                    $mod->authors()->attach($author);
-                }
-
-                foreach ($input['versions'] as $version) {
-                    $mod->versions()->attach($version);
-                }
-
-                Cache::tags('mods')->flush();
-                Queue::push('BuildCache');
-
-                return View::make('mods.add',
-                    ['title' => $title, 'chosen' => true, 'success' => true, 'versions' => $versions]);
-            } else {
-                return Redirect::action('ModController@getAdd')->withErrors(['message' => 'Unable to add mod.'])
-                    ->withInput();
-            }
-
         }
+
+        $mod = new Mod;
+
+        $mod->name = $input['name'];
+        $mod->deck = $input['deck'];
+        $mod->website = $input['website'];
+        $mod->download_link = $input['download_link'];
+        $mod->donate_link = $input['donate_link'];
+        $mod->wiki_link = $input['wiki_link'];
+        $mod->description = $input['description'];
+
+        if ($input['slug'] == '') {
+            $slug = Str::slug($input['name']);
+        } else {
+            $slug = $input['slug'];
+        }
+
+        if ($input['mod_list_hide'] == 1) {
+            $mod->mod_list_hide = 1;
+        }
+
+        $mod->slug = $slug;
+        $mod->last_ip = Request::getClientIp();
+
+        $success = $mod->save();
+
+        if ($success) {
+            foreach ($input['author'] as $author) {
+                $mod->authors()->attach($author);
+            }
+
+            foreach ($input['versions'] as $version) {
+                $mod->versions()->attach($version);
+            }
+
+            Cache::tags('mods')->flush();
+            Queue::push('BuildCache');
+
+            return View::make('mods.add',
+                ['title' => $title, 'chosen' => true, 'success' => true, 'versions' => $versions]);
+        }
+
+        return Redirect::action('ModController@getAdd')->withErrors(['message' => 'Unable to add mod.'])
+            ->withInput();
     }
 
     public function getEdit($id)
@@ -279,88 +278,87 @@ class ModController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('ModController@getEdit', [$mod->id])->withErrors($validator)->withInput();
-        } else {
-            $mod->name = $input['name'];
-            $mod->deck = $input['deck'];
-            $mod->website = $input['website'];
-            $mod->download_link = $input['download_link'];
-            $mod->donate_link = $input['donate_link'];
-            $mod->wiki_link = $input['wiki_link'];
-            $mod->description = $input['description'];
+        }
+
+        $mod->name = $input['name'];
+        $mod->deck = $input['deck'];
+        $mod->website = $input['website'];
+        $mod->download_link = $input['download_link'];
+        $mod->donate_link = $input['donate_link'];
+        $mod->wiki_link = $input['wiki_link'];
+        $mod->description = $input['description'];
+
+        if ($can_edit_maintainers) {
+            if ($input['slug'] == '' || $input['slug'] == $mod->slug) {
+                $slug = Str::slug($input['name']);
+            } else {
+                $slug = $input['slug'];
+            }
+
+            $mod->slug = $slug;
+
+            if ($input['mod_list_hide'] == 1) {
+                $mod->mod_list_hide = 1;
+            } else {
+                $mod->mod_list_hide = 0;
+            }
+        }
+
+        $mod->last_ip = Request::getClientIp();
+
+        $success = $mod->save();
+
+        if ($success) {
+            foreach ($authors as $a) {
+                $mod->authors()->detach($a->id);
+            }
+            $mod->authors()->attach($input['selected_authors']);
+
+            foreach ($versions as $v) {
+                $mod->versions()->detach($v->id);
+            }
+            $mod->versions()->attach($input['selected_versions']);
 
             if ($can_edit_maintainers) {
-                if ($input['slug'] == '' || $input['slug'] == $mod->slug) {
-                    $slug = Str::slug($input['name']);
-                } else {
-                    $slug = $input['slug'];
+                foreach ($maintainers as $m) {
+                    $mod->maintainers()->detach($m->id);
                 }
-
-                $mod->slug = $slug;
-
-                if ($input['mod_list_hide'] == 1) {
-                    $mod->mod_list_hide = 1;
-                } else {
-                    $mod->mod_list_hide = 0;
+                if ($input['selected_maintainers']) {
+                    $mod->maintainers()->attach($input['selected_maintainers']);
                 }
             }
 
-            $mod->last_ip = Request::getClientIp();
+            $updated_mod = Mod::find($mod->id);
 
-            $success = $mod->save();
-
-            if ($success) {
-                foreach ($authors as $a) {
-                    $mod->authors()->detach($a->id);
-                }
-                $mod->authors()->attach($input['selected_authors']);
-
-                foreach ($versions as $v) {
-                    $mod->versions()->detach($v->id);
-                }
-                $mod->versions()->attach($input['selected_versions']);
-
-                if ($can_edit_maintainers) {
-                    foreach ($maintainers as $m) {
-                        $mod->maintainers()->detach($m->id);
-                    }
-                    if ($input['selected_maintainers']) {
-                        $mod->maintainers()->attach($input['selected_maintainers']);
-                    }
-                }
-
-                $updated_mod = Mod::find($mod->id);
-
-                foreach ($updated_mod->versions as $v) {
-                    $selected_versions[] = $v->name;
-                }
-
-                foreach ($updated_mod->authors as $a) {
-                    $selected_authors[] = $a->id;
-                }
-
-                foreach ($updated_mod->maintainers as $m) {
-                    $selected_maintainers[] = $m->id;
-                }
-
-                Cache::tags('mods')->flush();
-                Queue::push('BuildCache');
-
-                return View::make('mods.edit', [
-                    'title' => $title,
-                    'mod' => $mod,
-                    'chosen' => true,
-                    'success' => true,
-                    'selected_versions' => $selected_versions,
-                    'selected_authors' => $selected_authors,
-                    'selected_maintainers' => $selected_maintainers,
-                    'versions' => $minecraft_versions,
-                    'can_edit_maintainers' => $can_edit_maintainers,
-                ]);
-            } else {
-                return Redirect::action('ModController@getEdit', [$mod->id])
-                    ->withErrors(['message' => 'Unable to edit mod.'])->withInput();
+            foreach ($updated_mod->versions as $v) {
+                $selected_versions[] = $v->name;
             }
 
+            foreach ($updated_mod->authors as $a) {
+                $selected_authors[] = $a->id;
+            }
+
+            foreach ($updated_mod->maintainers as $m) {
+                $selected_maintainers[] = $m->id;
+            }
+
+            Cache::tags('mods')->flush();
+            Queue::push('BuildCache');
+
+            return View::make('mods.edit', [
+                'title' => $title,
+                'mod' => $mod,
+                'chosen' => true,
+                'success' => true,
+                'selected_versions' => $selected_versions,
+                'selected_authors' => $selected_authors,
+                'selected_maintainers' => $selected_maintainers,
+                'versions' => $minecraft_versions,
+                'can_edit_maintainers' => $can_edit_maintainers,
+            ]);
         }
+
+        return Redirect::action('ModController@getEdit', [$mod->id])
+            ->withErrors(['message' => 'Unable to edit mod.'])->withInput();
     }
 }

@@ -283,69 +283,68 @@ class ModpackController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('ModpackController@getAdd', [$url_version])->withErrors($validator)->withInput();
-        } else {
-            $modpack = new Modpack;
-
-            $modpack->name = $input['name'];
-            $modpack->launcher_id = $input['launcher'];
-            $modpack->minecraft_version_id = $minecraft_version->id;
-            $modpack->deck = $input['deck'];
-            $modpack->website = $input['website'];
-            $modpack->download_link = $input['download_link'];
-            $modpack->donate_link = $input['donate_link'];
-            $modpack->wiki_link = $input['wiki_link'];
-            $modpack->description = $input['description'];
-
-            if ($input['slug'] == '') {
-                $slug = Str::slug($input['name']);
-            } else {
-                $slug = $input['slug'];
-            }
-
-            $modpack->slug = $slug;
-            $modpack->last_ip = Request::getClientIp();
-
-            $success = $modpack->save();
-
-            if ($success) {
-                foreach ($input['creators'] as $creator) {
-                    $modpack->creators()->attach($creator);
-                }
-
-                foreach ($input['mods'] as $mod) {
-                    $modpack->mods()->attach($mod);
-                }
-
-                foreach ($input['tags'] as $tag) {
-                    $modpack->tags()->attach($tag);
-                }
-
-                $mods = $minecraft_version->mods;
-
-                foreach ($mods as $mod) {
-                    $id = $mod->id;
-                    $mod_select_array[$id] = $mod->name;
-                }
-
-                Cache::tags('modpacks')->flush();
-                Cache::tags('modpackmods')->flush();
-                Cache::tags('modmodpacks')->flush();
-                Queue::push('BuildCache');
-
-                return View::make('modpacks.add', [
-                    'title' => $title,
-                    'chosen' => true,
-                    'success' => true,
-                    'version' => $version,
-                    'url_version' => $url_version,
-                    'mods' => $mod_select_array
-                ]);
-            } else {
-                return Redirect::action('ModpackController@getAdd', [$url_version])
-                    ->withErrors(['message' => 'Unable to add modpack.'])->withInput();
-            }
-
         }
+
+        $modpack = new Modpack;
+
+        $modpack->name = $input['name'];
+        $modpack->launcher_id = $input['launcher'];
+        $modpack->minecraft_version_id = $minecraft_version->id;
+        $modpack->deck = $input['deck'];
+        $modpack->website = $input['website'];
+        $modpack->download_link = $input['download_link'];
+        $modpack->donate_link = $input['donate_link'];
+        $modpack->wiki_link = $input['wiki_link'];
+        $modpack->description = $input['description'];
+
+        if ($input['slug'] == '') {
+            $slug = Str::slug($input['name']);
+        } else {
+            $slug = $input['slug'];
+        }
+
+        $modpack->slug = $slug;
+        $modpack->last_ip = Request::getClientIp();
+
+        $success = $modpack->save();
+
+        if ($success) {
+            foreach ($input['creators'] as $creator) {
+                $modpack->creators()->attach($creator);
+            }
+
+            foreach ($input['mods'] as $mod) {
+                $modpack->mods()->attach($mod);
+            }
+
+            foreach ($input['tags'] as $tag) {
+                $modpack->tags()->attach($tag);
+            }
+
+            $mods = $minecraft_version->mods;
+
+            foreach ($mods as $mod) {
+                $id = $mod->id;
+                $mod_select_array[$id] = $mod->name;
+            }
+
+            Cache::tags('modpacks')->flush();
+            Cache::tags('modpackmods')->flush();
+            Cache::tags('modmodpacks')->flush();
+            Queue::push('BuildCache');
+
+            return View::make('modpacks.add', [
+                'title' => $title,
+                'chosen' => true,
+                'success' => true,
+                'version' => $version,
+                'url_version' => $url_version,
+                'mods' => $mod_select_array
+            ]);
+        }
+
+        return Redirect::action('ModpackController@getAdd', [$url_version])
+            ->withErrors(['message' => 'Unable to add modpack.'])->withInput();
     }
 
     public function getEdit($id)
@@ -469,106 +468,105 @@ class ModpackController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('ModController@getEdit', [$modpack->id])->withErrors($validator)->withInput();
-        } else {
-            $modpack->name = $input['name'];
-            $modpack->launcher_id = $input['launcher'];
-            $modpack->deck = $input['deck'];
-            $modpack->website = $input['website'];
-            $modpack->download_link = $input['download_link'];
-            $modpack->donate_link = $input['donate_link'];
-            $modpack->wiki_link = $input['wiki_link'];
-            $modpack->description = $input['description'];
-
-            if ($input['slug'] == '' || $input['slug'] == $modpack->slug) {
-                $slug = Str::slug($input['name']);
-            } else {
-                $slug = $input['slug'];
-            }
-
-            $modpack->slug = $slug;
-            $modpack->last_ip = Request::getClientIp();
-
-            $success = $modpack->save();
-
-            if ($success) {
-                foreach ($creators as $c) {
-                    $modpack->creators()->detach($c->id);
-                }
-                $modpack->creators()->attach($input['selected_creators']);
-
-                foreach ($mods as $m) {
-                    $modpack->mods()->detach($m->id);
-                }
-                $modpack->mods()->attach($input['selected_mods']);
-
-                foreach ($tags as $t) {
-                    $modpack->tags()->detach($t->id);
-                }
-                if ($input['selected_tags']) {
-                    $modpack->tags()->attach($input['selected_tags']);
-                }
-
-                if ($can_edit_maintainers) {
-                    foreach ($maintainers as $m) {
-                        $modpack->maintainers()->detach($m->id);
-                    }
-                    if ($input['selected_maintainers']) {
-                        $modpack->maintainers()->attach($input['selected_maintainers']);
-                    }
-                }
-
-                $version_mods = $minecraft_version->mods;
-                $updated_modpack = Modpack::find($modpack->id);
-
-                foreach ($updated_modpack->mods as $m) {
-                    $selected_mods[] = $m->id;
-                }
-
-                foreach ($updated_modpack->tags as $t) {
-                    $selected_tags[] = $t->id;
-                }
-
-                foreach ($updated_modpack->creators as $c) {
-                    $selected_creators[] = $c->id;
-                }
-
-                foreach ($updated_modpack->maintainers as $m) {
-                    $selected_maintainers[] = $m->id;
-                }
-
-                foreach ($version_mods as $mod) {
-                    $id = $mod->id;
-                    $mod_select_array[$id] = $mod->name;
-                }
-
-                foreach ($mods as $mod) {
-                    $id = $mod->id;
-                    $mod_select_array[$id] = $mod->name;
-                }
-
-                Cache::tags('modpacks')->flush();
-                Cache::tags('modpackmods')->flush();
-                Cache::tags('modmodpacks')->flush();
-                Queue::push('BuildCache');
-
-                return View::make('modpacks.edit', [
-                    'title' => $title,
-                    'chosen' => true,
-                    'success' => true,
-                    'modpack' => $updated_modpack,
-                    'version' => $minecraft_version->name,
-                    'mods' => $mod_select_array,
-                    'selected_mods' => $selected_mods,
-                    'selected_creators' => $selected_creators,
-                    'selected_tags' => $selected_tags,
-                    'selected_maintainers' => $selected_maintainers,
-                    'can_edit_maintainers' => $can_edit_maintainers,
-                ]);
-            } else {
-                return Redirect::action('ModController@getEdit', [$modpack->id])
-                    ->withErrors(['message' => 'Unable to edit modpack.'])->withInput();
-            }
-
         }
+
+        $modpack->name = $input['name'];
+        $modpack->launcher_id = $input['launcher'];
+        $modpack->deck = $input['deck'];
+        $modpack->website = $input['website'];
+        $modpack->download_link = $input['download_link'];
+        $modpack->donate_link = $input['donate_link'];
+        $modpack->wiki_link = $input['wiki_link'];
+        $modpack->description = $input['description'];
+
+        if ($input['slug'] == '' || $input['slug'] == $modpack->slug) {
+            $slug = Str::slug($input['name']);
+        } else {
+            $slug = $input['slug'];
+        }
+
+        $modpack->slug = $slug;
+        $modpack->last_ip = Request::getClientIp();
+
+        $success = $modpack->save();
+
+        if ($success) {
+            foreach ($creators as $c) {
+                $modpack->creators()->detach($c->id);
+            }
+            $modpack->creators()->attach($input['selected_creators']);
+
+            foreach ($mods as $m) {
+                $modpack->mods()->detach($m->id);
+            }
+            $modpack->mods()->attach($input['selected_mods']);
+
+            foreach ($tags as $t) {
+                $modpack->tags()->detach($t->id);
+            }
+            if ($input['selected_tags']) {
+                $modpack->tags()->attach($input['selected_tags']);
+            }
+
+            if ($can_edit_maintainers) {
+                foreach ($maintainers as $m) {
+                    $modpack->maintainers()->detach($m->id);
+                }
+                if ($input['selected_maintainers']) {
+                    $modpack->maintainers()->attach($input['selected_maintainers']);
+                }
+            }
+
+            $version_mods = $minecraft_version->mods;
+            $updated_modpack = Modpack::find($modpack->id);
+
+            foreach ($updated_modpack->mods as $m) {
+                $selected_mods[] = $m->id;
+            }
+
+            foreach ($updated_modpack->tags as $t) {
+                $selected_tags[] = $t->id;
+            }
+
+            foreach ($updated_modpack->creators as $c) {
+                $selected_creators[] = $c->id;
+            }
+
+            foreach ($updated_modpack->maintainers as $m) {
+                $selected_maintainers[] = $m->id;
+            }
+
+            foreach ($version_mods as $mod) {
+                $id = $mod->id;
+                $mod_select_array[$id] = $mod->name;
+            }
+
+            foreach ($mods as $mod) {
+                $id = $mod->id;
+                $mod_select_array[$id] = $mod->name;
+            }
+
+            Cache::tags('modpacks')->flush();
+            Cache::tags('modpackmods')->flush();
+            Cache::tags('modmodpacks')->flush();
+            Queue::push('BuildCache');
+
+            return View::make('modpacks.edit', [
+                'title' => $title,
+                'chosen' => true,
+                'success' => true,
+                'modpack' => $updated_modpack,
+                'version' => $minecraft_version->name,
+                'mods' => $mod_select_array,
+                'selected_mods' => $selected_mods,
+                'selected_creators' => $selected_creators,
+                'selected_tags' => $selected_tags,
+                'selected_maintainers' => $selected_maintainers,
+                'can_edit_maintainers' => $can_edit_maintainers,
+            ]);
+        }
+
+        return Redirect::action('ModController@getEdit', [$modpack->id])
+            ->withErrors(['message' => 'Unable to edit modpack.'])->withInput();
     }
 }

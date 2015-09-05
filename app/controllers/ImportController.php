@@ -156,9 +156,9 @@ class ImportController extends BaseController
 
             if ($authors_to_process > 0) {
                 return Redirect::action('ImportController@getImportAuthor', [$import_id]);
-            } else {
-                return Redirect::action('ImportController@getImportMod', [$import_id]);
             }
+
+            return Redirect::action('ImportController@getImportMod', [$import_id]);
         }
 
         return Redirect::action('ImportController@getStartImport')->withErrors(['message' => 'Something went wrong.'])
@@ -223,61 +223,61 @@ class ImportController extends BaseController
         if ($validator->fails()) {
             return Redirect::action('ImportController@getImportAuthor', [$import_id, $author_id])
                 ->withErrors($validator)->withInput();
+        }
+
+        if ($input['alias'] == 0) {
+            $author = new Author;
+
+            $author->name = $input['name'];
+            $author->deck = $input['deck'];
+            $author->website = $input['website'];
+            $author->donate_link = $input['donate_link'];
+            $author->bio = $input['bio'];
+
+            if ($input['slug'] == '') {
+                $slug = Str::slug($input['name']);
+            } else {
+                $slug = $input['slug'];
+            }
+
+            $author->slug = $slug;
+            $author->last_ip = Request::getClientIp();
+
+            $author_import_status = 1;
+
+            $success = $author->save();
         } else {
-            if ($input['alias'] == 0) {
-                $author = new Author;
+            $alias = new AuthorAlias;
 
-                $author->name = $input['name'];
-                $author->deck = $input['deck'];
-                $author->website = $input['website'];
-                $author->donate_link = $input['donate_link'];
-                $author->bio = $input['bio'];
+            $alias->author_id = $input['alias'];
+            $alias->alias = $import_author->name;
+            $author_import_status = 2;
+            $success = $alias->save();
 
-                if ($input['slug'] == '') {
-                    $slug = Str::slug($input['name']);
-                } else {
-                    $slug = $input['slug'];
-                }
+            $alias_id = $alias->id;
+        }
 
-                $author->slug = $slug;
-                $author->last_ip = Request::getClientIp();
+        if ($success) {
+            $import_author->status = $author_import_status;
 
-                $author_import_status = 1;
-
-                $success = $author->save();
-            } else {
-                $alias = new AuthorAlias;
-
-                $alias->author_id = $input['alias'];
-                $alias->alias = $import_author->name;
-                $author_import_status = 2;
-                $success = $alias->save();
-
-                $alias_id = $alias->id;
+            if (isset($alias_id)) {
+                $import_author->author_alias_id = $alias_id;
             }
 
-            if ($success) {
-                $import_author->status = $author_import_status;
+            $import_author->save();
 
-                if (isset($alias_id)) {
-                    $import_author->author_alias_id = $alias_id;
-                }
+            $import_authors = ImportAuthor::where('import_id', '=', $import_id)->where('status', '=', 0)->first();
 
-                $import_author->save();
-
-                $import_authors = ImportAuthor::where('import_id', '=', $import_id)->where('status', '=', 0)->first();
-
-                if (!$import_authors) {
-                    return Redirect::action('ImportController@getImportMod', [$import_mod->id]);
-                } else {
-                    return Redirect::action('ImportController@getImportAuthor', [$import_mod->id]);
-                }
-            } else {
-                return Redirect::action('ImportController@getImportAuthor', [$import_mod->id, $import_author->id])
-                    ->withErrors(['message' => 'Unable to add author.'])->withInput();
+            if (!$import_authors) {
+                return Redirect::action('ImportController@getImportMod', [$import_mod->id]);
             }
+
+            return Redirect::action('ImportController@getImportAuthor', [$import_mod->id]);
 
         }
+
+        return Redirect::action('ImportController@getImportAuthor', [$import_mod->id, $import_author->id])
+                ->withErrors(['message' => 'Unable to add author.'])->withInput();
     }
 
     public function getImportMod($import_id)
@@ -362,77 +362,76 @@ class ImportController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('ImportController@getImportMod', [$import_mod->id])->withErrors($validator)->withInput();
-        } else {
-            $mod = new Mod;
-
-            $mod->name = $input['name'];
-            $mod->deck = $input['deck'];
-            $mod->website = $input['website'];
-            $mod->download_link = $input['download_link'];
-            $mod->donate_link = $input['donate_link'];
-            $mod->wiki_link = $input['wiki_link'];
-            $mod->description = $input['description'];
-
-            if ($input['slug'] == '') {
-                $slug = Str::slug($input['name']);
-            } else {
-                $slug = $input['slug'];
-            }
-
-            if ($input['mod_list_hide'] == 1) {
-                $mod->mod_list_hide = 1;
-            }
-
-            $mod->slug = $slug;
-            $mod->last_ip = Request::getClientIp();
-
-            $success = $mod->save();
-
-            if ($success) {
-                foreach ($input['selected_authors'] as $author) {
-                    $mod->authors()->attach($author);
-                }
-
-                foreach ($input['selected_versions'] as $version) {
-                    $mod->versions()->attach($version);
-                }
-
-                Cache::tags('mods')->flush();
-                Queue::push('BuildCache');
-
-                $import_mod->status = 1;
-                $import_mod->save();
-
-                $raw_mcf_mods = ImportMCFModlist::orderBy('name', 'asc')->get();
-                $raw_nem_mods = ImportNEM::orderBy('name', 'asc')->get();
-
-                $mcf_mods_array[0] = 'None';
-                $nem_mods_array[0] = 'None';
-
-                foreach ($raw_mcf_mods as $mcf_mod) {
-                    $mcf_mod_id = $mcf_mod->id;
-                    $mcf_mods_array[$mcf_mod_id] = $mcf_mod->name;
-                }
-
-                foreach ($raw_nem_mods as $nem_mod) {
-                    $nem_mod_id = $nem_mod->id;
-                    $nem_mods_array[$nem_mod_id] = $nem_mod->name;
-                }
-
-                return View::make('imports.import', [
-                    'title' => $title,
-                    'chosen' => true,
-                    'success' => true,
-                    'mcf_mods_array' => $mcf_mods_array,
-                    'nem_mods_array' => $nem_mods_array,
-                    'versions' => $versions
-                ]);
-            } else {
-                return Redirect::action('ImportController@getImportMod', [$import_mod->id])
-                    ->withErrors(['message' => 'Unable to import mod.'])->withInput();
-            }
-
         }
+
+        $mod = new Mod;
+
+        $mod->name = $input['name'];
+        $mod->deck = $input['deck'];
+        $mod->website = $input['website'];
+        $mod->download_link = $input['download_link'];
+        $mod->donate_link = $input['donate_link'];
+        $mod->wiki_link = $input['wiki_link'];
+        $mod->description = $input['description'];
+
+        if ($input['slug'] == '') {
+            $slug = Str::slug($input['name']);
+        } else {
+            $slug = $input['slug'];
+        }
+
+        if ($input['mod_list_hide'] == 1) {
+            $mod->mod_list_hide = 1;
+        }
+
+        $mod->slug = $slug;
+        $mod->last_ip = Request::getClientIp();
+
+        $success = $mod->save();
+
+        if ($success) {
+            foreach ($input['selected_authors'] as $author) {
+                $mod->authors()->attach($author);
+            }
+
+            foreach ($input['selected_versions'] as $version) {
+                $mod->versions()->attach($version);
+            }
+
+            Cache::tags('mods')->flush();
+            Queue::push('BuildCache');
+
+            $import_mod->status = 1;
+            $import_mod->save();
+
+            $raw_mcf_mods = ImportMCFModlist::orderBy('name', 'asc')->get();
+            $raw_nem_mods = ImportNEM::orderBy('name', 'asc')->get();
+
+            $mcf_mods_array[0] = 'None';
+            $nem_mods_array[0] = 'None';
+
+            foreach ($raw_mcf_mods as $mcf_mod) {
+                $mcf_mod_id = $mcf_mod->id;
+                $mcf_mods_array[$mcf_mod_id] = $mcf_mod->name;
+            }
+
+            foreach ($raw_nem_mods as $nem_mod) {
+                $nem_mod_id = $nem_mod->id;
+                $nem_mods_array[$nem_mod_id] = $nem_mod->name;
+            }
+
+            return View::make('imports.import', [
+                'title' => $title,
+                'chosen' => true,
+                'success' => true,
+                'mcf_mods_array' => $mcf_mods_array,
+                'nem_mods_array' => $nem_mods_array,
+                'versions' => $versions
+            ]);
+        }
+
+        return Redirect::action('ImportController@getImportMod', [$import_mod->id])
+                ->withErrors(['message' => 'Unable to import mod.'])->withInput();
     }
 
     private function processAuthors($import_id, $authors)

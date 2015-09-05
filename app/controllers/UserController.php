@@ -82,51 +82,50 @@ class UserController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('UserController@getForgotPassword')->withErrors($validator);
-        } else {
-            //check to see if valid user
-            $user = User::where('email', $input['email'])->first();
-
-            if (!$user) {
-                return Redirect::action('UserController@getForgotPassword')->withErrors(['Error' => 'Email does not exist in our database.']);
-            }
-
-            //make sure no password reminder is already out there.
-            $existing_reminders = PasswordReminder::where('created_at', '>=', $one_hour_ago)->
-            where('email', $input['email'])->count();
-
-            if ($existing_reminders > 0) {
-                return Redirect::action('UserController@getForgotPassword')->withErrors(['Error' => 'A password reminder for this email is already active.']);
-            }
-
-            //make sure this IP isn't spamming password requests
-            $ip_reminder_count = PasswordReminder::where('created_at', '>=', $one_hour_ago)->
-            where('ip', Request::getClientIp())->count();
-
-            if ($ip_reminder_count > 0) {
-                return Redirect::action('UserController@getForgotPassword')->withErrors(['Error' => 'A password reminder has already been requested with your IP address.']);
-            }
-
-            $password_reset = new PasswordReminder;
-            $token = str_random(64);
-
-            $password_reset->email = $input['email'];
-            $password_reset->token = $token;
-            $password_reset->ip = Request::getClientIp();
-
-            $success = $password_reset->save();
-
-            if ($success) {
-                Mail::send('emails.auth.password_reset', array('token' => $token), function ($message) use ($user) {
-                    $message->from('noreply@modpackindex.com', 'Modpack Index');
-                    $message->to($user->email, $user->username)->subject('Password Reset for ' . $user->username);
-                });
-
-                return View::make('user.forgot_password', ['success' => true]);
-            } else {
-                return Redirect::action('UserController@getResetPassword')->withErrors(['Error' => 'Unable to reset password.']);
-            }
         }
 
+        //check to see if valid user
+        $user = User::where('email', $input['email'])->first();
+
+        if (!$user) {
+            return Redirect::action('UserController@getForgotPassword')->withErrors(['Error' => 'Email does not exist in our database.']);
+        }
+
+        //make sure no password reminder is already out there.
+        $existing_reminders = PasswordReminder::where('created_at', '>=', $one_hour_ago)->
+        where('email', $input['email'])->count();
+
+        if ($existing_reminders > 0) {
+            return Redirect::action('UserController@getForgotPassword')->withErrors(['Error' => 'A password reminder for this email is already active.']);
+        }
+
+        //make sure this IP isn't spamming password requests
+        $ip_reminder_count = PasswordReminder::where('created_at', '>=', $one_hour_ago)->
+        where('ip', Request::getClientIp())->count();
+
+        if ($ip_reminder_count > 0) {
+            return Redirect::action('UserController@getForgotPassword')->withErrors(['Error' => 'A password reminder has already been requested with your IP address.']);
+        }
+
+        $password_reset = new PasswordReminder;
+        $token = str_random(64);
+
+        $password_reset->email = $input['email'];
+        $password_reset->token = $token;
+        $password_reset->ip = Request::getClientIp();
+
+        $success = $password_reset->save();
+
+        if ($success) {
+            Mail::send('emails.auth.password_reset', array('token' => $token), function ($message) use ($user) {
+                $message->from('noreply@modpackindex.com', 'Modpack Index');
+                $message->to($user->email, $user->username)->subject('Password Reset for ' . $user->username);
+            });
+
+            return View::make('user.forgot_password', ['success' => true]);
+        }
+
+        return Redirect::action('UserController@getResetPassword')->withErrors(['Error' => 'Unable to reset password.']);
     }
 
     public function getResetPassword($token = null)
@@ -174,21 +173,21 @@ class UserController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('UserController@getResetPassword', [$token])->withErrors($validator);
-        } else {
-            $user = User::where('email', $reset_request->email)->first();
-
-            $user->password = Hash::make($input['new_password']);
-            $user->remember_token = null; //kill the remember_token for security
-            $user->last_ip = Request::getClientIp();
-
-            $success = $user->save();
-
-            if ($success) {
-                return View::make('user.reset_password', ['title' => $title, 'success' => true, 'user' => $user]);
-            } else {
-                return Redirect::action('UserController@getResetPassword', [$token])->withErrors(['message' => 'Unable to reset password.']);
-            }
         }
+
+        $user = User::where('email', $reset_request->email)->first();
+
+        $user->password = Hash::make($input['new_password']);
+        $user->remember_token = null; //kill the remember_token for security
+        $user->last_ip = Request::getClientIp();
+
+        $success = $user->save();
+
+        if ($success) {
+            return View::make('user.reset_password', ['title' => $title, 'success' => true, 'user' => $user]);
+        }
+
+        return Redirect::action('UserController@getResetPassword', [$token])->withErrors(['message' => 'Unable to reset password.']);
     }
 
     public function postLogin()
@@ -245,15 +244,15 @@ class UserController extends BaseController
                 return Redirect::to(route('index') . $input['return']);
             }
             return Redirect::intended(route('index'));
-        } else {
-            Cache::put($ip_cache_key, $attempts + 1, 60);
-
-            if ($input['return']) {
-                return Redirect::to(action('UserController@getLogin').'?return=' . $input['return'])->withErrors(['Error' => 'Unable to login with provided information.'])->withInput();
-            }
-
-            return Redirect::action('UserController@getLogin')->withErrors(['Error' => 'Unable to login with provided information.'])->withInput();
         }
+
+        Cache::put($ip_cache_key, $attempts + 1, 60);
+
+        if ($input['return']) {
+            return Redirect::to(action('UserController@getLogin').'?return=' . $input['return'])->withErrors(['Error' => 'Unable to login with provided information.'])->withInput();
+        }
+
+        return Redirect::action('UserController@getLogin')->withErrors(['Error' => 'Unable to login with provided information.'])->withInput();
     }
 
     public function postRegister()
@@ -277,37 +276,37 @@ class UserController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('UserController@getRegister')->withErrors($validator)->withInput();
-        } else {
-            $user = new User;
-            $confirmation = str_random(64);
-
-            $user->username = $input['username'];
-            $user->email = $input['email'];
-            $user->password = Hash::make($input['password']);
-            $user->is_active = 1;
-            $user->register_ip = Request::getClientIp();
-            $user->last_ip = Request::getClientIp();
-            $user->confirmation = $confirmation;
-
-            if ($user->save()) {
-                $user_info = new UserInfo;
-
-                $user_info->user_id = $user->id;
-                $user->last_ip = Request::getClientIp();
-                $user_info->save();
-
-                Mail::send('emails.auth.confirmation', array('confirmation' => $confirmation),
-                    function ($message) use ($input) {
-                        $message->from('noreply@modpackindex.com', 'Modpack Index');
-                        $message->to($input['email'],
-                            $input['username'])->subject('Confirmation for ' . $input['username']);
-                    });
-
-                return View::make('user.register_success', ['email' => $user->email]);
-            } else {
-                return Redirect::action('UserController@getRegister')->withErrors(['Error' => 'Unable to create account'])->withInput();
-            }
         }
+
+        $user = new User;
+        $confirmation = str_random(64);
+
+        $user->username = $input['username'];
+        $user->email = $input['email'];
+        $user->password = Hash::make($input['password']);
+        $user->is_active = 1;
+        $user->register_ip = Request::getClientIp();
+        $user->last_ip = Request::getClientIp();
+        $user->confirmation = $confirmation;
+
+        if ($user->save()) {
+            $user_info = new UserInfo;
+
+            $user_info->user_id = $user->id;
+            $user->last_ip = Request::getClientIp();
+            $user_info->save();
+
+            Mail::send('emails.auth.confirmation', array('confirmation' => $confirmation),
+                function ($message) use ($input) {
+                    $message->from('noreply@modpackindex.com', 'Modpack Index');
+                    $message->to($input['email'],
+                        $input['username'])->subject('Confirmation for ' . $input['username']);
+                });
+
+            return View::make('user.register_success', ['email' => $user->email]);
+        }
+
+        return Redirect::action('UserController@getRegister')->withErrors(['Error' => 'Unable to create account'])->withInput();
     }
 
     public function getProfile($username = null)
@@ -515,42 +514,42 @@ class UserController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('UserController@getEditProfile')->withErrors($validator)->withInput();
-        } else {
-            $user->email = $input['email'];
-            $user_info->real_name = $input['real_name'];
-            $user_info->location = $input['location'];
-            $user_info->website = $input['website'];
-            $user_info->twitter = $input['twitter'];
-            $user_info->github = $input['github'];
-            $user_info->about_me = $input['about_me'];
-
-            if ($input['hide_email'] == 1) {
-                $user->hide_email = 1;
-            } else {
-                $user->hide_email = 0;
-            }
-
-            if ($input['hide_mods_modpacks'] == 1) {
-                $user->hide_mods_modpacks = 1;
-            } else {
-                $user->hide_mods_modpacks = 0;
-            }
-
-            $user_info->last_ip = Request::getClientIp();
-
-            $user->save();
-            $success = $user_info->save();
-
-            $user_info->email = $user->email;
-            $user_info->hide_email = $user->hide_email;
-
-            if ($success) {
-                return View::make('user.edit',
-                    ['title' => $title, 'success' => true, 'user' => $user, 'user_info' => $user_info]);
-            } else {
-                return Redirect::action('UserController@getEditProfile')->withErrors(['message' => 'Unable to edit profile.'])->withInput();
-            }
         }
+
+        $user->email = $input['email'];
+        $user_info->real_name = $input['real_name'];
+        $user_info->location = $input['location'];
+        $user_info->website = $input['website'];
+        $user_info->twitter = $input['twitter'];
+        $user_info->github = $input['github'];
+        $user_info->about_me = $input['about_me'];
+
+        if ($input['hide_email'] == 1) {
+            $user->hide_email = 1;
+        } else {
+            $user->hide_email = 0;
+        }
+
+        if ($input['hide_mods_modpacks'] == 1) {
+            $user->hide_mods_modpacks = 1;
+        } else {
+            $user->hide_mods_modpacks = 0;
+        }
+
+        $user_info->last_ip = Request::getClientIp();
+
+        $user->save();
+        $success = $user_info->save();
+
+        $user_info->email = $user->email;
+        $user_info->hide_email = $user->hide_email;
+
+        if ($success) {
+            return View::make('user.edit',
+                ['title' => $title, 'success' => true, 'user' => $user, 'user_info' => $user_info]);
+        }
+
+        return Redirect::action('UserController@getEditProfile')->withErrors(['message' => 'Unable to edit profile.'])->withInput();
     }
 
     public function getEditPassword()
@@ -601,19 +600,19 @@ class UserController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('UserController@getEditPassword')->withErrors($validator);
-        } else {
-            $user->password = Hash::make($input['new_password']);
-            $user->remember_token = null; //kill the remember_token for security
-            $user->last_ip = Request::getClientIp();
-
-            $success = $user->save();
-
-            if ($success) {
-                return View::make('user.edit_password', ['title' => $title, 'success' => true, 'user' => $user]);
-            } else {
-                return Redirect::action('UserController@getEditPassword')->withErrors(['message' => 'Unable to edit password.']);
-            }
         }
+
+        $user->password = Hash::make($input['new_password']);
+        $user->remember_token = null; //kill the remember_token for security
+        $user->last_ip = Request::getClientIp();
+
+        $success = $user->save();
+
+        if ($success) {
+            return View::make('user.edit_password', ['title' => $title, 'success' => true, 'user' => $user]);
+        }
+
+        return Redirect::action('UserController@getEditPassword')->withErrors(['message' => 'Unable to edit password.']);
     }
 
     public function getVerify($confirmation)

@@ -43,33 +43,32 @@ class AuthorController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('AuthorController@getAdd')->withErrors($validator)->withInput();
-        } else {
-            $author = new Author;
-
-            $author->name = $input['name'];
-            $author->deck = $input['deck'];
-            $author->website = $input['website'];
-            $author->donate_link = $input['donate_link'];
-            $author->bio = $input['bio'];
-
-            if ($input['slug'] == '') {
-                $slug = Str::slug($input['name']);
-            } else {
-                $slug = $input['slug'];
-            }
-
-            $author->slug = $slug;
-            $author->last_ip = Request::getClientIp();
-
-            $success = $author->save();
-
-            if ($success) {
-                return View::make('authors.add', ['title' => $title, 'success' => true]);
-            } else {
-                return Redirect::action('AuthorController@getAdd')->withErrors(['message' => 'Unable to add author.'])->withInput();
-            }
-
         }
+
+        $author = new Author;
+
+        $author->name = $input['name'];
+        $author->deck = $input['deck'];
+        $author->website = $input['website'];
+        $author->donate_link = $input['donate_link'];
+        $author->bio = $input['bio'];
+
+        if ($input['slug'] == '') {
+            $slug = Str::slug($input['name']);
+        } else {
+            $slug = $input['slug'];
+        }
+
+        $author->slug = $slug;
+        $author->last_ip = Request::getClientIp();
+
+        $success = $author->save();
+
+        if ($success) {
+            return View::make('authors.add', ['title' => $title, 'success' => true]);
+        }
+
+        return Redirect::action('AuthorController@getAdd')->withErrors(['message' => 'Unable to add author.'])->withInput();
     }
 
     public function getEdit($id)
@@ -111,31 +110,29 @@ class AuthorController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('AuthorController@getEdit', [$id])->withErrors($validator)->withInput();
-        } else {
-
-            $author->name = $input['name'];
-            $author->deck = $input['deck'];
-            $author->website = $input['website'];
-            $author->donate_link = $input['donate_link'];
-            $author->bio = $input['bio'];
-
-            if ($input['slug'] == '' || $input['slug'] == $author->slug) {
-                $slug = Str::slug($input['name']);
-            } else {
-                $slug = $input['slug'];
-            }
-
-            $author->slug = $slug;
-            $author->last_ip = Request::getClientIp();
-
-            $success = $author->save();
-
-            if ($success) {
-                return View::make('authors.edit', ['title' => $title, 'success' => true, 'author' => $author]);
-            } else {
-                return Redirect::action('AuthorController@getEdit', [$id])->withErrors(['message' => 'Unable to add author.'])->withInput();
-            }
-
         }
+
+        $author->name = $input['name'];
+        $author->deck = $input['deck'];
+        $author->website = $input['website'];
+        $author->donate_link = $input['donate_link'];
+        $author->bio = $input['bio'];
+
+        if ($input['slug'] == '' || $input['slug'] == $author->slug) {
+            $slug = Str::slug($input['name']);
+        } else {
+            $slug = $input['slug'];
+        }
+
+        $author->slug = $slug;
+        $author->last_ip = Request::getClientIp();
+
+        $success = $author->save();
+
+        if ($success) {
+            return View::make('authors.edit', ['title' => $title, 'success' => true, 'author' => $author]);
+        }
+
+        return Redirect::action('AuthorController@getEdit', [$id])->withErrors(['message' => 'Unable to add author.'])->withInput();
     }
 }

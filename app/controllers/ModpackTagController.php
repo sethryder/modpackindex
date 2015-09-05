@@ -41,33 +41,32 @@ class ModpackTagController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('ModpackTagController@getAdd')->withErrors($validator)->withInput();
-        } else {
-            $modpacktag = new ModpackTag;
-
-            $modpacktag->name = $input['name'];
-            $modpacktag->deck = $input['deck'];
-            $modpacktag->description = $input['description'];
-            $modpacktag->last_ip = Request::getClientIp();
-
-            if ($input['slug'] == '') {
-                $slug = Str::slug($input['name']);
-            } else {
-                $slug = $input['slug'];
-            }
-
-            $modpacktag->slug = $slug;
-            $success = $modpacktag->save();
-
-            if ($success) {
-                Cache::tags('modpacks')->flush();
-                Queue::push('BuildCache');
-
-                return View::make('tags.modpacks.add', ['title' => $title, 'success' => true]);
-            } else {
-                return Redirect::action('ModpackTagController@getAdd')->withErrors(['message' => 'Unable to add modpack tag.'])->withInput();
-            }
-
         }
+
+        $modpacktag = new ModpackTag;
+
+        $modpacktag->name = $input['name'];
+        $modpacktag->deck = $input['deck'];
+        $modpacktag->description = $input['description'];
+        $modpacktag->last_ip = Request::getClientIp();
+
+        if ($input['slug'] == '') {
+            $slug = Str::slug($input['name']);
+        } else {
+            $slug = $input['slug'];
+        }
+
+        $modpacktag->slug = $slug;
+        $success = $modpacktag->save();
+
+        if ($success) {
+            Cache::tags('modpacks')->flush();
+            Queue::push('BuildCache');
+
+            return View::make('tags.modpacks.add', ['title' => $title, 'success' => true]);
+        }
+
+        return Redirect::action('ModpackTagController@getAdd')->withErrors(['message' => 'Unable to add modpack tag.'])->withInput();
     }
 
     public function getEdit($id)
@@ -109,31 +108,30 @@ class ModpackTagController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('ModpackTagController@getEdit', [$id])->withErrors($validator)->withInput();
-        } else {
-            $modpacktag->name = $input['name'];
-            $modpacktag->deck = $input['deck'];
-            $modpacktag->description = $input['description'];
-            $modpacktag->last_ip = Request::getClientIp();
-
-            if ($input['slug'] == '' || $input['slug'] == $modpacktag->slug) {
-                $slug = Str::slug($input['name']);
-            } else {
-                $slug = $input['slug'];
-            }
-
-            $modpacktag->slug = $slug;
-            $success = $modpacktag->save();
-
-            if ($success) {
-                Cache::tags('modpacks')->flush();
-                Queue::push('BuildCache');
-
-                return View::make('tags.modpacks.edit',
-                    ['title' => $title, 'success' => true, 'modpacktag' => $modpacktag]);
-            } else {
-                return Redirect::action('ModpackTagController@getEdit', [$id])->withErrors(['message' => 'Unable to edit modpack code.'])->withInput();
-            }
-
         }
+
+        $modpacktag->name = $input['name'];
+        $modpacktag->deck = $input['deck'];
+        $modpacktag->description = $input['description'];
+        $modpacktag->last_ip = Request::getClientIp();
+
+        if ($input['slug'] == '' || $input['slug'] == $modpacktag->slug) {
+            $slug = Str::slug($input['name']);
+        } else {
+            $slug = $input['slug'];
+        }
+
+        $modpacktag->slug = $slug;
+        $success = $modpacktag->save();
+
+        if ($success) {
+            Cache::tags('modpacks')->flush();
+            Queue::push('BuildCache');
+
+            return View::make('tags.modpacks.edit',
+                ['title' => $title, 'success' => true, 'modpacktag' => $modpacktag]);
+        }
+
+        return Redirect::action('ModpackTagController@getEdit', [$id])->withErrors(['message' => 'Unable to edit modpack code.'])->withInput();
     }
 }
