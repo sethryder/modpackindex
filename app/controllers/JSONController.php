@@ -403,11 +403,12 @@ class JSONController extends BaseController
 
         if ($raw_mods) {
             foreach ($raw_mods->modList as $mod) {
-
-                $mods_array[] = [
-                    'name' => $mod->modid,
-                    'version' => $mod->version,
-                ];
+                if (!empty($mod->modid)){
+                    $mods_array[] = [
+                        'name' => $mod->modid,
+                        'version' => $mod->version,
+                    ];
+                }
             }
         }
 
