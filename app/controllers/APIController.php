@@ -67,7 +67,7 @@ Class APIController extends BaseController
             'offset' => $offset
         ];
 
-        return json_encode($modpacks);
+        return Response::json($modpacks);
     }
 
     public function getModpack($id)
@@ -113,7 +113,7 @@ Class APIController extends BaseController
             'updated_at' => $raw_modpack->updated_at,
         ];
 
-        return json_encode($results);
+        return Response::json($results);
     }
 
     public function getMods($version = 'all')
@@ -181,7 +181,7 @@ Class APIController extends BaseController
             'offset' => $offset
         ];
 
-        return json_encode($mods);
+        return Response::json($mods);
     }
 
     public function getMod($id)
@@ -227,7 +227,7 @@ Class APIController extends BaseController
             'updated_at' => $raw_mod->updated_at,
         ];
 
-        return json_encode($results);
+        return Response::json($results);
     }
 
     public function getStreams($limit = 100, $offset)
