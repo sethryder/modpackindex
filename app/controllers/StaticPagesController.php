@@ -63,17 +63,18 @@ class StaticPagesController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('StaticPagesController@getContact')->withErrors($validator)->withInput();
-        } else {
-            Mail::send('emails.contact', array('input' => $input), function ($message) use ($input) {
-                $message->from('noreply@modpackindex.com', 'Modpack Index');
-                $message->replyTo($input['email'], $input['name']);
-                $message->to($input['contact_email'], 'Seth')->subject($input['subject']);
-            });
-
-            return View::make('pages.contact', ['success' => true, 'title' => $title,
-                'correction' => $input['correction'], 'correction_type' => false,
-                'correction_id' => false, 'correction_object' => false]);
         }
+
+        Mail::send('emails.contact', array('input' => $input), function ($message) use ($input) {
+            $message->from('noreply@modpackindex.com', 'Modpack Index');
+            $message->replyTo($input['email'], $input['name']);
+            $message->to($input['contact_email'], 'Seth')->subject($input['subject']);
+        });
+
+        return View::make('pages.contact', ['success' => true, 'title' => $title,
+            'correction' => $input['correction'], 'correction_type' => false,
+            'correction_id' => false, 'correction_object' => false]);
+
     }
 
     public function getSubmitModpack()
@@ -126,15 +127,15 @@ class StaticPagesController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('StaticPagesController@getSubmitModpack')->withErrors($validator)->withInput();
-        } else {
-            Mail::send('emails.submitmodpack', array('input' => $input), function ($message) use ($input) {
-                $message->from('noreply@modpackindex.com', 'Modpack Index');
-                $message->replyTo($input['email']);
-                $message->to($input['contact_email'], 'Seth')->subject('Modpack Submission: ' . $input['name']);
-            });
-
-            return View::make('pages.submitmodpack', ['success' => true, 'title' => $title]);
         }
+
+        Mail::send('emails.submitmodpack', array('input' => $input), function ($message) use ($input) {
+            $message->from('noreply@modpackindex.com', 'Modpack Index');
+            $message->replyTo($input['email']);
+            $message->to($input['contact_email'], 'Seth')->subject('Modpack Submission: ' . $input['name']);
+        });
+
+        return View::make('pages.submitmodpack', ['success' => true, 'title' => $title]);
     }
 
     public function getSubmitVideo()
@@ -198,16 +199,16 @@ class StaticPagesController extends BaseController
 
         if ($validator->fails()) {
             return Redirect::action('StaticPagesController@getSubmitVideo')->withErrors($validator)->withInput();
-        } else {
-            Mail::send('emails.submitvideo', array('input' => $input),
-                function ($message) use ($input, $email_subject) {
-                    $message->from('noreply@modpackindex.com', 'Modpack Index');
-                    $message->replyTo($input['email']);
-                    $message->to($input['contact_email'], 'Seth')->subject($email_subject);
-                });
-
-            return View::make('pages.submitvideo', ['success' => true, 'title' => $title, 'types' => $types]);
         }
+
+        Mail::send('emails.submitvideo', array('input' => $input),
+            function ($message) use ($input, $email_subject) {
+                $message->from('noreply@modpackindex.com', 'Modpack Index');
+                $message->replyTo($input['email']);
+                $message->to($input['contact_email'], 'Seth')->subject($email_subject);
+            });
+
+        return View::make('pages.submitvideo', ['success' => true, 'title' => $title, 'types' => $types]);
     }
 
     public function getPackCodes()
