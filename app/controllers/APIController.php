@@ -239,7 +239,7 @@ Class APIController extends BaseController
 
         $input = Input::only('limit', 'offset', 'active');
 
-        if (!$input['active']) {
+        if ($input['active']) {
             $active = 1;
         }
 
@@ -253,17 +253,17 @@ Class APIController extends BaseController
 
         if ($modpack == 'all') {
             $raw_servers = Server::select('id', 'modpack_id', 'name', 'ip_host', 'port', 'permissions', 'country', 'deck',
-                'description', 'website', 'application_url', 'slug', 'last_check', 'last_world_reset', 'next_world_reset',
-                'created_at', 'updated_at')
-                ->where('active', $active)
+                'description', 'website', 'application_url', 'slug', 'active', 'last_check', 'last_world_reset',
+                'next_world_reset', 'created_at', 'updated_at')
+                ->where('active', '>=', $active)
                 ->skip($offset)->take($limit)->get();
 
             $server_count = Server::select('id')->where('active', $active)->count();
         } else {
             $raw_servers = Server::select('id', 'modpack_id', 'name', 'ip_host', 'port', 'permissions', 'country', 'deck',
-                'description', 'website', 'application_url', 'slug', 'last_check', 'last_world_reset', 'next_world_reset',
-                'created_at', 'updated_at')
-                ->where('active', $active)
+                'description', 'website', 'application_url', 'slug', 'active', 'last_check', 'last_world_reset',
+                'next_world_reset', 'created_at', 'updated_at')
+                ->where('active', '>=', $active)
                 ->where('modpack_id', $modpack)
                 ->skip($offset)->take($limit)->get();
 
@@ -294,6 +294,7 @@ Class APIController extends BaseController
                 'description' => $server->slug,
                 'server_address_hide' => $server->server_address_hide,
                 'player_list_hide' => $server->player_list_hide,
+                'active' => $server->active,
                 'slug' => $server->slug,
                 'last_world_reset' => $server->last_world_reset,
                 'next_world_reset' => $server->next_world_reset,
