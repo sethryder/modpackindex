@@ -41,6 +41,10 @@ class ServerController extends BaseController
         } else {
             $modpack = Modpack::where('slug', $modpack_slug)->first();
 
+            if (!$modpack) {
+                return Redirect::to(action('ServerController@getServers'));
+            }
+
             $title = $modpack->name . ' Servers - ' . $this->site_name;
             $meta_description = 'Minecraft Servers for the ' . $modpack->name . ' modpack. With powerful searching and filtering.';
             $modpack_name = $modpack->name;
