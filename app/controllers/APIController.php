@@ -253,16 +253,16 @@ Class APIController extends BaseController
 
         if ($modpack == 'all') {
             $raw_servers = Server::select('id', 'modpack_id', 'name', 'ip_host', 'port', 'permissions', 'country', 'deck',
-                'description', 'website', 'application_url', 'slug', 'active', 'last_check', 'last_world_reset',
-                'next_world_reset', 'created_at', 'updated_at')
+                'description', 'website', 'application_url', 'slug', 'active', 'last_check', 'server_address_hide',
+                'player_list_hide', 'last_world_reset', 'next_world_reset', 'created_at', 'updated_at')
                 ->where('active', '>=', $active)
                 ->skip($offset)->take($limit)->get();
 
             $server_count = Server::select('id')->where('active', $active)->count();
         } else {
             $raw_servers = Server::select('id', 'modpack_id', 'name', 'ip_host', 'port', 'permissions', 'country', 'deck',
-                'description', 'website', 'application_url', 'slug', 'active', 'last_check', 'last_world_reset',
-                'next_world_reset', 'created_at', 'updated_at')
+                'description', 'website', 'application_url', 'slug', 'active', 'last_check', 'server_address_hide',
+                'player_list_hide', 'last_world_reset', 'next_world_reset', 'created_at', 'updated_at')
                 ->where('active', '>=', $active)
                 ->where('modpack_id', $modpack)
                 ->skip($offset)->take($limit)->get();
