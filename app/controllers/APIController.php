@@ -30,7 +30,7 @@ Class APIController extends BaseController
             $raw_version = MinecraftVersion::where('name', '=', $version)->first();
 
             if (!$raw_version) {
-                return json_encode(['error' => 'Not a valid version.']);
+                return Response::json(['error' => 'Not a valid version.']);
             }
 
             $version_id = $raw_version->id;
@@ -42,7 +42,7 @@ Class APIController extends BaseController
         }
 
         if (!$raw_modpacks) {
-            return json_encode(['error' => 'No results.']);
+            return Response::json(['error' => 'No results.']);
         }
 
         foreach ($raw_modpacks as $modpack) {
@@ -77,7 +77,7 @@ Class APIController extends BaseController
         $raw_modpack = Modpack::find($id);
 
         if (!$raw_modpack) {
-            return json_encode(['error' => 'No modpack with that ID found.']);
+            return Response::json(['error' => 'No modpack with that ID found.']);
         }
 
         $raw_mods = $raw_modpack->mods;
@@ -143,7 +143,7 @@ Class APIController extends BaseController
             $version_id = $raw_version->id;
 
             if (!$raw_version) {
-                return json_encode(['error' => 'Not a valid version.']);
+                return Response::json(['error' => 'Not a valid version.']);
             }
 
             $query = Mod::whereHas('versions', function ($q) use ($version_id) {
@@ -156,7 +156,7 @@ Class APIController extends BaseController
         }
 
         if (!$raw_mods) {
-            return json_encode(['error' => 'No results.']);
+            return Response::json(['error' => 'No results.']);
         }
 
         foreach ($raw_mods as $mod) {
@@ -191,7 +191,7 @@ Class APIController extends BaseController
         $raw_mod = Mod::find($id);
 
         if (!$raw_mod) {
-            return json_encode(['error' => 'No mod with that ID found.']);
+            return Response::json(['error' => 'No mod with that ID found.']);
         }
 
         $raw_modpacks = $raw_mod->modpacks;
@@ -271,7 +271,7 @@ Class APIController extends BaseController
         }
 
         if (!$raw_servers) {
-            return json_encode(['error' => 'No results.']);
+            return Response::json(['error' => 'No results.']);
         }
 
         foreach ($raw_servers as $server) {
@@ -320,7 +320,7 @@ Class APIController extends BaseController
         $server = Server::find($id);
 
         if (!$server) {
-            return json_encode(['error' => 'No mod with that ID found.']);
+            return Response::json(['error' => 'No mod with that ID found.']);
         }
 
         $server_status = ServerStatus::where('server_id', $id)->first();
@@ -404,7 +404,7 @@ Class APIController extends BaseController
         }
 
         if (!$raw_streams) {
-            return json_encode(['error' => 'No results.']);
+            return Response::json(['error' => 'No results.']);
         }
 
         foreach ($raw_streams as $stream) {
