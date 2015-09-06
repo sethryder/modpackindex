@@ -183,6 +183,10 @@ Route::get('api/v1/mod/{id}.json', 'APIController@getMod');
 Route::get('api/v1/servers/{id}.json', 'APIController@getServers');
 Route::get('api/v1/server/{id}.json', 'APIController@getServer');
 
+Route::get('api', function () {
+    return Redirect::to('https://modpackindex-api-docs.readthedocs.org/en/latest/');
+});
+
 //api calls for json for the tables
 Route::get('api/table/modpack_finder/{version}.json', 'JSONController@getModpackSearch');
 
