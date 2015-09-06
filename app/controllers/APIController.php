@@ -98,7 +98,7 @@ Class APIController extends BaseController
             ];
         }
 
-        $results = [
+        $result = [
             'id' => $raw_modpack->id,
             'name' => $raw_modpack->name,
             'short_description' => $raw_modpack->deck,
@@ -113,7 +113,7 @@ Class APIController extends BaseController
             'updated_at' => $raw_modpack->updated_at,
         ];
 
-        return Response::json($results);
+        return Response::json($result);
     }
 
     public function getMods($version = 'all')
@@ -212,7 +212,7 @@ Class APIController extends BaseController
             ];
         }
 
-        $results = [
+        $result = [
             'id' => $raw_mod->id,
             'name' => $raw_mod->name,
             'short_description' => $raw_mod->deck,
@@ -227,7 +227,7 @@ Class APIController extends BaseController
             'updated_at' => $raw_mod->updated_at,
         ];
 
-        return Response::json($results);
+        return Response::json($result);
     }
 
     public function getServers($modpack ='all')
@@ -354,7 +354,7 @@ Class APIController extends BaseController
             $server_address = $server->ip_host . ':' . $server->port;
         }
 
-        $results = [
+        $result = [
             'id' => $server->id,
             'modpack_id' => $server->modpack_id,
             'name' => $server->name,
@@ -376,16 +376,84 @@ Class APIController extends BaseController
             'updated_at' => $server->updated_at,
         ];
 
-        return Response::json($results);
+        return Response::json($result);
     }
 
-    public function getStreams($limit = 100, $offset)
+    public function getStreams($modpack = 'all')
     {
+        $streams = [];
+        $limit = 100;
+        $offset = 0;
 
+        $input = Input::only('limit', 'offset');
+
+        if ($input['limit']) {
+            $limit = $input['limit'];
+        }
+
+        if ($input['offset']) {
+            $offset = $input['offset'];
+        }
+
+        if ($modpack == 'all') {
+            $raw_streams = TwitchStream::skip($offset)->take($limit)->get();
+            $stream_count = TwitchStream::select('id')->count();
+        } else {
+            $raw_streams = TwitchStream::where('modpack_id', $modpack)->skip($offset)->take($limit)->get();
+            $stream_count = TwitchStream::select('id')->where('modpack_id', $modpack)->count();
+        }
+
+        if (!$raw_streams) {
+            return json_encode(['error' => 'No results.']);
+        }
+
+        foreach ($raw_streams as $stream) {
+            $streams['results'][] = [
+                'channel_id' => $stream->channel_id,
+                'modpack_id' => $stream->modpack_id,
+                'status' => $stream->status,
+                'display_name' => $stream->display_name,
+                'language' => $stream->language,
+                'preview_image_url' => $stream->preview,
+                'twitch_url' => $stream->url,
+                'viewers' => $stream->viewers,
+                'followers' => $stream->followers,
+                'created_at' => $stream->created_at,
+                'updated_at' => $stream->updated_at,
+            ];
+        }
+
+        $streams['meta'] = [
+            'total_results' => $stream_count,
+            'limit' => $limit,
+            'offset' => $offset
+        ];
+
+        return Response::json($streams);
     }
 
     public function getStream($id)
     {
+        $stream = TwitchStream::find($id);
 
+        if (!$stream) {
+            return json_encode(['error' => 'No stream with that ID is currently live.']);
+        }
+
+        $results = [
+            'channel_id' => $stream->channel_id,
+            'modpack_id' => $stream->modpack_id,
+            'status' => $stream->status,
+            'display_name' => $stream->display_name,
+            'language' => $stream->language,
+            'preview_image_url' => $stream->preview,
+            'twitch_url' => $stream->url,
+            'viewers' => $stream->viewers,
+            'followers' => $stream->followers,
+            'created_at' => $stream->created_at,
+            'updated_at' => $stream->updated_at,
+        ];
+
+        return Response::json($results);
     }
 }
