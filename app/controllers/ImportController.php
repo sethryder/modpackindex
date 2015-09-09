@@ -245,6 +245,11 @@ class ImportController extends BaseController
 
             $author_import_status = 1;
 
+            if ($input['name'] != $import_author->name) {
+                $import_author->name = $input['name'];
+                $import_author->save();
+            }
+
             $success = $author->save();
         } else {
             $alias = new AuthorAlias;
