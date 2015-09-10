@@ -43,6 +43,7 @@ class ImportController extends BaseController
         }
 
         $mod_info_array = [];
+        $mod_info = false;
         $input = Input::only('import_nem', 'import_mcf', 'url', 'json');
 
         if ($input['import_nem']) {
@@ -134,6 +135,13 @@ class ImportController extends BaseController
         }
 
         if ($mod_info) {
+            $import_exists = Import::where('name', $mod_info_array['name'])->first();
+
+            if ($import_exists) {
+                return Redirect::action('ImportController@getStartImport')
+                    ->withErrors(['message' => 'An import for this mod already exists.'])->withInput();
+            }
+
             $import_index = new Import;
 
             $import_index->name = $mod_info_array['name'];
