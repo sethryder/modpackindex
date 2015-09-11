@@ -28,7 +28,7 @@ class ModpackController extends BaseController
         $friendly_version = $this->getVersion($version);
 
         if (strpos($version, '.')) {
-            return Redirect::action('ModpackController@getModpack', [$this->getVersionSlug($version), $slug]);
+            return Redirect::action('ModpackController@getModpack', [$this->getVersionSlug($version), $slug], 301);
         }
 
         $modpack = Modpack::where('slug', '=', $slug)->first();
