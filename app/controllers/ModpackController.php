@@ -27,6 +27,10 @@ class ModpackController extends BaseController
         $mods_javascript = route('tdf_name', ['modpackmods', $version, $slug]);
         $friendly_version = $this->getVersion($version);
 
+        if (strpos($version, '.')) {
+            return Redirect::action('ModpackController@getModpack', [$this->getVersionSlug($version), $slug]);
+        }
+
         $modpack = Modpack::where('slug', '=', $slug)->first();
 
         if (!$modpack) {
