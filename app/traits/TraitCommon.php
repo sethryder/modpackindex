@@ -22,7 +22,7 @@ trait TraitCommon
         $links = '';
 
         $name = link_to_action('ModpackController@getModpack', $modpack->name, [
-            $this->getVersion($modpack->version->name),
+            $this->getVersionSlug($modpack->version->name),
             $modpack->slug,
         ]);
 
