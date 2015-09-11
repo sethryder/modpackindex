@@ -26,6 +26,16 @@
                         <p><i class="fa fa-tags"></i>Tags: {{ $tags_formatted }}</p>
                     @endif
 
+                    @if ($modpack->is_deprecated)
+                        <p>
+                            <strong class="deprecated-warning">Warning</strong>: This modpack is no longer supported and may be broken.
+                            @if ($modpack->sequel_modpack_id)
+                                An updated version of this modpack is available
+                                <a href="{{ action('ModpackController@getModpack', [$modpack->sequel_modpack_version, $modpack->sequel_modpack_slug]) }}">here</a>!
+                            @endif
+                        </p>
+                    @endif
+
 
                     @if (isset($pack_code))
                         <p>

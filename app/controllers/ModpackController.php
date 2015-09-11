@@ -74,6 +74,17 @@ class ModpackController extends BaseController
             $has_servers = true;
         }
 
+        if ($modpack->is_deprecated) {
+            if ($modpack->sequel_modpack_id) {
+                $sequel_modpack = Modpack::find($modpack->sequel_modpack_id);
+                $sequel_version = MinecraftVersion::where('id', $modpack->minecraft_version_id)->first();
+
+                $modpack->sequel_modpack_name = $sequel_modpack->name;
+                $modpack->sequel_modpack_slug = $sequel_modpack->slug;
+                $modpack->sequel_modpack_version = $this->getVersionSlug($sequel_version->name);
+            }
+        }
+
         $server_javascript = route('tdf', ['servers', 'all']) . '?modpack=' . $modpack->id;
 
         $raw_links = [
@@ -262,7 +273,7 @@ class ModpackController extends BaseController
         $minecraft_version = MinecraftVersion::where('name', '=', $version)->first();
 
         $input = Input::only('name', 'launcher', 'mods', 'tags', 'creators', 'deck', 'website', 'download_link',
-            'donate_link', 'wiki_link', 'description', 'slug');
+            'donate_link', 'wiki_link', 'description', 'is_deprecated', 'sequel_modpack_id', 'slug');
 
         $messages = [
             'unique' => 'This mod already exists in the database. If it requires an update let us know!',
@@ -296,6 +307,14 @@ class ModpackController extends BaseController
         $modpack->donate_link = $input['donate_link'];
         $modpack->wiki_link = $input['wiki_link'];
         $modpack->description = $input['description'];
+
+        if ($input['is_deprecated'] == 1) {
+            $modpack->is_deprecated = 1;
+        } else {
+            $modpack->is_deprecated = 0;
+        }
+
+        $modpack->sequel_modpack_id = $input['sequel_modpack_id'];
 
         if ($input['slug'] == '') {
             $slug = Str::slug($input['name']);
@@ -447,7 +466,7 @@ class ModpackController extends BaseController
 
         $input = Input::only('name', 'launcher', 'selected_mods', 'selected_creators', 'selected_tags',
             'selected_maintainers', 'deck', 'website', 'download_link', 'donate_link', 'wiki_link', 'description',
-            'slug');
+            'is_deprecated', 'sequel_modpack_id', 'slug');
 
         $messages = [
             'unique' => 'This modpack already exists in the database. If it requires an update let us know!',
@@ -478,6 +497,14 @@ class ModpackController extends BaseController
         $modpack->donate_link = $input['donate_link'];
         $modpack->wiki_link = $input['wiki_link'];
         $modpack->description = $input['description'];
+
+        if ($input['is_deprecated'] == 1) {
+            $modpack->is_deprecated = 1;
+        } else {
+            $modpack->is_deprecated = 0;
+        }
+
+        $modpack->sequel_modpack_id = $input['sequel_modpack_id'];
 
         if ($input['slug'] == '' || $input['slug'] == $modpack->slug) {
             $slug = Str::slug($input['name']);

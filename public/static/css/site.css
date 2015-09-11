@@ -5,3 +5,7 @@
 i.fa {
     margin-right: 5px;
 }
+
+.deprecated-warning {
+    color: #D74B4B;
+}

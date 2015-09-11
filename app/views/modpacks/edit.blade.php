@@ -108,6 +108,20 @@
                             </div>
                             <!-- /.form-group -->
 
+                            <div class="form-group">
+                                {{ Form::label('sequel_modpack_id','Updated Modpack') }}:
+                                {{ Form::select('sequel_modpack_id', ['0'  => 'None'] + Modpack::orderBy('name')->lists('name', 'id'), null, array('class' => 'form-control')) }}
+
+                                        <!-- /.checkbox -->
+                                <div class="checkbox">
+                                    <label>
+                                        {{ Form::checkbox('is_deprecated', 1);  }}
+                                        Deprecated
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- /.form-group -->
+
                             @if ($can_edit_maintainers == true)
                             <div class="form-group">
                                 {{ Form::label('slug','Slug') }}:
