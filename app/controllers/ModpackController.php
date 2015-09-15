@@ -354,6 +354,7 @@ class ModpackController extends BaseController
             Cache::tags('modpacks')->flush();
             Cache::tags('modpackmods')->flush();
             Cache::tags('modmodpacks')->flush();
+            Cache::tags('launchers')->flush();
             Queue::push('BuildCache');
 
             return View::make('modpacks.add', [
@@ -580,6 +581,7 @@ class ModpackController extends BaseController
             Cache::tags('modpacks')->flush();
             Cache::tags('modpackmods')->flush();
             Cache::tags('modmodpacks')->flush();
+            Cache::tags('launchers')->flush();
             Queue::push('BuildCache');
 
             return View::make('modpacks.edit', [
