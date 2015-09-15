@@ -15,7 +15,7 @@ class AddDeprecatedFields extends Migration {
 		Schema::table('modpacks', function($table)
 		{
 			$table->boolean('is_deprecated')->after('description')->default(false);
-			$table->integer('sequel_modpack_id')->after('is_deprecated')->nullabe();
+			$table->integer('sequel_modpack_id')->after('is_deprecated')->nullable();
 		});
 	}
 
