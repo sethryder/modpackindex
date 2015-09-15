@@ -105,7 +105,7 @@
 
                             <div class="form-group">
                                 {{ Form::label('sequel_modpack','Sequel / Replacement Modpack') }}*:
-                                {{ Form::select('sequel_modpack', Modpack::orderBy('name')->lists('name', 'id'), null, array('class' => 'form-control')) }}
+                                {{ Form::select('sequel_modpack', ['0'  => 'None'] + Modpack::orderBy('name')->lists('name', 'id'), null, array('class' => 'form-control')) }}
 
                                 <!-- /.checkbox -->
                                 <div class="checkbox">
