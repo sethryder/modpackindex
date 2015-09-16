@@ -73,6 +73,7 @@ class ModpackController extends BaseController
         $server_count = $modpack->servers()->where('active', 1)->count();
         $twitch_streams = $modpack->twitchStreams()->orderBy('viewers', 'desc')->get();
         $lets_plays = $modpack->youtubeVideos()->where('category_id', 1)->get();
+        $spotlights = $modpack->youtubeVideos()->where('category_id', 2)->get();
 
         if ($server_count > 0) {
             $has_servers = true;
@@ -156,6 +157,7 @@ class ModpackController extends BaseController
             'version' => $version,
             'twitch_streams' => $twitch_streams,
             'lets_plays' => $lets_plays,
+            'spotlights' => $spotlights,
             'has_servers' => $has_servers,
             'can_edit' => $can_edit,
             'sticky_tabs' => true

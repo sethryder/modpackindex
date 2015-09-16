@@ -89,6 +89,12 @@
                             </li>
                         @endif
 
+                        @if (isset($spotlights[0]))
+                            <li class="">
+                                <a href="#spotlights" data-toggle="tab">Spotlights</a>
+                            </li>
+                        @endif
+
                         @if (isset($lets_plays[0]))
                             <li class="">
                                 <a href="#lets_plays" data-toggle="tab">Let's Plays</a>
@@ -184,6 +190,33 @@
                                                         <a href="{{ action('TwitchController@getChannel', [$stream->display_name]) }}">
                                                             <i class="fa fa-eye"></i>{{{ $stream->viewers }}}</a>
                                                         <!-- <a href="javascript:;"><i class="fa fa-heart"></i>{{{ $stream->followers }}}</a> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div> <!-- /.col -->
+                                    @endforeach
+                                </div>
+                            </div> <!-- /.tab-pane -->
+                        @endif
+
+                        @if (isset($spotlights[0]))
+                            <div class="tab-pane fade" id="spotlights">
+                                <div class="row">
+                                    @foreach($spotlights as $spotlight)
+                                        <div class="col-md-3 col-sm-6">
+
+                                            <div class="thumbnail">
+                                                <div class="thumbnail-view">
+                                                    <a href="{{ action('YoutubeController@getModpackVideo', [$version, $modpack->slug, $spotlight->id, Str::slug($spotlight->channel_title)]) }}">
+                                                        <img src="{{{ $spotlight->thumbnail }}}" style="width: 100%"/></a>
+                                                </div>
+                                                <div class="thumbnail-footer">
+                                                    <div class="pull-left">
+                                                        <a href="http://www.youtube.com/{{{ $spotlight->channel_title }}}">{{{ $spotlight->channel_title }}}</a>
+                                                    </div>
+
+                                                    <div class="pull-right">
                                                     </div>
                                                 </div>
                                             </div>

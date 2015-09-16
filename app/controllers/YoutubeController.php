@@ -18,6 +18,8 @@ class YoutubeController extends BaseController
 
         if ($video->category_id == 1) {
             $title_subject = 'Let\'s Play';
+        } elseif ($video->category_id == 2) {
+            $title_subject = 'Spotlight';
         } else {
             $title_subject = 'Video';
         }
