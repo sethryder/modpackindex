@@ -208,7 +208,7 @@
 
                                             <div class="thumbnail">
                                                 <div class="thumbnail-view">
-                                                    <a href="{{ action('YoutubeController@getModpackVideo', [$version, $modpack->slug, $spotlight->id, Str::slug($spotlight->channel_title)]) }}">
+                                                    <a href="{{ route('modpack_spotlight', [$version, $modpack->slug, $spotlight->id, Str::slug($spotlight->channel_title)]) }}">
                                                         <img src="{{{ $spotlight->thumbnail }}}" style="width: 100%"/></a>
                                                 </div>
                                                 <div class="thumbnail-footer">
@@ -235,7 +235,7 @@
 
                                             <div class="thumbnail">
                                                 <div class="thumbnail-view">
-                                                    <a href="{{ action('YoutubeController@getModpackVideo', [$version, $modpack->slug, $lets_play->id, Str::slug($lets_play->channel_title)]) }}">
+                                                    <a href="{{ route('modpack_lets_play', [$version, $modpack->slug, $lets_play->id, Str::slug($lets_play->channel_title)]) }}">
                                                         <img src="{{{ $lets_play->thumbnail }}}"
                                                              style="width: 100%"/></a>
                                                 </div>

@@ -112,7 +112,7 @@
 
                                             <div class="thumbnail">
                                                 <div class="thumbnail-view">
-                                                    <a href="{{ action('YoutubeController@getModVideo', [$mod->slug, $spotlight->id, Str::slug($spotlight->channel_title)]) }}">
+                                                    <a href="{{ route('mod_spotlight', [$mod->slug, $spotlight->id, Str::slug($spotlight->channel_title)]) }}">
                                                         <img src="{{{ $spotlight->thumbnail }}}" style="width: 100%"/></a>
                                                 </div>
                                                 <div class="thumbnail-footer">
@@ -139,7 +139,7 @@
 
                                             <div class="thumbnail">
                                                 <div class="thumbnail-view">
-                                                    <a href="{{ action('YoutubeController@getModVideo', [$tutorial->slug, $tutorial->id, Str::slug($tutorial->channel_title)]) }}">
+                                                    <a href="{{ route('mod_tutorial', [$tutorial->slug, $tutorial->id, Str::slug($tutorial->channel_title)]) }}">
                                                         <img src="{{{ $tutorial->thumbnail }}}" style="width: 100%"/></a>
                                                 </div>
                                                 <div class="thumbnail-footer">

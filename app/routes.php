@@ -114,13 +114,14 @@ Route::post('modpacks/compare', 'ModpackController@postCompare');
 //mods
 Route::get('mods/{version?}', 'ModController@getModVersion');
 Route::get('mod/{slug}', 'ModController@getMod');
-Route::get('mod/{slug}/spotlight/{id}-{creator}', 'YoutubeController@getModVideo');
-Route::get('mod/{slug}/tutorial/{id}-{creator}', 'YoutubeController@getModVideo');
+Route::get('mod/{slug}/spotlight/{id}-{creator}', ['as' => 'mod_spotlight', 'uses' => 'YoutubeController@getModVideo']);
+Route::get('mod/{slug}/tutorial/{id}-{creator}', ['as' => 'mod_tutorial', 'uses' => 'YoutubeController@getModVideo']);
 
 //modpacks
 Route::get('modpacks/{version?}', 'ModpackController@getModpackVersion');
 Route::get('modpack/{version}/{slug}', 'ModpackController@getModpack');
-Route::get('modpack/{version}/{slug}/lets-play/{id}-{creator}', 'YoutubeController@getModpackVideo');
+Route::get('modpack/{version}/{slug}/spotlight/{id}-{creator}', ['as' => 'modpack_spotlight', 'uses' => 'YoutubeController@getModpackVideo']);
+Route::get('modpack/{version}/{slug}/lets-play/{id}-{creator}', ['as' => 'modpack_lets_play', 'uses' => 'YoutubeController@getModpackVideo']);
 
 //launchers
 Route::get('launcher/{name}/{version?}', 'LauncherController@getLauncherVersion');
