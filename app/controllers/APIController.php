@@ -73,6 +73,7 @@ Class APIController extends BaseController
     public function getModpack($id)
     {
         $mods = [];
+        $creators = [];
 
         $raw_modpack = Modpack::find($id);
 
@@ -81,6 +82,7 @@ Class APIController extends BaseController
         }
 
         $raw_mods = $raw_modpack->mods;
+        $raw_creators = $raw_modpack->creators;
 
         foreach ($raw_mods as $mod) {
             $mods[] = [
@@ -98,6 +100,20 @@ Class APIController extends BaseController
             ];
         }
 
+        foreach ($raw_creators as $creator) {
+            $creators[] = [
+                'id' => $creator->id,
+                'name' => $creator->name,
+                'website' => $creator->website,
+                'donation_link' => $creator->donation_link,
+                'bio' => $creator->bio,
+                'slug' => $creator->slug,
+                'created_at' => $creator->created_at,
+                'updated_at' => $creator->updated_at,
+            ];
+        }
+
+
         $result = [
             'id' => $raw_modpack->id,
             'name' => $raw_modpack->name,
@@ -108,6 +124,7 @@ Class APIController extends BaseController
             'wiki_link' => $raw_modpack->wiki_link,
             'description' => $raw_modpack->description,
             'mods' => $mods,
+            'creators' => $creators,
             'slug' => $raw_modpack->slug,
             'created_at' => $raw_modpack->created_at,
             'updated_at' => $raw_modpack->updated_at,
@@ -187,6 +204,7 @@ Class APIController extends BaseController
     public function getMod($id)
     {
         $modpacks = [];
+        $authors = [];
 
         $raw_mod = Mod::find($id);
 
@@ -195,6 +213,7 @@ Class APIController extends BaseController
         }
 
         $raw_modpacks = $raw_mod->modpacks;
+        $raw_authors = $raw_mod->authors;
 
         foreach ($raw_modpacks as $modpack) {
             $modpacks[] = [
@@ -203,12 +222,25 @@ Class APIController extends BaseController
                 'short_description' => $modpack->deck,
                 'website' => $modpack->website,
                 'download_link' => $modpack->download_link,
-                'donate_link' => $modpack->website,
+                'donate_link' => $modpack->donate_link,
                 'wiki_link' => $modpack->wiki_link,
                 'descriptions' => $modpack->descriptions,
                 'slug' => $modpack->slug,
                 'created_at' => $modpack->created_at,
                 'updated_at' => $modpack->updated_at,
+            ];
+        }
+
+        foreach ($raw_authors as $author) {
+            $authors[] = [
+                'id' => $author->id,
+                'name' => $author->name,
+                'website' => $author->website,
+                'donation_link' => $author->donation_link,
+                'bio' => $author->bio,
+                'slug' => $author->slug,
+                'created_at' => $author->created_at,
+                'updated_at' => $author->updated_at,
             ];
         }
 
@@ -222,6 +254,7 @@ Class APIController extends BaseController
             'wiki_link' => $raw_mod->wiki_link,
             'descriptions' => $raw_mod->descriptions,
             'modpacks' => $modpacks,
+            'authors' => $authors,
             'slug' => $raw_mod->slug,
             'created_at' => $raw_mod->created_at,
             'updated_at' => $raw_mod->updated_at,
