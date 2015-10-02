@@ -2,7 +2,7 @@
 
 class Creator extends Eloquent
 {
-    public function mods()
+    public function modpacks()
     {
         $this->belongsToMany('Modpack');
     }
