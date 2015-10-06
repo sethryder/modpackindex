@@ -17,6 +17,12 @@ class CreateMinecraftVersionsTable extends Migration {
             $table->string('name')->unique;
             $table->timestamps();
         });
+
+		DB::table('minecraft_versions')->insert([
+			['name' => '1.6.4'],
+			['name' => '1.7.10'],
+			['name' => '1.8']
+		]);
 	}
 
 	/**

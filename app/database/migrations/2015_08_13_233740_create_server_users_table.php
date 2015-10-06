@@ -30,7 +30,7 @@ class CreateServerUsersTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('server_users');
 	}
 
 }
