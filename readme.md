@@ -26,7 +26,7 @@ The site is currently running at [www.modpackindex.com](http://www.modpackindex.
 
 ## Commands / Crons
 
-Modpack Index depends on some commands to keep some information up to date.
+Modpack Index depends on commands to keep some information up to date.
 
 `php artisan mpi:install`
 
