@@ -24,6 +24,34 @@ The site is currently running at [www.modpackindex.com](http://www.modpackindex.
 5. Run: `php artisan mpi:install` This will walk you through setting up your first admin user.
 6. Have fun!
 
+## Commands / Crons
+
+Modpack Index depends on some commands to keep some information up to date.
+
+`php artisan mpi:install`
+
+* Use this to setup the first default admin user.
+* You only need to run this once when you setup the site.
+
+`php artisan import:mcfmodlist`
+
+* Import / Update mods from the [MCF Mod List](http://modlist.mcf.li/) and add them to the import system.
+* Recommended to setup as a cron that runs once a day.
+
+`php artisan import:nem`
+
+* Import / Update mods from the [Not Enough Mods](https://bot.notenoughmods.com/) and add them to the import system.
+* Recommended to setup as a cron that runs once a day.
+
+`php artisan server:updatequeue`
+
+* Check to see which servers are due for an update and add them to the queue.
+* Recommended to setup as a cron that runs every minute.
+
+`php artisan twitch:update`
+
+* Update stream from Twich and match them to modpacks in the database.
+* Recommended to setup as a cron that every 5 minutes or so.
 
 ## Copyright
 
