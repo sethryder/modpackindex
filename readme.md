@@ -1,8 +1,9 @@
 ## Modpack Index
 
-Modpack Index acts as a central database for the modpacks and mods available in the Minecraft community.
+Modpack Index acts as a central database for the modpacks and mods available in the Minecraft community. It offers a
+variety of features including modpack finder, modpack comparison, servers, streams, and more.
 
-The site is still in active development and is growing/changing often. I hope to expand these docs soon with more information.
+The site is still in active development and somethings could change.
 
 ## Live Site
 
@@ -64,6 +65,12 @@ Modpack Index depends on commands to keep some information up to date.
 
 * Update stream from Twich and match them to modpacks in the database.
 * Recommended to setup as a cron that every 5 minutes or so.
+
+## IRC
+
+Have questions? Want to chat? Visit our IRC Channel!
+
+[#ModpackIndex](https://webchat.esper.net/?channels=ModpackIndex) on [EsperNet](https://www.esper.net/).
 
 ## Copyright
 
