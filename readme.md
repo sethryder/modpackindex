@@ -21,7 +21,7 @@ The site is currently running at [www.modpackindex.com](http://www.modpackindex.
 2. Install Dependencies: `composer install`.
 3. Set an encryption key in `app/config/app.php`, more info about it in the config file.
 4. Enter you database credentials in `app/config/database.php`.
-5. Run: `php artisan mpi:install`, this will walk you through setting up your first admin user.
+5. Run: `php artisan mpi:install`, this will run database migrations and walk you through setting up your first admin user.
 6. Have fun!
 
 ## Additional Configuration
