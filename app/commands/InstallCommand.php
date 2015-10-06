@@ -40,15 +40,15 @@ class InstallCommand extends Command {
 	 */
 	public function fire()
 	{
-		$this->info('Begin install of Modpack Index...');
+        $this->info('Begin install of Modpack Index...');
 
-		$this->info('Check to see if database already exist...');
+        $this->info('Check to see if database already exist...');
 
-		if (Schema::hasTable('users'))
-		{
-			$this->error('Database already exists, please clear database if you want to re-install.');
+        if (Schema::hasTable('users'))
+        {
+            $this->error('Database already exists, please clear database if you want to re-install.');
             return '';
-		}
+        }
 
         $this->info('Running migrations...');
         $this->call('migrate', []);

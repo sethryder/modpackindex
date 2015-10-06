@@ -2,8 +2,8 @@
 
 return array(
 
-    //Site name
-    'site_name' => 'Modpack Index',
+	//Site name
+	'site_name' => 'Modpack Index',
 
 	//Server Settings
 	'server_failed_attempts' => 3, //number of failed attempts until a failure
