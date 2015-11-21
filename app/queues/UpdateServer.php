@@ -71,7 +71,7 @@ class UpdateServer
 
                 if ($server->email_alerts) {
                     if ($server->user_id == 0) {
-                        $server_user = ServerUser::where('server_id', $server->id);
+                        $server_user = ServerUser::where('server_id', $server->id)->first();
 
                         $message_array = [
                             'server_name' => $server->name,
