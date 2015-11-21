@@ -70,16 +70,27 @@ class UpdateServer
                 $server_status->max_players = 0;
 
                 if ($server->email_alerts) {
-                    $message_array = [
-                        'server_name' => $server->name,
-                        'user' => $server->user
-                    ];
+                    if ($server->user_id == 0) {
+                        $server_user = ServerUser::where('server_id', $server->id);
+
+                        $message_array = [
+                            'server_name' => $server->name,
+                            'username' => $server_user->email,
+                            'email' => $server_user->email
+                        ];
+                    } else {
+                        $message_array = [
+                            'server_name' => $server->name,
+                            'username' => $server->user->username,
+                            'email' => $server->user->email
+                        ];
+                    }
 
                     Mail::send('emails.disabled_server', array('server' => $server, 'site_url' => Config::get('app.url')),
                         function ($message) use ($message_array) {
                             $message->from('noreply@modpackindex.com', 'Modpack Index');
-                            $message->to($message_array['user']->email,
-                                $message_array['user']->username)->subject('Server Deactivated: ' . $message_array['server_name']);
+                            $message->to($message_array['email'],
+                                $message_array['username'])->subject('Server Deactivated: ' . $message_array['server_name']);
                         });
                 }
             }
