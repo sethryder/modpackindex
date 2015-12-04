@@ -19,7 +19,7 @@
                         @if ($server->server_address_hide)
                             <i class="fa fa-play-circle" title="Host"></i>Private
                         @else
-                            <i class="fa fa-play-circle" title="Host"></i>{{{ $server->ip_host }}}:{{{ $server->port }}}
+                            <i class="fa fa-play-circle" title="Host"></i>{{{ $server->ip_host }}}@if ($server->port != 25565):{{{ $server->port }}}@endif
                         @endif
                         |
                         <?php $i = 0 ?>

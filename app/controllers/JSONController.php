@@ -316,7 +316,10 @@ class JSONController extends BaseController
             if ($server->server_address_hide == 1) {
                 $server_address = 'Hidden / Private';
             } else {
-                $server_address = $server->ip_host . ':' . $server->port;
+                $server_address = $server->ip_host;
+                if ($server->port != 25565) {
+                    $server_address .= ':' . $server->port;
+                }
             }
 
             $version_slug = $this->getVersion($versions[$modpack->minecraft_version_id]);
