@@ -462,6 +462,8 @@ class JSONController extends BaseController
                     'links',
                 ];
 
+                $table_empty = 'No Modpacks found.';
+
                 $ajax_source = action('JSONController@getTableLaunchers', [
                     $name,
                     $version,
