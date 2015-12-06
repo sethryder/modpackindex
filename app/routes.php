@@ -24,6 +24,7 @@ Route::get('mod/add', ['as' => 'mod_add', 'uses' => 'ModController@getAdd']);
 Route::post('mod/add', ['as' => 'mod_add', 'uses' => 'ModController@postAdd']);
 Route::get('mod/edit/{id}', ['as' => 'mod_edit', 'uses' => 'ModController@getEdit']);
 Route::post('mod/edit/{id}', ['as' => 'mod_edit', 'uses' => 'ModController@postEdit']);
+Route::get('mod/{id}/enable-version/{version}', ['as' => 'mod_edit', 'uses' => 'ModController@getEnableVersion']);
 
 //Modpacks
 Route::get('modpack/{version}/add', ['as' => 'modpack_add', 'uses' => 'ModpackController@getAdd']);

@@ -361,4 +361,34 @@ class ModController extends BaseController
         return Redirect::action('ModController@getEdit', [$mod->id])
             ->withErrors(['message' => 'Unable to edit mod.'])->withInput();
     }
+
+    public function getEnableVersion($mod_id, $version)
+    {
+        $current_versions = [];
+
+        if (Auth::check()) {
+            if (!$this->checkRoute()) {
+                return Redirect::route('index');
+            }
+        } else {
+            return Redirect::route('index');
+        }
+
+        $version = preg_replace('/\-/', '.', $version);
+        $version_id = MinecraftVersion::where('name', $version)->pluck('id');
+
+        $mod = Mod::find($mod_id);
+
+        foreach ($mod->versions as $v) {
+            $current_versions[] = $v->name;
+        }
+
+        if (!in_array($version, $current_versions)) {
+            $mod->versions()->attach($version_id);
+            Cache::tags('mods')->flush();
+            Queue::push('BuildCache');
+        }
+
+        return Redirect::action('ModController@getMod', [$mod->slug]);
+    }
 }

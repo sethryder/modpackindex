@@ -41,6 +41,9 @@
                         @if (isset($user_permissions['mod_edit']) || $can_edit == true)
                             | <a href="{{ action('ModController@getEdit', [$mod->id]) }}"><i class="fa fa-edit"></i>Edit</a>
                         @endif
+                        @if (isset($user_permissions['mod_edit']))
+                            | <a href="{{ action('ModController@getEnableVersion', [$mod->id, '1-8']) }}"><i class="fa fa-plus"></i>Enable 1.8</a>
+                        @endif
                     </p>
 
                     <div class="portlet-body"></div>
