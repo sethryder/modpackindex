@@ -19,7 +19,7 @@ class SearchController extends BaseController
 
         $input = Input::only('tag', 'tags', 'mods', 'version');
 
-        $minecraft_versions = MinecraftVersion::where('name', '!=', '1.8')->get();
+        $minecraft_versions = MinecraftVersion::all();
         $tags = ModpackTag::all();
 
         foreach ($minecraft_versions as $v) {
