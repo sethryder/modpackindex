@@ -191,6 +191,13 @@
 
                                 <ul class="dropdown-menu">
                                     <li>
+                                        <a href="{{ action('ModpackController@getModpackVersion', ['1-8']) }}">
+                                            <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/blaze.png') }}"/>
+                                            1.8 Packs
+                                        </a>
+                                    </li>
+
+                                    <li>
                                         <a href="{{ action('ModpackController@getModpackVersion', ['1-7-10']) }}">
                                             <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/enderman.png') }}"/>
                                             1.7.10 Packs
@@ -227,6 +234,14 @@
 
                                         <ul class="dropdown-menu">
                                             <li>
+                                                <a href="{{ action('LauncherController@getLauncherVersion', ['feed-the-beast', '1-8']) }}">
+                                                    <img class="fa fa-fw icon-menu"
+                                                         src="{{ asset('/static/img/icons/blaze.png') }}"/>
+                                                    1.8 Packs
+                                                </a>
+                                            </li>
+
+                                            <li>
                                                 <a href="{{ action('LauncherController@getLauncherVersion', ['feed-the-beast', '1-7-10']) }}">
                                                     <img class="fa fa-fw icon-menu"
                                                          src="{{ asset('/static/img/icons/enderman.png') }}"/>
@@ -257,6 +272,14 @@
                                         </a>
 
                                         <ul class="dropdown-menu">
+                                            <li>
+                                                <a href="{{ action('LauncherController@getLauncherVersion', ['curse-launcher', '1-8']) }}">
+                                                    <img class="fa fa-fw icon-menu"
+                                                         src="{{ asset('/static/img/icons/blaze.png') }}"/>
+                                                    1.8 Packs
+                                                </a>
+                                            </li>
+
                                             <li>
                                                 <a href="{{ action('LauncherController@getLauncherVersion', ['curse-launcher', '1-7-10']) }}">
                                                     <img class="fa fa-fw icon-menu"
@@ -289,6 +312,14 @@
 
                                         <ul class="dropdown-menu">
                                             <li>
+                                                <a href="{{ action('LauncherController@getLauncherVersion', ['atlauncher', '1-8']) }}">
+                                                    <img class="fa fa-fw icon-menu"
+                                                         src="{{ asset('/static/img/icons/blaze.png') }}"/>
+                                                    1.8 Packs
+                                                </a>
+                                            </li>
+
+                                            <li>
                                                 <a href="{{ action('LauncherController@getLauncherVersion', ['atlauncher', '1-7-10']) }}">
                                                     <img class="fa fa-fw icon-menu"
                                                          src="{{ asset('/static/img/icons/enderman.png') }}"/>
@@ -319,6 +350,14 @@
                                         </a>
 
                                         <ul class="dropdown-menu">
+                                            <li>
+                                                <a href="{{ action('LauncherController@getLauncherVersion', ['technic-platform', '1-8']) }}">
+                                                    <img class="fa fa-fw icon-menu"
+                                                         src="{{ asset('/static/img/icons/blaze.png') }}"/>
+                                                    1.8 Packs
+                                                </a>
+                                            </li>
+
                                             <li>
                                                 <a href="{{ action('LauncherController@getLauncherVersion', ['technic-platform', '1-7-10']) }}">
                                                     <img class="fa fa-fw icon-menu"
@@ -351,6 +390,14 @@
 
                                         <ul class="dropdown-menu">
                                             <li>
+                                                <a href="{{ action('LauncherController@getLauncherVersion', ['custom', '1-8']) }}">
+                                                    <img class="fa fa-fw icon-menu"
+                                                         src="{{ asset('/static/img/icons/blaze.png') }}"/>
+                                                    1.8 Packs
+                                                </a>
+                                            </li>
+
+                                            <li>
                                                 <a href="{{ action('LauncherController@getLauncherVersion', ['custom', '1-7-10']) }}">
                                                     <img class="fa fa-fw icon-menu"
                                                          src="{{ asset('/static/img/icons/enderman.png') }}"/>
@@ -382,6 +429,13 @@
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="{{ action('ModController@getModVersion', ['1-8']) }}">
+                                            <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/blaze.png') }}"/>
+                                            1.8 Mods
+                                        </a>
+                                    </li>
+
                                     <li>
                                         <a href="{{ action('ModController@getModVersion', ['1-7-10']) }}">
                                             <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/enderman.png') }}"/>
@@ -694,6 +748,12 @@
                                         </a>
 
                                         <ul class="dropdown-menu">
+                                            <li>
+                                                <a href="{{ action('ModpackController@getAdd', ['1-8']) }}">
+                                                    1.8 Pack
+                                                </a>
+                                            </li>
+
                                             <li>
                                                 <a href="{{ action('ModpackController@getAdd', ['1-7-10']) }}">
                                                     1.7.10 Pack
