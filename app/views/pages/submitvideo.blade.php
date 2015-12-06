@@ -59,12 +59,12 @@
 
                             <div class="form-group">
                                 {{ Form::label('modpack','Modpack') }} (if applicable):
-                                {{ Form::select('modpack', ['' => 'Select Modpack'] + Modpack::lists('name', 'name'), null, array('class' => 'form-control')) }}
+                                {{ Form::select('modpack', ['' => 'Select Modpack'] + Modpack::orderBy('name')->lists('name', 'name'), null, array('class' => 'form-control')) }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('mod','Mod') }} (if applicable):
-                                {{ Form::select('mod', ['' => 'Select Mod'] + Mod::lists('name', 'name'), null, array('class' => 'form-control')) }}
+                                {{ Form::select('mod', ['' => 'Select Mod'] + Mod::orderBy('name')->lists('name', 'name'), null, array('class' => 'form-control')) }}
                             </div>
 
                             <div class="form-group">
