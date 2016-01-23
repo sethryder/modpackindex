@@ -42,7 +42,7 @@
                             | <a href="{{ action('ModController@getEdit', [$mod->id]) }}"><i class="fa fa-edit"></i>Edit</a>
                         @endif
                         @if (isset($user_permissions['mod_edit']))
-                            | <a href="{{ action('ModController@getEnableVersion', [$mod->id, '1-8']) }}"><i class="fa fa-plus"></i>Enable 1.8</a>
+                            | <a href="{{ action('ModController@getEnableVersion', [$mod->id, '1-8-9']) }}"><i class="fa fa-plus"></i>Enable 1.8.9</a>
                         @endif
                     </p>
 
