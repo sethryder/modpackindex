@@ -191,9 +191,9 @@
 
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="{{ action('ModpackController@getModpackVersion', ['1-8']) }}">
+                                        <a href="{{ action('ModpackController@getModpackVersion', ['1-8-9']) }}">
                                             <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/blaze.png') }}"/>
-                                            1.8 Packs
+                                            1.8.9 Packs
                                         </a>
                                     </li>
 
@@ -234,10 +234,10 @@
 
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a href="{{ action('LauncherController@getLauncherVersion', ['feed-the-beast', '1-8']) }}">
+                                                <a href="{{ action('LauncherController@getLauncherVersion', ['feed-the-beast', '1-8-9']) }}">
                                                     <img class="fa fa-fw icon-menu"
                                                          src="{{ asset('/static/img/icons/blaze.png') }}"/>
-                                                    1.8 Packs
+                                                    1.8.9 Packs
                                                 </a>
                                             </li>
 
@@ -273,10 +273,10 @@
 
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a href="{{ action('LauncherController@getLauncherVersion', ['curse-launcher', '1-8']) }}">
+                                                <a href="{{ action('LauncherController@getLauncherVersion', ['curse-launcher', '1-8-9']) }}">
                                                     <img class="fa fa-fw icon-menu"
                                                          src="{{ asset('/static/img/icons/blaze.png') }}"/>
-                                                    1.8 Packs
+                                                    1.8.9 Packs
                                                 </a>
                                             </li>
 
@@ -312,10 +312,10 @@
 
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a href="{{ action('LauncherController@getLauncherVersion', ['atlauncher', '1-8']) }}">
+                                                <a href="{{ action('LauncherController@getLauncherVersion', ['atlauncher', '1-8-9']) }}">
                                                     <img class="fa fa-fw icon-menu"
                                                          src="{{ asset('/static/img/icons/blaze.png') }}"/>
-                                                    1.8 Packs
+                                                    1.8.9 Packs
                                                 </a>
                                             </li>
 
@@ -351,10 +351,10 @@
 
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a href="{{ action('LauncherController@getLauncherVersion', ['technic-platform', '1-8']) }}">
+                                                <a href="{{ action('LauncherController@getLauncherVersion', ['technic-platform', '1-8-9']) }}">
                                                     <img class="fa fa-fw icon-menu"
                                                          src="{{ asset('/static/img/icons/blaze.png') }}"/>
-                                                    1.8 Packs
+                                                    1.8.9 Packs
                                                 </a>
                                             </li>
 
@@ -390,10 +390,10 @@
 
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a href="{{ action('LauncherController@getLauncherVersion', ['custom', '1-8']) }}">
+                                                <a href="{{ action('LauncherController@getLauncherVersion', ['custom', '1-8-9']) }}">
                                                     <img class="fa fa-fw icon-menu"
                                                          src="{{ asset('/static/img/icons/blaze.png') }}"/>
-                                                    1.8 Packs
+                                                    1.8.9 Packs
                                                 </a>
                                             </li>
 
@@ -430,9 +430,9 @@
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="{{ action('ModController@getModVersion', ['1-8']) }}">
+                                        <a href="{{ action('ModController@getModVersion', ['1-8-9']) }}">
                                             <img class="fa fa-fw icon-menu" src="{{ asset('/static/img/icons/blaze.png') }}"/>
-                                            1.8 Mods
+                                            1.8.9 Mods
                                         </a>
                                     </li>
 
@@ -749,8 +749,9 @@
 
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a href="{{ action('ModpackController@getAdd', ['1-8']) }}">
-                                                    1.8 Pack
+                                                <a href="{{ action('ModpackController@getAdd', ['1-8-9']) }}">
+                                                    1.8.9 Pack
+                                                    1.8.9 Pack
                                                 </a>
                                             </li>
 
