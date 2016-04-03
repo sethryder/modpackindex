@@ -228,6 +228,9 @@ Route::get('submit-modpack', 'StaticPagesController@getSubmitModpack');
 Route::post('submit-modpack', 'StaticPagesController@postSubmitModpack');
 Route::get('submit-video', 'StaticPagesController@getSubmitVideo');
 Route::post('submit-video', 'StaticPagesController@postSubmitVideo');
+Route::get('volunteer', 'StaticPagesController@getVolunteer');
+Route::post('volunteer', 'StaticPagesController@postVolunteer');
+
 
 /*
  * Sitemap Routes

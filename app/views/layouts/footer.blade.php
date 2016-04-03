@@ -2,7 +2,9 @@
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left"><a href="{{ action('StaticPagesController@getAbout') }}">About</a> | <a href="{{ action('StaticPagesController@getContact') }}">Contact</a> |
+        <p class="pull-left"><a href="{{ action('StaticPagesController@getAbout') }}">About</a> |
+            <a href="{{ action('StaticPagesController@getVolunteer') }}">Volunteer</a> |
+            <a href="{{ action('StaticPagesController@getContact') }}">Contact</a> |
             <a href="https://www.modpackindex.com/api">API</a> |
             <a href="https://github.com/sethryder/modpackindex">Source</a> |
             <a href="https://webchat.esper.net/?channels=ModpackIndex">IRC</a></p>
