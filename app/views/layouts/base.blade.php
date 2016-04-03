@@ -105,6 +105,10 @@
     </script>
 @endif
 
+@if (isset($alert_enabled))
+    <script src="{{ asset('/static/js/alert.js') }}"></script>
+@endif
+
 <script>
     (function (i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r;

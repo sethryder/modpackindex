@@ -7,6 +7,13 @@
 
             <div class="portlet">
 
+                @if ($alert_enabled)
+                <div class="alert alert-{{{ $alert_level }}}">
+                    <a class="close" data-dismiss="alert" data-alertid="{{{ $alert_key }}}" href="#" aria-hidden="true">&times;</a>
+                    {{ $alert_contents }}
+                </div> <!-- /.alert -->
+                @endif
+
                 <h3 class="portlet-title">
                     <u>{{{ $version }}} Modpacks</u>
                 </h3>

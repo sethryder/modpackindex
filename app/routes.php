@@ -158,6 +158,8 @@ Route::post('reset/{token}', 'UserController@postResetPassword');
 
 Route::get('user/verify/{confirmation}', 'UserController@getVerify');
 
+Route::post('user/alert/dismiss', 'UserController@postDismissAlert');
+
 //twitch
 Route::get('streams', 'TwitchController@getStreams');
 Route::get('stream/{channel}', 'TwitchController@getChannel');

@@ -6,6 +6,16 @@ class ModpackController extends BaseController
 
     public function getModpackVersion($version = 'all')
     {
+        $alert_enabled = true;
+        $alert_level = 'info';
+        $alert_key = 'volunteer_01';
+        $alert_contents = '<strong>Help wanted!</strong> We are looking for some awesome volunteers to join our staff and to
+        help keep the site up to date. If you are interested <a href="/volunteer" style="color: #000">click here</a>!';
+
+        if (Cookie::get('alert-' . $alert_key)) {
+            $alert_enabled = false;
+        }
+
         $table_javascript = route('tdf', ['modpacks', $version]);
         $version = $this->getVersion($version);
 
@@ -18,7 +28,11 @@ class ModpackController extends BaseController
         return View::make('modpacks.list', [
             'table_javascript' => $table_javascript,
             'version' => $version,
-            'title' => $title
+            'title' => $title,
+            'alert_enabled' => $alert_enabled,
+            'alert_level' => $alert_level,
+            'alert_key' => $alert_key,
+            'alert_contents' => $alert_contents,
         ]);
     }
 

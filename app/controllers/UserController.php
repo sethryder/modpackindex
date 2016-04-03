@@ -695,9 +695,13 @@ class UserController extends BaseController
         ]);
     }
 
-    private function testRedirect()
+    public function postDismissAlert()
     {
-        return Redirect::intended('/');
+        $input = Input::only('alert_id');
+
+        $cookie = Cookie::forever('alert-' . $input['alert_id'], 'true');
+
+        return Response::make('')->withCookie($cookie);
     }
 
     private function isThisMyUsername($username)
