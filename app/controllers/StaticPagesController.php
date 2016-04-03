@@ -77,6 +77,53 @@ class StaticPagesController extends BaseController
 
     }
 
+    public function getVolunteer()
+    {
+        $title = 'Volunteer - ' . $this->site_name;
+        $meta_description = 'Join us in keeping Modpack Index up to and date and awesome!';
+
+        return View::make('pages.volunteer', ['title' => $title, 'meta_description' => $meta_description]);
+    }
+
+    public function postVolunteer()
+    {
+        $title = 'Volunteer - ' . $this->site_name;
+
+        $input = Input::only('nickname', 'email', 'age', 'position', 'why', 'g-recaptcha-response');
+        $input['contact_email'] = 'contact@modpackindex.com';
+        $input['sender_ip'] = Request::getClientIp();
+
+        $messages = [
+            'g-recaptcha-response.required' => 'reCAPTCHA verification is required.',
+        ];
+
+        $validator = Validator::make($input,
+            array(
+                'nickname' => 'required',
+                'email' => 'required|email',
+                'age' => 'required',
+                'position' => 'required',
+                'why' => 'required',
+                'g-recaptcha-response' => 'required|recaptcha',
+            ),
+            $messages
+        );
+
+        if ($validator->fails()) {
+            return Redirect::action('StaticPagesController@getVolunteer')->withErrors($validator)->withInput();
+        }
+
+        Mail::send('emails.volunteer', array('input' => $input), function ($message) use ($input) {
+            $message->from('noreply@modpackindex.com', 'Modpack Index');
+            $message->replyTo($input['email'], $input['nickname']);
+            $message->to($input['contact_email'], 'Seth')->subject('Volunteer Application');
+        });
+
+        return View::make('pages.volunteer', ['success' => true, 'title' => $title,]);
+
+
+    }
+
     public function getSubmitModpack()
     {
         $title = 'Submit Modpack - ' . $this->site_name;
