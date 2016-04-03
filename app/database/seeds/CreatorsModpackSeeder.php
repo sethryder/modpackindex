@@ -9,11 +9,10 @@ class CreatorsModpackSeeder extends Seeder {
         $modpackIds = Modpack::lists('id');
         $creatorssId = Creator::lists('id');
 
-        foreach(range(1, 15) as $index)
-        {
+        foreach ($modpackIds as $modpackId) {
             DB::table('creator_modpack')->insert([
                 'creator_id' => $faker->randomElement($creatorssId),
-                'modpack_id' => $faker->randomElement($modpackIds),
+                'modpack_id' => $modpackId,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ]);

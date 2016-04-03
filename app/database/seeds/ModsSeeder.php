@@ -6,7 +6,7 @@ class ModsSeeder extends Seeder {
     {
         $faker = Faker\Factory::create();
 
-        foreach(range(1, 200) as $index)
+        foreach(range(1, 300) as $index)
         {
             $name = $faker->bs;
             Mod::create([

@@ -9,7 +9,7 @@ class ModpackSeeder extends Seeder {
         $launcherIds = Launcher::lists('id');
         $minecraftVersionIds = MinecraftVersion::lists('id');
 
-        foreach(range(1, 30) as $index)
+        foreach(range(1, 50) as $index)
         {
             $name = $faker->bs;
             Modpack::create([

@@ -6,7 +6,7 @@ class CreatorsSeeder extends Seeder {
     {
         $faker = Faker\Factory::create();
 
-        foreach(range(1, 12) as $index)
+        foreach(range(1, 20) as $index)
         {
             $username = $faker->userName;
             Creator::create([
