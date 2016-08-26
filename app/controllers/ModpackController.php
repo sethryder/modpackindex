@@ -7,10 +7,10 @@ class ModpackController extends BaseController
     public function getModpackVersion($version = 'all')
     {
         $alert_enabled = true;
-        $alert_level = 'info';
-        $alert_key = 'volunteer_01';
-        $alert_contents = '<strong>Help wanted!</strong> We are looking for some awesome volunteers to join our staff and to
-        help keep the site up to date. If you are interested <a href="/volunteer" style="color: #000">click here</a>!';
+        $alert_level = 'danger';
+        $alert_key = 'outofdate_01';
+        $alert_contents = '<strong>Please note:</strong> Modpack Index has not been updated in some time.
+        Please keep in mind that information on the site could be out of date.';
 
         if (Cookie::get('alert-' . $alert_key)) {
             $alert_enabled = false;
