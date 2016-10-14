@@ -16,7 +16,7 @@ class TwitchStream extends Eloquent
 
         $client = new \GuzzleHttp\Client([
             'headers' => [
-                'Client-ID' => Config::get('app.twitch_client_id');
+                'Client-ID' => Config::get('app.twitch_client_id'),
                 'Accept' => 'application/vnd.twitchtv.v3+json',
             ]
         ]);
