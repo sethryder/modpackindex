@@ -5,6 +5,9 @@ return array(
 	//Site name
 	'site_name' => 'Modpack Index',
 
+	//Twitch Settings
+	'twitch_client_id' => getenv('TWITCH_CLIENT_ID'),
+
 	//Server Settings
 	'server_failed_attempts' => 3, //number of failed attempts until a failure
 	'server_failed_disable' => 12, //number of failed checks until server is disabled
