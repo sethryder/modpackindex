@@ -27,7 +27,7 @@ class TwitchStream extends Eloquent
             return false;
         }
 
-        $raw_body = $response->getBody(); exit();
+        $raw_body = $response->getBody();
         $decoded_body = json_decode($raw_body);
 
         $channel_total = $decoded_body->_total;
@@ -41,7 +41,12 @@ class TwitchStream extends Eloquent
             $i = 100;
 
             while ($i <= $channel_total) {
-                $response = $client->get('https://api.twitch.tv/kraken/streams?game=Minecraft&limit=100&offset=' . $i);
+                $response = $client->get('https://api.twitch.tv/kraken/streams?game=Minecraft&limit=100&offset=' . $i, [
+                	'headers' => [
+                        	'Client-ID' => Config::get('app.twitch_client_id'),
+	                        'Accept' => 'application/vnd.twitchtv.v3+json',
+	                        'User-Agent' => 'ModpackIndex/v1',
+	            ]]);
 
                 $raw_body = $response->getBody();
                 $decoded_body = json_decode($raw_body);
