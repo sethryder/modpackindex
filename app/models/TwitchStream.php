@@ -14,20 +14,20 @@ class TwitchStream extends Eloquent
     {
         $streams = [];
 
-        $client = new \GuzzleHttp\Client([
-            'headers' => [
-                'Client-ID' => Config::get('app.twitch_client_id'),
-                'Accept' => 'application/vnd.twitchtv.v3+json',
-            ]
-        ]);
+        $client = new \GuzzleHttp\Client();
 
-        $response = $client->get('https://api.twitch.tv/kraken/streams?game=Minecraft&limit=100');
+        $response = $client->get('https://api.twitch.tv/kraken/streams?game=Minecraft&limit=100', [
+		'headers' => [
+                	'Client-ID' => Config::get('app.twitch_client_id'),
+	                'Accept' => 'application/vnd.twitchtv.v3+json',
+	                'User-Agent' => 'ModpackIndex/v1',
+            ]]);
 
         if ($response->getStatusCode() != 200) {
             return false;
         }
 
-        $raw_body = $response->getBody();
+        $raw_body = $response->getBody(); exit();
         $decoded_body = json_decode($raw_body);
 
         $channel_total = $decoded_body->_total;
